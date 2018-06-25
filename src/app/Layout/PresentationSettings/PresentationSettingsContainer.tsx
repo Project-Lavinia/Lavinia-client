@@ -2,7 +2,7 @@ import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import { PresentationSettings } from "./PresentationSettings";
 import { ChangeDecimalsAction } from "./PresentationActions";
-import { PresentationAction } from "../types/ActionTypes";
+import { PresentationAction } from "../Types/ActionTypes";
 
 function mapStateToProps(state: RootState) {
     return {

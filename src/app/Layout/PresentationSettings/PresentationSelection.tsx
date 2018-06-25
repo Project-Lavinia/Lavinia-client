@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 import { default as PresentationSelectionButton } from "./PresentationSelectionButtonContainer";
-import { PresentationType } from "../types/PresentationType";
+import { PresentationType } from "../Types/PresentationType";
 
 export interface PresentationSelectionProps {
     currentSelection: PresentationType;

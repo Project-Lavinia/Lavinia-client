@@ -1,6 +1,6 @@
 ﻿import { ButtonProps, Button } from "../Button";
 import * as React from "react";
-import { PresentationType } from "../types/PresentationType";
+import { PresentationType } from "../Types/PresentationType";
 
 export interface PresentationSelectionButtonProps extends ButtonProps {
     presentationSelected: PresentationType;

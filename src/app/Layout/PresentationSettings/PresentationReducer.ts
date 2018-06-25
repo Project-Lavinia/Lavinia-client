@@ -1,7 +1,7 @@
 ﻿import { unloadedState, PresentationState } from "./PresentationState";
 import { Action } from "redux";
 import { PresentationAction as KnownAction } from "./PresentationActions";
-import { PresentationAction } from "../types/ActionTypes";
+import { PresentationAction } from "../Types/ActionTypes";
 
 export function presentationReducer (state: PresentationState | undefined, incomingAction: Action) {
     if (state === undefined) {

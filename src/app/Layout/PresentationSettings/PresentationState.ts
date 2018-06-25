@@ -1,4 +1,4 @@
-import { PresentationType } from "../types/PresentationType";
+import { PresentationType } from "../Types/PresentationType";
 
 export interface PresentationState {
     currentPresentation: PresentationType;

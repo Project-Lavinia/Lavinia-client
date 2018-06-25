@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 import { SettingsPayload, ComputationPayload } from "../Interfaces/Payloads";
-import { getAlgorithmType } from "../logic/AlgorithmUtils";
+import { getAlgorithmType } from "../Logic/AlgorithmUtils";
 import { Button } from "../Button";
 import { Election, ElectionType } from "../Interfaces/Models";
 import { SmartNumericInput } from "../SmartNumericInput";
