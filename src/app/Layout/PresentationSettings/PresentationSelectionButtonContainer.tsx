@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import { changePresentation } from "./PresentationActions";
 
-const mapDispatchToProps = (dispatch: any, ownProps: PresentationSelectionButtonProps|undefined) => ({
+const mapDispatchToProps = (dispatch: any, ownProps: PresentationSelectionButtonProps | undefined) => ({
     onPress: () => {
         const props = ownProps as PresentationSelectionButtonProps;
         const action = changePresentation(props.presentationSelected);
@@ -11,4 +11,7 @@ const mapDispatchToProps = (dispatch: any, ownProps: PresentationSelectionButton
     }
 });
 
-export default connect(null, mapDispatchToProps)((PresentationSelectionButton) as any);
+export default connect(
+    null,
+    mapDispatchToProps
+)(PresentationSelectionButton as any);

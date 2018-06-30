@@ -10,7 +10,7 @@ export enum SettingAction {
 
 export enum ComputationAction {
     InitializeComputation = "INITIALIZE_COMPUTATION",
-    UpdateResults = "UPDATE_CALCULATION",
+    UpdateResults = "UPDATE_CALCULATION"
 }
 
 export enum PresentationAction {

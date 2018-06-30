@@ -5,22 +5,20 @@ import { SettingAction } from "../Types/ActionTypes";
 
 // TODO: Make actions for updates of elections etc...
 
-type KnownAction = InitializeSettingsAction
-    | UpdateSettingsAction
-    | ToggleAutoComputeAction;
+type KnownAction = InitializeSettingsAction | UpdateSettingsAction | ToggleAutoComputeAction;
 
 // NB: BaseReducer Typescript (Reducer<State>) definition changes as of redux 4.0.0
 // https://github.com/rt2zz/redux-persist/pull/778
 
-export function settingsReducer (state: SettingsState | undefined, incomingAction: Action) {
+export function settingsReducer(state: SettingsState | undefined, incomingAction: Action) {
     if (state == undefined) {
         state = unloadedState;
     }
-    
+
     const action = incomingAction as KnownAction;
     switch (action.type) {
         case SettingAction.InitializeSettings:
-        console.log(`Action of type ${action.type} reduced`);
+            console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
                 electionYears: action.electionYears,
@@ -33,7 +31,7 @@ export function settingsReducer (state: SettingsState | undefined, incomingActio
                 autoCompute: action.autoCompute
             } as SettingsState;
         case SettingAction.UpdateSettings:
-        console.log(`Action of type ${action.type} reduced`);
+            console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
                 year: action.year,
@@ -44,7 +42,7 @@ export function settingsReducer (state: SettingsState | undefined, incomingActio
                 levelingSeats: action.levelingSeats
             } as SettingsState;
         case SettingAction.ToggleAutoCompute:
-        console.log(`Action of type ${action.type} reduced`);
+            console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
                 autoCompute: action.autoCompute

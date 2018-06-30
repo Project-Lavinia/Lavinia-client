@@ -16,10 +16,7 @@ export interface PresentationProps {
     results: LagueDhontResult;
 }
 
-export class PresentationComponent extends React.Component<
-    PresentationProps,
-    {}
-> {
+export class PresentationComponent extends React.Component<PresentationProps, {}> {
     getPartyTableData(): PartyResult[] {
         return getPartyTableData(
             this.props.results.partyResults,
@@ -29,10 +26,7 @@ export class PresentationComponent extends React.Component<
     }
 
     getDistrictTableData(): DistrictResult[] {
-        return getDistrictTableData(
-            this.props.results.districtResults,
-            this.props.decimals
-        );
+        return getDistrictTableData(this.props.results.districtResults, this.props.decimals);
     }
 
     getSeatDistributionData(): DistrictResult[] {
@@ -44,10 +38,7 @@ export class PresentationComponent extends React.Component<
     }
 
     getSeatsPerPartyData(): PartyResult[] {
-        return getSeatsPerPartyData(
-            this.props.results.partyResults,
-            this.props.showPartiesWithoutSeats
-        );
+        return getSeatsPerPartyData(this.props.results.partyResults, this.props.showPartiesWithoutSeats);
     }
 
     render() {
@@ -61,11 +52,7 @@ export class PresentationComponent extends React.Component<
             case PresentationType.SeatsPerParty:
                 return <SeatsPerParty partyResults={this.getSeatsPerPartyData()} />;
             default:
-                console.log(
-                    `Could not find presentation type ${
-                        this.props.currentPresentation
-                    }`
-                );
+                console.log(`Could not find presentation type ${this.props.currentPresentation}`);
                 return <g />;
         }
     }

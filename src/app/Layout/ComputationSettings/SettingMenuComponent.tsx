@@ -10,31 +10,19 @@ export interface SettingMenuProps {
     electionType: ElectionType;
     settingsPayload: SettingsPayload;
     computationPayload: ComputationPayload;
-    updateCalculation: (
-        computationPayload: ComputationPayload,
-        autoCompute: boolean,
-        forceCompute: boolean
-    ) => any;
+    updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => any;
     updateSettings: (settingsPayload: SettingsPayload) => any;
     toggleAutoCompute: (autoCompute: boolean) => any;
-    resetToHistoricalSettings: (
-        settingsPayload: SettingsPayload,
-        election: Election
-    ) => any;
+    resetToHistoricalSettings: (settingsPayload: SettingsPayload, election: Election) => any;
 }
 
-export class SettingMenuComponent extends React.Component<
-    SettingMenuProps,
-    {}
-> {
+export class SettingMenuComponent extends React.Component<SettingMenuProps, {}> {
     shouldHideFirstDivisor(): boolean {
         return this.props.computationPayload.algorithm === AlgorithmType.DHondt;
     }
     onYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const year = parseInt(event.target.value);
-        const election = this.props.electionType.elections.find(
-            election => election.year === year
-        );
+        const election = this.props.electionType.elections.find((election) => election.year === year);
         if (election !== undefined) {
             this.props.updateCalculation(
                 {
@@ -112,28 +100,16 @@ export class SettingMenuComponent extends React.Component<
     };
     computeManually = () => {
         const year = parseInt(this.props.settingsPayload.year);
-        const election = this.props.electionType.elections.find(
-            e => e.year === year
-        );
+        const election = this.props.electionType.elections.find((e) => e.year === year);
         if (election !== undefined && election !== null) {
             this.props.updateCalculation(
                 {
                     election,
-                    algorithm: getAlgorithmType(
-                        this.props.settingsPayload.algorithm
-                    ),
-                    firstDivisor: parseFloat(
-                        this.props.settingsPayload.firstDivisor
-                    ),
-                    electionThreshold: parseFloat(
-                        this.props.settingsPayload.electionThreshold
-                    ),
-                    districtSeats: parseInt(
-                        this.props.settingsPayload.districtSeats
-                    ),
-                    levelingSeats: parseInt(
-                        this.props.settingsPayload.levelingSeats
-                    )
+                    algorithm: getAlgorithmType(this.props.settingsPayload.algorithm),
+                    firstDivisor: parseFloat(this.props.settingsPayload.firstDivisor),
+                    electionThreshold: parseFloat(this.props.settingsPayload.electionThreshold),
+                    districtSeats: parseInt(this.props.settingsPayload.districtSeats),
+                    levelingSeats: parseInt(this.props.settingsPayload.levelingSeats)
                 },
                 this.props.settingsPayload.autoCompute,
                 true
@@ -141,10 +117,7 @@ export class SettingMenuComponent extends React.Component<
         }
     };
     restoreToDefault = () => {
-        this.props.resetToHistoricalSettings(
-            this.props.settingsPayload,
-            this.props.computationPayload.election
-        );
+        this.props.resetToHistoricalSettings(this.props.settingsPayload, this.props.computationPayload.election);
     };
 
     render() {
@@ -160,31 +133,30 @@ export class SettingMenuComponent extends React.Component<
                                 value={this.props.settingsPayload.year}
                                 onChange={this.onYearChange}
                                 className="form-control"
-                                name="year">
-                                {this.props.settingsPayload.electionYears.map(
-                                    (item, index) => {
-                                        return (
-                                            <option
-                                                key={index} // By convention all children should have a unique key prop
-                                                value={item}>
-                                                {item}
-                                            </option>
-                                        );
-                                    }
-                                )}
+                                name="year"
+                            >
+                                {this.props.settingsPayload.electionYears.map((item, index) => {
+                                    return (
+                                        <option
+                                            key={index} // By convention all children should have a unique key prop
+                                            value={item}
+                                        >
+                                            {item}
+                                        </option>
+                                    );
+                                })}
                             </select>
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label className="col-sm-5 col-form-label">
-                            Algoritme
-                        </label>
+                        <label className="col-sm-5 col-form-label">Algoritme</label>
                         <div className="col-sm-7">
                             <select
                                 className="form-control"
                                 name="calcMethod"
                                 value={this.props.settingsPayload.algorithm.toString()}
-                                onChange={this.onAlgorithmChange}>
+                                onChange={this.onAlgorithmChange}
+                            >
                                 <option value="1">Sainte Lagüe</option>
                                 <option value="2">d'Hondt</option>>
                             </select>
@@ -198,9 +170,7 @@ export class SettingMenuComponent extends React.Component<
                         onChange={this.onFirstDivisorChange}
                         min={1}
                         max={5}
-                        defaultValue={
-                            this.props.computationPayload.election.firstDivisor
-                        }
+                        defaultValue={this.props.computationPayload.election.firstDivisor}
                         integer={false}
                         slider={true}
                     />
@@ -211,9 +181,7 @@ export class SettingMenuComponent extends React.Component<
                         onChange={this.onThresholdChange}
                         min={0}
                         max={15}
-                        defaultValue={
-                            this.props.computationPayload.election.threshold
-                        }
+                        defaultValue={this.props.computationPayload.election.threshold}
                         integer={false}
                         slider={true}
                     />
@@ -224,9 +192,7 @@ export class SettingMenuComponent extends React.Component<
                         onChange={this.onLevelingSeatsChange}
                         min={0}
                         max={100}
-                        defaultValue={
-                            this.props.computationPayload.election.levelingSeats
-                        }
+                        defaultValue={this.props.computationPayload.election.levelingSeats}
                         integer={true}
                         slider={true}
                     />
@@ -237,9 +203,7 @@ export class SettingMenuComponent extends React.Component<
                     </div>
                 </div>*/}
                     <div className="form-group row">
-                        <label
-                            htmlFor="autoCompute"
-                            className="col-sm-5 col-form-label">
+                        <label htmlFor="autoCompute" className="col-sm-5 col-form-label">
                             Oppdater automatisk
                         </label>
                         <div className="col-sm-7">
@@ -252,26 +216,16 @@ export class SettingMenuComponent extends React.Component<
                                 onChange={this.toggleAutoCompute}
                             />
                             {!this.props.settingsPayload.autoCompute && (
-                                <Button
-                                    title={"Kalkuler"}
-                                    onPress={this.computeManually}
-                                    type="button"
-                                />
+                                <Button title={"Kalkuler"} onPress={this.computeManually} type="button" />
                             )}
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label
-                            htmlFor="reset"
-                            className="col-sm-5 col-form-label">
+                        <label htmlFor="reset" className="col-sm-5 col-form-label">
                             Historiske instillinger
                         </label>
                         <div className="col-sm-7">
-                            <Button
-                                title={"Gjenopprett"}
-                                onPress={this.restoreToDefault}
-                                type="button"
-                            />
+                            <Button title={"Gjenopprett"} onPress={this.restoreToDefault} type="button" />
                         </div>
                     </div>
                 </form>

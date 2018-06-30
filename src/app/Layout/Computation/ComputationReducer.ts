@@ -3,17 +3,16 @@ import { ComputationState, unloadedState } from "./ComputationState";
 import { InitializeComputationAction, UpdateResultsAction } from "./ComputationActions";
 import { ComputationAction as ElectionActionEnum } from "../Types/ActionTypes";
 
-type KnownAction = InitializeComputationAction
-    | UpdateResultsAction;
+type KnownAction = InitializeComputationAction | UpdateResultsAction;
 
 // NB: BaseReducer Typescript (Reducer<State>) definition changes as of redux 4.0.0
 // https://github.com/rt2zz/redux-persist/pull/778
 
-export function computationReducer (state: ComputationState | undefined, incomingAction: Action) {
+export function computationReducer(state: ComputationState | undefined, incomingAction: Action) {
     if (state === undefined) {
         state = unloadedState;
     }
-    
+
     const action = incomingAction as KnownAction;
     switch (action.type) {
         case ElectionActionEnum.InitializeComputation:
@@ -26,7 +25,7 @@ export function computationReducer (state: ComputationState | undefined, incomin
                 electionThreshold: action.electionThreshold,
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
-                results: action.results,
+                results: action.results
             };
         case ElectionActionEnum.UpdateResults:
             console.log(`Action of type ${action.type} reduced`);
@@ -38,7 +37,7 @@ export function computationReducer (state: ComputationState | undefined, incomin
                 electionThreshold: action.electionThreshold,
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
-                results: action.results,
+                results: action.results
             };
         default:
             console.log(`Action of type ${incomingAction.type} reduced to default`);
