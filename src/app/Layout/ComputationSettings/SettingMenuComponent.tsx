@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import { SettingsPayload, ComputationPayload } from "../Interfaces/Payloads";
 import { getAlgorithmType } from "../Logic/AlgorithmUtils";
 import { Button } from "../Button";
@@ -49,7 +49,7 @@ export class SettingMenuComponent extends React.Component<
                 year: event.target.value
             });
         }
-    };
+    }
     onAlgorithmChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const algorithm = parseInt(event.target.value);
         this.props.updateCalculation(
@@ -64,7 +64,7 @@ export class SettingMenuComponent extends React.Component<
             ...this.props.settingsPayload,
             algorithm
         });
-    };
+    }
     onFirstDivisorChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
@@ -78,7 +78,7 @@ export class SettingMenuComponent extends React.Component<
             this.props.settingsPayload.autoCompute,
             false
         );
-    };
+    }
     onThresholdChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
@@ -92,7 +92,7 @@ export class SettingMenuComponent extends React.Component<
             this.props.settingsPayload.autoCompute,
             false
         );
-    };
+    }
     onLevelingSeatsChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
@@ -106,10 +106,10 @@ export class SettingMenuComponent extends React.Component<
             this.props.settingsPayload.autoCompute,
             false
         );
-    };
+    }
     toggleAutoCompute = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.props.toggleAutoCompute(event.target.checked);
-    };
+    }
     computeManually = () => {
         const year = parseInt(this.props.settingsPayload.year);
         const election = this.props.electionType.elections.find(
@@ -139,13 +139,13 @@ export class SettingMenuComponent extends React.Component<
                 true
             );
         }
-    };
+    }
     restoreToDefault = () => {
         this.props.resetToHistoricalSettings(
             this.props.settingsPayload,
             this.props.computationPayload.election
         );
-    };
+    }
 
     render() {
         return (
