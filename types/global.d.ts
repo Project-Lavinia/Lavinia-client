@@ -1,9 +1,9 @@
 /** Global definitions for development **/
 
 // for style loader
-declare module '*.css' {
-  const styles: any;
-  export = styles;
+declare module "*.css" {
+    const styles: any;
+    export = styles;
 }
 
 // Omit type https://github.com/Microsoft/TypeScript/issues/12215

@@ -8,11 +8,11 @@ type KnownAction = InitializeRequestedDataAction;
 // NB: BaseReducer Typescript (Reducer<State>) definition changes as of redux 4.0.0
 // https://github.com/rt2zz/redux-persist/pull/778
 
-export function requestedDataAction (state: RequestedDataState | undefined, incomingAction: Action) {
+export function requestedDataAction(state: RequestedDataState | undefined, incomingAction: Action) {
     if (state === undefined) {
         state = unloadedState;
     }
-    
+
     const action = incomingAction as KnownAction;
     switch (action.type) {
         case RequestedDataAction.InitializeRequestedData:
@@ -20,7 +20,7 @@ export function requestedDataAction (state: RequestedDataState | undefined, inco
             return {
                 ...state,
                 electionType: action.electionType,
-                enableAutoSave: true,
+                enableAutoSave: true
             } as RequestedDataState;
         default:
             console.log(`Action of type ${incomingAction.type} reduced to default`);

@@ -83,4 +83,4 @@ const mapDispatchToProps = (dispatch: any) => ({
 export const SettingsMenuContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)((SettingMenuComponent) as any);
+)(SettingMenuComponent as any);

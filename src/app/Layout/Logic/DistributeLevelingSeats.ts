@@ -1,10 +1,7 @@
 import { ComputationPayload } from "../Interfaces/Payloads";
 import { Result, PartyResult, LevelingSeat, DistrictResult, PartyRestQuotients } from "../Interfaces/Results";
 import { Dictionary } from "../Interfaces/Utilities";
-import {
-    distributeSeats,
-    generateLevelingSeatArray
-} from "./AlgorithmUtils";
+import { distributeSeats, generateLevelingSeatArray } from "./AlgorithmUtils";
 import { dictionaryToArray } from "./DictionaryUtilities";
 
 export function distributeLevelingSeats(
@@ -15,8 +12,7 @@ export function distributeLevelingSeats(
 ): PartyRestQuotients[] {
     // Filter out parties with less than the threshold
     let levelingPartyCodes = Object.keys(partyResults).filter(
-        partyCode =>
-            partyResults[partyCode].percentVotes >= payload.electionThreshold
+        (partyCode) => partyResults[partyCode].percentVotes >= payload.electionThreshold
     );
 
     let levelingParties: Result[] = [];
@@ -45,7 +41,7 @@ export function distributeLevelingSeats(
 
     // Filter out parties that did not gain any seats in the new distribution
     levelingPartyCodes = levelingPartyCodes.filter(
-        p => nationalDistribution.seatsWon[p] > partyResults[p].districtSeats
+        (p) => nationalDistribution.seatsWon[p] > partyResults[p].districtSeats
     );
 
     levelingParties = [];
@@ -81,9 +77,7 @@ export function distributeLevelingSeats(
         }
     }
 
-    levelingPartyCodes = levelingPartyCodes.filter(
-        partyCode => partyResults[partyCode].levelingSeats > 0
-    );
+    levelingPartyCodes = levelingPartyCodes.filter((partyCode) => partyResults[partyCode].levelingSeats > 0);
 
     let levelingSeats: LevelingSeat[] = [];
     let finalLevelingSeats: LevelingSeat[] = [];
@@ -110,10 +104,7 @@ export function distributeLevelingSeats(
         }
 
         if (numberOfSeats >= partyResults[seat.partyCode].levelingSeats) {
-            levelingSeats = levelingSeats.filter(
-                filterSeat =>
-                    filterSeat.partyCode !== seat.partyCode
-            );
+            levelingSeats = levelingSeats.filter((filterSeat) => filterSeat.partyCode !== seat.partyCode);
         } else {
             seat.seatNumber = seatIndex++;
 
@@ -131,9 +122,7 @@ export function distributeLevelingSeats(
                 partyRestQuotients[seat.partyCode].levelingSeats.push(seat);
             }
 
-            levelingSeats = levelingSeats.filter(
-                filterSeat => filterSeat.district !== seat.district
-            );
+            levelingSeats = levelingSeats.filter((filterSeat) => filterSeat.district !== seat.district);
         }
     }
 

@@ -15,4 +15,4 @@ const mapStateToProps = (state: RootState) => {
 export const PresentationContainer = connect(
     mapStateToProps,
     {}
-)((PresentationComponent) as any);
+)(PresentationComponent as any);

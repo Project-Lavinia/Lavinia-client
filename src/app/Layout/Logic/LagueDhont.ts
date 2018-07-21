@@ -79,15 +79,11 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
 
     // Update percentages as all votes are counted
     for (const county of payload.election.counties) {
-        districtResults[county.name].percentVotes =
-            (districtResults[county.name].votes / totalVotes) * 100;
+        districtResults[county.name].percentVotes = (districtResults[county.name].votes / totalVotes) * 100;
         for (const party of county.results) {
-            partyResults[party.partyCode].percentVotes =
-                (partyResults[party.partyCode].votes / totalVotes) * 100;
+            partyResults[party.partyCode].percentVotes = (partyResults[party.partyCode].votes / totalVotes) * 100;
             districtPartyResults[county.name][party.partyCode].percentVotes =
-                (districtPartyResults[county.name][party.partyCode].votes /
-                    districtResults[county.name].votes) *
-                100;
+                (districtPartyResults[county.name][party.partyCode].votes / districtResults[county.name].votes) * 100;
         }
     }
 
@@ -100,19 +96,14 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
             county.results
         );
 
-        districtResults[county.name].districtSeatResult =
-            distributionResult.seatResults;
+        districtResults[county.name].districtSeatResult = distributionResult.seatResults;
 
         // Update how many district seats the party has won, both nationally and within the district
         for (const partyCode in distributionResult.seatsWon) {
-            partyResults[partyCode].districtSeats +=
-                distributionResult.seatsWon[partyCode];
-            partyResults[partyCode].totalSeats +=
-                distributionResult.seatsWon[partyCode];
-            districtPartyResults[county.name][partyCode].districtSeats +=
-                distributionResult.seatsWon[partyCode];
-            districtPartyResults[county.name][partyCode].totalSeats +=
-                distributionResult.seatsWon[partyCode];
+            partyResults[partyCode].districtSeats += distributionResult.seatsWon[partyCode];
+            partyResults[partyCode].totalSeats += distributionResult.seatsWon[partyCode];
+            districtPartyResults[county.name][partyCode].districtSeats += distributionResult.seatsWon[partyCode];
+            districtPartyResults[county.name][partyCode].totalSeats += distributionResult.seatsWon[partyCode];
         }
     }
 
@@ -132,7 +123,6 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     }
     const districtResultArray = dictionaryToArray(districtResults);
     const partyResultArray = dictionaryToArray(partyResults);
-
 
     const result: LagueDhontResult = {
         partyResults: partyResultArray,

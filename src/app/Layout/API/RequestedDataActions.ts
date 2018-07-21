@@ -11,7 +11,7 @@ export function initializeRequestedData(electionType: ElectionType): InitializeR
     const action: InitializeRequestedDataAction = {
         type: RequestedDataAction.InitializeRequestedData,
         electionType,
-        enableAutoSave: true,
+        enableAutoSave: true
     };
     return action;
 }

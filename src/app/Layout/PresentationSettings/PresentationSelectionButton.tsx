@@ -11,11 +11,10 @@ export class PresentationSelectionButton extends Button<PresentationSelectionBut
         super(props);
     }
     render() {
-        return <button
-            title={this.props.accessibilityLabel}
-            onClick={this.props.onPress}
-            className={this.props.className}>
-            {this.props.title}
-        </button>;
+        return (
+            <button title={this.props.accessibilityLabel} onClick={this.props.onPress} className={this.props.className}>
+                {this.props.title}
+            </button>
+        );
     }
 }

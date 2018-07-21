@@ -6,10 +6,7 @@ export interface SeatDistributionProps {
     districtResults: DistrictResult[];
 }
 
-export class SeatDistribution extends React.Component<
-    SeatDistributionProps,
-    {}
-> {
+export class SeatDistribution extends React.Component<SeatDistributionProps, {}> {
     generateColumns(): Column[] {
         const columns: Column[] = [
             {

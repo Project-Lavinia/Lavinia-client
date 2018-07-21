@@ -9,14 +9,10 @@ export interface PresentationSettingsProps {
     decimals: string;
     showPartiesWithoutSeats: boolean;
     changeDecimals: (decimals: string, decimalsNumber: number) => void;
-    toggleShowPartiesWithoutSeats: (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    toggleShowPartiesWithoutSeats: (event: React.ChangeEvent<HTMLInputElement>) => void;
     results: LagueDhontResult;
 }
-export class PresentationSettings extends React.Component<
-    PresentationSettingsProps
-> {
+export class PresentationSettings extends React.Component<PresentationSettingsProps> {
     static defaultProps = {} as PresentationSettingsProps;
     onChange() {
         // TODO: Complete function
@@ -48,9 +44,7 @@ export class PresentationSettings extends React.Component<
                             checked={this.props.showPartiesWithoutSeats}
                             onChange={this.props.toggleShowPartiesWithoutSeats}
                         />
-                        <label htmlFor="no-seats-setting">
-                            Vis partier uten mandater
-                        </label>
+                        <label htmlFor="no-seats-setting">Vis partier uten mandater</label>
                     </div>
                     <SmartNumericInput
                         hidden={!this.needsDecimals()}

@@ -15,19 +15,21 @@ export class LayoutComponent extends React.Component<LayoutProps, {}> {
     }
 
     public render() {
-        return <div className="container-fluid">
-                   <NavMenu/>
-                   <div className="row">
-                       <div className="col-md-3">
-                           <SettingsMenuContainer/>
-                       </div>
-                       <div className="col-md-6">
-                           <PresentationContainer/>
-                       </div>
-                       <div className="col-md-3">
-                           <PresentationMenu/>
-                       </div>
-                   </div>
-               </div>;
+        return (
+            <div className="container-fluid">
+                <NavMenu />
+                <div className="row">
+                    <div className="col-md-3">
+                        <SettingsMenuContainer />
+                    </div>
+                    <div className="col-md-6">
+                        <PresentationContainer />
+                    </div>
+                    <div className="col-md-3">
+                        <PresentationMenu />
+                    </div>
+                </div>
+            </div>
+        );
     }
 }

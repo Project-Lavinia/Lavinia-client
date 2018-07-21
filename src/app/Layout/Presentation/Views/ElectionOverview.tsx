@@ -6,10 +6,7 @@ export interface ElectionOverviewProps {
     partyResults: PartyResult[];
 }
 
-export class ElectionOverview extends React.Component<
-    ElectionOverviewProps,
-    {}
-> {
+export class ElectionOverview extends React.Component<ElectionOverviewProps, {}> {
     render() {
         return (
             <ReactTable

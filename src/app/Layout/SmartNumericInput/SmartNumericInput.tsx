@@ -19,51 +19,54 @@ export class SmartNumericInput extends React.Component<SmartNumericInputProps, {
         const value = this.validateInput(this.props.value);
         return (
             <div hidden={this.props.hidden} className="form-group row">
-                <label htmlFor={this.props.name} className="col-sm-5 col-form-label">{this.props.title}</label>
+                <label htmlFor={this.props.name} className="col-sm-5 col-form-label">
+                    {this.props.title}
+                </label>
                 <div className="col-sm-7">
                     <input
                         className="form-control"
                         type={"number"}
                         style={this.props.slider ? { width: "50%" } : {}}
                         name={this.props.name}
-                        onChange=
-                        {
-                            (event: React.ChangeEvent<HTMLInputElement>) => {
-                                const input = this.validateInput(event.target.value);
-                                this.props.onChange(input.stringValue, input.numericValue);
-                            }
-                        }
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            const input = this.validateInput(event.target.value);
+                            this.props.onChange(input.stringValue, input.numericValue);
+                        }}
                         placeholder={value.numericValue.toString()}
                         value={value.stringValue}
                         min={this.props.min}
                         step={this.props.integer ? 1 : 0.1}
                         max={this.props.max}
                     />
-                    {this.props.slider &&
+                    {this.props.slider && (
                         <input
                             className="form-control"
                             type={"range"}
                             style={{ width: "100%" }}
-                            onChange=
-                            {(event: React.ChangeEvent<HTMLInputElement>) => {
-                                const value =
-                                    this.props.integer ? parseInt(event.target.value) : parseFloat(event.target.value);
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                const value = this.props.integer
+                                    ? parseInt(event.target.value)
+                                    : parseFloat(event.target.value);
                                 this.props.onChange(event.target.value, value);
                             }}
                             value={value.numericValue}
                             min={this.props.min}
                             step={this.props.integer ? 1 : 0.1}
-                            max={this.props.max} />}
+                            max={this.props.max}
+                        />
+                    )}
                 </div>
-            </div>);
+            </div>
+        );
     }
 
-    validateInput(input: string): { stringValue: string, numericValue: number } {
+    validateInput(input: string): { stringValue: string; numericValue: number } {
         const regex = RegExp("(^-$)|(^-?\\d+(\\.\\d*)?$)");
         const defaultValue = this.props.defaultValue;
         let value: number;
 
-        if (regex.test(input) === false && input !== "") { // Matches any numbers as well as "", "-" and "3."
+        if (regex.test(input) === false && input !== "") {
+            // Matches any numbers as well as "", "-" and "3."
             return this.validateInput(this.props.value);
         }
 

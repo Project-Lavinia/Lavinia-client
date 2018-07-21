@@ -21,7 +21,8 @@ export interface ChangeShowPartiesNoSeat {
     showPartiesWithoutSeats: boolean;
 }
 
-export type PresentationAction = ChangePresentationAction
+export type PresentationAction =
+    | ChangePresentationAction
     | InitializePresentationAction
     | ChangeDecimalsAction
     | ChangeShowPartiesNoSeat;
