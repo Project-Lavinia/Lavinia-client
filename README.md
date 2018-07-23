@@ -3,6 +3,7 @@ This guide in other languages:
 * [Norsk bokmål](README.nob.md)
 
 # Prerequisites
+You have installed:
 * [Node.js](https://nodejs.org)
 * [Yarn](https://yarnpkg.com)
 
