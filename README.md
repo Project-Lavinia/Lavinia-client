@@ -9,7 +9,7 @@ Install the latest:
 
 # Running the development build
 1. Clone the repository to your preferred folder
-2. Open your favourite shell and navigate to aforementioned folder
+2. Open your favourite terminal and navigate to aforementioned folder
 3. Type `yarn` <kbd>Enter</kbd> and wait patiently for the packages to be installed
 4. Type `yarn start` <kbd>Enter</kbd>
 

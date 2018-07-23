@@ -9,7 +9,7 @@ Installer de siste versjonene av:
 
 # For å kjøre utviklingsbygget
 1. Klon repositoriet ned til din foretrukne mappe
-2. Åpne ditt favorittskall og naviger til den tidligere nevnte mappen
+2. Åpne favoritt-terminalen din og naviger til den tidligere nevnte mappen
 3. Skriv inn `yarn` <kbd>Enter</kbd> og vent tålmodig på at de nødvendige pakkene installeres
 4. Skriv inn `yarn start` <kbd>Enter</kbd>
 
