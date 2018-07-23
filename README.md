@@ -1,6 +1,6 @@
 # Lavinia-client
 This guide in other languages:
-* [Norwegian](README.nob.md)
+* [Norsk bokmål](README.nob.md)
 
 # Prerequisites
 * [Node.js](https://nodejs.org)
