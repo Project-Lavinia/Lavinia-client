@@ -4,7 +4,7 @@ import { Layout } from "./Layout";
 import { hot } from "react-hot-loader";
 
 export const App = hot(module)(() => (
-  <Switch>
-    <Route path="/" component={Layout} />
-  </Switch>
+    <Switch>
+        <Route path="/" component={Layout} />
+    </Switch>
 ));

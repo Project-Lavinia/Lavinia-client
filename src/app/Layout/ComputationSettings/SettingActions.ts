@@ -58,7 +58,7 @@ export function updateSettings(settingsPayload: SettingsPayload) {
         firstDivisor: settingsPayload.firstDivisor,
         electionThreshold: settingsPayload.electionThreshold,
         districtSeats: settingsPayload.districtSeats,
-        levelingSeats: settingsPayload.levelingSeats,
+        levelingSeats: settingsPayload.levelingSeats
     };
     return updateSettingsAction;
 }

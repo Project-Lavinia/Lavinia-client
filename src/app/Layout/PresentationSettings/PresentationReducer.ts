@@ -3,11 +3,11 @@ import { Action } from "redux";
 import { PresentationAction as KnownAction } from "./PresentationActions";
 import { PresentationAction } from "../Types/ActionTypes";
 
-export function presentationReducer (state: PresentationState | undefined, incomingAction: Action) {
+export function presentationReducer(state: PresentationState | undefined, incomingAction: Action) {
     if (state === undefined) {
         state = unloadedState;
     }
-    
+
     const action = incomingAction as KnownAction;
     switch (action.type) {
         case PresentationAction.InitializePresentation:

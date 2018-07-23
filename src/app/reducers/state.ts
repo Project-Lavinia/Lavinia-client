@@ -5,9 +5,9 @@ import { RequestedDataState } from "../Layout/API";
 import { PresentationState } from "../Layout/PresentationSettings";
 
 export interface RootState {
-  router: RouterState;
-  computationState: ComputationState;
-  settingsState: SettingsState;
-  requestedDataState: RequestedDataState;
-  presentationState: PresentationState;
+    router: RouterState;
+    computationState: ComputationState;
+    settingsState: SettingsState;
+    requestedDataState: RequestedDataState;
+    presentationState: PresentationState;
 }

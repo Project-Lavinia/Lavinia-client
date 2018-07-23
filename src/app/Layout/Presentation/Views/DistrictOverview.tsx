@@ -6,10 +6,7 @@ export interface DistrictOverviewProps {
     districtResults: DistrictResult[];
 }
 
-export class DistrictOverview extends React.Component<
-    DistrictOverviewProps,
-    {}
-> {
+export class DistrictOverview extends React.Component<DistrictOverviewProps, {}> {
     render() {
         return (
             <ReactTable
