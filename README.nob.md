@@ -3,7 +3,7 @@ Denne guiden på andre språk:
 * [English](README.md)
 
 # Forutsetninger
-Du har installert:
+Installer de siste versjonene av:
 * [Node.js](https://nodejs.org)
 * [Yarn](https://yarnpkg.com)
 
