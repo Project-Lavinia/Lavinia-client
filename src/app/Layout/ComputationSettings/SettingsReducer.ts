@@ -11,7 +11,7 @@ type KnownAction = InitializeSettingsAction | UpdateSettingsAction | ToggleAutoC
 // https://github.com/rt2zz/redux-persist/pull/778
 
 export function settingsReducer(state: SettingsState | undefined, incomingAction: Action) {
-    if (state == undefined) {
+    if (state === undefined) {
         state = unloadedState;
     }
 

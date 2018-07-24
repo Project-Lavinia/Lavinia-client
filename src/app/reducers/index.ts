@@ -3,8 +3,8 @@ import { RootState } from "./state";
 import { routerReducer, RouterState } from "react-router-redux";
 import { computationReducer } from "../Layout/Computation";
 import { settingsReducer } from "../Layout/ComputationSettings";
-import { requestedDataAction } from "app/Layout/API";
-import { presentationReducer } from "app/Layout/PresentationSettings";
+import { requestedDataAction } from "../Layout/API";
+import { presentationReducer } from "../Layout/PresentationSettings";
 
 export { RootState, RouterState };
 
