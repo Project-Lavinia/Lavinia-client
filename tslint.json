@@ -1,14 +1,19 @@
 {
+    "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier"],
     "rules": {
         "ordered-imports": false,
+        "no-submodule-imports": true,
         "object-literal-sort-keys": false,
+        "member-access": false,
+        "interface-name": false,
+        "no-object-literal-type-assertion": false,
         "array-type": false,
         "curly": true,
         "no-console": false,
         "no-shadowed-variable": false,
         "unified-signatures": true,
-        "semicolon": true,
-        "cyclomatic-complexity": true
-    },
-    "extends": ["tslint:latest", "tslint-config-prettier"]
+        "radix": false,
+        "cyclomatic-complexity": true,
+        "forin": false
+    }
 }
