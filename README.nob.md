@@ -13,4 +13,4 @@ Installer de siste versjonene av:
 3. Skriv inn `yarn` <kbd>Enter</kbd> og vent tålmodig på at de nødvendige pakkene installeres
 4. Skriv inn `yarn start` <kbd>Enter</kbd>
 
-Etter steg 4. burde din standard-nettleser åpne seg med applikasjonen i et vindu eller en fane. I de fleste skall stopper du applikasjonen ved å fokusere skallet og trykke <kbd>Ctrl</kbd>+<kbd>c</kbd>
+Etter steg 4. burde din standard-nettleser åpne seg med applikasjonen i et vindu eller en fane. I de fleste terminaler stopper du applikasjonen ved å fokusere terminalen og trykke <kbd>Ctrl</kbd>+<kbd>c</kbd>
