@@ -1,0 +1,5 @@
+/* This is exclusively for non-classes. Whatever applies to everything goes here. */
+body,
+html {
+    font-family: "Open Sans", sans-serif;
+}
