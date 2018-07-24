@@ -1,11 +1,12 @@
 import * as React from "react";
+import * as style from "./NavMenu.css";
 
 export class NavMenu extends React.Component<{}, {}> {
     public render() {
         return (
-            <div className="nav_container">
+            <div className={style.container}>
                 <ul>
-                    <li className="laviniaLogo">
+                    <li className={style.customHeader}>
                         <a href="">Lavinia</a>
                     </li>
                     <li>

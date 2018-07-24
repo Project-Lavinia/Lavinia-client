@@ -1,0 +1,64 @@
+.nav li .glyphicon {
+    margin-right: 10px;
+}
+
+/* Highlighting rules for nav menu items */
+.nav li a.active,
+.nav li a.active:hover,
+.nav li a.active:focus {
+    background-color: #4189c7;
+    color: white;
+}
+
+.container {
+    height: 5em;
+    margin-bottom: 20px;
+    width: 100%;
+    padding: 0;
+    text-transform: uppercase;
+    background-color: #fff;
+    border-bottom: 3px solid #e9e6e2;
+}
+
+.container li a:active,
+.container li a:hover,
+.container li a:focus {
+    color: #ff6e00;
+    border: none;
+    outline: none;
+}
+.container ul {
+    padding: 0;
+    align-items: center;
+    display: flex;
+    list-style: none;
+}
+
+.container li {
+    margin-top: 10px;
+    padding-right: 1.5em;
+}
+
+.container li:last-child {
+    padding-right: 2em;
+}
+
+.container a {
+    color: black;
+}
+
+.customHeader {
+    padding: 0;
+    margin: auto;
+    text-transform: capitalize;
+    font-variant: small-caps;
+    font-size: 2.5em;
+}
+
+.customHeader a,
+.customHeader a:hover,
+.customHeader a:active,
+.customHeader a:active {
+    text-decoration: none;
+    color: #a39161 !important;
+}
