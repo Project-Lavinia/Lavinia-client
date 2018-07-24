@@ -33,7 +33,7 @@ export class PresentationSettings extends React.Component<PresentationSettingsPr
 
     render() {
         return (
-            <div className="presentation-settings">
+            <React.Fragment>
                 <h2>Presentasjonsinnstillinger</h2>
                 <form>
                     <div className="form-group row">
@@ -59,7 +59,7 @@ export class PresentationSettings extends React.Component<PresentationSettingsPr
                         onChange={this.props.changeDecimals}
                     />
                 </form>
-            </div>
+            </React.Fragment>
         );
     }
 }
