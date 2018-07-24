@@ -13,4 +13,4 @@ Install the latest:
 3. Type `yarn` <kbd>Enter</kbd> and wait patiently for the packages to be installed
 4. Type `yarn start` <kbd>Enter</kbd>
 
-After step 4. your default browser should have opened up, running a development server locally on your machine. In most shells, hit <kbd>Ctrl</kbd>+<kbd>c</kbd> with your shell focused to close the application.
+After step 4. your default browser should have opened up, running a development server locally on your machine. In most terminals, hit <kbd>Ctrl</kbd>+<kbd>c</kbd> with your terminal focused to close the application.
