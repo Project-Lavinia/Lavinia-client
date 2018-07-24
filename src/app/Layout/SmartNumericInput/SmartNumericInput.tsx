@@ -28,10 +28,7 @@ export class SmartNumericInput extends React.Component<SmartNumericInputProps, {
                         type={"number"}
                         style={this.props.slider ? { width: "50%" } : {}}
                         name={this.props.name}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            const input = this.validateInput(event.target.value);
-                            this.props.onChange(input.stringValue, input.numericValue);
-                        }}
+                        onChange={this.updateNumeric}
                         placeholder={value.numericValue.toString()}
                         value={value.stringValue}
                         min={this.props.min}
@@ -43,12 +40,7 @@ export class SmartNumericInput extends React.Component<SmartNumericInputProps, {
                             className="form-control"
                             type={"range"}
                             style={{ width: "100%" }}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                const value = this.props.integer
-                                    ? parseInt(event.target.value)
-                                    : parseFloat(event.target.value);
-                                this.props.onChange(event.target.value, value);
-                            }}
+                            onChange={this.updateSlider}
                             value={value.numericValue}
                             min={this.props.min}
                             step={this.props.integer ? 1 : 0.1}
@@ -59,6 +51,16 @@ export class SmartNumericInput extends React.Component<SmartNumericInputProps, {
             </div>
         );
     }
+
+    updateNumeric = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const input = this.validateInput(event.target.value);
+        this.props.onChange(input.stringValue, input.numericValue);
+    };
+
+    updateSlider = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = this.props.integer ? parseInt(event.target.value) : parseFloat(event.target.value);
+        this.props.onChange(event.target.value, value);
+    };
 
     validateInput(input: string): { stringValue: string; numericValue: number } {
         const regex = RegExp("(^-$)|(^-?\\d+(\\.\\d*)?$)");
