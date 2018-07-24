@@ -1,0 +1,14 @@
+{
+    "rules": {
+        "ordered-imports": false,
+        "object-literal-sort-keys": false,
+        "array-type": false,
+        "curly": true,
+        "no-console": false,
+        "no-shadowed-variable": false,
+        "unified-signatures": true,
+        "semicolon": true,
+        "cyclomatic-complexity": true
+    },
+    "extends": ["tslint:latest", "tslint-config-prettier"]
+}

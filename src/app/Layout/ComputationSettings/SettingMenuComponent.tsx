@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import { SettingsPayload, ComputationPayload } from "../Interfaces/Payloads";
 import { getAlgorithmType } from "../Logic/AlgorithmUtils";
 import { Button } from "../Button";
