@@ -10,7 +10,7 @@ export class NavMenu extends React.Component<{}, {}> {
                         <a href="">Lavinia</a>
                     </li>
                     <li>
-                        <a target="_blank" href="/swagger">
+                        <a target="_blank" href="https://mandater-testing.azurewebsites.net/swagger">
                             API
                         </a>
                     </li>
