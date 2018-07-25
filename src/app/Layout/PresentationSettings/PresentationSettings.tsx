@@ -33,18 +33,22 @@ export class PresentationSettings extends React.Component<PresentationSettingsPr
 
     render() {
         return (
-            <div className="presentation-settings">
+            <React.Fragment>
                 <h2>Presentasjonsinnstillinger</h2>
                 <form>
-                    <div className="form-group row">
-                        <input
-                            className="form-check-input"
-                            type="checkbox"
-                            name="no-seats-setting"
-                            checked={this.props.showPartiesWithoutSeats}
-                            onChange={this.props.toggleShowPartiesWithoutSeats}
-                        />
-                        <label htmlFor="no-seats-setting">Vis partier uten mandater</label>
+                    <div className="form-group mb-3">
+                        <div className="form-check form-check-inline">
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                name="no-seats-setting"
+                                checked={this.props.showPartiesWithoutSeats}
+                                onChange={this.props.toggleShowPartiesWithoutSeats}
+                            />
+                            <label className="form-check-label" htmlFor="no-seats-setting">
+                                Vis partier uten mandater
+                            </label>
+                        </div>
                     </div>
                     <SmartNumericInput
                         hidden={!this.needsDecimals()}
@@ -59,7 +63,7 @@ export class PresentationSettings extends React.Component<PresentationSettingsPr
                         onChange={this.props.changeDecimals}
                     />
                 </form>
-            </div>
+            </React.Fragment>
         );
     }
 }

@@ -5,6 +5,7 @@ import { Button } from "../Button";
 import { Election, ElectionType } from "../Interfaces/Models";
 import { SmartNumericInput } from "../SmartNumericInput";
 import { AlgorithmType } from "../Types/AlgorithmType";
+import * as style from "./SettingMenuComponent.css";
 
 export interface SettingMenuProps {
     electionType: ElectionType;
@@ -122,7 +123,7 @@ export class SettingMenuComponent extends React.Component<SettingMenuProps, {}> 
 
     render() {
         return (
-            <div className="settings-menu">
+            <div className={style.menu}>
                 <h1 className="h2">Stortingsvalg</h1>
                 <form>
                     <div className="form-group row">

@@ -1,8 +1,8 @@
 {
-    "name": "typescript-react-redux-boilerplate",
+    "name": "lavinia",
     "version": "1.0.0",
     "private": true,
-    "description": "A frontend boilerplate with React, Redux and Typescript",
+    "description": "A seat distribution application for modern democracies",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
