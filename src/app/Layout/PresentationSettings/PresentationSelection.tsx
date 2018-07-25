@@ -30,7 +30,7 @@ export class PresentationSelection extends React.Component {
                 />
                 <PresentationSelectionButton
                     className="btn-block"
-                    title={"Mandat distribusjon"}
+                    title={"Mandatdistribusjon"}
                     presentationSelected={PresentationType.SeatDistribution}
                 />
                 <PresentationSelectionButton
