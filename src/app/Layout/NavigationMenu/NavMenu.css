@@ -57,8 +57,7 @@
 
 .customHeader a,
 .customHeader a:hover,
-.customHeader a:active,
 .customHeader a:active {
     text-decoration: none;
-    color: #a39161 !important;
+    color: #a39161;
 }
