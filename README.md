@@ -2,12 +2,12 @@
 This guide in other languages:
 * [Norsk bokmål](README.nob.md)
 
-# Prerequisites
+## Prerequisites
 Install the latest:
 * [Node.js](https://nodejs.org)
 * [Yarn](https://yarnpkg.com)
 
-# Running the development build
+## Running the development build
 1. Clone the repository to your preferred folder
 2. Open your favourite terminal and navigate to aforementioned folder
 3. Type `yarn` <kbd>Enter</kbd> and wait patiently for the packages to be installed
