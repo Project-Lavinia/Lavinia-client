@@ -6,7 +6,6 @@ import { createBrowserHistory } from "history";
 import { configureStore } from "./app/store";
 import { App } from "./app";
 
-// prepare store
 const history = createBrowserHistory();
 const store = configureStore(history);
 
