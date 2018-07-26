@@ -6,6 +6,7 @@ import { createBrowserHistory } from "history";
 import { configureStore, loadState, saveState } from "./app/store";
 import { App } from "./app";
 import { throttle } from "lodash";
+import "./main.css";
 
 const persistedState = loadState();
 

@@ -16,7 +16,7 @@ export class PresentationSelection extends React.Component {
 
     render() {
         return (
-            <div className="presentation-selection">
+            <React.Fragment>
                 <h2>Presentasjonstyper</h2>
                 <PresentationSelectionButton
                     className="btn-block"
@@ -30,7 +30,7 @@ export class PresentationSelection extends React.Component {
                 />
                 <PresentationSelectionButton
                     className="btn-block"
-                    title={"Mandat distribusjon"}
+                    title={"Mandatdistribusjon"}
                     presentationSelected={PresentationType.SeatDistribution}
                 />
                 <PresentationSelectionButton
@@ -38,7 +38,7 @@ export class PresentationSelection extends React.Component {
                     title={"Mandater per parti"}
                     presentationSelected={PresentationType.SeatsPerParty}
                 />
-            </div>
+            </React.Fragment>
         );
     }
 }
