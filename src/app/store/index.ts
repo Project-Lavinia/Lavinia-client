@@ -24,3 +24,5 @@ export function configureStore(history: History, initialState?: RootState): Stor
 
     return store;
 }
+
+export * from "./local-storage";
