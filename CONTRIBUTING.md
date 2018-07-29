@@ -6,6 +6,7 @@ It is important that there are conventions and simple guidelines in place to avo
 
 -   [Who can contribute?](https://github.com/Project-Lavinia/Lavinia-client/new/add-contributing#who-can-contribute)
 -   [General guidelines](https://github.com/Project-Lavinia/Lavinia-client/new/add-contributing#general-guidelines)
+    -   [Language](https://github.com/Project-Lavinia/Lavinia-client/new/add-contributing#language)
     -   [Issues](https://github.com/Project-Lavinia/Lavinia-client/new/add-contributing#issues)
     -   [Commits](https://github.com/Project-Lavinia/Lavinia-client/new/add-contributing#commits)
     -   [Pull requests](https://github.com/Project-Lavinia/Lavinia-client/new/add-contributing#pull-requests)
@@ -16,6 +17,10 @@ It is important that there are conventions and simple guidelines in place to avo
 Anyone can contribute! This is an open source repository that happily accepts feedback, suggestions, fixes and code. It is however important to organize things sensibly, so you are expected to follow the guidelines in this document.
 
 ## General guidelines
+
+### Language
+
+Commit messages, code reviews, pull request details, issues -- everything should be written in English. Try to look over your text for spelling errors before submitting them.
 
 ### Issues
 
