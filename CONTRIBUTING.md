@@ -8,7 +8,7 @@ It is important that there are conventions and simple guidelines in place to avo
 -   [General guidelines](https://github.com/Project-Lavinia/Lavinia-client/new/add-contributing#general-guidelines)
     -   [Issues](https://github.com/Project-Lavinia/Lavinia-client/new/add-contributing#issues)
     -   [Commits](https://github.com/Project-Lavinia/Lavinia-client/new/add-contributing#commits)
-    -   [Merge requests](https://github.com/Project-Lavinia/Lavinia-client/new/add-contributing#merge-requests)
+    -   [Pull requests](https://github.com/Project-Lavinia/Lavinia-client/new/add-contributing#pull-requests)
     -   [Code reviews](https://github.com/Project-Lavinia/Lavinia-client/new/add-contributing#code-reviews)
 
 ## Who can contribute?
