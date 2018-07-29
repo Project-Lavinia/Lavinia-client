@@ -45,11 +45,27 @@ Reference fixing/closing issues at the final line of the pull request message or
 
 ### Code reviews
 
-Code reviews are great, not only because they help reduce bugs and allow input from fellow contributors, but because the people doing the code reviews get up to date on what's going on, even if they have no comments for the code itself.
+#### Motivation
 
-For the coders having their code reviewed, it is important to remember that criticism is not personal. Everyone's code needs improvement. It's easy to forget things, and a fresh pair of eyes always have a different and useful perspective for the problem(s) you are trying to solve.
+Code reviews are great. They:
 
-For the reviewers, it is important to keep code reviews _constructive_. With GitHub it is easy to use markdown, code blocks and references to give great feedback.
+-   Help reduce bugs
+-   Allow input from fellow contributors
+-   Help collaborators get up to date on what's happening
+
+#### Giving a review
+
+If you are assigned a code review, it is recommended to look through every commit in the pull request and comment as you go, before looking at the big picture. Often it can be useful to get feedback on how commits are structured in addition to the code.
+
+Try to be constructive and make suggestions where possible, and ask for clarification where needed.
+
+Remember that you can use GitHub markdown in your comments to make for an easy-to-read review!
+
+#### Receiving a review
+
+A review is not personal. Everyone's code needs improvement. A fresh pair of eyes always have a different and useful perspective for the problem(s) you are trying to solve.
+
+It is fine to discuss requested changes as long as it is constructive and helpful. A requested change/comment could be a result of a poor commit message not explaining what you have done and why, or as a result of faulty or even just "dirty" code -- in all cases it merits attention.
 
 If in doubt about how to submit or give a code review, look at earlier examples from merge requests!
 
