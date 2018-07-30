@@ -21,11 +21,17 @@ export interface ChangeShowPartiesNoSeat {
     showPartiesWithoutSeats: boolean;
 }
 
+export interface SelectDistrictAction {
+    type: PresentationAction.SelectDistrict;
+    districtSelected: string;
+}
+
 export type PresentationAction =
     | ChangePresentationAction
     | InitializePresentationAction
     | ChangeDecimalsAction
-    | ChangeShowPartiesNoSeat;
+    | ChangeShowPartiesNoSeat
+    | SelectDistrictAction;
 
 export function initializePresentation() {
     const action = {
@@ -43,6 +49,14 @@ export function changePresentation(presentationSelected: PresentationType) {
         type: PresentationAction.ChangePresentation,
         presentationSelected
     } as ChangePresentationAction;
+    console.log(`Action of type ${action.type} created`);
+    return action;
+}
+export function selectDistrict(name: string): SelectDistrictAction {
+    const action: SelectDistrictAction = {
+        type: PresentationAction.SelectDistrict,
+        districtSelected: name
+    };
     console.log(`Action of type ${action.type} created`);
     return action;
 }

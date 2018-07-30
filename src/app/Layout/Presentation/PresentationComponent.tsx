@@ -1,7 +1,7 @@
 ﻿import * as React from "react";
 import { PresentationType } from "../Types/PresentationType";
 import { LagueDhontResult, PartyResult, DistrictResult } from "../Interfaces/Results";
-import { ElectionOverview, DistrictOverview, SeatsPerParty, SeatDistribution } from "./Views";
+import { ElectionOverview, DistrictOverview, SeatsPerParty, SeatDistribution, SingleCounty } from "./Views";
 import {
     getDistrictTableData,
     getPartyTableData,
@@ -11,6 +11,7 @@ import {
 
 export interface PresentationProps {
     currentPresentation: PresentationType;
+    districtSelected: string;
     decimals: number;
     showPartiesWithoutSeats: boolean;
     results: LagueDhontResult;
@@ -51,6 +52,13 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
                 return <SeatDistribution districtResults={this.getSeatDistributionData()} />;
             case PresentationType.SeatsPerParty:
                 return <SeatsPerParty partyResults={this.getSeatsPerPartyData()} />;
+            case PresentationType.SingleCountyTable:
+                return (
+                    <SingleCounty
+                        districtSelected={this.props.districtSelected}
+                        districtResults={this.getSeatDistributionData()}
+                    />
+                );
             default:
                 console.log(`Could not find presentation type ${this.props.currentPresentation}`);
                 return <g />;
