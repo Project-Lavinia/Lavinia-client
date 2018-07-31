@@ -6,7 +6,8 @@ import {
     getDistrictTableData,
     getPartyTableData,
     getSeatDistributionData,
-    getSeatsPerPartyData
+    getSeatsPerPartyData,
+    roundPartyResults
 } from "./Utilities/PresentationUtilities";
 
 export interface PresentationProps {
@@ -42,6 +43,18 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
         return getSeatsPerPartyData(this.props.results.partyResults, this.props.showPartiesWithoutSeats);
     }
 
+    getSingleDistrictData(): DistrictResult[] {
+        const data = getDistrictTableData(this.getSeatDistributionData(), this.props.decimals);
+        const roundedData: DistrictResult[] = [];
+        data.forEach((result) => {
+            roundedData.push({
+                ...result,
+                partyResults: roundPartyResults(result.partyResults, this.props.decimals)
+            });
+        });
+        return roundedData;
+    }
+
     render() {
         switch (this.props.currentPresentation) {
             case PresentationType.ElectionTable:
@@ -56,7 +69,7 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
                 return (
                     <SingleCounty
                         districtSelected={this.props.districtSelected}
-                        districtResults={this.getSeatDistributionData()}
+                        districtResults={this.getSingleDistrictData()}
                     />
                 );
             default:
