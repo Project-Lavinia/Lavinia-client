@@ -31,6 +31,13 @@ export class PresentationSettings extends React.Component<PresentationSettingsPr
         return false;
     }
 
+    /**
+     * Helper function for evaluating whether the district dropdown should
+     * be shown.
+     *
+     * @returns true if the dropdown should be shown, false otherwise
+     * @memberof PresentationSettings
+     */
     needsDistrictDropdown(): boolean {
         if (this.props.currentPresentation === PresentationType.SingleCountyTable) {
             return true;
