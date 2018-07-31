@@ -8,7 +8,8 @@ const mapStateToProps = (state: RootState) => {
         results: state.computationState.results,
         currentPresentation: state.presentationState.currentPresentation,
         decimals: state.presentationState.decimalsNumber,
-        showPartiesWithoutSeats: state.presentationState.showPartiesWithoutSeats
+        showPartiesWithoutSeats: state.presentationState.showPartiesWithoutSeats,
+        districtSelected: state.presentationState.districtSelected
     } as PresentationProps;
 };
 

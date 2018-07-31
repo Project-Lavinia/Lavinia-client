@@ -1,7 +1,7 @@
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import { PresentationSettings } from "./PresentationSettings";
-import { ChangeDecimalsAction } from "./PresentationActions";
+import { ChangeDecimalsAction, selectDistrict } from "./PresentationActions";
 import { PresentationAction } from "../Types/ActionTypes";
 
 function mapStateToProps(state: RootState) {
@@ -9,7 +9,8 @@ function mapStateToProps(state: RootState) {
         currentPresentation: state.presentationState.currentPresentation,
         decimals: state.presentationState.decimals,
         results: state.computationState.results,
-        showPartiesWithoutSeats: state.presentationState.showPartiesWithoutSeats
+        showPartiesWithoutSeats: state.presentationState.showPartiesWithoutSeats,
+        districtSelected: state.presentationState.districtSelected
     };
 }
 
@@ -26,6 +27,10 @@ const mapDispatchToProps = (dispatch: any) => ({
             type: PresentationAction.ShowPartiesNoSeats,
             showPartiesWithoutSeats: event.target.checked
         });
+    },
+    selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const action = selectDistrict(event.target.value);
+        dispatch(action);
     }
 });
 

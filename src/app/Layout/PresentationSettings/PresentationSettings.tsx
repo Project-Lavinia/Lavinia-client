@@ -5,18 +5,17 @@ import { PresentationType } from "../Types/PresentationType";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
+    districtSelected: string;
     displayedDecimals?: number;
     decimals: string;
     showPartiesWithoutSeats: boolean;
     changeDecimals: (decimals: string, decimalsNumber: number) => void;
     toggleShowPartiesWithoutSeats: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     results: LagueDhontResult;
 }
 export class PresentationSettings extends React.Component<PresentationSettingsProps> {
     static defaultProps = {} as PresentationSettingsProps;
-    onChange() {
-        // TODO: Complete function
-    }
     /**
      * Helper function for reducing code in render(), allows conditional
      * rendering.
@@ -24,8 +23,23 @@ export class PresentationSettings extends React.Component<PresentationSettingsPr
     needsDecimals(): boolean {
         if (
             this.props.currentPresentation === PresentationType.DistrictTable ||
-            this.props.currentPresentation === PresentationType.ElectionTable
+            this.props.currentPresentation === PresentationType.ElectionTable ||
+            this.props.currentPresentation === PresentationType.SingleCountyTable
         ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Helper function for evaluating whether the district dropdown should
+     * be shown.
+     *
+     * @returns true if the dropdown should be shown, false otherwise
+     * @memberof PresentationSettings
+     */
+    needsDistrictDropdown(): boolean {
+        if (this.props.currentPresentation === PresentationType.SingleCountyTable) {
             return true;
         }
         return false;
@@ -62,6 +76,29 @@ export class PresentationSettings extends React.Component<PresentationSettingsPr
                         value={this.props.decimals}
                         onChange={this.props.changeDecimals}
                     />
+                    <div hidden={!this.needsDistrictDropdown()} className="form-row align-items-center">
+                        <div className="col-sm-4 my-1">
+                            <label className="col-form-label col-md-2" htmlFor="district">
+                                Fylke
+                            </label>
+                        </div>
+                        <div className="col-sm-8">
+                            <select
+                                id="district"
+                                onChange={this.props.selectDistrict}
+                                className="form-control"
+                                value={this.props.districtSelected}
+                            >
+                                {this.props.results.districtResults.map((item, index) => {
+                                    return (
+                                        <option key={index} value={item.name}>
+                                            {item.name}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
+                    </div>
                 </form>
             </React.Fragment>
         );

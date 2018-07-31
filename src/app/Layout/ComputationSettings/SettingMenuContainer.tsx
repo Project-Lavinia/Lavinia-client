@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import { SettingMenuComponent } from "./SettingMenuComponent";
 import { updateElectionData } from "../Computation";
-import { updateSettings, toggleAutoCompute } from "../ComputationSettings";
+import { updateSettings, toggleAutoCompute } from ".";
 import { ComputationPayload, SettingsPayload } from "../Interfaces/Payloads";
 import { Election } from "../Interfaces/Models";
 import { getAlgorithmType } from "../Logic/AlgorithmUtils";

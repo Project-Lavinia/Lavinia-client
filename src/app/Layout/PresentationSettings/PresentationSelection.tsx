@@ -38,6 +38,11 @@ export class PresentationSelection extends React.Component {
                     title={"Mandater per parti"}
                     presentationSelected={PresentationType.SeatsPerParty}
                 />
+                <PresentationSelectionButton
+                    className="btn-block"
+                    title={"Fylkestabeller"}
+                    presentationSelected={PresentationType.SingleCountyTable}
+                />
             </React.Fragment>
         );
     }
