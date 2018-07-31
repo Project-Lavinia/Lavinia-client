@@ -91,3 +91,15 @@ export function getSeatsPerPartyData(partyResults: PartyResult[], showPartiesWit
         return partyResults.filter((party) => party.totalSeats > 0);
     }
 }
+
+export function roundPartyResults(partyResults: PartyResult[], numberOfDecimals: number): PartyResult[] {
+    const roundedResults: PartyResult[] = [];
+    partyResults.forEach((result) => {
+        roundedResults.push({
+            ...result,
+            percentVotes: roundNumber(result.percentVotes, numberOfDecimals),
+            proportionality: roundNumber(result.proportionality, numberOfDecimals)
+        });
+    });
+    return roundedResults;
+}
