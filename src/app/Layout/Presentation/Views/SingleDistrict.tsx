@@ -1,13 +1,13 @@
-import { DistrictResult, PartyResult } from "../../../Layout/Interfaces/Results";
+import { DistrictResult, PartyResult } from "../../Interfaces/Results";
 import * as React from "react";
 import ReactTable, { Column } from "react-table";
 
-export interface SingleCountyProps {
+export interface SingleDistrictProps {
     districtResults: DistrictResult[];
     districtSelected: string;
 }
 
-export class SingleCounty extends React.Component<SingleCountyProps, {}> {
+export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
     columns: Column[] = [
         {
             Header: "Parti",

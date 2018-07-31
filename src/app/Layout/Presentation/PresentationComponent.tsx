@@ -1,7 +1,7 @@
 ﻿import * as React from "react";
 import { PresentationType } from "../Types/PresentationType";
 import { LagueDhontResult, PartyResult, DistrictResult } from "../Interfaces/Results";
-import { ElectionOverview, DistrictOverview, SeatsPerParty, SeatDistribution, SingleCounty } from "./Views";
+import { ElectionOverview, DistrictOverview, SeatsPerParty, SeatDistribution, SingleDistrict } from "./Views";
 import {
     getDistrictTableData,
     getPartyTableData,
@@ -67,7 +67,7 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
                 return <SeatsPerParty partyResults={this.getSeatsPerPartyData()} />;
             case PresentationType.SingleCountyTable:
                 return (
-                    <SingleCounty
+                    <SingleDistrict
                         districtSelected={this.props.districtSelected}
                         districtResults={this.getSingleDistrictData()}
                     />
