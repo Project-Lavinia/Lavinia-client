@@ -13,6 +13,13 @@ interface PropsFromState {
     electionType: ElectionType;
 }
 
+interface PropsFromDispatch {
+    updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => any;
+    updateSettings: (settingsPayload: SettingsPayload) => any;
+    toggleAutoCompute: (autoCompute: boolean) => any;
+    resetToHistoricalSettings: (settingsPayload: SettingsPayload, election: Election) => any;
+}
+
 const mapStateToProps = (state: RootState): PropsFromState => ({
     computationPayload: {
         election: state.computationState.election,
@@ -36,7 +43,7 @@ const mapStateToProps = (state: RootState): PropsFromState => ({
     electionType: state.requestedDataState.electionType
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: any): PropsFromDispatch => ({
     updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => {
         if (autoCompute || forceCompute) {
             const payload: ComputationPayload = {
