@@ -33,22 +33,22 @@ export type PresentationAction =
     | ChangeShowPartiesNoSeat
     | SelectDistrictAction;
 
-export function initializePresentation() {
-    const action = {
+export function initializePresentation(): InitializePresentationAction {
+    const action: InitializePresentationAction = {
         type: PresentationAction.InitializePresentation,
         initialPresentation: PresentationType.ElectionTable,
         decimals: "2",
         decimalsNumber: 2,
         showPartiesWithoutSeats: false
-    } as InitializePresentationAction;
+    };
     console.log(`Action of type ${action.type} created`);
     return action;
 }
-export function changePresentation(presentationSelected: PresentationType) {
-    const action = {
+export function changePresentation(presentationSelected: PresentationType): ChangePresentationAction {
+    const action: ChangePresentationAction = {
         type: PresentationAction.ChangePresentation,
         presentationSelected
-    } as ChangePresentationAction;
+    };
     console.log(`Action of type ${action.type} created`);
     return action;
 }
