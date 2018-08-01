@@ -2,8 +2,6 @@ import { InitializeSettingsAction, UpdateSettingsAction, ToggleAutoComputeAction
 import { SettingsState, unloadedState } from "./SettingsState";
 import { SettingAction } from "../Types/ActionTypes";
 
-// TODO: Make actions for updates of elections etc...
-
 type KnownAction = InitializeSettingsAction | UpdateSettingsAction | ToggleAutoComputeAction;
 
 export function settingsReducer(state: SettingsState | undefined, action: KnownAction): SettingsState {
