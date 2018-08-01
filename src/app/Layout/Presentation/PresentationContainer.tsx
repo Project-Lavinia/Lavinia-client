@@ -2,7 +2,7 @@
 import { PresentationComponent, PresentationProps } from "./PresentationComponent";
 import { connect } from "react-redux";
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState): PresentationProps => {
     console.log("PresentationContainer mapped state to props");
     return {
         results: state.computationState.results,
@@ -10,7 +10,7 @@ const mapStateToProps = (state: RootState) => {
         decimals: state.presentationState.decimalsNumber,
         showPartiesWithoutSeats: state.presentationState.showPartiesWithoutSeats,
         districtSelected: state.presentationState.districtSelected
-    } as PresentationProps;
+    };
 };
 
 export const PresentationContainer = connect(
