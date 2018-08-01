@@ -6,9 +6,6 @@ import { SettingAction } from "../Types/ActionTypes";
 
 type KnownAction = InitializeSettingsAction | UpdateSettingsAction | ToggleAutoComputeAction;
 
-// NB: BaseReducer Typescript (Reducer<State>) definition changes as of redux 4.0.0
-// https://github.com/rt2zz/redux-persist/pull/778
-
 export function settingsReducer(state: SettingsState | undefined, action: KnownAction): SettingsState {
     if (state === undefined) {
         state = unloadedState;
