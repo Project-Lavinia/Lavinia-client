@@ -4,9 +4,6 @@ import { ComputationAction as ElectionActionEnum } from "../Types/ActionTypes";
 
 type KnownAction = InitializeComputationAction | UpdateResultsAction;
 
-// NB: BaseReducer Typescript (Reducer<State>) definition changes as of redux 4.0.0
-// https://github.com/rt2zz/redux-persist/pull/778
-
 export function computationReducer(state: ComputationState | undefined, action: KnownAction): ComputationState {
     if (state === undefined) {
         state = unloadedState;
