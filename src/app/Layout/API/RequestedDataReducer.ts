@@ -21,7 +21,7 @@ export function requestedDataAction(state: RequestedDataState | undefined, actio
                 enableAutoSave: true
             };
         default:
-            console.log(`Action of type ${action.type} reduced to default`);
+            console.log(`Action of type ${action!.type} reduced to default`);
             return state || unloadedState;
     }
 }
