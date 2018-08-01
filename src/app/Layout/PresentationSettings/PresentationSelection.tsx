@@ -7,9 +7,9 @@ export interface PresentationSelectionProps {
 }
 
 export class PresentationSelection extends React.Component {
-    static defaultProps = {
+    static defaultProps: PresentationSelectionProps = {
         currentSelection: PresentationType.ElectionTable
-    } as PresentationSelectionProps;
+    };
     constructor(props: PresentationSelectionProps) {
         super(props);
     }
