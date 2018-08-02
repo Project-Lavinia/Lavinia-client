@@ -4,10 +4,23 @@ import { SettingMenuComponent } from "./SettingMenuComponent";
 import { updateElectionData } from "../Computation";
 import { updateSettings, toggleAutoCompute } from ".";
 import { ComputationPayload, SettingsPayload } from "../Interfaces/Payloads";
-import { Election } from "../Interfaces/Models";
+import { Election, ElectionType } from "../Interfaces/Models";
 import { getAlgorithmType } from "../Logic/AlgorithmUtils";
 
-const mapStateToProps = (state: RootState) => ({
+interface PropsFromState {
+    computationPayload: ComputationPayload;
+    settingsPayload: SettingsPayload;
+    electionType: ElectionType;
+}
+
+interface PropsFromDispatch {
+    updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => any;
+    updateSettings: (settingsPayload: SettingsPayload) => any;
+    toggleAutoCompute: (autoCompute: boolean) => any;
+    resetToHistoricalSettings: (settingsPayload: SettingsPayload, election: Election) => any;
+}
+
+const mapStateToProps = (state: RootState): PropsFromState => ({
     computationPayload: {
         election: state.computationState.election,
         algorithm: state.computationState.algorithm,
@@ -15,7 +28,7 @@ const mapStateToProps = (state: RootState) => ({
         electionThreshold: state.computationState.electionThreshold,
         districtSeats: state.computationState.districtSeats,
         levelingSeats: state.computationState.levelingSeats
-    } as ComputationPayload,
+    },
     settingsPayload: {
         electionYears: state.settingsState.electionYears,
         year: state.settingsState.year,
@@ -26,11 +39,11 @@ const mapStateToProps = (state: RootState) => ({
         levelingSeats: state.settingsState.levelingSeats,
         autoCompute: state.settingsState.autoCompute,
         forceCompute: false
-    } as SettingsPayload,
+    },
     electionType: state.requestedDataState.electionType
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: any): PropsFromDispatch => ({
     updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => {
         if (autoCompute || forceCompute) {
             const payload: ComputationPayload = {

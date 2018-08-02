@@ -7,7 +7,7 @@ export interface PresentationSelectionButtonProps extends ButtonProps {
 }
 
 export class PresentationSelectionButton extends Button<PresentationSelectionButtonProps> {
-    constructor(props: any) {
+    constructor(props: PresentationSelectionButtonProps) {
         super(props);
     }
     render() {

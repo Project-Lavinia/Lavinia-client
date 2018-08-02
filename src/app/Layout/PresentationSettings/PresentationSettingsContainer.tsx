@@ -1,10 +1,26 @@
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import { PresentationSettings } from "./PresentationSettings";
-import { ChangeDecimalsAction, selectDistrict } from "./PresentationActions";
+import { ChangeDecimalsAction, selectDistrict, ChangeShowPartiesNoSeat } from "./PresentationActions";
 import { PresentationAction } from "../Types/ActionTypes";
+import { PresentationType } from "../Types";
+import { LagueDhontResult } from "../Interfaces/Results";
 
-function mapStateToProps(state: RootState) {
+interface PropsFromState {
+    currentPresentation: PresentationType;
+    decimals: string;
+    results: LagueDhontResult;
+    showPartiesWithoutSeats: boolean;
+    districtSelected: string;
+}
+
+interface PropsFromDispatch {
+    changeDecimals: (decimals: string, decimalsNumber: number) => void;
+    toggleShowPartiesWithoutSeats: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+}
+
+function mapStateToProps(state: RootState): PropsFromState {
     return {
         currentPresentation: state.presentationState.currentPresentation,
         decimals: state.presentationState.decimals,
@@ -14,19 +30,21 @@ function mapStateToProps(state: RootState) {
     };
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: any): PropsFromDispatch => ({
     changeDecimals: (decimals: string, decimalsNumber: number) => {
-        dispatch({
+        const action: ChangeDecimalsAction = {
             type: PresentationAction.ChangeDecimals,
             decimals,
             decimalsNumber
-        } as ChangeDecimalsAction);
+        };
+        dispatch(action);
     },
     toggleShowPartiesWithoutSeats: (event: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch({
+        const action: ChangeShowPartiesNoSeat = {
             type: PresentationAction.ShowPartiesNoSeats,
             showPartiesWithoutSeats: event.target.checked
-        });
+        };
+        dispatch(action);
     },
     selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => {
         const action = selectDistrict(event.target.value);

@@ -1,14 +1,12 @@
 ﻿import { unloadedState, PresentationState } from "./PresentationState";
-import { Action } from "redux";
 import { PresentationAction as KnownAction } from "./PresentationActions";
 import { PresentationAction } from "../Types/ActionTypes";
 
-export function presentationReducer(state: PresentationState | undefined, incomingAction: Action): PresentationState {
+export function presentationReducer(state: PresentationState | undefined, action: KnownAction): PresentationState {
     if (state === undefined) {
         state = unloadedState;
     }
 
-    const action = incomingAction as KnownAction;
     switch (action.type) {
         case PresentationAction.InitializePresentation:
             console.log(`Action of type ${action.type} reduced`);
@@ -45,7 +43,7 @@ export function presentationReducer(state: PresentationState | undefined, incomi
                 districtSelected: action.districtSelected
             };
         default:
-            console.log(`Action of type ${incomingAction.type} reduced to default`);
+            console.log(`Action of type ${action!.type} reduced to default`);
             return state || unloadedState;
     }
 }

@@ -15,7 +15,6 @@ export interface PresentationSettingsProps {
     results: LagueDhontResult;
 }
 export class PresentationSettings extends React.Component<PresentationSettingsProps> {
-    static defaultProps = {} as PresentationSettingsProps;
     /**
      * Helper function for reducing code in render(), allows conditional
      * rendering.
