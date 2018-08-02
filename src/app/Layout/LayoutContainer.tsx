@@ -1,4 +1,4 @@
-﻿import { LayoutComponent } from "./LayoutComponent";
+﻿import { LayoutComponent, LayoutProps } from "./LayoutComponent";
 import { connect } from "react-redux";
 import { initializeComputation } from "./Computation";
 import { initializePresentation } from "./PresentationSettings";
@@ -6,7 +6,7 @@ import { initializeRequestedData, request } from "./API";
 import { initializeSettings } from "./ComputationSettings";
 import { ElectionType } from "./Interfaces/Models";
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: any): LayoutProps => ({
     initializeState: async () => {
         const uri = "https://mandater-testing.azurewebsites.net/api/v1.0.0/no/pe?deep=true";
         const failover: ElectionType = {
