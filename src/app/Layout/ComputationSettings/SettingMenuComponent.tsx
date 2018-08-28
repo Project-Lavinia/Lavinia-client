@@ -98,6 +98,7 @@ export class SettingMenuComponent extends React.Component<SettingMenuProps, {}> 
     };
     toggleAutoCompute = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.props.toggleAutoCompute(event.target.checked);
+        this.computeManually();
     };
     computeManually = () => {
         const year = parseInt(this.props.settingsPayload.year);
