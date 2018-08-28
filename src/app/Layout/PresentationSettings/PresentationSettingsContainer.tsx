@@ -1,26 +1,10 @@
 import { RootState } from "../../reducers";
 import { connect } from "react-redux";
-import { PresentationSettings } from "./PresentationSettings";
+import { PresentationSettings, PresentationSettingsProps } from "./PresentationSettings";
 import { ChangeDecimalsAction, selectDistrict, ChangeShowPartiesNoSeat } from "./PresentationActions";
 import { PresentationAction } from "../Types/ActionTypes";
-import { PresentationType } from "../Types";
-import { LagueDhontResult } from "../Interfaces/Results";
 
-interface PropsFromState {
-    currentPresentation: PresentationType;
-    decimals: string;
-    results: LagueDhontResult;
-    showPartiesWithoutSeats: boolean;
-    districtSelected: string;
-}
-
-interface PropsFromDispatch {
-    changeDecimals: (decimals: string, decimalsNumber: number) => void;
-    toggleShowPartiesWithoutSeats: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-}
-
-function mapStateToProps(state: RootState): PropsFromState {
+function mapStateToProps(state: RootState): Partial<PresentationSettingsProps> {
     return {
         currentPresentation: state.presentationState.currentPresentation,
         decimals: state.presentationState.decimals,
@@ -30,7 +14,7 @@ function mapStateToProps(state: RootState): PropsFromState {
     };
 }
 
-const mapDispatchToProps = (dispatch: any): PropsFromDispatch => ({
+const mapDispatchToProps = (dispatch: any): Partial<PresentationSettingsProps> => ({
     changeDecimals: (decimals: string, decimalsNumber: number) => {
         const action: ChangeDecimalsAction = {
             type: PresentationAction.ChangeDecimals,

@@ -1,26 +1,13 @@
 ﻿import { RootState } from "../../reducers";
 import { connect } from "react-redux";
-import { SettingMenuComponent } from "./SettingMenuComponent";
+import { SettingMenuComponent, SettingMenuProps } from "./SettingMenuComponent";
 import { updateElectionData } from "../Computation";
 import { updateSettings, toggleAutoCompute } from ".";
 import { ComputationPayload, SettingsPayload } from "../Interfaces/Payloads";
-import { Election, ElectionType } from "../Interfaces/Models";
+import { Election } from "../Interfaces/Models";
 import { getAlgorithmType } from "../Logic/AlgorithmUtils";
 
-interface PropsFromState {
-    computationPayload: ComputationPayload;
-    settingsPayload: SettingsPayload;
-    electionType: ElectionType;
-}
-
-interface PropsFromDispatch {
-    updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => any;
-    updateSettings: (settingsPayload: SettingsPayload) => any;
-    toggleAutoCompute: (autoCompute: boolean) => any;
-    resetToHistoricalSettings: (settingsPayload: SettingsPayload, election: Election) => any;
-}
-
-const mapStateToProps = (state: RootState): PropsFromState => ({
+const mapStateToProps = (state: RootState): Partial<SettingMenuProps> => ({
     computationPayload: {
         election: state.computationState.election,
         algorithm: state.computationState.algorithm,
@@ -43,7 +30,7 @@ const mapStateToProps = (state: RootState): PropsFromState => ({
     electionType: state.requestedDataState.electionType
 });
 
-const mapDispatchToProps = (dispatch: any): PropsFromDispatch => ({
+const mapDispatchToProps = (dispatch: any): Partial<SettingMenuProps> => ({
     updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => {
         if (autoCompute || forceCompute) {
             const payload: ComputationPayload = {
