@@ -4,9 +4,8 @@ import { SettingsMenuContainer } from "./ComputationSettings";
 import { PresentationContainer } from "./Presentation";
 import { PresentationMenu } from "./PresentationSettings";
 
-interface LayoutProps {
+export interface LayoutProps {
     initializeState: () => any;
-    initializePresentationState: () => any;
 }
 
 export class LayoutComponent extends React.Component<LayoutProps, {}> {
