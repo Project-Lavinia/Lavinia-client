@@ -16,10 +16,10 @@ interface SimpleDistrictResult {
     /**
      * Result
      */
-    partyResults: Nested[];
+    partyResults: LevellingSeatRound[];
 }
 
-interface Nested {
+interface LevellingSeatRound {
     partyCode: string;
     quotient: number;
     wonLevellingSeat: boolean;
