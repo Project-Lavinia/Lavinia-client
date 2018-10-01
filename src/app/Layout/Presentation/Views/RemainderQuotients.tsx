@@ -33,7 +33,7 @@ export interface RemainderQuotientsProps {
 }
 
 /**
- * Itereates through districtResults to flatten and filter it into a more
+ * Iterates through districtResults to flatten and filter it into a more
  * table-friendly form specific to RemainderQuotients
  *
  * @param districtResults results of a computation having been run on an
