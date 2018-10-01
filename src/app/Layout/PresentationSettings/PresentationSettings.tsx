@@ -23,7 +23,8 @@ export class PresentationSettings extends React.Component<PresentationSettingsPr
         if (
             this.props.currentPresentation === PresentationType.DistrictTable ||
             this.props.currentPresentation === PresentationType.ElectionTable ||
-            this.props.currentPresentation === PresentationType.SingleCountyTable
+            this.props.currentPresentation === PresentationType.SingleCountyTable ||
+            this.props.currentPresentation === PresentationType.RemainderQuotients
         ) {
             return true;
         }
