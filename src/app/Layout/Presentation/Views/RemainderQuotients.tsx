@@ -148,7 +148,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                 <h2>{"Restkvotienter"}</h2>
                 <p style={{ textAlign: "justify" }}>
                     {
-                        "Fylker med utjevningsmandater vist i oransje. Kvotientene er delt på 10 000 og representerer verdien ved utdeling av siste distriktsmandat i fylket for det respektive partiet."
+                        "Par på formen fylke-parti med oransje celler indikerer at partiet har vunnet et utjevningsmandat i det korresponderende fylket. Kvotientene er delt på 10 000 og representerer verdien ved utdeling av siste distriktsmandat i fylket for det respektive partiet."
                     }
                 </p>
                 <ReactTable
