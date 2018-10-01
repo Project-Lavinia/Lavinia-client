@@ -63,6 +63,14 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
         return partyCodes;
     }
 
+    getDistricts(): string[] {
+        const districts: string[] = [];
+        this.props.results.districtResults.forEach((district) => {
+            districts.push(district.name);
+        });
+        return districts;
+    }
+
     render() {
         switch (this.props.currentPresentation) {
             case PresentationType.ElectionTable:
