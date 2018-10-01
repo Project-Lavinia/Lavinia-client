@@ -154,7 +154,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                 <ReactTable
                     data={data}
                     columns={this.getColumns()}
-                    defaultPageSize={8}
+                    defaultPageSize={10}
                     showPageSizeOptions={false}
                     ofText={"/"}
                     nextText={"→"}
