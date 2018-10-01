@@ -1,6 +1,6 @@
-import * as React from "react";
+﻿import * as React from "react";
 import { PresentationType } from "../Types/PresentationType";
-import { LagueDhontResult, PartyResult, DistrictResult } from "../Interfaces/Results";
+import { LagueDhontResult, PartyResult, DistrictResult, PartyRestQuotients, LevelingSeat } from "../Interfaces/Results";
 import { ElectionOverview, DistrictOverview, SeatsPerParty, SeatDistribution, SingleDistrict } from "./Views";
 import {
     getDistrictTableData,
@@ -9,6 +9,7 @@ import {
     getSeatsPerPartyData,
     roundPartyResults
 } from "./Utilities/PresentationUtilities";
+import { RemainderQuotients } from "./Views/RemainderQuotients";
 
 export interface PresentationProps {
     currentPresentation: PresentationType;
@@ -137,6 +138,16 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
                     <SingleDistrict
                         districtSelected={this.props.districtSelected}
                         districtResults={this.getSingleDistrictData()}
+                    />
+                );
+            case PresentationType.RemainderQuotients:
+                this.getLevellingSeats();
+                return (
+                    <RemainderQuotients
+                        districtResults={this.getSeatDistributionData()}
+                        levellingSeats={this.getLevellingSeats()}
+                        decimals={this.props.decimals}
+                        showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
                     />
                 );
             default:
