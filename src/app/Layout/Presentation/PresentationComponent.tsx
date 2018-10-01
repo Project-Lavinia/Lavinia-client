@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import { PresentationType } from "../Types/PresentationType";
 import { LagueDhontResult, PartyResult, DistrictResult } from "../Interfaces/Results";
 import { ElectionOverview, DistrictOverview, SeatsPerParty, SeatDistribution, SingleDistrict } from "./Views";
@@ -53,6 +53,14 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
             });
         });
         return roundedData;
+    }
+
+    getPartyCodes(): string[] {
+        const partyCodes: string[] = [];
+        this.props.results.partyResults.forEach((party) => {
+            partyCodes.push(party.partyCode);
+        });
+        return partyCodes;
     }
 
     render() {
