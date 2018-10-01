@@ -76,7 +76,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
         });
 
         /**
-         * Cross reference with levelling seats to get hilit cells
+         * Cross reference with levelling seats to get highlighted cells
          */
         this.props.levellingSeats.forEach((seat) => {
             const districtIndex = data.findIndex((entry) => entry.district === seat.district);
