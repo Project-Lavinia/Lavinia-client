@@ -13,10 +13,7 @@ interface SimpleDistrictResult {
      * The district, the key of the row
      */
     district: string;
-    /**
-     * Result
-     */
-    partyResults: LevellingSeatRound[];
+    levellingSeatRounds: LevellingSeatRound[];
 }
 
 interface LevellingSeatRound {
@@ -58,11 +55,11 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
         this.props.districtResults.forEach((result) => {
             const current: any = {};
             current.district = result.name;
-            current.partyResults = [];
+            current.levellingSeatRounds = [];
             const lastIndex = result.districtSeatResult.length - 1;
 
             result.districtSeatResult[lastIndex].partyResults.forEach((result) => {
-                current.partyResults.push({
+                current.levellingSeatRounds.push({
                     partyCode: result.partyCode,
                     quotient: result.quotient,
                     wonLevellingSeat: false
@@ -70,7 +67,9 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
             });
             const typedCurrent: SimpleDistrictResult = current;
             if (!this.props.showPartiesWithoutSeats) {
-                typedCurrent.partyResults = typedCurrent.partyResults.filter((result) => wonSeat.has(result.partyCode));
+                typedCurrent.levellingSeatRounds = typedCurrent.levellingSeatRounds.filter((result) =>
+                    wonSeat.has(result.partyCode)
+                );
             }
             data.push(typedCurrent);
         });
@@ -80,10 +79,10 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
          */
         this.props.levellingSeats.forEach((seat) => {
             const districtIndex = data.findIndex((entry) => entry.district === seat.district);
-            const partyIndex = data[districtIndex].partyResults.findIndex(
+            const partyIndex = data[districtIndex].levellingSeatRounds.findIndex(
                 (result) => result.partyCode === seat.partyCode
             );
-            data[districtIndex].partyResults[partyIndex].wonLevellingSeat = true;
+            data[districtIndex].levellingSeatRounds[partyIndex].wonLevellingSeat = true;
         });
 
         return data;
@@ -93,11 +92,11 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
         const data = this.makeData();
         const columns: Column[] = [];
 
-        for (let i = 0; i < data[0].partyResults.length; i++) {
-            const element = data[0].partyResults[i];
+        for (let i = 0; i < data[0].levellingSeatRounds.length; i++) {
+            const element = data[0].levellingSeatRounds[i];
             columns.push({
                 Header: element.partyCode,
-                accessor: `partyResults[${i}]`,
+                accessor: `levellingSeatRounds[${i}]`,
                 Cell: (row) => {
                     if (row.value !== undefined) {
                         return (
