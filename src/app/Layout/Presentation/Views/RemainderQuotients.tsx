@@ -8,7 +8,7 @@ import ReactTable, { Column } from "react-table";
  * district), and then we need to ensure each district has a value for quotient
  * and "wonLevellingSeat" for non-participating parties
  */
-interface Data {
+interface SimpleDistrictResult {
     /**
      * The district, the key of the row
      */
@@ -44,8 +44,8 @@ export interface RemainderQuotientsProps {
  */
 
 export class RemainderQuotients extends React.Component<RemainderQuotientsProps> {
-    makeData(): Data[] {
-        const data: Data[] = [];
+    makeData(): SimpleDistrictResult[] {
+        const data: SimpleDistrictResult[] = [];
         const wonSeat: Set<string> = new Set();
         const modified = this.props.districtResults;
         if (!this.props.showPartiesWithoutSeats) {
@@ -68,7 +68,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                     wonLevellingSeat: false
                 });
             });
-            const typedCurrent: Data = current;
+            const typedCurrent: SimpleDistrictResult = current;
             if (!this.props.showPartiesWithoutSeats) {
                 typedCurrent.partyResults = typedCurrent.partyResults.filter((result) => wonSeat.has(result.partyCode));
             }
