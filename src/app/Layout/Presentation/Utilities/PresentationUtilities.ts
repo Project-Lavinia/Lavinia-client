@@ -1,4 +1,4 @@
-import { PartyResult, DistrictResult } from "../../Interfaces/Results";
+import { PartyResult, DistrictResult, LevelingSeat, PartyRestQuotients } from "../../Interfaces/Results";
 import { roundNumber } from "./NumberUtilities";
 import { Dictionary } from "../../Interfaces/Utilities";
 
@@ -102,4 +102,78 @@ export function roundPartyResults(partyResults: PartyResult[], numberOfDecimals:
         });
     });
     return roundedResults;
+}
+
+/**
+ * This function should under no circumstances be used anywhere else than in
+ * getLevellingSeats(...) in PresentationComponent -- it is required only
+ * because of the way the data is stored, and will unquestionably backfire if
+ * used on an arbitrary, unprocessed array of these seats.
+ *
+ * @param seats seats that can have duplicates depending on how the final round
+ * is calculated
+ * @returns array of seats that have unique district - seat number combinations.
+ */
+export function removeSeatDuplicates(seats: LevelingSeat[]): LevelingSeat[] {
+    const existingSeatsSet: Set<string> = new Set();
+    const uniqueSeats: LevelingSeat[] = [];
+    seats.forEach((seat) => {
+        if (!existingSeatsSet.has(seat.district + seat.seatNumber)) {
+            uniqueSeats.push(seat);
+            existingSeatsSet.add(seat.district + seat.seatNumber);
+        }
+    });
+    return uniqueSeats;
+}
+
+/**
+ * Simple helper function that takes the levelling seats out of an array of
+ * party rest quotients  and puts them into its own array
+ *
+ * @param prqs
+ * @returns an array of levelling seats
+ */
+export function flattenPartyRestQuotients(prqs: PartyRestQuotients[]): LevelingSeat[] {
+    const levellingSeats: LevelingSeat[] = [];
+    prqs.forEach((prq) => {
+        prq.levelingSeats.forEach((seat) => {
+            levellingSeats.push(seat);
+        });
+    });
+    return levellingSeats;
+}
+
+/**
+ * Helper function that sorts seats by number.
+ *
+ * @param seats levelling seats
+ */
+export function sortSeatsByNumber(seats: LevelingSeat[]): LevelingSeat[] {
+    const sortedSeats: LevelingSeat[] = seats;
+    sortedSeats.sort((a, b) => {
+        if (a.seatNumber < b.seatNumber) {
+            return -1;
+        } else if (a.seatNumber > b.seatNumber) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+    return sortedSeats;
+}
+
+/**
+ * Helper function that returns an array of rounds where seats were assigned
+ *
+ * @param rounds a round that may or may not have been given a seat
+ * @returns rounds in the form of actual levelling seats
+ */
+export function getRoundsAssignedSeats(rounds: LevelingSeat[]) {
+    const seats: LevelingSeat[] = [];
+    rounds.forEach((round) => {
+        if (round.seatNumber > 0) {
+            seats.push(round);
+        }
+    });
+    return seats;
 }
