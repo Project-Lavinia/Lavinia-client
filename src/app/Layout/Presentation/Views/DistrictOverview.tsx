@@ -11,7 +11,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         return (
             <ReactTable
                 className="-highlight -striped"
-                defaultPageSize={19}
+                defaultPageSize={this.props.districtResults.length}
                 showPaginationBottom={false}
                 data={this.props.districtResults}
                 columns={[
