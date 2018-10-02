@@ -7,8 +7,13 @@ import {
     getPartyTableData,
     getSeatDistributionData,
     getSeatsPerPartyData,
-    roundPartyResults
+    roundPartyResults,
+    flattenPartyRestQuotients,
+    removeSeatDuplicates,
+    sortSeatsByNumber,
+    getRoundsAssignedSeats
 } from "./Utilities/PresentationUtilities";
+import { RemainderQuotients } from "./Views/RemainderQuotients";
 
 export interface PresentationProps {
     currentPresentation: PresentationType;
@@ -55,6 +60,29 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
         return roundedData;
     }
 
+    getPartyCodes(): string[] {
+        const partyCodes: string[] = [];
+        this.props.results.partyResults.forEach((party) => {
+            partyCodes.push(party.partyCode);
+        });
+        return partyCodes;
+    }
+
+    getDistricts(): string[] {
+        const districts: string[] = [];
+        this.props.results.districtResults.forEach((district) => {
+            districts.push(district.name);
+        });
+        return districts;
+    }
+
+    getLevellingSeats() {
+        const flattened = flattenPartyRestQuotients(this.props.results.levelingSeatDistribution);
+        const assignedSeats = getRoundsAssignedSeats(flattened);
+        const noDuplicateSeats = removeSeatDuplicates(assignedSeats);
+        return sortSeatsByNumber(noDuplicateSeats);
+    }
+
     render() {
         switch (this.props.currentPresentation) {
             case PresentationType.ElectionTable:
@@ -70,6 +98,16 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
                     <SingleDistrict
                         districtSelected={this.props.districtSelected}
                         districtResults={this.getSingleDistrictData()}
+                    />
+                );
+            case PresentationType.RemainderQuotients:
+                this.getLevellingSeats();
+                return (
+                    <RemainderQuotients
+                        districtResults={this.getSeatDistributionData()}
+                        levellingSeats={this.getLevellingSeats()}
+                        decimals={this.props.decimals}
+                        showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
                     />
                 );
             default:
