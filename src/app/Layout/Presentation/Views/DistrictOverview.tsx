@@ -24,10 +24,6 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                         accessor: "votes"
                     },
                     {
-                        Header: "Prosent",
-                        accessor: "percentVotes"
-                    },
-                    {
                         Header: "Distrikt",
                         accessor: "districtSeats"
                     },
