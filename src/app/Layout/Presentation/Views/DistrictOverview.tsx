@@ -1,10 +1,11 @@
-import * as React from "react";
+﻿import * as React from "react";
 import ReactTable from "react-table";
 import { DistrictResult } from "../../Interfaces/Results";
 import { toSum, toMean, toMax, toMin } from "../Utilities/ReduceUtilities";
 
 export interface DistrictOverviewProps {
     districtResults: DistrictResult[];
+    districtWidth: number;
 }
 
 export class DistrictOverview extends React.Component<DistrictOverviewProps, {}> {
@@ -43,6 +44,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                         {
                             Header: "Fylke",
                             accessor: "name",
+                            minWidth: this.props.districtWidth * 10,
                             Footer: (
                                 <span>
                                     <strong>Alle fylker</strong>

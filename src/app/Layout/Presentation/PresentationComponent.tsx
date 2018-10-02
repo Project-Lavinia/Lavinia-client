@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import { PresentationType } from "../Types/PresentationType";
 import { LagueDhontResult, PartyResult, DistrictResult } from "../Interfaces/Results";
 import { ElectionOverview, DistrictOverview, SeatsPerParty, SeatDistribution, SingleDistrict } from "./Views";
@@ -14,6 +14,7 @@ import {
     getRoundsAssignedSeats
 } from "./Utilities/PresentationUtilities";
 import { RemainderQuotients } from "./Views/RemainderQuotients";
+import { toMax } from "./Utilities/ReduceUtilities";
 
 export interface PresentationProps {
     currentPresentation: PresentationType;
@@ -76,6 +77,12 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
         return districts;
     }
 
+    getWidestDistrictWidth(): number {
+        return this.getDistricts()
+            .map((value) => value.length)
+            .reduce(toMax);
+    }
+
     getLevellingSeats() {
         const flattened = flattenPartyRestQuotients(this.props.results.levelingSeatDistribution);
         const assignedSeats = getRoundsAssignedSeats(flattened);
@@ -88,7 +95,12 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
             case PresentationType.ElectionTable:
                 return <ElectionOverview partyResults={this.getPartyTableData()} decimals={this.props.decimals} />;
             case PresentationType.DistrictTable:
-                return <DistrictOverview districtResults={this.getDistrictTableData()} />;
+                return (
+                    <DistrictOverview
+                        districtResults={this.getDistrictTableData()}
+                        districtWidth={this.getWidestDistrictWidth()}
+                    />
+                );
             case PresentationType.SeatDistribution:
                 return <SeatDistribution districtResults={this.getSeatDistributionData()} />;
             case PresentationType.SeatsPerParty:
