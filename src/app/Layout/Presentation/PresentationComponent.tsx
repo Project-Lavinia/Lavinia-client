@@ -114,7 +114,12 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
                     />
                 );
             case PresentationType.SeatDistribution:
-                return <SeatDistribution districtResults={this.getSeatDistributionData()} />;
+                return (
+                    <SeatDistribution
+                        districtResults={this.getSeatDistributionData()}
+                        districtWidth={this.getWidestStringWidth(this.getDistricts())}
+                    />
+                );
             case PresentationType.SeatsPerParty:
                 return <SeatsPerParty partyResults={this.getSeatsPerPartyData()} />;
             case PresentationType.SingleCountyTable:
