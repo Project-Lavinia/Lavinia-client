@@ -1,9 +1,10 @@
-﻿import * as React from "react";
+import * as React from "react";
 import ReactTable from "react-table";
 import { PartyResult } from "../../Interfaces/Results";
 
 export interface ElectionOverviewProps {
     partyResults: PartyResult[];
+    decimals: number;
 }
 
 export class ElectionOverview extends React.Component<ElectionOverviewProps, {}> {

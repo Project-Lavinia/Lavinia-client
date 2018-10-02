@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import { PresentationType } from "../Types/PresentationType";
 import { LagueDhontResult, PartyResult, DistrictResult } from "../Interfaces/Results";
 import { ElectionOverview, DistrictOverview, SeatsPerParty, SeatDistribution, SingleDistrict } from "./Views";
@@ -86,7 +86,7 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
     render() {
         switch (this.props.currentPresentation) {
             case PresentationType.ElectionTable:
-                return <ElectionOverview partyResults={this.getPartyTableData()} />;
+                return <ElectionOverview partyResults={this.getPartyTableData()} decimals={this.props.decimals} />;
             case PresentationType.DistrictTable:
                 return <DistrictOverview districtResults={this.getDistrictTableData()} />;
             case PresentationType.SeatDistribution:
