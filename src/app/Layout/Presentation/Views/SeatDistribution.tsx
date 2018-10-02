@@ -34,13 +34,16 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
 
     render() {
         return (
-            <ReactTable
-                className="-highlight -striped"
-                defaultPageSize={19}
-                showPaginationBottom={false}
-                data={this.props.districtResults}
-                columns={this.generateColumns()}
-            />
+            <React.Fragment>
+                <h2>Mandatfordeling</h2>
+                <ReactTable
+                    className="-highlight -striped"
+                    defaultPageSize={19}
+                    showPaginationBottom={false}
+                    data={this.props.districtResults}
+                    columns={this.generateColumns()}
+                />
+            </React.Fragment>
         );
     }
 }
