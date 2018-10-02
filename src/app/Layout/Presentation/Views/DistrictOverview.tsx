@@ -1,6 +1,7 @@
-﻿import * as React from "react";
+import * as React from "react";
 import ReactTable from "react-table";
 import { DistrictResult } from "../../Interfaces/Results";
+import { toSum, toMean, toMax, toMin } from "../Utilities/ReduceUtilities";
 
 export interface DistrictOverviewProps {
     districtResults: DistrictResult[];
@@ -9,18 +10,9 @@ export interface DistrictOverviewProps {
 export class DistrictOverview extends React.Component<DistrictOverviewProps, {}> {
     render() {
         const data = this.props.districtResults;
-        const highestVotingPower = data
-            .map((value) => value.votesPerSeat)
-            .reduce((acc, cur) => (cur < acc ? cur : acc));
-        const lowestVotingPower = data.map((value) => value.votesPerSeat).reduce((acc, cur) => (cur > acc ? cur : acc));
-        const averageVotingPower = data.map((value) => value.votesPerSeat).reduce((acc, cur, ind, arr) => {
-            acc += cur;
-            if (ind === arr.length - 1) {
-                return acc / arr.length;
-            } else {
-                return acc;
-            }
-        });
+        const highestVotingPower = data.map((value) => value.votesPerSeat).reduce(toMin);
+        const lowestVotingPower = data.map((value) => value.votesPerSeat).reduce(toMax);
+        const averageVotingPower = data.map((value) => value.votesPerSeat).reduce(toMean);
         return (
             <React.Fragment>
                 <h2>Mandatfordeling</h2>
@@ -62,9 +54,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             accessor: "votes",
                             Footer: (
                                 <span>
-                                    <strong>
-                                        {data.map((value) => value.votes).reduce((acc, cur) => acc + cur, 0)}
-                                    </strong>
+                                    <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>
                                 </span>
                             )
                         },
@@ -73,9 +63,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             accessor: "districtSeats",
                             Footer: (
                                 <span>
-                                    <strong>
-                                        {data.map((value) => value.districtSeats).reduce((acc, cur) => acc + cur, 0)}
-                                    </strong>
+                                    <strong>{data.map((value) => value.districtSeats).reduce(toSum, 0)}</strong>
                                 </span>
                             )
                         },
@@ -84,9 +72,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             accessor: "levelingSeats",
                             Footer: (
                                 <span>
-                                    <strong>
-                                        {data.map((value) => value.levelingSeats).reduce((acc, cur) => acc + cur, 0)}
-                                    </strong>
+                                    <strong>{data.map((value) => value.levelingSeats).reduce(toSum, 0)}</strong>
                                 </span>
                             )
                         },
@@ -95,9 +81,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             accessor: "totalSeats",
                             Footer: (
                                 <span>
-                                    <strong>
-                                        {data.map((value) => value.totalSeats).reduce((acc, cur) => acc + cur, 0)}
-                                    </strong>
+                                    <strong>{data.map((value) => value.totalSeats).reduce(toSum, 0)}</strong>
                                     <br />
                                 </span>
                             )
