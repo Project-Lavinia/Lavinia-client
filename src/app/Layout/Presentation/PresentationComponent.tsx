@@ -69,6 +69,14 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
         return partyCodes;
     }
 
+    getPartyNames(): string[] {
+        const partyNames: string[] = [];
+        this.props.results.partyResults.forEach((party) => {
+            partyNames.push(party.partyName);
+        });
+        return partyNames;
+    }
+
     getDistricts(): string[] {
         const districts: string[] = [];
         this.props.results.districtResults.forEach((district) => {
@@ -77,10 +85,8 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
         return districts;
     }
 
-    getWidestDistrictWidth(): number {
-        return this.getDistricts()
-            .map((value) => value.length)
-            .reduce(toMax);
+    getWidestStringWidth(strings: string[]): number {
+        return strings.map((value) => value.length).reduce(toMax);
     }
 
     getLevellingSeats() {
@@ -93,12 +99,18 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
     render() {
         switch (this.props.currentPresentation) {
             case PresentationType.ElectionTable:
-                return <ElectionOverview partyResults={this.getPartyTableData()} decimals={this.props.decimals} />;
+                return (
+                    <ElectionOverview
+                        partyResults={this.getPartyTableData()}
+                        decimals={this.props.decimals}
+                        partyNameWidth={this.getWidestStringWidth(this.getPartyNames())}
+                    />
+                );
             case PresentationType.DistrictTable:
                 return (
                     <DistrictOverview
                         districtResults={this.getDistrictTableData()}
-                        districtWidth={this.getWidestDistrictWidth()}
+                        districtWidth={this.getWidestStringWidth(this.getDistricts())}
                     />
                 );
             case PresentationType.SeatDistribution:

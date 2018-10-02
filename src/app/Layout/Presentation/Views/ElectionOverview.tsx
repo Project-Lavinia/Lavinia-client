@@ -6,6 +6,7 @@ import { toSum } from "../Utilities/ReduceUtilities";
 export interface ElectionOverviewProps {
     partyResults: PartyResult[];
     decimals: number;
+    partyNameWidth: number;
 }
 
 export class ElectionOverview extends React.Component<ElectionOverviewProps, {}> {
@@ -27,6 +28,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                     {
                         Header: "Parti",
                         accessor: "partyName",
+                        width: this.props.partyNameWidth * 8,
                         Footer: <strong>Utvalg</strong>
                     },
                     {
