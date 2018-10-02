@@ -16,7 +16,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const averageVotingPower = data.map((value) => value.votesPerSeat).reduce(toMean);
         return (
             <React.Fragment>
-                <h2>Mandatfordeling</h2>
+                <h2>Fylkesoversikt</h2>
                 <span>
                     {"En stemme i "}
                     <strong>{data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name}</strong>
