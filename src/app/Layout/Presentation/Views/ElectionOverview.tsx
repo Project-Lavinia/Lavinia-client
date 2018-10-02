@@ -8,11 +8,14 @@ export interface ElectionOverviewProps {
 
 export class ElectionOverview extends React.Component<ElectionOverviewProps, {}> {
     render() {
+        const data = this.props.partyResults;
         return (
             <ReactTable
                 className="-highlight -striped"
-                data={this.props.partyResults}
-                defaultPageSize={10}
+                data={data}
+                defaultPageSize={data.length >= 10 ? 10 : data.length}
+                pageSize={data.length >= 10 ? 10 : data.length}
+                showPagination={data.length > 10}
                 showPageSizeOptions={false}
                 ofText={"/"}
                 nextText={"→"}
@@ -26,10 +29,6 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                     {
                         Header: "Stemmer",
                         accessor: "votes"
-                    },
-                    {
-                        Header: "Prosent",
-                        accessor: "percentVotes"
                     },
                     {
                         Header: "Distrikt",
