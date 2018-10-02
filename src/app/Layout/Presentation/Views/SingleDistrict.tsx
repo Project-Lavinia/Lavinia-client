@@ -45,7 +45,18 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         return (
             <React.Fragment>
                 <h1 className="h1">{this.props.districtSelected}</h1>
-                <ReactTable className="-highlight -striped" data={data} pageSize={data.length} columns={this.columns} />
+                <ReactTable
+                    className="-highlight -striped"
+                    data={data}
+                    pageSize={data.length <= 10 ? data.length : 10}
+                    showPagination={data.length > 10}
+                    columns={this.columns}
+                    showPageSizeOptions={false}
+                    ofText={"/"}
+                    nextText={"→"}
+                    previousText={"←"}
+                    pageText={"#"}
+                />
             </React.Fragment>
         );
     }
