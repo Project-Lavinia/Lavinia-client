@@ -13,13 +13,11 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                 className="-highlight -striped"
                 data={this.props.partyResults}
                 defaultPageSize={10}
-                showPaginationBottom={false}
-                showPaginationTop={true}
-                rowsText="rader"
-                pageText="Side"
-                ofText="av"
-                nextText="Neste"
-                previousText="Forrige"
+                showPageSizeOptions={false}
+                ofText={"/"}
+                nextText={"→"}
+                previousText={"←"}
+                pageText={"#"}
                 columns={[
                     {
                         Header: "Parti",
