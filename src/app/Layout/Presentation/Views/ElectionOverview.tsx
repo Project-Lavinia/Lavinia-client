@@ -1,6 +1,7 @@
-import * as React from "react";
+﻿import * as React from "react";
 import ReactTable from "react-table";
 import { PartyResult } from "../../Interfaces/Results";
+import { toSum } from "../Utilities/ReduceUtilities";
 
 export interface ElectionOverviewProps {
     partyResults: PartyResult[];
@@ -25,27 +26,36 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                 columns={[
                     {
                         Header: "Parti",
-                        accessor: "partyName"
+                        accessor: "partyName",
+                        Footer: <strong>Utvalg</strong>
                     },
                     {
                         Header: "Stemmer",
-                        accessor: "votes"
+                        accessor: "votes",
+                        Footer: data.map((value) => value.votes).reduce(toSum)
                     },
                     {
                         Header: "Distrikt",
-                        accessor: "districtSeats"
+                        accessor: "districtSeats",
+                        Footer: data.map((value) => value.districtSeats).reduce(toSum)
                     },
                     {
                         Header: "Utjevning",
-                        accessor: "levelingSeats"
+                        accessor: "levelingSeats",
+                        Footer: data.map((value) => value.levelingSeats).reduce(toSum)
                     },
                     {
                         Header: "Sum",
-                        accessor: "totalSeats"
+                        accessor: "totalSeats",
+                        Footer: data.map((value) => value.totalSeats).reduce(toSum)
                     },
                     {
                         Header: "Proporsjonalitet",
-                        accessor: "proportionality"
+                        accessor: "proportionality",
+                        Footer: data
+                            .map((value) => value.proportionality)
+                            .reduce(toSum)
+                            .toFixed(this.props.decimals)
                     }
                 ]}
                 defaultSorted={[
