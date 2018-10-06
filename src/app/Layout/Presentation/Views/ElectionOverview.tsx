@@ -34,30 +34,34 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                     {
                         Header: "Stemmer",
                         accessor: "votes",
-                        Footer: data.map((value) => value.votes).reduce(toSum)
+                        Footer: <strong>{data.map((value) => value.votes).reduce(toSum)}</strong>
                     },
                     {
                         Header: "Distrikt",
                         accessor: "districtSeats",
-                        Footer: data.map((value) => value.districtSeats).reduce(toSum)
+                        Footer: <strong>{data.map((value) => value.districtSeats).reduce(toSum)}</strong>
                     },
                     {
                         Header: "Utjevning",
                         accessor: "levelingSeats",
-                        Footer: data.map((value) => value.levelingSeats).reduce(toSum)
+                        Footer: <strong>{data.map((value) => value.levelingSeats).reduce(toSum)}</strong>
                     },
                     {
                         Header: "Sum",
                         accessor: "totalSeats",
-                        Footer: data.map((value) => value.totalSeats).reduce(toSum)
+                        Footer: <strong>{data.map((value) => value.totalSeats).reduce(toSum)}</strong>
                     },
                     {
                         Header: "Proporsjonalitet",
                         accessor: "proportionality",
-                        Footer: data
-                            .map((value) => value.proportionality)
-                            .reduce(toSum)
-                            .toFixed(this.props.decimals)
+                        Footer: (
+                            <strong>
+                                {data
+                                    .map((value) => value.proportionality)
+                                    .reduce(toSum)
+                                    .toFixed(this.props.decimals)}
+                            </strong>
+                        )
                     }
                 ]}
                 defaultSorted={[
