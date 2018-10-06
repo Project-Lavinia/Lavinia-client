@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import { PresentationType } from "../Types/PresentationType";
 import { LagueDhontResult, PartyResult, DistrictResult } from "../Interfaces/Results";
 import { ElectionOverview, DistrictOverview, SeatsPerParty, SeatDistribution, SingleDistrict } from "./Views";
@@ -85,8 +85,8 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
         return districts;
     }
 
-    getWidestStringWidth(strings: string[]): number {
-        return strings.map((value) => value.length).reduce(toMax);
+    getWidestStringWidth(strings: string[] = []): number {
+        return strings.map((value) => value.length).reduce(toMax)!;
     }
 
     getLevellingSeats() {
