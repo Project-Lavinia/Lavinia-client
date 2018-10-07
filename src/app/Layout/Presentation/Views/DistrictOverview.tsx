@@ -12,6 +12,7 @@ export interface DistrictOverviewProps {
 export class DistrictOverview extends React.Component<DistrictOverviewProps, {}> {
     render() {
         const data = this.props.districtResults;
+        const decimals = this.props.decimals;
         const highestVotingPower = data.map((value) => value.votesPerSeat).reduce(toMin);
         const lowestVotingPower = data.map((value) => value.votesPerSeat).reduce(toMax);
         const averageVotingPower = data.map((value) => value.votesPerSeat).reduce(toMean);
@@ -25,16 +26,16 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                     {"En stemme i "}
                     <strong>{data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name}</strong>
                     {" hadde mest innflytelse, og telte "}
-                    {highestVsAverageInPercentage.toFixed(2) + "%"}
+                    {highestVsAverageInPercentage.toFixed(decimals) + "%"}
                     {" av en gjennomsnittlig stemme"}
                 </span>
                 <span>
                     {", mens en stemme i "}
                     <strong>{data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name}</strong>
                     {" hadde minst innflytelse, og bare telte "}
-                    {lowestVsAverageInPercentage.toFixed(2) + "%!"}
+                    {lowestVsAverageInPercentage.toFixed(decimals) + "%!"}
                     {" En stemme i det mest innflytelsesrike fylket telte altså "}
-                    {highestVsLowestInPercentage.toFixed(2) + "%"}
+                    {highestVsLowestInPercentage.toFixed(decimals) + "%"}
                     {" mer enn en stemme i det minst innflytelsesrike fylket."}
                 </span>
                 <br />
@@ -97,7 +98,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             accessor: "votesPerSeat",
                             Footer: (
                                 <span>
-                                    <strong>{averageVotingPower}</strong>
+                                    <strong>{averageVotingPower.toFixed(decimals)}</strong>
                                 </span>
                             )
                         }
