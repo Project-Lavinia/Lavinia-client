@@ -4,6 +4,7 @@ import { DistrictResult } from "../../Interfaces/Results";
 
 export interface SeatDistributionProps {
     districtResults: DistrictResult[];
+    districtWidth: number;
 }
 
 export class SeatDistribution extends React.Component<SeatDistributionProps, {}> {
@@ -11,7 +12,8 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
         const columns: Column[] = [
             {
                 Header: "Fylke",
-                accessor: "name"
+                accessor: "name",
+                width: this.props.districtWidth * 10
             }
         ];
 
@@ -24,7 +26,8 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
                 const element = this.props.districtResults[0].partyResults[partyIndex];
                 columns.push({
                     Header: element.partyCode,
-                    accessor: `partyResults[${partyIndex}].totalSeats`
+                    accessor: `partyResults[${partyIndex}].totalSeats`,
+                    minWidth: 50
                 });
             }
         }
@@ -34,13 +37,16 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
 
     render() {
         return (
-            <ReactTable
-                className="-highlight -striped"
-                defaultPageSize={19}
-                showPaginationBottom={false}
-                data={this.props.districtResults}
-                columns={this.generateColumns()}
-            />
+            <React.Fragment>
+                <h2>Mandatfordeling</h2>
+                <ReactTable
+                    className="-highlight -striped"
+                    defaultPageSize={19}
+                    showPaginationBottom={false}
+                    data={this.props.districtResults}
+                    columns={this.generateColumns()}
+                />
+            </React.Fragment>
         );
     }
 }

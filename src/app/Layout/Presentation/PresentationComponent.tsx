@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import { PresentationType } from "../Types/PresentationType";
 import { LagueDhontResult, PartyResult, DistrictResult } from "../Interfaces/Results";
 import { ElectionOverview, DistrictOverview, SeatsPerParty, SeatDistribution, SingleDistrict } from "./Views";
@@ -14,6 +14,7 @@ import {
     getRoundsAssignedSeats
 } from "./Utilities/PresentationUtilities";
 import { RemainderQuotients } from "./Views/RemainderQuotients";
+import { toMax } from "./Utilities/ReduceUtilities";
 
 export interface PresentationProps {
     currentPresentation: PresentationType;
@@ -68,12 +69,24 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
         return partyCodes;
     }
 
+    getPartyNames(): string[] {
+        const partyNames: string[] = [];
+        this.props.results.partyResults.forEach((party) => {
+            partyNames.push(party.partyName);
+        });
+        return partyNames;
+    }
+
     getDistricts(): string[] {
         const districts: string[] = [];
         this.props.results.districtResults.forEach((district) => {
             districts.push(district.name);
         });
         return districts;
+    }
+
+    getWidestStringWidth(strings: string[] = []): number {
+        return strings.map((value) => value.length).reduce(toMax)!;
     }
 
     getLevellingSeats() {
@@ -86,11 +99,28 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
     render() {
         switch (this.props.currentPresentation) {
             case PresentationType.ElectionTable:
-                return <ElectionOverview partyResults={this.getPartyTableData()} />;
+                return (
+                    <ElectionOverview
+                        partyResults={this.getPartyTableData()}
+                        decimals={this.props.decimals}
+                        partyNameWidth={this.getWidestStringWidth(this.getPartyNames())}
+                    />
+                );
             case PresentationType.DistrictTable:
-                return <DistrictOverview districtResults={this.getDistrictTableData()} />;
+                return (
+                    <DistrictOverview
+                        districtResults={this.getDistrictTableData()}
+                        districtWidth={this.getWidestStringWidth(this.getDistricts())}
+                        decimals={this.props.decimals}
+                    />
+                );
             case PresentationType.SeatDistribution:
-                return <SeatDistribution districtResults={this.getSeatDistributionData()} />;
+                return (
+                    <SeatDistribution
+                        districtResults={this.getSeatDistributionData()}
+                        districtWidth={this.getWidestStringWidth(this.getDistricts())}
+                    />
+                );
             case PresentationType.SeatsPerParty:
                 return <SeatsPerParty partyResults={this.getSeatsPerPartyData()} />;
             case PresentationType.SingleCountyTable:
@@ -98,6 +128,7 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
                     <SingleDistrict
                         districtSelected={this.props.districtSelected}
                         districtResults={this.getSingleDistrictData()}
+                        decimals={this.props.decimals}
                     />
                 );
             case PresentationType.RemainderQuotients:
