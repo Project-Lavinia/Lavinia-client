@@ -128,6 +128,7 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
                     <SingleDistrict
                         districtSelected={this.props.districtSelected}
                         districtResults={this.getSingleDistrictData()}
+                        decimals={this.props.decimals}
                     />
                 );
             case PresentationType.RemainderQuotients:

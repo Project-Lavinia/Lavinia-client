@@ -6,6 +6,7 @@ import { toSum } from "../Utilities/ReduceUtilities";
 export interface SingleDistrictProps {
     districtResults: DistrictResult[];
     districtSelected: string;
+    decimals: number;
 }
 
 export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
@@ -16,6 +17,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
 
     render() {
         const data = this.getData();
+        const decimals = this.props.decimals;
         return (
             <React.Fragment>
                 <h1 className="h1">{this.props.districtSelected}</h1>
@@ -81,7 +83,12 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             accessor: "proportionality",
                             Footer: (
                                 <span>
-                                    <strong>{data.map((value) => value.proportionality).reduce(toSum)}</strong>
+                                    <strong>
+                                        {data
+                                            .map((value) => value.proportionality)
+                                            .reduce(toSum)
+                                            .toFixed(decimals)}
+                                    </strong>
                                 </span>
                             )
                         }
