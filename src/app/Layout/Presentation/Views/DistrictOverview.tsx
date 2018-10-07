@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import ReactTable from "react-table";
 import { DistrictResult } from "../../Interfaces/Results";
 import { toSum, toMean, toMax, toMin } from "../Utilities/ReduceUtilities";
@@ -14,6 +14,9 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const highestVotingPower = data.map((value) => value.votesPerSeat).reduce(toMin);
         const lowestVotingPower = data.map((value) => value.votesPerSeat).reduce(toMax);
         const averageVotingPower = data.map((value) => value.votesPerSeat).reduce(toMean);
+        const highestVsAverageInPercentage = ((1 / highestVotingPower / (1 / averageVotingPower)) * 100)
+        const lowestVsAverageInPercentage = ((1 / lowestVotingPower / (1 / averageVotingPower)) * 100)
+        const highestVsLowestInPercentage = ((1 / highestVotingPower / (1 / lowestVotingPower)) * 100)
         return (
             <React.Fragment>
                 <h2>Fylkesoversikt</h2>
@@ -21,16 +24,16 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                     {"En stemme i "}
                     <strong>{data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name}</strong>
                     {" hadde mest innflytelse, og telte "}
-                    {((1 / highestVotingPower / (1 / averageVotingPower)) * 100).toFixed(2) + "%"}
+                    {highestVsAverageInPercentage.toFixed(2) + "%"}
                     {" av en gjennomsnittlig stemme"}
                 </span>
                 <span>
                     {", mens en stemme i "}
                     <strong>{data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name}</strong>
                     {" hadde minst innflytelse, og bare telte "}
-                    {((1 / lowestVotingPower / (1 / averageVotingPower)) * 100).toFixed(2) + "%!"}
+                    {lowestVsAverageInPercentage.toFixed(2) + "%!"}
                     {" En stemme i det mest innflytelsesrike fylket telte altså "}
-                    {((1 / highestVotingPower / (1 / lowestVotingPower)) * 100).toFixed(2) + "%"}
+                    {highestVsLowestInPercentage.toFixed(2) + "%"}
                     {" mer enn en stemme i det minst innflytelsesrike fylket."}
                 </span>
                 <br />
