@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import ReactTable from "react-table";
 import { DistrictResult } from "../../Interfaces/Results";
 import { toSum, toMean, toMax, toMin } from "../Utilities/ReduceUtilities";
@@ -6,6 +6,7 @@ import { toSum, toMean, toMax, toMin } from "../Utilities/ReduceUtilities";
 export interface DistrictOverviewProps {
     districtResults: DistrictResult[];
     districtWidth: number;
+    decimals: number;
 }
 
 export class DistrictOverview extends React.Component<DistrictOverviewProps, {}> {
@@ -14,9 +15,9 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const highestVotingPower = data.map((value) => value.votesPerSeat).reduce(toMin);
         const lowestVotingPower = data.map((value) => value.votesPerSeat).reduce(toMax);
         const averageVotingPower = data.map((value) => value.votesPerSeat).reduce(toMean);
-        const highestVsAverageInPercentage = ((1 / highestVotingPower / (1 / averageVotingPower)) * 100)
-        const lowestVsAverageInPercentage = ((1 / lowestVotingPower / (1 / averageVotingPower)) * 100)
-        const highestVsLowestInPercentage = ((1 / highestVotingPower / (1 / lowestVotingPower)) * 100)
+        const highestVsAverageInPercentage = (1 / highestVotingPower / (1 / averageVotingPower)) * 100;
+        const lowestVsAverageInPercentage = (1 / lowestVotingPower / (1 / averageVotingPower)) * 100;
+        const highestVsLowestInPercentage = (1 / highestVotingPower / (1 / lowestVotingPower)) * 100;
         return (
             <React.Fragment>
                 <h2>Fylkesoversikt</h2>
