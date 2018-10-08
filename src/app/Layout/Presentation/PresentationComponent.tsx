@@ -86,7 +86,7 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
     }
 
     getWidestStringWidth(strings: string[] = []): number {
-        return strings.map((value) => value.length).reduce(toMax)!;
+        return strings.map((value) => value.length).reduce(toMax, 0)!;
     }
 
     getLevellingSeats() {

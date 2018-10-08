@@ -34,22 +34,22 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                     {
                         Header: "Stemmer",
                         accessor: "votes",
-                        Footer: <strong>{data.map((value) => value.votes).reduce(toSum)}</strong>
+                        Footer: <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>
                     },
                     {
                         Header: "Distrikt",
                         accessor: "districtSeats",
-                        Footer: <strong>{data.map((value) => value.districtSeats).reduce(toSum)}</strong>
+                        Footer: <strong>{data.map((value) => value.districtSeats).reduce(toSum, 0)}</strong>
                     },
                     {
                         Header: "Utjevning",
                         accessor: "levelingSeats",
-                        Footer: <strong>{data.map((value) => value.levelingSeats).reduce(toSum)}</strong>
+                        Footer: <strong>{data.map((value) => value.levelingSeats).reduce(toSum, 0)}</strong>
                     },
                     {
                         Header: "Sum",
                         accessor: "totalSeats",
-                        Footer: <strong>{data.map((value) => value.totalSeats).reduce(toSum)}</strong>
+                        Footer: <strong>{data.map((value) => value.totalSeats).reduce(toSum, 0)}</strong>
                     },
                     {
                         Header: "Proporsjonalitet",
@@ -58,7 +58,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             <strong>
                                 {data
                                     .map((value) => value.proportionality)
-                                    .reduce(toSum)
+                                    .reduce(toSum, 0)
                                     .toFixed(this.props.decimals)}
                             </strong>
                         )
