@@ -215,7 +215,8 @@ export function generateLevelingSeatArray(
                         district: countyName,
                         partyCode,
                         quotient: adjustedQuotient,
-                        seatNumber: 0
+                        seatNumber: 0,
+                        quotientNumber: 0
                     };
                     levelingSeats.push(seat);
                 }
