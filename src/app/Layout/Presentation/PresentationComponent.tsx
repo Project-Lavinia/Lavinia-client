@@ -1,7 +1,14 @@
 import * as React from "react";
 import { PresentationType } from "../Types/PresentationType";
 import { LagueDhontResult, PartyResult, DistrictResult } from "../Interfaces/Results";
-import { ElectionOverview, DistrictOverview, SeatsPerParty, SeatDistribution, SingleDistrict } from "./Views";
+import {
+    ElectionOverview,
+    DistrictOverview,
+    SeatsPerParty,
+    SeatDistribution,
+    SingleDistrict,
+    LevellingSeatOverview
+} from "./Views";
 import {
     getDistrictTableData,
     getPartyTableData,
