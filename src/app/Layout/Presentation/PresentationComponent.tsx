@@ -139,13 +139,19 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
                     />
                 );
             case PresentationType.RemainderQuotients:
-                this.getLevellingSeats();
                 return (
                     <RemainderQuotients
                         districtResults={this.getSeatDistributionData()}
                         levellingSeats={this.getLevellingSeats()}
                         decimals={this.props.decimals}
                         showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
+                    />
+                );
+            case PresentationType.LevellingSeats:
+                return (
+                    <LevellingSeatOverview
+                        decimals={this.props.decimals}
+                        levellingSeatQuotients={this.getLevellingSeats()}
                     />
                 );
             default:
