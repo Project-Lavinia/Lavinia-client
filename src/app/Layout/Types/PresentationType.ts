@@ -4,5 +4,6 @@ export enum PresentationType {
     SeatDistribution = "SEAT_DISTRIBUTION",
     SeatsPerParty = "CHART_SEATS_PER_PARTY",
     SingleCountyTable = "TABLE_SINGLE_COUNTY",
-    RemainderQuotients = "TABLE_REMAINDER_QUOTIENTS"
+    RemainderQuotients = "TABLE_REMAINDER_QUOTIENTS",
+    LevellingSeats = "TABLE_LEVELLING_SEATS_OVERVIEW"
 }
