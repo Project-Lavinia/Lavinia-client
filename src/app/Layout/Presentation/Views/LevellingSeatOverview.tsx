@@ -1,10 +1,10 @@
 import * as React from "react";
-import { SeatResult } from "../../Interfaces/Results";
+import { LevelingSeat } from "../../Interfaces/Results";
 import ReactTable from "react-table";
 
 interface LevellingSeatOverviewProps {
     decimals: number;
-    seatResults: SeatResult[];
+    levellingSeatQuotients: LevelingSeat[];
 }
 
 export class LevellingSeatOverview extends React.Component<LevellingSeatOverviewProps> {
