@@ -143,6 +143,18 @@ export function flattenPartyRestQuotients(prqs: PartyRestQuotients[]): LevelingS
     return levellingSeats;
 }
 
+export function flattenAny(arr: any, result: any[] = []) {
+    for (let i = 0, length = arr.length; i < length; i++) {
+        const value = arr[i];
+        if (Array.isArray(value)) {
+            flattenAny(value, result);
+        } else {
+            result.push(value);
+        }
+    }
+    return result;
+}
+
 /**
  * Helper function that sorts seats by number.
  *
