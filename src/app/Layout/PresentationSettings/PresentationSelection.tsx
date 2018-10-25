@@ -48,6 +48,11 @@ export class PresentationSelection extends React.Component {
                     title={"Restkvotienter"}
                     presentationSelected={PresentationType.RemainderQuotients}
                 />
+                <PresentationSelectionButton
+                    className="btn-block"
+                    title={"Utjevningsmandater"}
+                    presentationSelected={PresentationType.LevellingSeats}
+                />
             </React.Fragment>
         );
     }
