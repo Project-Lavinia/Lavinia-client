@@ -2,6 +2,12 @@
 This guide in other languages:
 * [Norsk bokmål](README.nob.md)
 
+## Description
+An application that simulates seat distribution in elections. Current features include:
+* The 2017, 2013 and 2009 Norwegian Parliamentary Elections
+* Sainte-Lagüe (modified) and D'Hondt distribution methods
+* Detailed tables describing the simulation results
+
 ## Prerequisites
 Install the latest:
 * [Node.js](https://nodejs.org)
