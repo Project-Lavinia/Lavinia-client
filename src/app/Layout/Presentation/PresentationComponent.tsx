@@ -1,7 +1,14 @@
 import * as React from "react";
 import { PresentationType } from "../Types/PresentationType";
 import { LagueDhontResult, PartyResult, DistrictResult } from "../Interfaces/Results";
-import { ElectionOverview, DistrictOverview, SeatsPerParty, SeatDistribution, SingleDistrict } from "./Views";
+import {
+    ElectionOverview,
+    DistrictOverview,
+    SeatsPerParty,
+    SeatDistribution,
+    SingleDistrict,
+    LevellingSeatOverview
+} from "./Views";
 import {
     getDistrictTableData,
     getPartyTableData,
@@ -132,7 +139,6 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
                     />
                 );
             case PresentationType.RemainderQuotients:
-                this.getLevellingSeats();
                 return (
                     <RemainderQuotients
                         districtResults={this.getSeatDistributionData()}
@@ -141,6 +147,8 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
                         showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
                     />
                 );
+            case PresentationType.LevellingSeats:
+                return <LevellingSeatOverview levellingSeatQuotients={this.props.results.levelingSeatDistribution} />;
             default:
                 console.log(`Could not find presentation type ${this.props.currentPresentation}`);
                 return <g />;
