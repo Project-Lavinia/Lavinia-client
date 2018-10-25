@@ -68,13 +68,13 @@ export class PresentationComponent extends React.Component<PresentationProps, {}
         return roundedData;
     }
 
-    getPartyCodes = (): string[] => {
+    getPartyCodes(): string[] {
         const partyCodes: string[] = [];
         this.props.results.partyResults.forEach((party) => {
             partyCodes.push(party.partyCode);
         });
         return partyCodes;
-    };
+    }
 
     getPartyNames(): string[] {
         const partyNames: string[] = [];
