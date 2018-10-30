@@ -16,7 +16,7 @@ export function configureStore(history: History, initialState?: RootState): Stor
     const store = createStore(rootReducer as any, initialState as any, middleware) as Store<RootState>;
 
     if (module.hot) {
-        module.hot.accept("app/reducers", () => {
+        module.hot.accept("../reducers", () => {
             const nextReducer = require("../reducers");
             store.replaceReducer(nextReducer);
         });
