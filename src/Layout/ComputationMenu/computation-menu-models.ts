@@ -1,4 +1,4 @@
-export interface SettingsPayload {
+export interface ComputationMenuPayload {
     electionYears: string[];
     year: string;
     algorithm: number;

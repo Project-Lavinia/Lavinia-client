@@ -1,24 +1,23 @@
 import * as React from "react";
-import { SettingsPayload } from "../Interfaces/Payloads";
-import { Button } from "../Button";
-import { SmartNumericInput } from "../SmartNumericInput";
+import { SmartNumericInput, Button } from "../../common";
 import { AlgorithmType } from "../Types/AlgorithmType";
-import * as style from "./SettingMenuComponent.css";
+import * as style from "./ComputationMenu.css";
 import { ElectionType, Election } from "../../requested-data/requested-data-models";
 import { ComputationPayload } from "../../computation";
-import { getAlgorithmType } from "../../computation/Logic";
+import { getAlgorithmType } from "../../computation/logic";
+import { ComputationMenuPayload } from "./computation-menu-models";
 
-export interface SettingMenuProps {
+export interface ComputationMenuProps {
     electionType: ElectionType;
-    settingsPayload: SettingsPayload;
+    settingsPayload: ComputationMenuPayload;
     computationPayload: ComputationPayload;
     updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => any;
-    updateSettings: (settingsPayload: SettingsPayload) => any;
+    updateSettings: (settingsPayload: ComputationMenuPayload) => any;
     toggleAutoCompute: (autoCompute: boolean) => any;
-    resetToHistoricalSettings: (settingsPayload: SettingsPayload, election: Election) => any;
+    resetToHistoricalSettings: (settingsPayload: ComputationMenuPayload, election: Election) => any;
 }
 
-export class SettingMenuComponent extends React.Component<SettingMenuProps, {}> {
+export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     shouldHideFirstDivisor(): boolean {
         return this.props.computationPayload.algorithm === AlgorithmType.DHondt;
     }

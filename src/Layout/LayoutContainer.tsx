@@ -1,11 +1,11 @@
 ﻿import { LayoutComponent, LayoutProps } from "./LayoutComponent";
 import { connect } from "react-redux";
 import { initializePresentation } from "./PresentationSettings";
-import { initializeSettings } from "./ComputationSettings";
 import { request } from "../utilities/api-requests";
 import { ElectionType } from "../requested-data/requested-data-models";
 import { initializeRequestedData } from "../requested-data";
 import { initializeComputation } from "../computation";
+import { initializeComputationMenu } from "./ComputationMenu";
 
 const mapDispatchToProps = (dispatch: any): LayoutProps => ({
     initializeState: async () => {
@@ -21,7 +21,7 @@ const mapDispatchToProps = (dispatch: any): LayoutProps => ({
             const electionType = await request<ElectionType>(uri, failover);
             const initializeRequestDataAction = initializeRequestedData(electionType);
             const initializeComputationAction = initializeComputation(electionType);
-            const initializeSettingsAction = initializeSettings(electionType);
+            const initializeSettingsAction = initializeComputationMenu(electionType);
             const initializePresentationAction = initializePresentation();
             dispatch(initializeRequestDataAction);
             console.log(`Action of type ${initializeRequestDataAction.type} dispatched`);

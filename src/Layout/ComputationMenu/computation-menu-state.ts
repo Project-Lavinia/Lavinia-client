@@ -1,4 +1,4 @@
-export interface SettingsState {
+export interface ComputationMenuState {
     electionYears: string[];
     year: string;
     algorithm: number;
@@ -9,7 +9,7 @@ export interface SettingsState {
     autoCompute: boolean;
 }
 
-export const unloadedState: SettingsState = {
+export const unloadedState: ComputationMenuState = {
     electionYears: [],
     year: "",
     algorithm: -1,

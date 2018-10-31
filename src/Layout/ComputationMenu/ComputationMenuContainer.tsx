@@ -1,13 +1,13 @@
 ﻿import { RootState } from "../../reducers";
 import { connect } from "react-redux";
-import { SettingMenuComponent, SettingMenuProps } from "./SettingMenuComponent";
-import { updateSettings, toggleAutoCompute } from ".";
-import { SettingsPayload } from "../Interfaces/Payloads";
+import { ComputationMenuProps, ComputationMenu } from "./ComputationMenu";
+import { updateComputationMenu, toggleAutoCompute } from ".";
 import { ComputationPayload, updateElectionData } from "../../computation";
 import { Election } from "../../requested-data/requested-data-models";
-import { getAlgorithmType } from "../../computation/Logic";
+import { getAlgorithmType } from "../../computation/logic";
+import { ComputationMenuPayload } from "./computation-menu-models";
 
-const mapStateToProps = (state: RootState): Partial<SettingMenuProps> => ({
+const mapStateToProps = (state: RootState): Partial<ComputationMenuProps> => ({
     computationPayload: {
         election: state.computationState.election,
         algorithm: state.computationState.algorithm,
@@ -30,7 +30,7 @@ const mapStateToProps = (state: RootState): Partial<SettingMenuProps> => ({
     electionType: state.requestedDataState.electionType
 });
 
-const mapDispatchToProps = (dispatch: any): Partial<SettingMenuProps> => ({
+const mapDispatchToProps = (dispatch: any): Partial<ComputationMenuProps> => ({
     updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => {
         if (autoCompute || forceCompute) {
             const payload: ComputationPayload = {
@@ -45,15 +45,15 @@ const mapDispatchToProps = (dispatch: any): Partial<SettingMenuProps> => ({
             dispatch(updateCalculationAction);
         }
     },
-    updateSettings: (settingsPayload: SettingsPayload) => {
-        const updateSettingsAction = updateSettings(settingsPayload);
+    updateSettings: (settingsPayload: ComputationMenuPayload) => {
+        const updateSettingsAction = updateComputationMenu(settingsPayload);
         dispatch(updateSettingsAction);
     },
     toggleAutoCompute: (isChecked: boolean) => {
         const toggleAutoComputeAction = toggleAutoCompute(isChecked);
         dispatch(toggleAutoComputeAction);
     },
-    resetToHistoricalSettings: (settingsPayload: SettingsPayload, election: Election) => {
+    resetToHistoricalSettings: (settingsPayload: ComputationMenuPayload, election: Election) => {
         if (settingsPayload.autoCompute) {
             const payload: ComputationPayload = {
                 election,
@@ -67,7 +67,7 @@ const mapDispatchToProps = (dispatch: any): Partial<SettingMenuProps> => ({
             dispatch(updateCalculationAction);
         }
 
-        const newSettingsPayload: SettingsPayload = {
+        const newSettingsPayload: ComputationMenuPayload = {
             ...settingsPayload,
             algorithm: election.algorithm,
             firstDivisor: election.firstDivisor.toString(),
@@ -75,7 +75,7 @@ const mapDispatchToProps = (dispatch: any): Partial<SettingMenuProps> => ({
             districtSeats: election.seats.toString(),
             levelingSeats: election.levelingSeats.toString()
         };
-        const updateSettingsAction = updateSettings(newSettingsPayload);
+        const updateSettingsAction = updateComputationMenu(newSettingsPayload);
         dispatch(updateSettingsAction);
     }
 });
@@ -83,4 +83,4 @@ const mapDispatchToProps = (dispatch: any): Partial<SettingMenuProps> => ({
 export const SettingsMenuContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(SettingMenuComponent as any);
+)(ComputationMenu as any);

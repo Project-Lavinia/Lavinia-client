@@ -1,9 +1,13 @@
-﻿import { SettingAction } from "../Types";
-import { SettingsPayload } from "../Interfaces/Payloads";
-import { ElectionType } from "../../requested-data/requested-data-models";
+﻿import { ElectionType } from "../../requested-data/requested-data-models";
+import { ComputationMenuPayload } from "./computation-menu-models";
 
-export interface InitializeSettingsAction {
-    type: SettingAction.InitializeSettings;
+export enum ComputationMenuAction {
+    InitializeSettings = "INITIALIZE_SETTINGS",
+    UpdateSettings = "UPDATE_SETTINGS",
+    ToggleAutoCompute = "TOGGLE_AUTO_COMPUTE"
+}
+export interface InitializeComputationMenuAction {
+    type: ComputationMenuAction.InitializeSettings;
     electionYears: string[];
     year: string;
     algorithm: number;
@@ -14,8 +18,8 @@ export interface InitializeSettingsAction {
     autoCompute: boolean;
 }
 
-export interface UpdateSettingsAction {
-    type: SettingAction.UpdateSettings;
+export interface UpdateComputationMenuAction {
+    type: ComputationMenuAction.UpdateSettings;
     year: string;
     algorithm: number;
     firstDivisor: string;
@@ -25,19 +29,19 @@ export interface UpdateSettingsAction {
 }
 
 export interface ToggleAutoComputeAction {
-    type: SettingAction.ToggleAutoCompute;
+    type: ComputationMenuAction.ToggleAutoCompute;
     autoCompute: boolean;
 }
 
-export function initializeSettings(electionType: ElectionType) {
+export function initializeComputationMenu(electionType: ElectionType) {
     const election = electionType.elections[0]; // Most recent election
     const electionYears: string[] = [];
     for (const currentElection of electionType.elections) {
         electionYears.push(currentElection.year.toString());
     }
 
-    const initializeSettingsAction: InitializeSettingsAction = {
-        type: SettingAction.InitializeSettings,
+    const initializeSettingsAction: InitializeComputationMenuAction = {
+        type: ComputationMenuAction.InitializeSettings,
         electionYears,
         year: election.year.toString(),
         algorithm: election.algorithm,
@@ -50,9 +54,9 @@ export function initializeSettings(electionType: ElectionType) {
     return initializeSettingsAction;
 }
 
-export function updateSettings(settingsPayload: SettingsPayload) {
-    const updateSettingsAction: UpdateSettingsAction = {
-        type: SettingAction.UpdateSettings,
+export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
+    const updateSettingsAction: UpdateComputationMenuAction = {
+        type: ComputationMenuAction.UpdateSettings,
         year: settingsPayload.year,
         algorithm: settingsPayload.algorithm,
         firstDivisor: settingsPayload.firstDivisor,
@@ -65,7 +69,7 @@ export function updateSettings(settingsPayload: SettingsPayload) {
 
 export function toggleAutoCompute(autoCompute: boolean) {
     const toggleAutoComputeAction: ToggleAutoComputeAction = {
-        type: SettingAction.ToggleAutoCompute,
+        type: ComputationMenuAction.ToggleAutoCompute,
         autoCompute
     };
     return toggleAutoComputeAction;

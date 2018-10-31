@@ -1,8 +1,8 @@
 ﻿import * as React from "react";
 import { NavMenu } from "./NavigationMenu";
-import { SettingsMenuContainer } from "./ComputationSettings";
 import { PresentationContainer } from "./Presentation";
 import { PresentationMenu } from "./PresentationSettings";
+import { SettingsMenuContainer } from "./ComputationMenu";
 
 export interface LayoutProps {
     initializeState: () => any;

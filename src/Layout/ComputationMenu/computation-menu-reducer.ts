@@ -1,16 +1,23 @@
-import { InitializeSettingsAction, UpdateSettingsAction, ToggleAutoComputeAction } from "./SettingActions";
-import { SettingsState, unloadedState } from "./SettingsState";
-import { SettingAction } from "../Types/ActionTypes";
+import {
+    InitializeComputationMenuAction,
+    UpdateComputationMenuAction,
+    ToggleAutoComputeAction,
+    ComputationMenuAction
+} from "./computation-menu-actions";
+import { ComputationMenuState, unloadedState } from "./computation-menu-state";
 
-type KnownAction = InitializeSettingsAction | UpdateSettingsAction | ToggleAutoComputeAction;
+type KnownAction = InitializeComputationMenuAction | UpdateComputationMenuAction | ToggleAutoComputeAction;
 
-export function settingsReducer(state: SettingsState | undefined, action: KnownAction): SettingsState {
+export function computationMenuReducer(
+    state: ComputationMenuState | undefined,
+    action: KnownAction
+): ComputationMenuState {
     if (state === undefined) {
         state = unloadedState;
     }
 
     switch (action.type) {
-        case SettingAction.InitializeSettings:
+        case ComputationMenuAction.InitializeSettings:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
@@ -23,7 +30,7 @@ export function settingsReducer(state: SettingsState | undefined, action: KnownA
                 levelingSeats: action.levelingSeats,
                 autoCompute: action.autoCompute
             };
-        case SettingAction.UpdateSettings:
+        case ComputationMenuAction.UpdateSettings:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
@@ -34,7 +41,7 @@ export function settingsReducer(state: SettingsState | undefined, action: KnownA
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats
             };
-        case SettingAction.ToggleAutoCompute:
+        case ComputationMenuAction.ToggleAutoCompute:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,

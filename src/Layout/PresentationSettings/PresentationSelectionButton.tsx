@@ -1,4 +1,4 @@
-﻿import { ButtonProps, Button } from "../Button";
+﻿import { ButtonProps, Button } from "../../common";
 import * as React from "react";
 import { PresentationType } from "../Types/PresentationType";
 

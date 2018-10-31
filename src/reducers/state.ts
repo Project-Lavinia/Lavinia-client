@@ -1,13 +1,13 @@
 import { RouterState } from "react-router-redux";
 import { ComputationState } from "../computation";
-import { SettingsState } from "../Layout/ComputationSettings";
 import { RequestedDataState } from "../requested-data";
 import { PresentationState } from "../Layout/PresentationSettings";
+import { ComputationMenuState } from "../Layout/ComputationMenu";
 
 export interface RootState {
     router: RouterState;
     computationState: ComputationState;
-    settingsState: SettingsState;
+    settingsState: ComputationMenuState;
     requestedDataState: RequestedDataState;
     presentationState: PresentationState;
 }
