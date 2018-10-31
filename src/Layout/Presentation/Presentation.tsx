@@ -1,5 +1,4 @@
 import * as React from "react";
-import { PresentationType } from "../Types/PresentationType";
 import {
     ElectionOverview,
     DistrictOverview,
@@ -22,6 +21,7 @@ import {
 import { RemainderQuotients } from "./Views/RemainderQuotients";
 import { toMax } from "./Utilities/ReduceUtilities";
 import { LagueDhontResult, PartyResult, DistrictResult } from "../../computation";
+import { PresentationType } from "./presentation-models";
 
 export interface PresentationProps {
     currentPresentation: PresentationType;
@@ -31,7 +31,7 @@ export interface PresentationProps {
     results: LagueDhontResult;
 }
 
-export class PresentationComponent extends React.Component<PresentationProps, {}> {
+export class Presentation extends React.Component<PresentationProps, {}> {
     getPartyTableData(): PartyResult[] {
         return getPartyTableData(
             this.props.results.partyResults,

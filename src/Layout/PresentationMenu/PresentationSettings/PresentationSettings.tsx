@@ -1,7 +1,7 @@
 ﻿import * as React from "react";
-import { PresentationType } from "../Types/PresentationType";
-import { LagueDhontResult } from "../../computation";
-import { SmartNumericInput } from "../../common";
+import { LagueDhontResult } from "../../../computation";
+import { SmartNumericInput } from "../../../common";
+import { PresentationType } from "../../Presentation/presentation-models";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -14,7 +14,7 @@ export interface PresentationSettingsProps {
     selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     results: LagueDhontResult;
 }
-export class PresentationSettings extends React.Component<PresentationSettingsProps> {
+export class PresentationSettingsMenu extends React.Component<PresentationSettingsProps> {
     /**
      * Helper function for reducing code in render(), allows conditional
      * rendering.

@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
-import { default as PresentationSelectionButton } from "./PresentationSelectionButtonContainer";
-import { PresentationType } from "../Types/PresentationType";
+import { PresentationType } from "../../Presentation/presentation-models";
+import { ConnectedPresentationSelectionButton } from ".";
 
 export interface PresentationSelectionProps {
     currentSelection: PresentationType;
@@ -18,37 +18,37 @@ export class PresentationSelection extends React.Component {
         return (
             <React.Fragment>
                 <h2>Presentasjonstyper</h2>
-                <PresentationSelectionButton
+                <ConnectedPresentationSelectionButton
                     className="btn-block"
                     title={"Landsoversikt"}
                     presentationSelected={PresentationType.ElectionTable}
                 />
-                <PresentationSelectionButton
+                <ConnectedPresentationSelectionButton
                     className="btn-block"
                     title={"Distriktsoversikt"}
                     presentationSelected={PresentationType.DistrictTable}
                 />
-                <PresentationSelectionButton
+                <ConnectedPresentationSelectionButton
                     className="btn-block"
                     title={"Mandatfordeling"}
                     presentationSelected={PresentationType.SeatDistribution}
                 />
-                <PresentationSelectionButton
+                <ConnectedPresentationSelectionButton
                     className="btn-block"
                     title={"Mandater per parti"}
                     presentationSelected={PresentationType.SeatsPerParty}
                 />
-                <PresentationSelectionButton
+                <ConnectedPresentationSelectionButton
                     className="btn-block"
                     title={"Fylkestabeller"}
                     presentationSelected={PresentationType.SingleCountyTable}
                 />
-                <PresentationSelectionButton
+                <ConnectedPresentationSelectionButton
                     className="btn-block"
                     title={"Restkvotienter"}
                     presentationSelected={PresentationType.RemainderQuotients}
                 />
-                <PresentationSelectionButton
+                <ConnectedPresentationSelectionButton
                     className="btn-block"
                     title={"Utjevningsmandater"}
                     presentationSelected={PresentationType.LevellingSeats}

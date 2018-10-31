@@ -1,41 +1,42 @@
-﻿import { PresentationAction, PresentationType } from "../Types";
+﻿import { PresentationType } from "../Presentation/presentation-models";
+
+export enum PresentationMenuAction {
+    InitializePresentation = "INITIALIZE_PRESENTATION",
+    ChangePresentation = "CHANGE_PRESENTATION",
+    ChangeDecimals = "CHANGE_DECIMALS",
+    ShowPartiesNoSeats = "SHOW_PARTIES_WITH_NO_SEATS",
+    SelectDistrict = "SELECT_DISTRICT"
+}
 
 export interface ChangePresentationAction {
-    type: PresentationAction.ChangePresentation;
+    type: PresentationMenuAction.ChangePresentation;
     presentationSelected: PresentationType;
 }
 export interface InitializePresentationAction {
-    type: PresentationAction.InitializePresentation;
+    type: PresentationMenuAction.InitializePresentation;
     initialPresentation: PresentationType;
     decimals: string;
     decimalsNumber: number;
     showPartiesWithoutSeats: boolean;
 }
 export interface ChangeDecimalsAction {
-    type: PresentationAction.ChangeDecimals;
+    type: PresentationMenuAction.ChangeDecimals;
     decimals: string;
     decimalsNumber: number;
 }
-export interface ChangeShowPartiesNoSeat {
-    type: PresentationAction.ShowPartiesNoSeats;
+export interface ChangeShowPartiesNoSeats {
+    type: PresentationMenuAction.ShowPartiesNoSeats;
     showPartiesWithoutSeats: boolean;
 }
 
 export interface SelectDistrictAction {
-    type: PresentationAction.SelectDistrict;
+    type: PresentationMenuAction.SelectDistrict;
     districtSelected: string;
 }
 
-export type PresentationAction =
-    | ChangePresentationAction
-    | InitializePresentationAction
-    | ChangeDecimalsAction
-    | ChangeShowPartiesNoSeat
-    | SelectDistrictAction;
-
 export function initializePresentation(): InitializePresentationAction {
     const action: InitializePresentationAction = {
-        type: PresentationAction.InitializePresentation,
+        type: PresentationMenuAction.InitializePresentation,
         initialPresentation: PresentationType.ElectionTable,
         decimals: "2",
         decimalsNumber: 2,
@@ -46,7 +47,7 @@ export function initializePresentation(): InitializePresentationAction {
 }
 export function changePresentation(presentationSelected: PresentationType): ChangePresentationAction {
     const action: ChangePresentationAction = {
-        type: PresentationAction.ChangePresentation,
+        type: PresentationMenuAction.ChangePresentation,
         presentationSelected
     };
     console.log(`Action of type ${action.type} created`);
@@ -54,7 +55,7 @@ export function changePresentation(presentationSelected: PresentationType): Chan
 }
 export function selectDistrict(name: string): SelectDistrictAction {
     const action: SelectDistrictAction = {
-        type: PresentationAction.SelectDistrict,
+        type: PresentationMenuAction.SelectDistrict,
         districtSelected: name
     };
     console.log(`Action of type ${action.type} created`);

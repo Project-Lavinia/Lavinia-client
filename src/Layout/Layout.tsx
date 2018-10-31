@@ -1,14 +1,14 @@
 ﻿import * as React from "react";
-import { NavMenu } from "./NavigationMenu";
-import { PresentationContainer } from "./Presentation";
-import { PresentationMenu } from "./PresentationSettings";
-import { SettingsMenuContainer } from "./ComputationMenu";
+import { ConnectedPresentation } from "./Presentation";
+import { ConnectedComputationMenu } from "./ComputationMenu";
+import { Navigation } from "./Navigation";
+import { PresentationMenu } from "./PresentationMenu";
 
 export interface LayoutProps {
     initializeState: () => any;
 }
 
-export class LayoutComponent extends React.Component<LayoutProps, {}> {
+export class Layout extends React.Component<LayoutProps, {}> {
     async componentWillMount() {
         await this.props.initializeState();
     }
@@ -16,13 +16,13 @@ export class LayoutComponent extends React.Component<LayoutProps, {}> {
     public render() {
         return (
             <div className="container-fluid">
-                <NavMenu />
+                <Navigation />
                 <div className="row">
                     <div className="col-md-3">
-                        <SettingsMenuContainer />
+                        <ConnectedComputationMenu />
                     </div>
                     <div className="col-md-6">
-                        <PresentationContainer />
+                        <ConnectedPresentation />
                     </div>
                     <div className="col-md-3">
                         <PresentationMenu />

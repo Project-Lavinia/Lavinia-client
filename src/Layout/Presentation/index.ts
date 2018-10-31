@@ -1,2 +1,2 @@
-export * from "./PresentationComponent";
-export * from "./PresentationContainer";
+export * from "./Presentation";
+export * from "./ConnectedPresentation";

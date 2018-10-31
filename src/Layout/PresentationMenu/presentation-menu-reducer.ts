@@ -1,14 +1,30 @@
-﻿import { unloadedState, PresentationState } from "./PresentationState";
-import { PresentationAction as KnownAction } from "./PresentationActions";
-import { PresentationAction } from "../Types/ActionTypes";
+﻿import { unloadedState, PresentationMenuState } from "./presentation-menu-state";
+import {
+    PresentationMenuAction,
+    InitializePresentationAction,
+    ChangePresentationAction,
+    ChangeDecimalsAction,
+    ChangeShowPartiesNoSeats,
+    SelectDistrictAction
+} from "./presentation-menu-actions";
 
-export function presentationReducer(state: PresentationState | undefined, action: KnownAction): PresentationState {
+type KnownAction =
+    | InitializePresentationAction
+    | ChangePresentationAction
+    | ChangeDecimalsAction
+    | ChangeShowPartiesNoSeats
+    | SelectDistrictAction;
+
+export function presentationMenuReducer(
+    state: PresentationMenuState | undefined,
+    action: KnownAction
+): PresentationMenuState {
     if (state === undefined) {
         state = unloadedState;
     }
 
     switch (action.type) {
-        case PresentationAction.InitializePresentation:
+        case PresentationMenuAction.InitializePresentation:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
@@ -17,26 +33,26 @@ export function presentationReducer(state: PresentationState | undefined, action
                 decimalsNumber: action.decimalsNumber,
                 showPartiesWithoutSeats: action.showPartiesWithoutSeats
             };
-        case PresentationAction.ChangePresentation:
+        case PresentationMenuAction.ChangePresentation:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
                 currentPresentation: action.presentationSelected
             };
-        case PresentationAction.ChangeDecimals:
+        case PresentationMenuAction.ChangeDecimals:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
                 decimals: action.decimals,
                 decimalsNumber: action.decimalsNumber
             };
-        case PresentationAction.ShowPartiesNoSeats:
+        case PresentationMenuAction.ShowPartiesNoSeats:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
                 showPartiesWithoutSeats: action.showPartiesWithoutSeats
             };
-        case PresentationAction.SelectDistrict:
+        case PresentationMenuAction.SelectDistrict:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,

@@ -1,1 +1,1 @@
-export { Layout } from "./LayoutContainer";
+export { ConnectedLayout } from "./ConnectedLayout";

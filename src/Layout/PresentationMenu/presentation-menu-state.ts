@@ -1,6 +1,6 @@
-import { PresentationType } from "../Types/PresentationType";
+import { PresentationType } from "../Presentation/presentation-models";
 
-export interface PresentationState {
+export interface PresentationMenuState {
     currentPresentation: PresentationType;
     districtSelected: string;
     decimals: string;
@@ -8,7 +8,7 @@ export interface PresentationState {
     showPartiesWithoutSeats: boolean;
 }
 
-export const unloadedState: PresentationState = {
+export const unloadedState: PresentationMenuState = {
     currentPresentation: PresentationType.ElectionTable,
     decimals: "2",
     decimalsNumber: 2,

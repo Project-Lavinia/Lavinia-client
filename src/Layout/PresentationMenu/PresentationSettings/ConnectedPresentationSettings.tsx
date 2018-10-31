@@ -1,31 +1,35 @@
-import { RootState } from "../../reducers";
+import { RootState } from "../../../reducers";
 import { connect } from "react-redux";
-import { PresentationSettings, PresentationSettingsProps } from "./PresentationSettings";
-import { ChangeDecimalsAction, selectDistrict, ChangeShowPartiesNoSeat } from "./PresentationActions";
-import { PresentationAction } from "../Types/ActionTypes";
+import { PresentationSettingsMenu, PresentationSettingsProps } from "./PresentationSettings";
+import {
+    ChangeDecimalsAction,
+    selectDistrict,
+    ChangeShowPartiesNoSeats,
+    PresentationMenuAction
+} from "../presentation-menu-actions";
 
 function mapStateToProps(state: RootState): Partial<PresentationSettingsProps> {
     return {
-        currentPresentation: state.presentationState.currentPresentation,
-        decimals: state.presentationState.decimals,
+        currentPresentation: state.presentationMenuState.currentPresentation,
+        decimals: state.presentationMenuState.decimals,
         results: state.computationState.results,
-        showPartiesWithoutSeats: state.presentationState.showPartiesWithoutSeats,
-        districtSelected: state.presentationState.districtSelected
+        showPartiesWithoutSeats: state.presentationMenuState.showPartiesWithoutSeats,
+        districtSelected: state.presentationMenuState.districtSelected
     };
 }
 
 const mapDispatchToProps = (dispatch: any): Partial<PresentationSettingsProps> => ({
     changeDecimals: (decimals: string, decimalsNumber: number) => {
         const action: ChangeDecimalsAction = {
-            type: PresentationAction.ChangeDecimals,
+            type: PresentationMenuAction.ChangeDecimals,
             decimals,
             decimalsNumber
         };
         dispatch(action);
     },
     toggleShowPartiesWithoutSeats: (event: React.ChangeEvent<HTMLInputElement>) => {
-        const action: ChangeShowPartiesNoSeat = {
-            type: PresentationAction.ShowPartiesNoSeats,
+        const action: ChangeShowPartiesNoSeats = {
+            type: PresentationMenuAction.ShowPartiesNoSeats,
             showPartiesWithoutSeats: event.target.checked
         };
         dispatch(action);
@@ -39,6 +43,6 @@ const mapDispatchToProps = (dispatch: any): Partial<PresentationSettingsProps> =
 const presentationSettingsContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(PresentationSettings as any);
+)(PresentationSettingsMenu as any);
 
 export default presentationSettingsContainer;

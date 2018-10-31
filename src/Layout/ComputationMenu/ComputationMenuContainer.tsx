@@ -80,7 +80,7 @@ const mapDispatchToProps = (dispatch: any): Partial<ComputationMenuProps> => ({
     }
 });
 
-export const SettingsMenuContainer = connect(
+export const ConnectedComputationMenu = connect(
     mapStateToProps,
     mapDispatchToProps
 )(ComputationMenu as any);

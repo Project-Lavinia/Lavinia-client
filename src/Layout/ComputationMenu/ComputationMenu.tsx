@@ -1,9 +1,8 @@
 import * as React from "react";
 import { SmartNumericInput, Button } from "../../common";
-import { AlgorithmType } from "../Types/AlgorithmType";
 import * as style from "./ComputationMenu.css";
 import { ElectionType, Election } from "../../requested-data/requested-data-models";
-import { ComputationPayload } from "../../computation";
+import { ComputationPayload, AlgorithmType } from "../../computation";
 import { getAlgorithmType } from "../../computation/logic";
 import { ComputationMenuPayload } from "./computation-menu-models";
 

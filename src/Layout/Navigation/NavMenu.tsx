@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as style from "./NavMenu.css";
 
-export class NavMenu extends React.Component<{}, {}> {
+export class Navigation extends React.Component<{}, {}> {
     public render() {
         return (
             <div className={style.container}>

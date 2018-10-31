@@ -1,11 +1,11 @@
-﻿import { LayoutComponent, LayoutProps } from "./LayoutComponent";
+﻿import { LayoutProps, Layout } from "./Layout";
 import { connect } from "react-redux";
-import { initializePresentation } from "./PresentationSettings";
 import { request } from "../utilities/api-requests";
 import { ElectionType } from "../requested-data/requested-data-models";
 import { initializeRequestedData } from "../requested-data";
 import { initializeComputation } from "../computation";
 import { initializeComputationMenu } from "./ComputationMenu";
+import { initializePresentation } from "./PresentationMenu";
 
 const mapDispatchToProps = (dispatch: any): LayoutProps => ({
     initializeState: async () => {
@@ -35,7 +35,7 @@ const mapDispatchToProps = (dispatch: any): LayoutProps => ({
     }
 });
 
-export const Layout = connect(
+export const ConnectedLayout = connect(
     null,
     mapDispatchToProps
-)(LayoutComponent as any);
+)(Layout as any);
