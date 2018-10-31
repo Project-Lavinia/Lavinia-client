@@ -1,13 +1,5 @@
-﻿import { AlgorithmType } from "../Types/AlgorithmType";
-import { Dictionary } from "../Interfaces/Utilities";
-import {
-    PartyResult,
-    SeatResult,
-    DistributionResult,
-    DistrictResult,
-    Result,
-    LevelingSeat
-} from "../Interfaces/Results";
+﻿import { AlgorithmType, Result, SeatResult, PartyResult, DistributionResult, DistrictResult, LevelingSeat } from "..";
+import { Dictionary } from "../../utilities/Dictionary";
 
 const illegalPartyCodes = new Set(["BLANKE"]);
 

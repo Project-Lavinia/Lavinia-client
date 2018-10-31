@@ -1,6 +1,6 @@
 import * as React from "react";
-import { PartyRestQuotients } from "../../Interfaces/Results";
 import ReactTable, { Column } from "react-table";
+import { PartyRestQuotients } from "../../../computation";
 
 interface LevellingSeatOverviewProps {
     levellingSeatQuotients: PartyRestQuotients[];

@@ -1,8 +1,6 @@
-import { ComputationPayload } from "../Interfaces/Payloads";
-import { Result, PartyResult, LevelingSeat, DistrictResult, PartyRestQuotients } from "../Interfaces/Results";
-import { Dictionary } from "../Interfaces/Utilities";
-import { distributeSeats, generateLevelingSeatArray } from "./AlgorithmUtils";
-import { dictionaryToArray } from "./DictionaryUtilities";
+import { ComputationPayload, PartyResult, DistrictResult, PartyRestQuotients, LevelingSeat, Result } from "..";
+import { Dictionary, dictionaryToArray } from "../../utilities/Dictionary";
+import { distributeSeats, generateLevelingSeatArray } from ".";
 
 export function distributeLevelingSeats(
     payload: ComputationPayload,

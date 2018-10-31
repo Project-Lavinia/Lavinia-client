@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 import { RootState } from "./state";
 import { routerReducer, RouterState } from "react-router-redux";
-import { computationReducer } from "../Layout/Computation";
+import { computationReducer } from "../computation";
 import { settingsReducer } from "../Layout/ComputationSettings";
-import { requestedDataAction } from "../Layout/API";
+import { requestedDataAction } from "../requested-data";
 import { presentationReducer } from "../Layout/PresentationSettings";
 
 export { RootState, RouterState };

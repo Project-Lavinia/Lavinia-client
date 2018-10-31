@@ -1,6 +1,5 @@
 import * as React from "react";
 import { PresentationType } from "../Types/PresentationType";
-import { LagueDhontResult, PartyResult, DistrictResult } from "../Interfaces/Results";
 import {
     ElectionOverview,
     DistrictOverview,
@@ -22,6 +21,7 @@ import {
 } from "./Utilities/PresentationUtilities";
 import { RemainderQuotients } from "./Views/RemainderQuotients";
 import { toMax } from "./Utilities/ReduceUtilities";
+import { LagueDhontResult, PartyResult, DistrictResult } from "../../computation";
 
 export interface PresentationProps {
     currentPresentation: PresentationType;

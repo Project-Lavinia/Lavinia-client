@@ -1,11 +1,12 @@
 import * as React from "react";
-import { SettingsPayload, ComputationPayload } from "../Interfaces/Payloads";
-import { getAlgorithmType } from "../Logic/AlgorithmUtils";
+import { SettingsPayload } from "../Interfaces/Payloads";
 import { Button } from "../Button";
-import { Election, ElectionType } from "../Interfaces/Models";
 import { SmartNumericInput } from "../SmartNumericInput";
 import { AlgorithmType } from "../Types/AlgorithmType";
 import * as style from "./SettingMenuComponent.css";
+import { ElectionType, Election } from "../../requested-data/requested-data-models";
+import { ComputationPayload } from "../../computation";
+import { getAlgorithmType } from "../../computation/Logic";
 
 export interface SettingMenuProps {
     electionType: ElectionType;

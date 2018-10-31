@@ -1,5 +1,8 @@
-﻿import { RequestedDataAction } from "../Types/ActionTypes";
-import { ElectionType } from "../Interfaces/Models";
+﻿import { ElectionType } from "./requested-data-models";
+
+export enum RequestedDataAction {
+    InitializeRequestedData = "INITIALIZE_REQUESTED_DATA"
+}
 
 export interface InitializeRequestedDataAction {
     type: RequestedDataAction.InitializeRequestedData;

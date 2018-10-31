@@ -1,6 +1,5 @@
-﻿import { ComputationState, unloadedState } from "./ComputationState";
-import { InitializeComputationAction, UpdateResultsAction } from "./ComputationActions";
-import { ComputationAction as ElectionActionEnum } from "../Types/ActionTypes";
+﻿import { ComputationState, unloadedState } from "./computation-state";
+import { InitializeComputationAction, UpdateResultsAction, ComputationAction } from "./computation-actions";
 
 type KnownAction = InitializeComputationAction | UpdateResultsAction;
 
@@ -10,7 +9,7 @@ export function computationReducer(state: ComputationState | undefined, action: 
     }
 
     switch (action.type) {
-        case ElectionActionEnum.InitializeComputation:
+        case ComputationAction.InitializeComputation:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
@@ -22,7 +21,7 @@ export function computationReducer(state: ComputationState | undefined, action: 
                 levelingSeats: action.levelingSeats,
                 results: action.results
             };
-        case ElectionActionEnum.UpdateResults:
+        case ComputationAction.UpdateResults:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,

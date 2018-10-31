@@ -1,11 +1,11 @@
 ﻿import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import { SettingMenuComponent, SettingMenuProps } from "./SettingMenuComponent";
-import { updateElectionData } from "../Computation";
 import { updateSettings, toggleAutoCompute } from ".";
-import { ComputationPayload, SettingsPayload } from "../Interfaces/Payloads";
-import { Election } from "../Interfaces/Models";
-import { getAlgorithmType } from "../Logic/AlgorithmUtils";
+import { SettingsPayload } from "../Interfaces/Payloads";
+import { ComputationPayload, updateElectionData } from "../../computation";
+import { Election } from "../../requested-data/requested-data-models";
+import { getAlgorithmType } from "../../computation/Logic";
 
 const mapStateToProps = (state: RootState): Partial<SettingMenuProps> => ({
     computationPayload: {

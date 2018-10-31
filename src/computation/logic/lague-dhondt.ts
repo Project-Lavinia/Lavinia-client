@@ -1,9 +1,8 @@
-﻿import { ComputationPayload } from "../Interfaces/Payloads";
-import { Dictionary } from "../Interfaces/Utilities";
-import { PartyResult, DistrictResult, LagueDhontResult } from "../Interfaces/Results";
-import { distributeSeats, calculateProportionality, finalizeDistrictCalculations } from "./AlgorithmUtils";
-import { distributeLevelingSeats } from "./DistributeLevelingSeats";
-import { dictionaryToArray } from "./DictionaryUtilities";
+﻿import { ComputationPayload, LagueDhontResult, PartyResult, DistrictResult } from "..";
+
+import { Dictionary, dictionaryToArray } from "../../utilities/Dictionary";
+
+import { distributeSeats, distributeLevelingSeats, calculateProportionality, finalizeDistrictCalculations } from ".";
 
 export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     const partyResults: Dictionary<PartyResult> = {};

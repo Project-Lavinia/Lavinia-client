@@ -1,7 +1,7 @@
-import { PartyResult } from "../../Interfaces/Results";
 import * as React from "react";
 // @ts-ignore
 import { VictoryChart, VictoryBar } from "victory";
+import { PartyResult } from "../../../computation";
 
 export interface SeatsPerPartyProps {
     partyResults: PartyResult[];

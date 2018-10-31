@@ -1,6 +1,5 @@
-﻿import { InitializeRequestedDataAction } from "./RequestedDataActions";
-import { RequestedDataState, unloadedState } from "./RequestedDataState";
-import { RequestedDataAction } from "../Types/ActionTypes";
+﻿import { InitializeRequestedDataAction, RequestedDataAction } from "./requested-data-actions";
+import { RequestedDataState, unloadedState } from "./requested-data-state";
 
 type KnownAction = InitializeRequestedDataAction;
 

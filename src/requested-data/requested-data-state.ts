@@ -1,4 +1,4 @@
-import { ElectionType } from "../Interfaces/Models";
+import { ElectionType } from "./requested-data-models";
 
 export interface RequestedDataState {
     enableAutoSave: boolean;

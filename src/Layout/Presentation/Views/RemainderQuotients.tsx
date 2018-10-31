@@ -1,6 +1,6 @@
 import * as React from "react";
-import { DistrictResult, LevelingSeat } from "../../Interfaces/Results";
 import ReactTable, { Column } from "react-table";
+import { LevelingSeat, DistrictResult } from "../../../computation";
 
 /**
  * Data here is represented as a simplified DistrictResult. For representing

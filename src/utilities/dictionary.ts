@@ -1,4 +1,6 @@
-import { Dictionary } from "../Interfaces/Utilities";
+﻿export interface Dictionary<T> {
+    [key: string]: T;
+}
 
 export function dictionaryToArray<T>(dictionary: Dictionary<T>): T[] {
     const array: T[] = [];

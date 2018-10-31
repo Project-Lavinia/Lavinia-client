@@ -1,6 +1,6 @@
 ﻿import { SettingAction } from "../Types";
-import { ElectionType } from "../Interfaces/Models";
 import { SettingsPayload } from "../Interfaces/Payloads";
+import { ElectionType } from "../../requested-data/requested-data-models";
 
 export interface InitializeSettingsAction {
     type: SettingAction.InitializeSettings;

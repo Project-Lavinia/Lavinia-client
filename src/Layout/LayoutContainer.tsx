@@ -1,10 +1,11 @@
 ﻿import { LayoutComponent, LayoutProps } from "./LayoutComponent";
 import { connect } from "react-redux";
-import { initializeComputation } from "./Computation";
 import { initializePresentation } from "./PresentationSettings";
-import { initializeRequestedData, request } from "./API";
 import { initializeSettings } from "./ComputationSettings";
-import { ElectionType } from "./Interfaces/Models";
+import { request } from "../utilities/api-requests";
+import { ElectionType } from "../requested-data/requested-data-models";
+import { initializeRequestedData } from "../requested-data";
+import { initializeComputation } from "../computation";
 
 const mapDispatchToProps = (dispatch: any): LayoutProps => ({
     initializeState: async () => {

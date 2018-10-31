@@ -1,6 +1,5 @@
-﻿import { AlgorithmType } from "../Types/AlgorithmType";
-import { Election } from "../Interfaces/Models";
-import { LagueDhontResult } from "../Interfaces/Results";
+﻿import { AlgorithmType, LagueDhontResult } from "./computation-models";
+import { Election } from "../requested-data/requested-data-models";
 
 export interface ComputationState {
     election: Election;

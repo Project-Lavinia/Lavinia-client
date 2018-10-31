@@ -1,7 +1,7 @@
 ﻿import * as React from "react";
-import { SmartNumericInput } from "../SmartNumericInput";
-import { LagueDhontResult } from "../Interfaces/Results";
 import { PresentationType } from "../Types/PresentationType";
+import { LagueDhontResult } from "../../computation";
+import { SmartNumericInput } from "../SmartNumericInput";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;

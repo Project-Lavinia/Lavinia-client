@@ -1,9 +1,11 @@
-﻿import { ElectionType, Election } from "../Interfaces/Models";
-import { ComputationPayload } from "../Interfaces/Payloads";
-import { LagueDhontResult } from "../Interfaces/Results";
-import { ComputationAction } from "../Types";
-import { getAlgorithmType, lagueDhont } from "../Logic";
+﻿import { ComputationPayload, LagueDhontResult } from "./computation-models";
+import { ElectionType, Election } from "../requested-data/requested-data-models";
+import { getAlgorithmType, lagueDhont } from "./logic";
 
+export enum ComputationAction {
+    InitializeComputation = "INITIALIZE_COMPUTATION",
+    UpdateResults = "UPDATE_CALCULATION"
+}
 export interface InitializeComputationAction extends ComputationPayload {
     type: ComputationAction.InitializeComputation;
     results: LagueDhontResult;
