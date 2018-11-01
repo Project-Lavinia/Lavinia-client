@@ -1,6 +1,6 @@
-import { roundNumber } from "./NumberUtilities";
-import { PartyResult, DistrictResult, LevelingSeat, PartyRestQuotients } from "../../../computation";
-import { Dictionary } from "../../../utilities/Dictionary";
+import { PartyResult, DistrictResult, LevelingSeat, PartyRestQuotients } from "../../computation";
+import { Dictionary } from "../../utilities/Dictionary";
+import { roundNumber } from "../../utilities/number";
 
 export function getPartyTableData(
     partyResults: PartyResult[],

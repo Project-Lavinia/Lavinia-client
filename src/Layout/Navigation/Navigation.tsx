@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as style from "./NavMenu.css";
+import * as style from "./Navigation.css";
 
 export class Navigation extends React.Component<{}, {}> {
     public render() {

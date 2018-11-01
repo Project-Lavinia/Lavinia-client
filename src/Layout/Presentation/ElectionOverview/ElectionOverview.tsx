@@ -1,7 +1,7 @@
 ﻿import * as React from "react";
 import ReactTable from "react-table";
-import { toSum } from "../Utilities/ReduceUtilities";
 import { PartyResult } from "../../../computation";
+import { toSum } from "../../../utilities/reduce";
 
 export interface ElectionOverviewProps {
     partyResults: PartyResult[];

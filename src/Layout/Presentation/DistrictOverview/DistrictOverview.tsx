@@ -1,7 +1,7 @@
 ﻿import * as React from "react";
 import ReactTable from "react-table";
-import { toSum, toMean, toMax, toMin } from "../Utilities/ReduceUtilities";
 import { DistrictResult } from "../../../computation";
+import { toMin, toMax, toMean, toSum } from "../../../utilities/reduce";
 
 export interface DistrictOverviewProps {
     districtResults: DistrictResult[];

@@ -1,6 +1,6 @@
 import * as React from "react";
 import ReactTable, { Column } from "react-table";
-import { DistrictResult } from "../../../computation";
+import { DistrictResult } from "../../../computation/computation-models";
 
 export interface SeatDistributionProps {
     districtResults: DistrictResult[];

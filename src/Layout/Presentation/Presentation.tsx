@@ -6,7 +6,7 @@ import {
     SeatDistribution,
     SingleDistrict,
     LevellingSeatOverview
-} from "./Views";
+} from ".";
 import {
     getDistrictTableData,
     getPartyTableData,
@@ -17,9 +17,9 @@ import {
     removeSeatDuplicates,
     sortSeatsByNumber,
     getRoundsAssignedSeats
-} from "./Utilities/PresentationUtilities";
-import { RemainderQuotients } from "./Views/RemainderQuotients";
-import { toMax } from "./Utilities/ReduceUtilities";
+} from "./presentation-utilities";
+import { RemainderQuotients } from "./RemainderQuotients/RemainderQuotients";
+import { toMax } from "../../utilities/reduce";
 import { LagueDhontResult, PartyResult, DistrictResult } from "../../computation";
 import { PresentationType } from "./presentation-models";
 
