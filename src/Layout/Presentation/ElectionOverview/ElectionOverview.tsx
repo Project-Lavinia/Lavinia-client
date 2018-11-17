@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import ReactTable from "react-table";
 import { PartyResult } from "../../../computation";
 import { toSum } from "../../../utilities/reduce";
@@ -29,7 +29,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                     {
                         Header: "Parti",
                         accessor: "partyName",
-                        width: this.props.partyNameWidth * 8,
+                        width: this.props.partyNameWidth + 165,
                         Footer: <strong>Utvalg</strong>
                     },
                     {
