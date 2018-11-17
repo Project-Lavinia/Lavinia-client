@@ -2,6 +2,12 @@
 Denne guiden på andre språk:
 * [English](README.md)
 
+## Beskrivelse
+En applikasjon som simulerer mandatdistribusjon i valg. Nåværende funksjonalitet inkluderer:
+* Stortingsvalgene i 2017, 2013 og 2009
+* Fordelingsmetodene Sainte-Lagüe (modifisert) og D'Hondt
+* Detaljerte tabeller som beskriver simulasjonsresultatene
+
 ## Forutsetninger
 Installer de siste versjonene av:
 * [Node.js](https://nodejs.org)
