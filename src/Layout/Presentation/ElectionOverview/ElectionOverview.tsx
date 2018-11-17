@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import ReactTable from "react-table";
 import { PartyResult } from "../../../computation";
 import { toSum } from "../../../utilities/reduce";
@@ -12,6 +12,7 @@ export interface ElectionOverviewProps {
 export class ElectionOverview extends React.Component<ElectionOverviewProps, {}> {
     render() {
         const data = this.props.partyResults;
+        const loosemoreHanbyIndex = data.map((value) => Math.abs(value.proportionality)).reduce(toSum, 0) / 2;
         return (
             <ReactTable
                 className="-highlight -striped"
@@ -54,14 +55,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                     {
                         Header: "Proporsjonalitet",
                         accessor: "proportionality",
-                        Footer: (
-                            <strong>
-                                {data
-                                    .map((value) => value.proportionality)
-                                    .reduce(toSum, 0)
-                                    .toFixed(this.props.decimals)}
-                            </strong>
-                        )
+                        Footer: <strong>LHI: {loosemoreHanbyIndex.toFixed(this.props.decimals)}</strong>
                     }
                 ]}
                 defaultSorted={[
