@@ -3,8 +3,8 @@ import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { ConnectedRouter } from "react-router-redux";
 import { createBrowserHistory } from "history";
-import { configureStore, loadState, saveState } from "./app/store";
-import { App } from "./app";
+import { configureStore, loadState, saveState } from "./store";
+import { App } from ".";
 import { throttle } from "lodash";
 import "./main.css";
 
