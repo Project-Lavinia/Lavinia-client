@@ -7,3 +7,8 @@ export enum PresentationType {
     RemainderQuotients = "TABLE_REMAINDER_QUOTIENTS",
     LevellingSeats = "TABLE_LEVELLING_SEATS_OVERVIEW"
 }
+
+export enum DisproportionalityIndex {
+    LOOSEMORE_HANBY = "LOOSEMORE_HANBY_INDEX",
+    GALLAGHER = "GALLAGHER_INDEX"
+}
