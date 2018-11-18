@@ -1,7 +1,7 @@
-import * as React from "react";
+﻿import * as React from "react";
 import { LagueDhontResult } from "../../../computation";
 import { SmartNumericInput } from "../../../common";
-import { PresentationType } from "../../Presentation/presentation-models";
+import { PresentationType, DisproportionalityIndex } from "../../Presentation/presentation-models";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -13,6 +13,8 @@ export interface PresentationSettingsProps {
     toggleShowPartiesWithoutSeats: (event: React.ChangeEvent<HTMLInputElement>) => void;
     selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     results: LagueDhontResult;
+    changeDisproportionalityIndex: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    disproportionalityIndex: DisproportionalityIndex;
 }
 export class PresentationSettingsMenu extends React.Component<PresentationSettingsProps> {
     /**
@@ -29,6 +31,17 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
             return true;
         }
         return false;
+    }
+
+    /**
+     * Helper function that checks whether the current component should
+     * show disproportionality index as an option
+     */
+    showsDisproportionality(): boolean {
+        return (
+            this.props.currentPresentation === PresentationType.SingleDistrict ||
+            this.props.currentPresentation === PresentationType.ElectionTable
+        );
     }
 
     /**
@@ -98,6 +111,25 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                                 })}
                             </select>
                         </div>
+                    </div>
+                    <div hidden={!this.showsDisproportionality()} className="form-group">
+                        <label htmlFor="disproportionality">Disproporsjonalitetsindeks</label>
+                        <select
+                            id="disproportionality"
+                            onChange={this.props.changeDisproportionalityIndex}
+                            className="form-control"
+                            value={this.props.disproportionalityIndex}
+                        >
+                            <option
+                                key={DisproportionalityIndex.LOOSEMORE_HANBY}
+                                value={DisproportionalityIndex.LOOSEMORE_HANBY}
+                            >
+                                Loosemore-Hanby
+                            </option>
+                            <option key={DisproportionalityIndex.GALLAGHER} value={DisproportionalityIndex.GALLAGHER}>
+                                Gallagher
+                            </option>
+                        </select>
                     </div>
                 </form>
             </React.Fragment>

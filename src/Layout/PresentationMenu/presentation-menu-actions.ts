@@ -1,11 +1,12 @@
-﻿import { PresentationType } from "../Presentation/presentation-models";
+﻿import { PresentationType, DisproportionalityIndex } from "../Presentation/presentation-models";
 
 export enum PresentationMenuAction {
     InitializePresentation = "INITIALIZE_PRESENTATION",
     ChangePresentation = "CHANGE_PRESENTATION",
     ChangeDecimals = "CHANGE_DECIMALS",
     ShowPartiesNoSeats = "SHOW_PARTIES_WITH_NO_SEATS",
-    SelectDistrict = "SELECT_DISTRICT"
+    SelectDistrict = "SELECT_DISTRICT",
+    ChangeDisproportionalityIndex = "CHANGE_DISPROPORTIONALITY_INDEX"
 }
 
 export interface ChangePresentationAction {
@@ -34,6 +35,11 @@ export interface SelectDistrictAction {
     districtSelected: string;
 }
 
+export interface ChangeDisproportionalityIndexAction {
+    type: PresentationMenuAction.ChangeDisproportionalityIndex;
+    index: DisproportionalityIndex;
+}
+
 export function initializePresentation(): InitializePresentationAction {
     const action: InitializePresentationAction = {
         type: PresentationMenuAction.InitializePresentation,
@@ -57,6 +63,14 @@ export function selectDistrict(name: string): SelectDistrictAction {
     const action: SelectDistrictAction = {
         type: PresentationMenuAction.SelectDistrict,
         districtSelected: name
+    };
+    console.log(`Action of type ${action.type} created`);
+    return action;
+}
+export function changeDisproportionalityIndex(index: DisproportionalityIndex) {
+    const action: ChangeDisproportionalityIndexAction = {
+        type: PresentationMenuAction.ChangeDisproportionalityIndex,
+        index
     };
     console.log(`Action of type ${action.type} created`);
     return action;

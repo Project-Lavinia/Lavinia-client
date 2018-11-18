@@ -2,17 +2,38 @@
 import ReactTable from "react-table";
 import { PartyResult } from "../../../computation";
 import { toSum } from "../../../utilities/reduce";
+import { DisproportionalityIndex } from "../presentation-models";
 
 export interface ElectionOverviewProps {
     partyResults: PartyResult[];
     decimals: number;
     partyNameWidth: number;
+    disproportionalityIndex: DisproportionalityIndex;
 }
 
 export class ElectionOverview extends React.Component<ElectionOverviewProps, {}> {
     render() {
         const data = this.props.partyResults;
-        const loosemoreHanbyIndex = data.map((value) => Math.abs(value.proportionality)).reduce(toSum, 0) / 2;
+        const proportionalities = data.map((value) => value.proportionality);
+        let index: number;
+        let label: string;
+        switch (this.props.disproportionalityIndex) {
+            case DisproportionalityIndex.LOOSEMORE_HANBY: {
+                label = "LHI";
+                index = proportionalities.map((value) => Math.abs(value)).reduce(toSum, 0) / 2;
+                break;
+            }
+            case DisproportionalityIndex.GALLAGHER: {
+                label = "GI";
+                index = Math.sqrt(proportionalities.map((value) => value * value).reduce(toSum, 0) / 2);
+                break;
+            }
+            default: {
+                label = "Error";
+                index = -1;
+            }
+        }
+
         return (
             <ReactTable
                 className="-highlight -striped"
@@ -55,7 +76,11 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                     {
                         Header: "Proporsjonalitet",
                         accessor: "proportionality",
-                        Footer: <strong>LHI: {loosemoreHanbyIndex.toFixed(this.props.decimals)}</strong>
+                        Footer: (
+                            <strong>
+                                {label}: {index.toFixed(this.props.decimals)}
+                            </strong>
+                        )
                     }
                 ]}
                 defaultSorted={[
