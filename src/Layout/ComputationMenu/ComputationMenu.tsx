@@ -154,6 +154,11 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
         this.props.toggleAutoCompute(event.target.checked);
         this.computeManually();
     };
+
+    /**
+     * Helper function to perform a manual computation of the current values.
+     *
+     */
     computeManually = () => {
         const year = parseInt(this.props.settingsPayload.year);
         const election = this.props.electionType.elections.find((e) => e.year === year);
