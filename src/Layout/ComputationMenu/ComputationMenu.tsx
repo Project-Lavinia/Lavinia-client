@@ -143,6 +143,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
             false
         );
     };
+
+    /**
+     * Helper function to update whether or not automatic computation is
+     * enabled. Ensures computation is performed whenever toggled.
+     *
+     * @param event ChangeEvent for whether or not it is checked
+     */
     toggleAutoCompute = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.props.toggleAutoCompute(event.target.checked);
         this.computeManually();
