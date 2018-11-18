@@ -20,6 +20,8 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
     /**
      * Helper function for reducing code in render(), allows conditional
      * rendering.
+     *
+     * @returns true if the view requires decimals, false otherwise
      */
     needsDecimals(): boolean {
         return (
@@ -33,6 +35,8 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
     /**
      * Helper function that checks whether the current component should
      * show disproportionality index as an option
+     *
+     * @returns true if the current view requires displaying disproportionality options, false otherwise
      */
     showsDisproportionality(): boolean {
         return (
