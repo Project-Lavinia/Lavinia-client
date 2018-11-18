@@ -1,9 +1,10 @@
-import * as React from "react";
+﻿import * as React from "react";
 import { LagueDhontResult } from "../../../computation";
 import { SmartNumericInput } from "../../../common";
 import { PresentationType, DisproportionalityIndex } from "../../Presentation/presentation-models";
 import { DistrictSelect } from "./DistrictSelect";
 import { DisproportionalitySelect } from "./DisproportionalitySelect";
+import { NoSeatsCheckbox } from "./NoSeatsCheckbox";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -65,20 +66,10 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
             <React.Fragment>
                 <h2>Presentasjonsinnstillinger</h2>
                 <form>
-                    <div className="form-group mb-3">
-                        <div className="form-check form-check-inline">
-                            <input
-                                className="form-check-input"
-                                type="checkbox"
-                                name="no-seats-setting"
-                                checked={this.props.showPartiesWithoutSeats}
-                                onChange={this.props.toggleShowPartiesWithoutSeats}
-                            />
-                            <label className="form-check-label" htmlFor="no-seats-setting">
-                                Vis partier uten mandater
-                            </label>
-                        </div>
-                    </div>
+                    <NoSeatsCheckbox
+                        showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
+                        toggleShowPartiesWithoutSeats={this.props.toggleShowPartiesWithoutSeats}
+                    />
                     <SmartNumericInput
                         hidden={!this.needsDecimals()}
                         name="decimalPlaces"
