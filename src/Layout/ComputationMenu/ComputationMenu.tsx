@@ -99,6 +99,14 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
             false
         );
     };
+
+    /**
+     * Helper function to update the calculation and settings on
+     * user interaction.
+     *
+     * @param stringValue the string value of the threshold
+     * @param numericValue the numeric value of the threshold
+     */
     onThresholdChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
