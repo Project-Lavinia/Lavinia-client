@@ -77,6 +77,14 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
             algorithm
         });
     };
+
+    /**
+     * Helper function to update the calculation and settings on
+     * user interaction.
+     *
+     * @param stringValue the string value of the first divisor
+     * @param numericValue the numeric value of the first divisor
+     */
     onFirstDivisorChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
