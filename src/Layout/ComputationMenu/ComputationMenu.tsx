@@ -21,6 +21,12 @@ export interface ComputationMenuProps {
 }
 
 export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
+    /**
+     * Helper function to determine whether the first divisor SmartNumericInput
+     * should be visible.
+     *
+     * @returns true if it should be hidden, false if it should not
+     */
     shouldHideFirstDivisor(): boolean {
         return this.props.computationPayload.algorithm === AlgorithmType.DHondt;
     }
