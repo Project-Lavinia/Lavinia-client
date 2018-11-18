@@ -6,6 +6,7 @@ import { ComputationPayload, AlgorithmType } from "../../computation";
 import { getAlgorithmType } from "../../computation/logic";
 import { ComputationMenuPayload } from "./computation-menu-models";
 import { YearSelect } from "./YearSelect";
+import { AlgorithmSelect } from "./AlgorithmSelect";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -132,20 +133,10 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         onYearChange={this.onYearChange}
                         year={this.props.settingsPayload.year}
                     />
-                    <div className="form-group row">
-                        <label className="col-sm-5 col-form-label">Algoritme</label>
-                        <div className="col-sm-7">
-                            <select
-                                className="form-control"
-                                name="calcMethod"
-                                value={this.props.settingsPayload.algorithm.toString()}
-                                onChange={this.onAlgorithmChange}
-                            >
-                                <option value="1">Sainte Lagüe</option>
-                                <option value="2">d'Hondt</option>>
-                            </select>
-                        </div>
-                    </div>
+                    <AlgorithmSelect
+                        algorithm={this.props.settingsPayload.algorithm}
+                        onAlgorithmChange={this.onAlgorithmChange}
+                    />
                     <SmartNumericInput
                         hidden={this.shouldHideFirstDivisor()}
                         name="firstDivisor"
