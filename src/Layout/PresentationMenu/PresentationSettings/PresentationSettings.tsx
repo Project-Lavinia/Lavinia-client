@@ -49,7 +49,6 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
      * be shown.
      *
      * @returns true if the dropdown should be shown, false otherwise
-     * @memberof PresentationSettings
      */
     needsDistrictDropdown(): boolean {
         if (this.props.currentPresentation === PresentationType.SingleDistrict) {
