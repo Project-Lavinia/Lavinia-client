@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import { LagueDhontResult } from "../../../computation";
 import { SmartNumericInput } from "../../../common";
 import { PresentationType } from "../../Presentation/presentation-models";
@@ -23,7 +23,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         if (
             this.props.currentPresentation === PresentationType.DistrictTable ||
             this.props.currentPresentation === PresentationType.ElectionTable ||
-            this.props.currentPresentation === PresentationType.SingleCountyTable ||
+            this.props.currentPresentation === PresentationType.SingleDistrict ||
             this.props.currentPresentation === PresentationType.RemainderQuotients
         ) {
             return true;
@@ -39,7 +39,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
      * @memberof PresentationSettings
      */
     needsDistrictDropdown(): boolean {
-        if (this.props.currentPresentation === PresentationType.SingleCountyTable) {
+        if (this.props.currentPresentation === PresentationType.SingleDistrict) {
             return true;
         }
         return false;

@@ -130,7 +130,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                 );
             case PresentationType.SeatsPerParty:
                 return <SeatsPerParty partyResults={this.getSeatsPerPartyData()} />;
-            case PresentationType.SingleCountyTable:
+            case PresentationType.SingleDistrict:
                 return (
                     <SingleDistrict
                         districtSelected={this.props.districtSelected}

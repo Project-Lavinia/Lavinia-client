@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import { PresentationType } from "../../Presentation/presentation-models";
 import { ConnectedPresentationSelectionButton } from ".";
 
@@ -41,7 +41,7 @@ export class PresentationSelection extends React.Component {
                 <ConnectedPresentationSelectionButton
                     className="btn-block"
                     title={"Fylkestabeller"}
-                    presentationSelected={PresentationType.SingleCountyTable}
+                    presentationSelected={PresentationType.SingleDistrict}
                 />
                 <ConnectedPresentationSelectionButton
                     className="btn-block"
