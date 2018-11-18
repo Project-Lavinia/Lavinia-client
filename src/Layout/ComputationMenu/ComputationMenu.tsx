@@ -55,6 +55,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
             });
         }
     };
+
+    /**
+     * Helper function to update the calculation and settings on user
+     * interaction.
+     *
+     * @param event a ChangeEvent whose target carries the numerified algorithm
+     */
     onAlgorithmChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const algorithm = parseInt(event.target.value);
         this.props.updateCalculation(
