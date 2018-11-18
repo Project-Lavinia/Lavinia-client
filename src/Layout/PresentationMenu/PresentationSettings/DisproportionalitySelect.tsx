@@ -1,13 +1,13 @@
 import * as React from "react";
 import { DisproportionalityIndex } from "../../Presentation/presentation-models";
 
-export interface DisproportionalityProps {
+export interface DisproportionalitySelectProps {
     hidden: boolean;
     disproportionalityIndex: DisproportionalityIndex;
     changeDisproportionalityIndex: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export class Disproportionality extends React.Component<DisproportionalityProps> {
+export class DisproportionalitySelect extends React.Component<DisproportionalitySelectProps> {
     render() {
         return (
             <div hidden={this.props.hidden} className="form-group">

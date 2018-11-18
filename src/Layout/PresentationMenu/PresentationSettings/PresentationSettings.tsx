@@ -1,8 +1,8 @@
-﻿import * as React from "react";
+import * as React from "react";
 import { LagueDhontResult } from "../../../computation";
 import { SmartNumericInput } from "../../../common";
 import { PresentationType, DisproportionalityIndex } from "../../Presentation/presentation-models";
-import { Disproportionality } from "./Disproportionality";
+import { DisproportionalitySelect } from "./DisproportionalitySelect";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -39,7 +39,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
      *
      * @returns true if the current view requires displaying disproportionality options, false otherwise
      */
-    showsDisproportionality(): boolean {
+    showDisproportionalitySelect(): boolean {
         return (
             this.props.currentPresentation === PresentationType.SingleDistrict ||
             this.props.currentPresentation === PresentationType.ElectionTable
@@ -90,31 +90,8 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                         value={this.props.decimals}
                         onChange={this.props.changeDecimals}
                     />
-                    <div hidden={!this.needsDistrictDropdown()} className="form-row align-items-center">
-                        <div className="col-sm-4 my-1">
-                            <label className="col-form-label col-md-2" htmlFor="district">
-                                Fylke
-                            </label>
-                        </div>
-                        <div className="col-sm-8">
-                            <select
-                                id="district"
-                                onChange={this.props.selectDistrict}
-                                className="form-control"
-                                value={this.props.districtSelected}
-                            >
-                                {this.props.results.districtResults.map((item, index) => {
-                                    return (
-                                        <option key={index} value={item.name}>
-                                            {item.name}
-                                        </option>
-                                    );
-                                })}
-                            </select>
-                        </div>
-                    </div>
-                    <Disproportionality
-                        hidden={!this.showsDisproportionality()}
+                    <DisproportionalitySelect
+                        hidden={!this.showDisproportionalitySelect()}
                         changeDisproportionalityIndex={this.props.changeDisproportionalityIndex}
                         disproportionalityIndex={this.props.disproportionalityIndex}
                     />
