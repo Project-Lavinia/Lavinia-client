@@ -7,6 +7,7 @@ import { getAlgorithmType } from "../../computation/logic";
 import { ComputationMenuPayload } from "./computation-menu-models";
 import { YearSelect } from "./YearSelect";
 import { AlgorithmSelect } from "./AlgorithmSelect";
+import { AutoComputeCheckbox } from "./AutoComputeCheckbox";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -171,24 +172,11 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         integer={true}
                         slider={true}
                     />
-                    <div className="form-group row">
-                        <label htmlFor="autoCompute" className="col-sm-5 col-form-label">
-                            Oppdater automatisk
-                        </label>
-                        <div className="col-sm-7">
-                            <input
-                                className="form-control"
-                                style={{ width: "34px", margin: "0 15px 0 0" }}
-                                type="checkbox"
-                                name="autoCompute"
-                                checked={this.props.settingsPayload.autoCompute}
-                                onChange={this.toggleAutoCompute}
-                            />
-                            {!this.props.settingsPayload.autoCompute && (
-                                <Button title={"Kalkuler"} onPress={this.computeManually} type="button" />
-                            )}
-                        </div>
-                    </div>
+                    <AutoComputeCheckbox
+                        autoCompute={this.props.settingsPayload.autoCompute}
+                        computeManually={this.computeManually}
+                        toggleAutoCompute={this.toggleAutoCompute}
+                    />
                     <div className="form-group row">
                         <label htmlFor="reset" className="col-sm-5 col-form-label">
                             Historiske instillinger
