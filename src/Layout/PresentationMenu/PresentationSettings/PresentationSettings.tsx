@@ -2,6 +2,7 @@
 import { LagueDhontResult } from "../../../computation";
 import { SmartNumericInput } from "../../../common";
 import { PresentationType, DisproportionalityIndex } from "../../Presentation/presentation-models";
+import { Disproportionality } from "./Disproportionality";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -112,25 +113,11 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                             </select>
                         </div>
                     </div>
-                    <div hidden={!this.showsDisproportionality()} className="form-group">
-                        <label htmlFor="disproportionality">Disproporsjonalitetsindeks</label>
-                        <select
-                            id="disproportionality"
-                            onChange={this.props.changeDisproportionalityIndex}
-                            className="form-control"
-                            value={this.props.disproportionalityIndex}
-                        >
-                            <option
-                                key={DisproportionalityIndex.LOOSEMORE_HANBY}
-                                value={DisproportionalityIndex.LOOSEMORE_HANBY}
-                            >
-                                Loosemore-Hanby
-                            </option>
-                            <option key={DisproportionalityIndex.GALLAGHER} value={DisproportionalityIndex.GALLAGHER}>
-                                Gallagher
-                            </option>
-                        </select>
-                    </div>
+                    <Disproportionality
+                        hidden={!this.showsDisproportionality()}
+                        changeDisproportionalityIndex={this.props.changeDisproportionalityIndex}
+                        disproportionalityIndex={this.props.disproportionalityIndex}
+                    />
                 </form>
             </React.Fragment>
         );
