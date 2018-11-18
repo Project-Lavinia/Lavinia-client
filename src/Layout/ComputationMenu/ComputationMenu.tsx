@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SmartNumericInput, Button } from "../../common";
+import { SmartNumericInput } from "../../common";
 import * as style from "./ComputationMenu.css";
 import { ElectionType, Election } from "../../requested-data/requested-data-models";
 import { ComputationPayload, AlgorithmType } from "../../computation";
@@ -8,6 +8,7 @@ import { ComputationMenuPayload } from "./computation-menu-models";
 import { YearSelect } from "./YearSelect";
 import { AlgorithmSelect } from "./AlgorithmSelect";
 import { AutoComputeCheckbox } from "./AutoComputeCheckbox";
+import { ResetButton } from "./ResetButton";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -177,14 +178,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         computeManually={this.computeManually}
                         toggleAutoCompute={this.toggleAutoCompute}
                     />
-                    <div className="form-group row">
-                        <label htmlFor="reset" className="col-sm-5 col-form-label">
-                            Historiske instillinger
-                        </label>
-                        <div className="col-sm-7">
-                            <Button title={"Gjenopprett"} onPress={this.restoreToDefault} type="button" />
-                        </div>
-                    </div>
+                    <ResetButton restoreToDefault={this.restoreToDefault} />
                 </form>
             </div>
         );
