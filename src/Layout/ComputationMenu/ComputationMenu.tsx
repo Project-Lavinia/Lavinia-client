@@ -5,6 +5,7 @@ import { ElectionType, Election } from "../../requested-data/requested-data-mode
 import { ComputationPayload, AlgorithmType } from "../../computation";
 import { getAlgorithmType } from "../../computation/logic";
 import { ComputationMenuPayload } from "./computation-menu-models";
+import { YearSelect } from "./YearSelect";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -126,29 +127,11 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
             <div className={style.menu}>
                 <h1 className="h2">Stortingsvalg</h1>
                 <form>
-                    <div className="form-group row">
-                        <label className="col-sm-5 col-form-label">År</label>
-                        <div className="col-sm-7">
-                            <select
-                                id="year"
-                                value={this.props.settingsPayload.year}
-                                onChange={this.onYearChange}
-                                className="form-control"
-                                name="year"
-                            >
-                                {this.props.settingsPayload.electionYears.map((item, index) => {
-                                    return (
-                                        <option
-                                            key={index} // By convention all children should have a unique key prop
-                                            value={item}
-                                        >
-                                            {item}
-                                        </option>
-                                    );
-                                })}
-                            </select>
-                        </div>
-                    </div>
+                    <YearSelect
+                        electionYears={this.props.settingsPayload.electionYears}
+                        onYearChange={this.onYearChange}
+                        year={this.props.settingsPayload.year}
+                    />
                     <div className="form-group row">
                         <label className="col-sm-5 col-form-label">Algoritme</label>
                         <div className="col-sm-7">
