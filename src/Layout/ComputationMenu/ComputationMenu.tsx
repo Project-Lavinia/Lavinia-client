@@ -171,12 +171,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         integer={true}
                         slider={true}
                     />
-                    {/*<div className="form-group row">
-                    <label htmlFor="districtSeat" className="col-sm-5 col-form-label">Distriksmandater</label>
-                    <div className="col-sm-7">
-                        <input className="form-control" classID="districtSeat" type="number" name="districSeat" min="0" step="1" max="500" />
-                    </div>
-                </div>*/}
                     <div className="form-group row">
                         <label htmlFor="autoCompute" className="col-sm-5 col-form-label">
                             Oppdater automatisk
