@@ -30,6 +30,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     shouldHideFirstDivisor(): boolean {
         return this.props.computationPayload.algorithm === AlgorithmType.DHondt;
     }
+
+    /**
+     * Helper function to update the calculation and settings on user
+     * interaction.
+     *
+     * @param event a ChangeEvent whose target carries the stringified year
+     */
     onYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const year = parseInt(event.target.value);
         const election = this.props.electionType.elections.find((election) => election.year === year);
