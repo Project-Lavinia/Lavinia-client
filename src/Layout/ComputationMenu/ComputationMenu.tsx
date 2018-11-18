@@ -177,6 +177,11 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
             );
         }
     };
+
+    /**
+     * Helper function for restoring both the settings and the computation to
+     * their original, default state for the current year selected.
+     */
     restoreToDefault = () => {
         this.props.resetToHistoricalSettings(this.props.settingsPayload, this.props.computationPayload.election);
     };
