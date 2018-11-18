@@ -2,6 +2,7 @@ import * as React from "react";
 import { LagueDhontResult } from "../../../computation";
 import { SmartNumericInput } from "../../../common";
 import { PresentationType, DisproportionalityIndex } from "../../Presentation/presentation-models";
+import { DistrictSelect } from "./DistrictSelect";
 import { DisproportionalitySelect } from "./DisproportionalitySelect";
 
 export interface PresentationSettingsProps {
@@ -47,12 +48,12 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
     }
 
     /**
-     * Helper function for evaluating whether the district dropdown should
+     * Helper function for evaluating whether the district select should
      * be shown.
      *
      * @returns true if the dropdown should be shown, false otherwise
      */
-    needsDistrictDropdown(): boolean {
+    showDistrictSelect(): boolean {
         if (this.props.currentPresentation === PresentationType.SingleDistrict) {
             return true;
         }
@@ -89,6 +90,12 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                         title="Antall desimaler"
                         value={this.props.decimals}
                         onChange={this.props.changeDecimals}
+                    />
+                    <DistrictSelect
+                        hidden={!this.showDistrictSelect()}
+                        districtResults={this.props.results.districtResults}
+                        selectDistrict={this.props.selectDistrict}
+                        districtSelected={this.props.districtSelected}
                     />
                     <DisproportionalitySelect
                         hidden={!this.showDisproportionalitySelect()}
