@@ -121,6 +121,14 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
             false
         );
     };
+
+    /**
+     * Helper function to update the calculation and settings on
+     * user interaction.
+     *
+     * @param stringValue the string value of the no. of levelling seats
+     * @param numericValue the numeric value of the no. of levelling seats
+     */
     onLevelingSeatsChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
