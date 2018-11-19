@@ -2,6 +2,9 @@
 import { LagueDhontResult } from "../../../computation";
 import { SmartNumericInput } from "../../../common";
 import { PresentationType, DisproportionalityIndex } from "../../Presentation/presentation-models";
+import { DistrictSelect } from "./DistrictSelect";
+import { DisproportionalitySelect } from "./DisproportionalitySelect";
+import { NoSeatsCheckbox } from "./NoSeatsCheckbox";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -20,24 +23,25 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
     /**
      * Helper function for reducing code in render(), allows conditional
      * rendering.
+     *
+     * @returns true if the view requires decimals, false otherwise
      */
     needsDecimals(): boolean {
-        if (
+        return (
             this.props.currentPresentation === PresentationType.DistrictTable ||
             this.props.currentPresentation === PresentationType.ElectionTable ||
             this.props.currentPresentation === PresentationType.SingleDistrict ||
             this.props.currentPresentation === PresentationType.RemainderQuotients
-        ) {
-            return true;
-        }
-        return false;
+        );
     }
 
     /**
      * Helper function that checks whether the current component should
      * show disproportionality index as an option
+     *
+     * @returns true if the current view requires displaying disproportionality options, false otherwise
      */
-    showsDisproportionality(): boolean {
+    showDisproportionalitySelect(): boolean {
         return (
             this.props.currentPresentation === PresentationType.SingleDistrict ||
             this.props.currentPresentation === PresentationType.ElectionTable
@@ -45,13 +49,12 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
     }
 
     /**
-     * Helper function for evaluating whether the district dropdown should
+     * Helper function for evaluating whether the district select should
      * be shown.
      *
      * @returns true if the dropdown should be shown, false otherwise
-     * @memberof PresentationSettings
      */
-    needsDistrictDropdown(): boolean {
+    showDistrictSelect(): boolean {
         if (this.props.currentPresentation === PresentationType.SingleDistrict) {
             return true;
         }
@@ -63,20 +66,10 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
             <React.Fragment>
                 <h2>Presentasjonsinnstillinger</h2>
                 <form>
-                    <div className="form-group mb-3">
-                        <div className="form-check form-check-inline">
-                            <input
-                                className="form-check-input"
-                                type="checkbox"
-                                name="no-seats-setting"
-                                checked={this.props.showPartiesWithoutSeats}
-                                onChange={this.props.toggleShowPartiesWithoutSeats}
-                            />
-                            <label className="form-check-label" htmlFor="no-seats-setting">
-                                Vis partier uten mandater
-                            </label>
-                        </div>
-                    </div>
+                    <NoSeatsCheckbox
+                        showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
+                        toggleShowPartiesWithoutSeats={this.props.toggleShowPartiesWithoutSeats}
+                    />
                     <SmartNumericInput
                         hidden={!this.needsDecimals()}
                         name="decimalPlaces"
@@ -89,48 +82,17 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                         value={this.props.decimals}
                         onChange={this.props.changeDecimals}
                     />
-                    <div hidden={!this.needsDistrictDropdown()} className="form-row align-items-center">
-                        <div className="col-sm-4 my-1">
-                            <label className="col-form-label col-md-2" htmlFor="district">
-                                Fylke
-                            </label>
-                        </div>
-                        <div className="col-sm-8">
-                            <select
-                                id="district"
-                                onChange={this.props.selectDistrict}
-                                className="form-control"
-                                value={this.props.districtSelected}
-                            >
-                                {this.props.results.districtResults.map((item, index) => {
-                                    return (
-                                        <option key={index} value={item.name}>
-                                            {item.name}
-                                        </option>
-                                    );
-                                })}
-                            </select>
-                        </div>
-                    </div>
-                    <div hidden={!this.showsDisproportionality()} className="form-group">
-                        <label htmlFor="disproportionality">Disproporsjonalitetsindeks</label>
-                        <select
-                            id="disproportionality"
-                            onChange={this.props.changeDisproportionalityIndex}
-                            className="form-control"
-                            value={this.props.disproportionalityIndex}
-                        >
-                            <option
-                                key={DisproportionalityIndex.LOOSEMORE_HANBY}
-                                value={DisproportionalityIndex.LOOSEMORE_HANBY}
-                            >
-                                Loosemore-Hanby
-                            </option>
-                            <option key={DisproportionalityIndex.GALLAGHER} value={DisproportionalityIndex.GALLAGHER}>
-                                Gallagher
-                            </option>
-                        </select>
-                    </div>
+                    <DistrictSelect
+                        hidden={!this.showDistrictSelect()}
+                        districtResults={this.props.results.districtResults}
+                        selectDistrict={this.props.selectDistrict}
+                        districtSelected={this.props.districtSelected}
+                    />
+                    <DisproportionalitySelect
+                        hidden={!this.showDisproportionalitySelect()}
+                        changeDisproportionalityIndex={this.props.changeDisproportionalityIndex}
+                        disproportionalityIndex={this.props.disproportionalityIndex}
+                    />
                 </form>
             </React.Fragment>
         );
