@@ -1,5 +1,5 @@
 import { PartyResult, DistrictResult, LevelingSeat, PartyRestQuotients } from "../../computation";
-import { Dictionary } from "../../utilities/Dictionary";
+import { Dictionary } from "../../utilities/dictionary";
 import { roundNumber } from "../../utilities/number";
 
 export function getPartyTableData(

@@ -1,5 +1,5 @@
 import { ComputationPayload, PartyResult, DistrictResult, PartyRestQuotients, LevelingSeat, Result } from "..";
-import { Dictionary, dictionaryToArray } from "../../utilities/Dictionary";
+import { Dictionary, dictionaryToArray } from "../../utilities/dictionary";
 import { distributeSeats, generateLevelingSeatArray } from ".";
 
 export function distributeLevelingSeats(

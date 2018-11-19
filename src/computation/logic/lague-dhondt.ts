@@ -1,6 +1,6 @@
 ﻿import { ComputationPayload, LagueDhontResult, PartyResult, DistrictResult } from "..";
 
-import { Dictionary, dictionaryToArray } from "../../utilities/Dictionary";
+import { Dictionary, dictionaryToArray } from "../../utilities/dictionary";
 
 import { distributeSeats, distributeLevelingSeats, calculateProportionality, finalizeDistrictCalculations } from ".";
 

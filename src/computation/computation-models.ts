@@ -1,5 +1,5 @@
 import { Election } from "../requested-data/requested-data-models";
-import { Dictionary } from "../utilities/Dictionary";
+import { Dictionary } from "../utilities/dictionary";
 
 export enum AlgorithmType {
     SainteLague = "SAINTE_LAGUE",
