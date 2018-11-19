@@ -9,7 +9,8 @@ const mapStateToProps = (state: RootState): PresentationProps => {
         currentPresentation: state.presentationMenuState.currentPresentation,
         decimals: state.presentationMenuState.decimalsNumber,
         showPartiesWithoutSeats: state.presentationMenuState.showPartiesWithoutSeats,
-        districtSelected: state.presentationMenuState.districtSelected
+        districtSelected: state.presentationMenuState.districtSelected,
+        disproportionalityIndex: state.presentationMenuState.disproportionalityIndex
     };
 };
 

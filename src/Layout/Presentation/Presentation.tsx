@@ -21,7 +21,7 @@ import {
 import { RemainderQuotients } from "./RemainderQuotients/RemainderQuotients";
 import { toMax } from "../../utilities/reduce";
 import { LagueDhontResult, PartyResult, DistrictResult } from "../../computation";
-import { PresentationType } from "./presentation-models";
+import { PresentationType, DisproportionalityIndex } from "./presentation-models";
 
 export interface PresentationProps {
     currentPresentation: PresentationType;
@@ -29,6 +29,7 @@ export interface PresentationProps {
     decimals: number;
     showPartiesWithoutSeats: boolean;
     results: LagueDhontResult;
+    disproportionalityIndex: DisproportionalityIndex;
 }
 
 export class Presentation extends React.Component<PresentationProps, {}> {
@@ -111,6 +112,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         partyResults={this.getPartyTableData()}
                         decimals={this.props.decimals}
                         partyNameWidth={this.getWidestStringWidth(this.getPartyNames())}
+                        disproportionalityIndex={this.props.disproportionalityIndex}
                     />
                 );
             case PresentationType.DistrictTable:
@@ -130,12 +132,13 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                 );
             case PresentationType.SeatsPerParty:
                 return <SeatsPerParty partyResults={this.getSeatsPerPartyData()} />;
-            case PresentationType.SingleCountyTable:
+            case PresentationType.SingleDistrict:
                 return (
                     <SingleDistrict
                         districtSelected={this.props.districtSelected}
                         districtResults={this.getSingleDistrictData()}
                         decimals={this.props.decimals}
+                        disproportionalityIndex={this.props.disproportionalityIndex}
                     />
                 );
             case PresentationType.RemainderQuotients:

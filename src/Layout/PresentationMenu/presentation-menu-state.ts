@@ -1,4 +1,4 @@
-import { PresentationType } from "../Presentation/presentation-models";
+import { PresentationType, DisproportionalityIndex } from "../Presentation/presentation-models";
 
 export interface PresentationMenuState {
     currentPresentation: PresentationType;
@@ -6,6 +6,7 @@ export interface PresentationMenuState {
     decimals: string;
     decimalsNumber: number;
     showPartiesWithoutSeats: boolean;
+    disproportionalityIndex: DisproportionalityIndex;
 }
 
 export const unloadedState: PresentationMenuState = {
@@ -13,5 +14,6 @@ export const unloadedState: PresentationMenuState = {
     decimals: "2",
     decimalsNumber: 2,
     showPartiesWithoutSeats: false,
-    districtSelected: "Østfold"
+    districtSelected: "Østfold",
+    disproportionalityIndex: DisproportionalityIndex.LOOSEMORE_HANBY
 };

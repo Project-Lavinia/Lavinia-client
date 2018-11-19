@@ -5,7 +5,8 @@ import {
     ChangePresentationAction,
     ChangeDecimalsAction,
     ChangeShowPartiesNoSeats,
-    SelectDistrictAction
+    SelectDistrictAction,
+    ChangeDisproportionalityIndexAction
 } from "./presentation-menu-actions";
 
 type KnownAction =
@@ -13,7 +14,8 @@ type KnownAction =
     | ChangePresentationAction
     | ChangeDecimalsAction
     | ChangeShowPartiesNoSeats
-    | SelectDistrictAction;
+    | SelectDistrictAction
+    | ChangeDisproportionalityIndexAction;
 
 export function presentationMenuReducer(
     state: PresentationMenuState | undefined,
@@ -57,6 +59,12 @@ export function presentationMenuReducer(
             return {
                 ...state,
                 districtSelected: action.districtSelected
+            };
+        case PresentationMenuAction.ChangeDisproportionalityIndex:
+            console.log(`Action of type ${action.type} reduced`);
+            return {
+                ...state,
+                disproportionalityIndex: action.index
             };
         default:
             console.log(`Action of type ${action!.type} reduced to default`);
