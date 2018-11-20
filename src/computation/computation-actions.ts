@@ -11,7 +11,7 @@ export enum ComputationActionType {
 }
 
 /**
- * Type containing all possible ComputationActions
+ * Type containing all possible ComputationActions.
  */
 export type ComputationAction = InitializeComputation | UpdateComputation;
 
@@ -26,7 +26,7 @@ export interface InitializeComputation extends ComputationPayload {
 /**
  * Action creator for initializing the computation.
  *
- * @param electionType - election data fetched from the API
+ * @param electionType - election data fetched from the API.
  */
 export function initializeComputation(electionType: ElectionType) {
     const election: Election = electionType.elections[0]; // Most recent election
@@ -60,7 +60,7 @@ export interface UpdateComputation extends ComputationPayload {
  * Action creator for updating the computation.
  *
  * @param payload - object containing parameters for generating results and
- * updating state
+ * updating state.
  */
 export function updateComputation(payload: ComputationPayload) {
     const results = lagueDhont(payload);
