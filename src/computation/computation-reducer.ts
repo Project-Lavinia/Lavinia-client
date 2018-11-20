@@ -1,10 +1,11 @@
 ﻿import { ComputationState, unloadedState } from "./computation-state";
-import { InitializeComputation, UpdateComputation, ComputationActionType } from "./computation-actions";
+import { ComputationActionType, ComputationAction } from "./computation-actions";
 import { checkExhaustively } from "../utilities";
 
-type KnownAction = InitializeComputation | UpdateComputation;
-
-export function computationReducer(state: ComputationState = unloadedState, action: KnownAction): ComputationState {
+export function computationReducer(
+    state: ComputationState = unloadedState,
+    action: ComputationAction
+): ComputationState {
     switch (action.type) {
         case ComputationActionType.INITIALIZE_COMPUTATION:
             console.log(`Action of type ${action.type} reduced`);
