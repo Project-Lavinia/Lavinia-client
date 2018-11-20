@@ -11,6 +11,11 @@ export enum ComputationActionType {
 }
 
 /**
+ * Type containing all possible ComputationActions
+ */
+export type ComputationAction = InitializeComputation | UpdateComputation;
+
+/**
  * Action for initializing the computation.
  */
 export interface InitializeComputation extends ComputationPayload {
