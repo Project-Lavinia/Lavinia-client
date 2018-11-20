@@ -9,6 +9,7 @@ export enum ComputationMenuActionType {
     UpdateSettings = "UPDATE_SETTINGS",
     ToggleAutoCompute = "TOGGLE_AUTO_COMPUTE"
 }
+
 export interface InitializeComputationMenuAction {
     type: ComputationMenuActionType.InitializeSettings;
     electionYears: string[];
@@ -18,21 +19,6 @@ export interface InitializeComputationMenuAction {
     electionThreshold: string;
     districtSeats: string;
     levelingSeats: string;
-    autoCompute: boolean;
-}
-
-export interface UpdateComputationMenuAction {
-    type: ComputationMenuActionType.UpdateSettings;
-    year: string;
-    algorithm: number;
-    firstDivisor: string;
-    electionThreshold: string;
-    districtSeats: string;
-    levelingSeats: string;
-}
-
-export interface ToggleAutoComputeAction {
-    type: ComputationMenuActionType.ToggleAutoCompute;
     autoCompute: boolean;
 }
 
@@ -57,6 +43,16 @@ export function initializeComputationMenu(electionType: ElectionType) {
     return initializeSettingsAction;
 }
 
+export interface UpdateComputationMenuAction {
+    type: ComputationMenuActionType.UpdateSettings;
+    year: string;
+    algorithm: number;
+    firstDivisor: string;
+    electionThreshold: string;
+    districtSeats: string;
+    levelingSeats: string;
+}
+
 export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
     const updateSettingsAction: UpdateComputationMenuAction = {
         type: ComputationMenuActionType.UpdateSettings,
@@ -68,6 +64,11 @@ export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
         levelingSeats: settingsPayload.levelingSeats
     };
     return updateSettingsAction;
+}
+
+export interface ToggleAutoComputeAction {
+    type: ComputationMenuActionType.ToggleAutoCompute;
+    autoCompute: boolean;
 }
 
 export function toggleAutoCompute(autoCompute: boolean) {
