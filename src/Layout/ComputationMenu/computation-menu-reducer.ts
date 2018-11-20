@@ -1,16 +1,9 @@
-import {
-    InitializeComputationMenu,
-    UpdateComputationMenu,
-    ToggleAutoCompute,
-    ComputationMenuActionType
-} from "./computation-menu-actions";
+import { ComputationMenuActionType, ComputationMenuAction } from "./computation-menu-actions";
 import { ComputationMenuState, unloadedState } from "./computation-menu-state";
-
-type KnownAction = InitializeComputationMenu | UpdateComputationMenu | ToggleAutoCompute;
 
 export function computationMenuReducer(
     state: ComputationMenuState | undefined,
-    action: KnownAction
+    action: ComputationMenuAction
 ): ComputationMenuState {
     if (state === undefined) {
         state = unloadedState;
