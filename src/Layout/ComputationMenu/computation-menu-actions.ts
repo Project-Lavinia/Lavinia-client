@@ -5,8 +5,8 @@ import { ComputationMenuPayload } from "./computation-menu-models";
  * Enum containing all possible ComputationMenuAction types.
  */
 export enum ComputationMenuActionType {
-    InitializeSettings = "INITIALIZE_SETTINGS",
-    UpdateSettings = "UPDATE_SETTINGS",
+    InitializeComputationMenu = "INITIALIZE_COMPUTATION_MENU",
+    UpdateComputationMenu = "UPDATE_COMPUTATION_MENU",
     ToggleAutoCompute = "TOGGLE_AUTO_COMPUTE"
 }
 
@@ -14,7 +14,7 @@ export enum ComputationMenuActionType {
  * Action for initializing the computation menu.
  */
 export interface InitializeComputationMenu {
-    type: ComputationMenuActionType.InitializeSettings;
+    type: ComputationMenuActionType.InitializeComputationMenu;
     electionYears: string[];
     year: string;
     algorithm: number;
@@ -38,7 +38,7 @@ export function initializeComputationMenu(electionType: ElectionType) {
     }
 
     const action: InitializeComputationMenu = {
-        type: ComputationMenuActionType.InitializeSettings,
+        type: ComputationMenuActionType.InitializeComputationMenu,
         electionYears,
         year: election.year.toString(),
         algorithm: election.algorithm,
@@ -55,7 +55,7 @@ export function initializeComputationMenu(electionType: ElectionType) {
  * Action for updating the computation menu.
  */
 export interface UpdateComputationMenu {
-    type: ComputationMenuActionType.UpdateSettings;
+    type: ComputationMenuActionType.UpdateComputationMenu;
     year: string;
     algorithm: number;
     firstDivisor: string;
@@ -71,7 +71,7 @@ export interface UpdateComputationMenu {
  */
 export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
     const action: UpdateComputationMenu = {
-        type: ComputationMenuActionType.UpdateSettings,
+        type: ComputationMenuActionType.UpdateComputationMenu,
         year: settingsPayload.year,
         algorithm: settingsPayload.algorithm,
         firstDivisor: settingsPayload.firstDivisor,

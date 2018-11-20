@@ -17,7 +17,7 @@ export function computationMenuReducer(
     }
 
     switch (action.type) {
-        case ComputationMenuActionType.InitializeSettings:
+        case ComputationMenuActionType.InitializeComputationMenu:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
@@ -30,7 +30,7 @@ export function computationMenuReducer(
                 levelingSeats: action.levelingSeats,
                 autoCompute: action.autoCompute
             };
-        case ComputationMenuActionType.UpdateSettings:
+        case ComputationMenuActionType.UpdateComputationMenu:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
