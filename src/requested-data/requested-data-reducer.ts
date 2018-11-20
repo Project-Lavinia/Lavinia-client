@@ -1,7 +1,7 @@
-﻿import { InitializeRequestedDataAction, RequestedDataActionType } from "./requested-data-actions";
+﻿import { InitializeRequestedData, RequestedDataActionType } from "./requested-data-actions";
 import { RequestedDataState, unloadedState } from "./requested-data-state";
 
-type KnownAction = InitializeRequestedDataAction;
+type KnownAction = InitializeRequestedData;
 
 export function requestedDataAction(state: RequestedDataState | undefined, action: KnownAction): RequestedDataState {
     if (state === undefined) {
