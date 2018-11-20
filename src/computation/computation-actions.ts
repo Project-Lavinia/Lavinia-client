@@ -1,4 +1,4 @@
-﻿import { ComputationPayload, LagueDhontResult } from "./computation-models";
+import { ComputationPayload, LagueDhontResult } from "./computation-models";
 import { ElectionType, Election } from "../requested-data/requested-data-models";
 import { getAlgorithmType, lagueDhont } from "./logic";
 
@@ -9,6 +9,10 @@ export enum ComputationActionType {
     INITIALIZE_COMPUTATION = "INITIALIZE_COMPUTATION",
     UPDATE_COMPUTATION = "UPDATE_CALCULATION"
 }
+
+/**
+ * Action for initializing the computation.
+ */
 export interface InitializeComputation extends ComputationPayload {
     type: ComputationActionType.INITIALIZE_COMPUTATION;
     results: LagueDhontResult;
