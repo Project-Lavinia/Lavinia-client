@@ -11,11 +11,6 @@ export interface InitializeComputation extends ComputationPayload {
     results: LagueDhontResult;
 }
 
-export interface UpdateResults extends ComputationPayload {
-    type: ComputationActionType.UPDATE_COMPUTATION;
-    results: LagueDhontResult;
-}
-
 export function initializeComputation(electionType: ElectionType) {
     const election: Election = electionType.elections[0]; // Most recent election
     const payload: ComputationPayload = {
@@ -34,6 +29,11 @@ export function initializeComputation(electionType: ElectionType) {
         results
     };
     return initializeAction;
+}
+
+export interface UpdateResults extends ComputationPayload {
+    type: ComputationActionType.UPDATE_COMPUTATION;
+    results: LagueDhontResult;
 }
 
 export function updateElectionData(payload: ComputationPayload) {
