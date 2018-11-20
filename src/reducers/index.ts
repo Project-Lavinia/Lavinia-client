@@ -4,7 +4,7 @@ import { routerReducer, RouterState } from "react-router-redux";
 import { computation } from "../computation";
 import { requestedDataAction } from "../requested-data";
 import { computationMenu } from "../Layout/ComputationMenu";
-import { presentationMenuReducer } from "../Layout/PresentationMenu";
+import { presentationMenu } from "../Layout/PresentationMenu";
 
 export { RootState, RouterState };
 
@@ -14,6 +14,6 @@ export const rootReducer = combineReducers<RootState>({
     router: routerReducer as any,
     computationState: computation,
     settingsState: computationMenu,
-    presentationMenuState: presentationMenuReducer,
+    presentationMenuState: presentationMenu,
     requestedDataState: requestedDataAction
 });
