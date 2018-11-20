@@ -2,6 +2,15 @@ import { ComputationMenuActionType, ComputationMenuAction } from "./computation-
 import { ComputationMenuState, unloadedState } from "./computation-menu-state";
 import { checkExhaustively } from "../../utilities";
 
+/**
+ * Reducer for the computation menu. Handles all state changes to the
+ * computation menu.
+ *
+ * @param state - the current state, with default parameters passed in iff it is
+ * undefined
+ * @param action - the action to act upon the state
+ * @returns a new state mutated by the action passed in as parameter
+ */
 export function computationMenuReducer(
     state: ComputationMenuState = unloadedState,
     action: ComputationMenuAction
