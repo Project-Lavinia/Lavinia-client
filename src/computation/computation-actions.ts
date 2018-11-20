@@ -2,6 +2,9 @@
 import { ElectionType, Election } from "../requested-data/requested-data-models";
 import { getAlgorithmType, lagueDhont } from "./logic";
 
+/**
+ * Enum containing all possible ComputationAction types.
+ */
 export enum ComputationActionType {
     INITIALIZE_COMPUTATION = "INITIALIZE_COMPUTATION",
     UPDATE_COMPUTATION = "UPDATE_CALCULATION"
