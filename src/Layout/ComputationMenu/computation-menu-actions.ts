@@ -10,6 +10,9 @@ export enum ComputationMenuActionType {
     ToggleAutoCompute = "TOGGLE_AUTO_COMPUTE"
 }
 
+/**
+ * Action for initializing the computation menu.
+ */
 export interface InitializeComputationMenuAction {
     type: ComputationMenuActionType.InitializeSettings;
     electionYears: string[];
@@ -22,6 +25,11 @@ export interface InitializeComputationMenuAction {
     autoCompute: boolean;
 }
 
+/**
+ * Action creator for initializing the computation menu.
+ *
+ * @param electionType - election data fetched from the API.
+ */
 export function initializeComputationMenu(electionType: ElectionType) {
     const election = electionType.elections[0]; // Most recent election
     const electionYears: string[] = [];
@@ -43,6 +51,9 @@ export function initializeComputationMenu(electionType: ElectionType) {
     return initializeSettingsAction;
 }
 
+/**
+ * Action for updating the computation menu.
+ */
 export interface UpdateComputationMenuAction {
     type: ComputationMenuActionType.UpdateSettings;
     year: string;
@@ -53,6 +64,11 @@ export interface UpdateComputationMenuAction {
     levelingSeats: string;
 }
 
+/**
+ * Action creator for updating the computation menu.
+ *
+ * @param settingsPayload - the displayed parameters
+ */
 export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
     const updateSettingsAction: UpdateComputationMenuAction = {
         type: ComputationMenuActionType.UpdateSettings,
@@ -66,11 +82,19 @@ export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
     return updateSettingsAction;
 }
 
+/**
+ * Action for toggling auto computation.
+ */
 export interface ToggleAutoComputeAction {
     type: ComputationMenuActionType.ToggleAutoCompute;
     autoCompute: boolean;
 }
 
+/**
+ * Action creator for toggling auto computation.
+ *
+ * @param autoCompute - true for computing automatically, else false
+ */
 export function toggleAutoCompute(autoCompute: boolean) {
     const toggleAutoComputeAction: ToggleAutoComputeAction = {
         type: ComputationMenuActionType.ToggleAutoCompute,
