@@ -51,6 +51,12 @@ export interface UpdateComputation extends ComputationPayload {
     results: LagueDhontResult;
 }
 
+/**
+ * Action creator for updating the computation.
+ *
+ * @param payload - object containing parameters for generating results and
+ * updating state
+ */
 export function updateComputation(payload: ComputationPayload) {
     const results = lagueDhont(payload);
 
