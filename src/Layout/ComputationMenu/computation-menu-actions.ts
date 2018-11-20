@@ -11,6 +11,11 @@ export enum ComputationMenuActionType {
 }
 
 /**
+ * Type containing all possible ComputationMenuActions.
+ */
+export type ComputationMenuAction = InitializeComputationMenu | UpdateComputationMenu | ToggleAutoCompute;
+
+/**
  * Action for initializing the computation menu.
  */
 export interface InitializeComputationMenu {
