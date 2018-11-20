@@ -64,9 +64,7 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
     }
 });
 
-const presentationSettingsContainer = connect(
+export const ConnectedPresentationSettings = connect(
     mapStateToProps,
     mapDispatchToProps
 )(PresentationSettingsMenu as any);
-
-export default presentationSettingsContainer;
