@@ -13,7 +13,7 @@ export enum ComputationMenuActionType {
 /**
  * Action for initializing the computation menu.
  */
-export interface InitializeComputationMenuAction {
+export interface InitializeComputationMenu {
     type: ComputationMenuActionType.InitializeSettings;
     electionYears: string[];
     year: string;
@@ -37,7 +37,7 @@ export function initializeComputationMenu(electionType: ElectionType) {
         electionYears.push(currentElection.year.toString());
     }
 
-    const initializeSettingsAction: InitializeComputationMenuAction = {
+    const action: InitializeComputationMenu = {
         type: ComputationMenuActionType.InitializeSettings,
         electionYears,
         year: election.year.toString(),
@@ -48,13 +48,13 @@ export function initializeComputationMenu(electionType: ElectionType) {
         levelingSeats: election.levelingSeats.toString(),
         autoCompute: true
     };
-    return initializeSettingsAction;
+    return action;
 }
 
 /**
  * Action for updating the computation menu.
  */
-export interface UpdateComputationMenuAction {
+export interface UpdateComputationMenu {
     type: ComputationMenuActionType.UpdateSettings;
     year: string;
     algorithm: number;
@@ -70,7 +70,7 @@ export interface UpdateComputationMenuAction {
  * @param settingsPayload - the displayed parameters
  */
 export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
-    const updateSettingsAction: UpdateComputationMenuAction = {
+    const action: UpdateComputationMenu = {
         type: ComputationMenuActionType.UpdateSettings,
         year: settingsPayload.year,
         algorithm: settingsPayload.algorithm,
@@ -79,13 +79,13 @@ export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
         districtSeats: settingsPayload.districtSeats,
         levelingSeats: settingsPayload.levelingSeats
     };
-    return updateSettingsAction;
+    return action;
 }
 
 /**
  * Action for toggling auto computation.
  */
-export interface ToggleAutoComputeAction {
+export interface ToggleAutoCompute {
     type: ComputationMenuActionType.ToggleAutoCompute;
     autoCompute: boolean;
 }
@@ -96,9 +96,9 @@ export interface ToggleAutoComputeAction {
  * @param autoCompute - true for computing automatically, else false
  */
 export function toggleAutoCompute(autoCompute: boolean) {
-    const toggleAutoComputeAction: ToggleAutoComputeAction = {
+    const action: ToggleAutoCompute = {
         type: ComputationMenuActionType.ToggleAutoCompute,
         autoCompute
     };
-    return toggleAutoComputeAction;
+    return action;
 }

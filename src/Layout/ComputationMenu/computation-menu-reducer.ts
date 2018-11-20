@@ -1,12 +1,12 @@
 import {
-    InitializeComputationMenuAction,
-    UpdateComputationMenuAction,
-    ToggleAutoComputeAction,
+    InitializeComputationMenu,
+    UpdateComputationMenu,
+    ToggleAutoCompute,
     ComputationMenuActionType
 } from "./computation-menu-actions";
 import { ComputationMenuState, unloadedState } from "./computation-menu-state";
 
-type KnownAction = InitializeComputationMenuAction | UpdateComputationMenuAction | ToggleAutoComputeAction;
+type KnownAction = InitializeComputationMenu | UpdateComputationMenu | ToggleAutoCompute;
 
 export function computationMenuReducer(
     state: ComputationMenuState | undefined,
