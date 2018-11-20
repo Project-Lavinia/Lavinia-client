@@ -2,13 +2,9 @@ import { ComputationMenuActionType, ComputationMenuAction } from "./computation-
 import { ComputationMenuState, unloadedState } from "./computation-menu-state";
 
 export function computationMenuReducer(
-    state: ComputationMenuState | undefined,
+    state: ComputationMenuState = unloadedState,
     action: ComputationMenuAction
 ): ComputationMenuState {
-    if (state === undefined) {
-        state = unloadedState;
-    }
-
     switch (action.type) {
         case ComputationMenuActionType.InitializeComputationMenu:
             console.log(`Action of type ${action.type} reduced`);
@@ -42,6 +38,6 @@ export function computationMenuReducer(
             };
         default:
             console.log(`Action of type ${action!.type} reduced to default`);
-            return state || unloadedState;
+            return state;
     }
 }
