@@ -1,25 +1,9 @@
 ﻿import { unloadedState, PresentationMenuState } from "./presentation-menu-state";
-import {
-    PresentationMenuActionType,
-    InitializePresentation,
-    ChangePresentation,
-    ChangeDecimals,
-    ChangeShowPartiesNoSeats,
-    SelectDistrict,
-    ChangeDisproportionalityIndex
-} from "./presentation-menu-actions";
-
-type KnownAction =
-    | InitializePresentation
-    | ChangePresentation
-    | ChangeDecimals
-    | ChangeShowPartiesNoSeats
-    | SelectDistrict
-    | ChangeDisproportionalityIndex;
+import { PresentationMenuActionType, PresentationMenuAction } from "./presentation-menu-actions";
 
 export function presentationMenuReducer(
     state: PresentationMenuState | undefined,
-    action: KnownAction
+    action: PresentationMenuAction
 ): PresentationMenuState {
     if (state === undefined) {
         state = unloadedState;
