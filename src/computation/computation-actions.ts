@@ -3,16 +3,16 @@ import { ElectionType, Election } from "../requested-data/requested-data-models"
 import { getAlgorithmType, lagueDhont } from "./logic";
 
 export enum ComputationAction {
-    InitializeComputation = "INITIALIZE_COMPUTATION",
-    UpdateResults = "UPDATE_CALCULATION"
+    INITIALIZE_COMPUTATION = "INITIALIZE_COMPUTATION",
+    UPDATE_COMPUTATION = "UPDATE_CALCULATION"
 }
 export interface InitializeComputationAction extends ComputationPayload {
-    type: ComputationAction.InitializeComputation;
+    type: ComputationAction.INITIALIZE_COMPUTATION;
     results: LagueDhontResult;
 }
 
 export interface UpdateResultsAction extends ComputationPayload {
-    type: ComputationAction.UpdateResults;
+    type: ComputationAction.UPDATE_COMPUTATION;
     results: LagueDhontResult;
 }
 
@@ -29,7 +29,7 @@ export function initializeComputation(electionType: ElectionType) {
 
     const results = lagueDhont(payload);
     const initializeAction: InitializeComputationAction = {
-        type: ComputationAction.InitializeComputation,
+        type: ComputationAction.INITIALIZE_COMPUTATION,
         ...payload,
         results
     };
@@ -41,7 +41,7 @@ export function updateElectionData(payload: ComputationPayload) {
 
     const updateCalculationAction: UpdateResultsAction = {
         ...payload,
-        type: ComputationAction.UpdateResults,
+        type: ComputationAction.UPDATE_COMPUTATION,
         results
     };
     return updateCalculationAction;

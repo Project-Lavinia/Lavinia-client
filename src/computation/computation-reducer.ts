@@ -9,7 +9,7 @@ export function computationReducer(state: ComputationState | undefined, action: 
     }
 
     switch (action.type) {
-        case ComputationAction.InitializeComputation:
+        case ComputationAction.INITIALIZE_COMPUTATION:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
@@ -21,7 +21,7 @@ export function computationReducer(state: ComputationState | undefined, action: 
                 levelingSeats: action.levelingSeats,
                 results: action.results
             };
-        case ComputationAction.UpdateResults:
+        case ComputationAction.UPDATE_COMPUTATION:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
