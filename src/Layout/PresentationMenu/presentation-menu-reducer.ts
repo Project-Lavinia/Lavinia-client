@@ -2,13 +2,9 @@
 import { PresentationMenuActionType, PresentationMenuAction } from "./presentation-menu-actions";
 
 export function presentationMenuReducer(
-    state: PresentationMenuState | undefined,
+    state: PresentationMenuState = unloadedState,
     action: PresentationMenuAction
 ): PresentationMenuState {
-    if (state === undefined) {
-        state = unloadedState;
-    }
-
     switch (action.type) {
         case PresentationMenuActionType.InitializePresentation:
             console.log(`Action of type ${action.type} reduced`);
@@ -52,6 +48,6 @@ export function presentationMenuReducer(
             };
         default:
             console.log(`Action of type ${action!.type} reduced to default`);
-            return state || unloadedState;
+            return state;
     }
 }
