@@ -1,8 +1,8 @@
 ﻿import { ComputationState, unloadedState } from "./computation-state";
-import { InitializeComputation, UpdateResults, ComputationActionType } from "./computation-actions";
+import { InitializeComputation, UpdateComputation, ComputationActionType } from "./computation-actions";
 import { checkExhaustively } from "../utilities";
 
-type KnownAction = InitializeComputation | UpdateResults;
+type KnownAction = InitializeComputation | UpdateComputation;
 
 export function computationReducer(state: ComputationState | undefined, action: KnownAction): ComputationState {
     if (state === undefined) {

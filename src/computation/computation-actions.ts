@@ -31,7 +31,7 @@ export function initializeComputation(electionType: ElectionType) {
     return initializeAction;
 }
 
-export interface UpdateResults extends ComputationPayload {
+export interface UpdateComputation extends ComputationPayload {
     type: ComputationActionType.UPDATE_COMPUTATION;
     results: LagueDhontResult;
 }
@@ -39,7 +39,7 @@ export interface UpdateResults extends ComputationPayload {
 export function updateElectionData(payload: ComputationPayload) {
     const results = lagueDhont(payload);
 
-    const updateCalculationAction: UpdateResults = {
+    const updateCalculationAction: UpdateComputation = {
         ...payload,
         type: ComputationActionType.UPDATE_COMPUTATION,
         results
