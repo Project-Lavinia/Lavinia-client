@@ -6,12 +6,12 @@ export enum ComputationActionType {
     INITIALIZE_COMPUTATION = "INITIALIZE_COMPUTATION",
     UPDATE_COMPUTATION = "UPDATE_CALCULATION"
 }
-export interface InitializeComputationAction extends ComputationPayload {
+export interface InitializeComputation extends ComputationPayload {
     type: ComputationActionType.INITIALIZE_COMPUTATION;
     results: LagueDhontResult;
 }
 
-export interface UpdateResultsAction extends ComputationPayload {
+export interface UpdateResults extends ComputationPayload {
     type: ComputationActionType.UPDATE_COMPUTATION;
     results: LagueDhontResult;
 }
@@ -28,7 +28,7 @@ export function initializeComputation(electionType: ElectionType) {
     };
 
     const results = lagueDhont(payload);
-    const initializeAction: InitializeComputationAction = {
+    const initializeAction: InitializeComputation = {
         type: ComputationActionType.INITIALIZE_COMPUTATION,
         ...payload,
         results
@@ -39,7 +39,7 @@ export function initializeComputation(electionType: ElectionType) {
 export function updateElectionData(payload: ComputationPayload) {
     const results = lagueDhont(payload);
 
-    const updateCalculationAction: UpdateResultsAction = {
+    const updateCalculationAction: UpdateResults = {
         ...payload,
         type: ComputationActionType.UPDATE_COMPUTATION,
         results
