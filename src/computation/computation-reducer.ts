@@ -1,5 +1,6 @@
 ﻿import { ComputationState, unloadedState } from "./computation-state";
 import { InitializeComputationAction, UpdateResultsAction, ComputationActionType } from "./computation-actions";
+import { checkExhaustively } from "../utilities";
 
 type KnownAction = InitializeComputationAction | UpdateResultsAction;
 
@@ -35,6 +36,7 @@ export function computationReducer(state: ComputationState | undefined, action: 
             };
         default:
             console.log(`Action of type ${action!.type} reduced to default`);
-            return state || unloadedState;
+            checkExhaustively(action);
+            return state;
     }
 }
