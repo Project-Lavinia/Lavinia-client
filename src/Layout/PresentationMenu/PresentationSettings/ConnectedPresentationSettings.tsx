@@ -10,7 +10,7 @@ import {
 } from "../presentation-menu-actions";
 import { DisproportionalityIndex } from "../../Presentation/presentation-models";
 
-interface PartialPresentationSettingsProps
+interface StateProps
     extends Pick<
             PresentationSettingsProps,
             | "currentPresentation"
@@ -21,7 +21,7 @@ interface PartialPresentationSettingsProps
             | "disproportionalityIndex"
         > {}
 
-function mapStateToProps(state: RootState): PartialPresentationSettingsProps {
+function mapStateToProps(state: RootState): StateProps {
     return {
         currentPresentation: state.presentationMenuState.currentPresentation,
         decimals: state.presentationMenuState.decimals,
