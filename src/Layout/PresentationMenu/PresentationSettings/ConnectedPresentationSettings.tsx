@@ -32,7 +32,13 @@ function mapStateToProps(state: RootState): StateProps {
     };
 }
 
-const mapDispatchToProps = (dispatch: any): Partial<PresentationSettingsProps> => ({
+interface DispatchProps
+    extends Pick<
+            PresentationSettingsProps,
+            "changeDecimals" | "toggleShowPartiesWithoutSeats" | "selectDistrict" | "changeDisproportionalityIndex"
+        > {}
+
+const mapDispatchToProps = (dispatch: any): DispatchProps => ({
     changeDecimals: (decimals: string, decimalsNumber: number) => {
         const action = changeDecimals(decimals, decimalsNumber);
         dispatch(action);
