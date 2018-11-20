@@ -1,4 +1,4 @@
-import { ComputationPayload, LagueDhontResult } from "./computation-models";
+﻿import { ComputationPayload, LagueDhontResult } from "./computation-models";
 import { ElectionType, Election } from "../requested-data/requested-data-models";
 import { getAlgorithmType, lagueDhont } from "./logic";
 
@@ -18,6 +18,11 @@ export interface InitializeComputation extends ComputationPayload {
     results: LagueDhontResult;
 }
 
+/**
+ * Action creator for initializing the computation.
+ *
+ * @param electionType - election data fetched from the API
+ */
 export function initializeComputation(electionType: ElectionType) {
     const election: Election = electionType.elections[0]; // Most recent election
     const payload: ComputationPayload = {
