@@ -2,11 +2,11 @@ import { RootState } from "../../../reducers";
 import { connect } from "react-redux";
 import { PresentationSettingsMenu, PresentationSettingsProps } from "./PresentationSettings";
 import {
-    ChangeDecimalsAction,
     selectDistrict,
-    ChangeShowPartiesNoSeats,
-    PresentationMenuAction,
-    ChangeDisproportionalityIndexAction
+    PresentationMenuActionType,
+    ChangeDisproportionalityIndex,
+    changeDecimals,
+    changeShowPartiesNoSeats
 } from "../presentation-menu-actions";
 import { DisproportionalityIndex } from "../../Presentation/presentation-models";
 
@@ -23,18 +23,11 @@ function mapStateToProps(state: RootState): Partial<PresentationSettingsProps> {
 
 const mapDispatchToProps = (dispatch: any): Partial<PresentationSettingsProps> => ({
     changeDecimals: (decimals: string, decimalsNumber: number) => {
-        const action: ChangeDecimalsAction = {
-            type: PresentationMenuAction.ChangeDecimals,
-            decimals,
-            decimalsNumber
-        };
+        const action = changeDecimals(decimals, decimalsNumber);
         dispatch(action);
     },
     toggleShowPartiesWithoutSeats: (event: React.ChangeEvent<HTMLInputElement>) => {
-        const action: ChangeShowPartiesNoSeats = {
-            type: PresentationMenuAction.ShowPartiesNoSeats,
-            showPartiesWithoutSeats: event.target.checked
-        };
+        const action = changeShowPartiesNoSeats(event.target.checked);
         dispatch(action);
     },
     selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -44,8 +37,8 @@ const mapDispatchToProps = (dispatch: any): Partial<PresentationSettingsProps> =
     changeDisproportionalityIndex: (event: React.ChangeEvent<HTMLSelectElement>) => {
         console.log("test");
 
-        const action: ChangeDisproportionalityIndexAction = {
-            type: PresentationMenuAction.ChangeDisproportionalityIndex,
+        const action: ChangeDisproportionalityIndex = {
+            type: PresentationMenuActionType.ChangeDisproportionalityIndex,
             index: event.target.value as DisproportionalityIndex
         };
         dispatch(action);
