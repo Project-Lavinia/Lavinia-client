@@ -11,7 +11,7 @@ import { checkExhaustively } from "../../utilities";
  * @param action - the action to act upon the state
  * @returns a new state mutated by the action passed in as parameter
  */
-export function computationMenuReducer(
+export function computationMenu(
     state: ComputationMenuState = unloadedState,
     action: ComputationMenuAction
 ): ComputationMenuState {

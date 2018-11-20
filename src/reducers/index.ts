@@ -3,7 +3,7 @@ import { RootState } from "./state";
 import { routerReducer, RouterState } from "react-router-redux";
 import { computation } from "../computation";
 import { requestedDataAction } from "../requested-data";
-import { computationMenuReducer } from "../Layout/ComputationMenu";
+import { computationMenu } from "../Layout/ComputationMenu";
 import { presentationMenuReducer } from "../Layout/PresentationMenu";
 
 export { RootState, RouterState };
@@ -13,7 +13,7 @@ export { RootState, RouterState };
 export const rootReducer = combineReducers<RootState>({
     router: routerReducer as any,
     computationState: computation,
-    settingsState: computationMenuReducer,
+    settingsState: computationMenu,
     presentationMenuState: presentationMenuReducer,
     requestedDataState: requestedDataAction
 });
