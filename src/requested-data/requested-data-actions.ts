@@ -7,12 +7,20 @@ export enum RequestedDataActionType {
     InitializeRequestedData = "INITIALIZE_REQUESTED_DATA"
 }
 
+/**
+ * Action for initializing requested data.
+ */
 export interface InitializeRequestedData {
     type: RequestedDataActionType.InitializeRequestedData;
     electionType: ElectionType;
     enableAutoSave: boolean;
 }
 
+/**
+ * Action creator for initializing requested data.
+ *
+ * @param electionType - election data fetched from the API.
+ */
 export function initializeRequestedData(electionType: ElectionType) {
     const action: InitializeRequestedData = {
         type: RequestedDataActionType.InitializeRequestedData,
