@@ -1,5 +1,5 @@
 ﻿import { ComputationState, unloadedState } from "./computation-state";
-import { InitializeComputationAction, UpdateResultsAction, ComputationAction } from "./computation-actions";
+import { InitializeComputationAction, UpdateResultsAction, ComputationActionType } from "./computation-actions";
 
 type KnownAction = InitializeComputationAction | UpdateResultsAction;
 
@@ -9,7 +9,7 @@ export function computationReducer(state: ComputationState | undefined, action: 
     }
 
     switch (action.type) {
-        case ComputationAction.INITIALIZE_COMPUTATION:
+        case ComputationActionType.INITIALIZE_COMPUTATION:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
@@ -21,7 +21,7 @@ export function computationReducer(state: ComputationState | undefined, action: 
                 levelingSeats: action.levelingSeats,
                 results: action.results
             };
-        case ComputationAction.UPDATE_COMPUTATION:
+        case ComputationActionType.UPDATE_COMPUTATION:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
