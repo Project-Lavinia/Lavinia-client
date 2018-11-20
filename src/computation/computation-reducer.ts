@@ -10,10 +10,7 @@ import { checkExhaustively } from "../utilities";
  * @param action - the action to act upon the state
  * @returns a new state mutated by the action passed in as parameter
  */
-export function computationReducer(
-    state: ComputationState = unloadedState,
-    action: ComputationAction
-): ComputationState {
+export function computation(state: ComputationState = unloadedState, action: ComputationAction): ComputationState {
     switch (action.type) {
         case ComputationActionType.INITIALIZE_COMPUTATION:
             console.log(`Action of type ${action.type} reduced`);
