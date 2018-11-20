@@ -1,5 +1,6 @@
 ﻿import { unloadedState, PresentationMenuState } from "./presentation-menu-state";
 import { PresentationMenuActionType, PresentationMenuAction } from "./presentation-menu-actions";
+import { checkExhaustively } from "../../utilities";
 
 export function presentationMenuReducer(
     state: PresentationMenuState = unloadedState,
@@ -48,6 +49,7 @@ export function presentationMenuReducer(
             };
         default:
             console.log(`Action of type ${action!.type} reduced to default`);
+            checkExhaustively(action);
             return state;
     }
 }
