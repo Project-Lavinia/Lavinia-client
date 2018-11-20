@@ -2,6 +2,13 @@
 import { ComputationActionType, ComputationAction } from "./computation-actions";
 import { checkExhaustively } from "../utilities";
 
+/**
+ * Reducer for computations. Handles all state changes to the computation.
+ *
+ * @param state - the current state
+ * @param action - the action to act upon the state
+ * @returns the state after being affected by the action passed in as parameter
+ */
 export function computationReducer(
     state: ComputationState = unloadedState,
     action: ComputationAction
