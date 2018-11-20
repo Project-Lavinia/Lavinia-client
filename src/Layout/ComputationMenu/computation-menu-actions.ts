@@ -1,13 +1,16 @@
 ﻿import { ElectionType } from "../../requested-data/requested-data-models";
 import { ComputationMenuPayload } from "./computation-menu-models";
 
-export enum ComputationMenuAction {
+/**
+ * Enum containing all possible ComputationMenuAction types.
+ */
+export enum ComputationMenuActionType {
     InitializeSettings = "INITIALIZE_SETTINGS",
     UpdateSettings = "UPDATE_SETTINGS",
     ToggleAutoCompute = "TOGGLE_AUTO_COMPUTE"
 }
 export interface InitializeComputationMenuAction {
-    type: ComputationMenuAction.InitializeSettings;
+    type: ComputationMenuActionType.InitializeSettings;
     electionYears: string[];
     year: string;
     algorithm: number;
@@ -19,7 +22,7 @@ export interface InitializeComputationMenuAction {
 }
 
 export interface UpdateComputationMenuAction {
-    type: ComputationMenuAction.UpdateSettings;
+    type: ComputationMenuActionType.UpdateSettings;
     year: string;
     algorithm: number;
     firstDivisor: string;
@@ -29,7 +32,7 @@ export interface UpdateComputationMenuAction {
 }
 
 export interface ToggleAutoComputeAction {
-    type: ComputationMenuAction.ToggleAutoCompute;
+    type: ComputationMenuActionType.ToggleAutoCompute;
     autoCompute: boolean;
 }
 
@@ -41,7 +44,7 @@ export function initializeComputationMenu(electionType: ElectionType) {
     }
 
     const initializeSettingsAction: InitializeComputationMenuAction = {
-        type: ComputationMenuAction.InitializeSettings,
+        type: ComputationMenuActionType.InitializeSettings,
         electionYears,
         year: election.year.toString(),
         algorithm: election.algorithm,
@@ -56,7 +59,7 @@ export function initializeComputationMenu(electionType: ElectionType) {
 
 export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
     const updateSettingsAction: UpdateComputationMenuAction = {
-        type: ComputationMenuAction.UpdateSettings,
+        type: ComputationMenuActionType.UpdateSettings,
         year: settingsPayload.year,
         algorithm: settingsPayload.algorithm,
         firstDivisor: settingsPayload.firstDivisor,
@@ -69,7 +72,7 @@ export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
 
 export function toggleAutoCompute(autoCompute: boolean) {
     const toggleAutoComputeAction: ToggleAutoComputeAction = {
-        type: ComputationMenuAction.ToggleAutoCompute,
+        type: ComputationMenuActionType.ToggleAutoCompute,
         autoCompute
     };
     return toggleAutoComputeAction;

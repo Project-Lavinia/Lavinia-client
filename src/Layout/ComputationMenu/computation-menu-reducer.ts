@@ -2,7 +2,7 @@ import {
     InitializeComputationMenuAction,
     UpdateComputationMenuAction,
     ToggleAutoComputeAction,
-    ComputationMenuAction
+    ComputationMenuActionType
 } from "./computation-menu-actions";
 import { ComputationMenuState, unloadedState } from "./computation-menu-state";
 
@@ -17,7 +17,7 @@ export function computationMenuReducer(
     }
 
     switch (action.type) {
-        case ComputationMenuAction.InitializeSettings:
+        case ComputationMenuActionType.InitializeSettings:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
@@ -30,7 +30,7 @@ export function computationMenuReducer(
                 levelingSeats: action.levelingSeats,
                 autoCompute: action.autoCompute
             };
-        case ComputationMenuAction.UpdateSettings:
+        case ComputationMenuActionType.UpdateSettings:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
@@ -41,7 +41,7 @@ export function computationMenuReducer(
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats
             };
-        case ComputationMenuAction.ToggleAutoCompute:
+        case ComputationMenuActionType.ToggleAutoCompute:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
