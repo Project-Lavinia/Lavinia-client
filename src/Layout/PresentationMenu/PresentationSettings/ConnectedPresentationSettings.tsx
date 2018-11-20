@@ -10,6 +10,10 @@ import {
 } from "../presentation-menu-actions";
 import { DisproportionalityIndex } from "../../Presentation/presentation-models";
 
+/**
+ * Describes which properties we want to pick from the properties of the
+ * component for mapping from state to props.
+ */
 interface StateProps
     extends Pick<
             PresentationSettingsProps,
@@ -32,6 +36,10 @@ function mapStateToProps(state: RootState): StateProps {
     };
 }
 
+/**
+ * Describes which properties we want to pick from the properties of the
+ * component for mapping from dispatch to props.
+ */
 interface DispatchProps
     extends Pick<
             PresentationSettingsProps,
