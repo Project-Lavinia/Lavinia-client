@@ -1,5 +1,6 @@
 import { ComputationMenuActionType, ComputationMenuAction } from "./computation-menu-actions";
 import { ComputationMenuState, unloadedState } from "./computation-menu-state";
+import { checkExhaustively } from "../../utilities";
 
 export function computationMenuReducer(
     state: ComputationMenuState = unloadedState,
@@ -38,6 +39,7 @@ export function computationMenuReducer(
             };
         default:
             console.log(`Action of type ${action!.type} reduced to default`);
+            checkExhaustively(action);
             return state;
     }
 }
