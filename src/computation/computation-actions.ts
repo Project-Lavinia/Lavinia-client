@@ -36,7 +36,7 @@ export interface UpdateComputation extends ComputationPayload {
     results: LagueDhontResult;
 }
 
-export function updateElectionData(payload: ComputationPayload) {
+export function updateComputation(payload: ComputationPayload) {
     const results = lagueDhont(payload);
 
     const updateCalculationAction: UpdateComputation = {

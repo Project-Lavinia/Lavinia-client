@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import { ComputationMenuProps, ComputationMenu } from "./ComputationMenu";
 import { updateComputationMenu, toggleAutoCompute } from ".";
-import { ComputationPayload, updateElectionData } from "../../computation";
+import { ComputationPayload, updateComputation } from "../../computation";
 import { Election } from "../../requested-data/requested-data-models";
 import { getAlgorithmType } from "../../computation/logic";
 import { ComputationMenuPayload } from "./computation-menu-models";
@@ -41,7 +41,7 @@ const mapDispatchToProps = (dispatch: any): Partial<ComputationMenuProps> => ({
                 districtSeats: computationPayload.districtSeats,
                 levelingSeats: computationPayload.levelingSeats
             };
-            const updateCalculationAction = updateElectionData(payload);
+            const updateCalculationAction = updateComputation(payload);
             dispatch(updateCalculationAction);
         }
     },
@@ -63,7 +63,7 @@ const mapDispatchToProps = (dispatch: any): Partial<ComputationMenuProps> => ({
                 districtSeats: election.seats,
                 levelingSeats: election.levelingSeats
             };
-            const updateCalculationAction = updateElectionData(payload);
+            const updateCalculationAction = updateComputation(payload);
             dispatch(updateCalculationAction);
         }
 
