@@ -3,10 +3,9 @@ import { connect } from "react-redux";
 import { PresentationSettingsMenu, PresentationSettingsProps } from "./PresentationSettings";
 import {
     selectDistrict,
-    PresentationMenuActionType,
-    ChangeDisproportionalityIndex,
     changeDecimals,
-    changeShowPartiesNoSeats
+    changeShowPartiesNoSeats,
+    changeDisproportionalityIndex
 } from "../presentation-menu-actions";
 import { DisproportionalityIndex } from "../../Presentation/presentation-models";
 
@@ -60,12 +59,7 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
         dispatch(action);
     },
     changeDisproportionalityIndex: (event: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log("test");
-
-        const action: ChangeDisproportionalityIndex = {
-            type: PresentationMenuActionType.ChangeDisproportionalityIndex,
-            index: event.target.value as DisproportionalityIndex
-        };
+        const action = changeDisproportionalityIndex(event.target.value as DisproportionalityIndex);
         dispatch(action);
     }
 });
