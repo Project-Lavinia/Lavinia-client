@@ -13,7 +13,7 @@ export interface InitializeRequestedData {
     enableAutoSave: boolean;
 }
 
-export function initializeRequestedData(electionType: ElectionType): InitializeRequestedData {
+export function initializeRequestedData(electionType: ElectionType) {
     const action: InitializeRequestedData = {
         type: RequestedDataActionType.InitializeRequestedData,
         electionType,
