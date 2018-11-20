@@ -1,7 +1,7 @@
 ﻿import { RequestedDataActionType, RequestedDataAction } from "./requested-data-actions";
 import { RequestedDataState, unloadedState } from "./requested-data-state";
 
-export function requestedDataAction(
+export function requestedData(
     state: RequestedDataState = unloadedState,
     action: RequestedDataAction
 ): RequestedDataState {
