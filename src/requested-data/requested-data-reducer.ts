@@ -2,13 +2,9 @@
 import { RequestedDataState, unloadedState } from "./requested-data-state";
 
 export function requestedDataAction(
-    state: RequestedDataState | undefined,
+    state: RequestedDataState = unloadedState,
     action: RequestedDataAction
 ): RequestedDataState {
-    if (state === undefined) {
-        state = unloadedState;
-    }
-
     switch (action.type) {
         case RequestedDataActionType.InitializeRequestedData:
             console.log(`Action of type ${action.type} reduced`);
@@ -19,6 +15,6 @@ export function requestedDataAction(
             };
         default:
             console.log(`Action of type ${action!.type} reduced to default`);
-            return state || unloadedState;
+            return state;
     }
 }
