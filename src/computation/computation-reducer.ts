@@ -5,9 +5,10 @@ import { checkExhaustively } from "../utilities";
 /**
  * Reducer for computations. Handles all state changes to the computation.
  *
- * @param state - the current state
+ * @param state - the current state, with default parameters passed in iff it is
+ * undefined
  * @param action - the action to act upon the state
- * @returns the state after being affected by the action passed in as parameter
+ * @returns a new state mutated by the action passed in as parameter
  */
 export function computationReducer(
     state: ComputationState = unloadedState,
