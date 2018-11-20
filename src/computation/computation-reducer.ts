@@ -4,11 +4,7 @@ import { checkExhaustively } from "../utilities";
 
 type KnownAction = InitializeComputation | UpdateComputation;
 
-export function computationReducer(state: ComputationState | undefined, action: KnownAction): ComputationState {
-    if (state === undefined) {
-        state = unloadedState;
-    }
-
+export function computationReducer(state: ComputationState = unloadedState, action: KnownAction): ComputationState {
     switch (action.type) {
         case ComputationActionType.INITIALIZE_COMPUTATION:
             console.log(`Action of type ${action.type} reduced`);
