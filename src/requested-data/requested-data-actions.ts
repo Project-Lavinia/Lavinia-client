@@ -8,6 +8,11 @@ export enum RequestedDataActionType {
 }
 
 /**
+ * Type containing all possible RequestedDataActions.
+ */
+export type RequestedDataAction = InitializeRequestedData;
+
+/**
  * Action for initializing requested data.
  */
 export interface InitializeRequestedData {
