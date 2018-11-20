@@ -43,6 +43,9 @@ export function initializeComputation(electionType: ElectionType) {
     return initializeAction;
 }
 
+/**
+ * Action for updating the computation.
+ */
 export interface UpdateComputation extends ComputationPayload {
     type: ComputationActionType.UPDATE_COMPUTATION;
     results: LagueDhontResult;
