@@ -7,13 +7,14 @@ import { getAlgorithmType, lagueDhont } from "./logic";
  */
 export enum ComputationActionType {
     INITIALIZE_COMPUTATION = "INITIALIZE_COMPUTATION",
-    UPDATE_COMPUTATION = "UPDATE_CALCULATION"
+    UPDATE_COMPUTATION = "UPDATE_CALCULATION",
+    SAVE_COMPUTATION = "SAVE_COMPUTATION"
 }
 
 /**
  * Type containing all possible ComputationActions.
  */
-export type ComputationAction = InitializeComputation | UpdateComputation;
+export type ComputationAction = InitializeComputation | UpdateComputation | SaveComputation;
 
 /**
  * Action for initializing the computation.
@@ -71,4 +72,28 @@ export function updateComputation(payload: ComputationPayload) {
         results
     };
     return updateCalculationAction;
+}
+
+/**
+ * Action for saving the computation for comparisons.
+ */
+export interface SaveComputation {
+    type: ComputationActionType.SAVE_COMPUTATION;
+    result: LagueDhontResult;
+    year: string;
+}
+
+/**
+ * Action creator for saving the computation for comparisons.
+ *
+ * @param year - year identifies the data the computation was performed on.
+ * @param result - the result of the computation.
+ */
+export function saveComputation(year: string, result: LagueDhontResult) {
+    const action: SaveComputation = {
+        type: ComputationActionType.SAVE_COMPUTATION,
+        result,
+        year
+    };
+    return action;
 }

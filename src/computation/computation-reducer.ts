@@ -36,6 +36,15 @@ export function computation(state: ComputationState = unloadedState, action: Com
                 levelingSeats: action.levelingSeats,
                 results: action.results
             };
+        case ComputationActionType.SAVE_COMPUTATION:
+            console.log(`Action of type $action.type} reduced`);
+            return {
+                ...state,
+                savedResults: {
+                    result: action.result,
+                    year: action.year
+                }
+            };
         default:
             console.log(`Action of type ${action!.type} reduced to default`);
             checkExhaustively(action);

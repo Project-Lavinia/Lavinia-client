@@ -1,4 +1,4 @@
-﻿import { AlgorithmType, LagueDhontResult } from "./computation-models";
+﻿import { AlgorithmType, LagueDhontResult, SavedComputation } from "./computation-models";
 import { Election } from "../requested-data/requested-data-models";
 
 export interface ComputationState {
@@ -9,7 +9,7 @@ export interface ComputationState {
     districtSeats: number;
     levelingSeats: number;
     results: LagueDhontResult;
-    savedResults: LagueDhontResult;
+    savedResults: SavedComputation;
 }
 
 export const unloadedState: ComputationState = {
@@ -36,8 +36,11 @@ export const unloadedState: ComputationState = {
         levelingSeatDistribution: []
     },
     savedResults: {
-        districtResults: [],
-        partyResults: [],
-        levelingSeatDistribution: []
+        result: {
+            districtResults: [],
+            partyResults: [],
+            levelingSeatDistribution: []
+        },
+        year: ""
     }
 };

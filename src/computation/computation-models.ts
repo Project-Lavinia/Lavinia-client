@@ -116,3 +116,15 @@ export interface SeatResult {
     /** A list with information regarding the parties compeating for the seat */
     partyResults: SeatPartyResult[];
 }
+
+/**
+ * Model for a saved computation. Is a duplicate of a computation result that
+ * keeps track of which year it is being compared to.
+ */
+export interface SavedComputation {
+    /**
+     * Identifies which year the currently saved computation is compared to.
+     */
+    year: string;
+    result: LagueDhontResult;
+}
