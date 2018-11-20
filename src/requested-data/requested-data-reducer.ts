@@ -1,4 +1,4 @@
-﻿import { InitializeRequestedDataAction, RequestedDataAction } from "./requested-data-actions";
+﻿import { InitializeRequestedDataAction, RequestedDataActionType } from "./requested-data-actions";
 import { RequestedDataState, unloadedState } from "./requested-data-state";
 
 type KnownAction = InitializeRequestedDataAction;
@@ -9,7 +9,7 @@ export function requestedDataAction(state: RequestedDataState | undefined, actio
     }
 
     switch (action.type) {
-        case RequestedDataAction.InitializeRequestedData:
+        case RequestedDataActionType.InitializeRequestedData:
             console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
