@@ -13,7 +13,6 @@ import { checkExhaustively } from "../utilities";
 export function computation(state: ComputationState = unloadedState, action: ComputationAction): ComputationState {
     switch (action.type) {
         case ComputationActionType.INITIALIZE_COMPUTATION:
-            console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
                 election: action.election,
@@ -25,7 +24,6 @@ export function computation(state: ComputationState = unloadedState, action: Com
                 results: action.results
             };
         case ComputationActionType.UPDATE_COMPUTATION:
-            console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
                 election: action.election,
@@ -37,7 +35,6 @@ export function computation(state: ComputationState = unloadedState, action: Com
                 results: action.results
             };
         case ComputationActionType.SAVE_COMPUTATION:
-            console.log(`Action of type $action.type} reduced`);
             return {
                 ...state,
                 savedResults: {
@@ -46,7 +43,6 @@ export function computation(state: ComputationState = unloadedState, action: Com
                 }
             };
         default:
-            console.log(`Action of type ${action!.type} reduced to default`);
             checkExhaustively(action);
             return state;
     }

@@ -17,7 +17,6 @@ export function computationMenu(
 ): ComputationMenuState {
     switch (action.type) {
         case ComputationMenuActionType.InitializeComputationMenu:
-            console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
                 electionYears: action.electionYears,
@@ -30,7 +29,6 @@ export function computationMenu(
                 autoCompute: action.autoCompute
             };
         case ComputationMenuActionType.UpdateComputationMenu:
-            console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
                 year: action.year,
@@ -41,13 +39,11 @@ export function computationMenu(
                 levelingSeats: action.levelingSeats
             };
         case ComputationMenuActionType.ToggleAutoCompute:
-            console.log(`Action of type ${action.type} reduced`);
             return {
                 ...state,
                 autoCompute: action.autoCompute
             };
         default:
-            console.log(`Action of type ${action!.type} reduced to default`);
             checkExhaustively(action);
             return state;
     }
