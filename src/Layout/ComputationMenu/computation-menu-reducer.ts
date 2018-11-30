@@ -16,7 +16,7 @@ export function computationMenu(
     action: ComputationMenuAction
 ): ComputationMenuState {
     switch (action.type) {
-        case ComputationMenuActionType.InitializeComputationMenu:
+        case ComputationMenuActionType.INITIALIZE_COMPUTATION_MENU:
             return {
                 ...state,
                 electionYears: action.electionYears,
@@ -26,9 +26,9 @@ export function computationMenu(
                 electionThreshold: action.electionThreshold,
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
-                autoCompute: action.autoCompute
+                autoCompute: action.autoCompute,
             };
-        case ComputationMenuActionType.UpdateComputationMenu:
+        case ComputationMenuActionType.UPDATE_COMPUTATION_MENU:
             return {
                 ...state,
                 year: action.year,
@@ -36,12 +36,12 @@ export function computationMenu(
                 firstDivisor: action.firstDivisor,
                 electionThreshold: action.electionThreshold,
                 districtSeats: action.districtSeats,
-                levelingSeats: action.levelingSeats
+                levelingSeats: action.levelingSeats,
             };
-        case ComputationMenuActionType.ToggleAutoCompute:
+        case ComputationMenuActionType.TOGGLE_AUTO_COMPUTE:
             return {
                 ...state,
-                autoCompute: action.autoCompute
+                autoCompute: action.autoCompute,
             };
         default:
             checkExhaustively(action);

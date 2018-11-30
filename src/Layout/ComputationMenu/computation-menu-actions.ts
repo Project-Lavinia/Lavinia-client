@@ -5,9 +5,9 @@ import { ComputationMenuPayload } from "./computation-menu-models";
  * Enum containing all possible ComputationMenuAction types.
  */
 export enum ComputationMenuActionType {
-    InitializeComputationMenu = "INITIALIZE_COMPUTATION_MENU",
-    UpdateComputationMenu = "UPDATE_COMPUTATION_MENU",
-    ToggleAutoCompute = "TOGGLE_AUTO_COMPUTE"
+    INITIALIZE_COMPUTATION_MENU = "INITIALIZE_COMPUTATION_MENU",
+    UPDATE_COMPUTATION_MENU = "UPDATE_COMPUTATION_MENU",
+    TOGGLE_AUTO_COMPUTE = "TOGGLE_AUTO_COMPUTE",
 }
 
 /**
@@ -19,7 +19,7 @@ export type ComputationMenuAction = InitializeComputationMenu | UpdateComputatio
  * Action for initializing the computation menu.
  */
 export interface InitializeComputationMenu {
-    type: ComputationMenuActionType.InitializeComputationMenu;
+    type: ComputationMenuActionType.INITIALIZE_COMPUTATION_MENU;
     electionYears: string[];
     year: string;
     algorithm: number;
@@ -43,7 +43,7 @@ export function initializeComputationMenu(electionType: ElectionType) {
     }
 
     const action: InitializeComputationMenu = {
-        type: ComputationMenuActionType.InitializeComputationMenu,
+        type: ComputationMenuActionType.INITIALIZE_COMPUTATION_MENU,
         electionYears,
         year: election.year.toString(),
         algorithm: election.algorithm,
@@ -51,7 +51,7 @@ export function initializeComputationMenu(electionType: ElectionType) {
         electionThreshold: election.threshold.toString(),
         districtSeats: election.seats.toString(),
         levelingSeats: election.levelingSeats.toString(),
-        autoCompute: true
+        autoCompute: true,
     };
     return action;
 }
@@ -60,7 +60,7 @@ export function initializeComputationMenu(electionType: ElectionType) {
  * Action for updating the computation menu.
  */
 export interface UpdateComputationMenu {
-    type: ComputationMenuActionType.UpdateComputationMenu;
+    type: ComputationMenuActionType.UPDATE_COMPUTATION_MENU;
     year: string;
     algorithm: number;
     firstDivisor: string;
@@ -76,13 +76,13 @@ export interface UpdateComputationMenu {
  */
 export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
     const action: UpdateComputationMenu = {
-        type: ComputationMenuActionType.UpdateComputationMenu,
+        type: ComputationMenuActionType.UPDATE_COMPUTATION_MENU,
         year: settingsPayload.year,
         algorithm: settingsPayload.algorithm,
         firstDivisor: settingsPayload.firstDivisor,
         electionThreshold: settingsPayload.electionThreshold,
         districtSeats: settingsPayload.districtSeats,
-        levelingSeats: settingsPayload.levelingSeats
+        levelingSeats: settingsPayload.levelingSeats,
     };
     return action;
 }
@@ -91,7 +91,7 @@ export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
  * Action for toggling auto computation.
  */
 export interface ToggleAutoCompute {
-    type: ComputationMenuActionType.ToggleAutoCompute;
+    type: ComputationMenuActionType.TOGGLE_AUTO_COMPUTE;
     autoCompute: boolean;
 }
 
@@ -102,8 +102,8 @@ export interface ToggleAutoCompute {
  */
 export function toggleAutoCompute(autoCompute: boolean) {
     const action: ToggleAutoCompute = {
-        type: ComputationMenuActionType.ToggleAutoCompute,
-        autoCompute
+        type: ComputationMenuActionType.TOGGLE_AUTO_COMPUTE,
+        autoCompute,
     };
     return action;
 }
