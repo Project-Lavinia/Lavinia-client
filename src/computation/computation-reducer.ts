@@ -21,7 +21,7 @@ export function computation(state: ComputationState = unloadedState, action: Com
                 electionThreshold: action.electionThreshold,
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
-                results: action.results
+                current: action.results,
             };
         case ComputationActionType.UPDATE_COMPUTATION:
             return {
@@ -32,15 +32,12 @@ export function computation(state: ComputationState = unloadedState, action: Com
                 electionThreshold: action.electionThreshold,
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
-                results: action.results
+                current: action.results,
             };
         case ComputationActionType.SAVE_COMPUTATION:
             return {
                 ...state,
-                savedResults: {
-                    result: action.result,
-                    year: action.year
-                }
+                saved: action.result,
             };
         default:
             checkExhaustively(action);

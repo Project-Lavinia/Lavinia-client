@@ -5,7 +5,7 @@ import {
     selectDistrict,
     changeDecimals,
     changeShowPartiesNoSeats,
-    changeDisproportionalityIndex
+    changeDisproportionalityIndex,
 } from "../presentation-menu-actions";
 import { DisproportionalityIndex } from "../../Presentation/presentation-models";
 
@@ -28,10 +28,10 @@ function mapStateToProps(state: RootState): StateProps {
     return {
         currentPresentation: state.presentationMenuState.currentPresentation,
         decimals: state.presentationMenuState.decimals,
-        results: state.computationState.results,
+        results: state.computationState.current,
         showPartiesWithoutSeats: state.presentationMenuState.showPartiesWithoutSeats,
         districtSelected: state.presentationMenuState.districtSelected,
-        disproportionalityIndex: state.presentationMenuState.disproportionalityIndex
+        disproportionalityIndex: state.presentationMenuState.disproportionalityIndex,
     };
 }
 
@@ -61,7 +61,7 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
     changeDisproportionalityIndex: (event: React.ChangeEvent<HTMLSelectElement>) => {
         const action = changeDisproportionalityIndex(event.target.value as DisproportionalityIndex);
         dispatch(action);
-    }
+    },
 });
 
 export const ConnectedPresentationSettings = connect(

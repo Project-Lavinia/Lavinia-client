@@ -5,12 +5,12 @@ import { connect } from "react-redux";
 const mapStateToProps = (state: RootState): PresentationProps => {
     console.log("PresentationContainer mapped state to props");
     return {
-        results: state.computationState.results,
+        results: state.computationState.current,
         currentPresentation: state.presentationMenuState.currentPresentation,
         decimals: state.presentationMenuState.decimalsNumber,
         showPartiesWithoutSeats: state.presentationMenuState.showPartiesWithoutSeats,
         districtSelected: state.presentationMenuState.districtSelected,
-        disproportionalityIndex: state.presentationMenuState.disproportionalityIndex
+        disproportionalityIndex: state.presentationMenuState.disproportionalityIndex,
     };
 };
 
