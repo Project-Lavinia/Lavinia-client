@@ -1,4 +1,4 @@
-import { AlgorithmType, LagueDhontResult } from "./computation-models";
+﻿import { AlgorithmType, LagueDhontResult } from "./computation-models";
 import { Election } from "../requested-data/requested-data-models";
 
 export interface ComputationState {
@@ -10,7 +10,7 @@ export interface ComputationState {
     levelingSeats: number;
     historical: LagueDhontResult;
     current: LagueDhontResult;
-    saved: LagueDhontResult;
+    comparison: LagueDhontResult;
 }
 
 export const unloadedState: ComputationState = {
@@ -41,7 +41,7 @@ export const unloadedState: ComputationState = {
         partyResults: [],
         levelingSeatDistribution: [],
     },
-    saved: {
+    comparison: {
         districtResults: [],
         partyResults: [],
         levelingSeatDistribution: [],
