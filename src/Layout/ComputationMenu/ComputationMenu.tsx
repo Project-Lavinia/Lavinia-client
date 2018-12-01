@@ -18,6 +18,7 @@ export interface ComputationMenuProps {
     updateSettings: (settingsPayload: ComputationMenuPayload) => any;
     toggleAutoCompute: (autoCompute: boolean) => any;
     resetToHistoricalSettings: (settingsPayload: ComputationMenuPayload, election: Election) => any;
+    resetComparison: () => void;
 }
 
 export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
@@ -38,21 +39,22 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
      * @param event a ChangeEvent whose target carries the stringified year
      */
     onYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const year = parseInt(event.target.value);
-        const election = this.props.electionType.elections.find((election) => election.year === year);
+        const nextYear = parseInt(event.target.value);
+        const election = this.props.electionType.elections.find((election) => election.year === nextYear);
         if (election !== undefined) {
             this.props.updateCalculation(
                 {
                     ...this.props.computationPayload,
-                    election
+                    election,
                 },
                 this.props.settingsPayload.autoCompute,
                 false
             );
             this.props.updateSettings({
                 ...this.props.settingsPayload,
-                year: event.target.value
+                year: event.target.value,
             });
+            this.props.resetComparison();
         }
     };
 
@@ -67,14 +69,14 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
         this.props.updateCalculation(
             {
                 ...this.props.computationPayload,
-                algorithm: getAlgorithmType(algorithm)
+                algorithm: getAlgorithmType(algorithm),
             },
             this.props.settingsPayload.autoCompute,
             false
         );
         this.props.updateSettings({
             ...this.props.settingsPayload,
-            algorithm
+            algorithm,
         });
     };
 
@@ -88,12 +90,12 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     onFirstDivisorChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
-            firstDivisor: stringValue
+            firstDivisor: stringValue,
         });
         this.props.updateCalculation(
             {
                 ...this.props.computationPayload,
-                firstDivisor: numericValue
+                firstDivisor: numericValue,
             },
             this.props.settingsPayload.autoCompute,
             false
@@ -110,12 +112,12 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     onThresholdChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
-            electionThreshold: stringValue
+            electionThreshold: stringValue,
         });
         this.props.updateCalculation(
             {
                 ...this.props.computationPayload,
-                electionThreshold: numericValue
+                electionThreshold: numericValue,
             },
             this.props.settingsPayload.autoCompute,
             false
@@ -132,12 +134,12 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     onLevelingSeatsChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
-            levelingSeats: stringValue
+            levelingSeats: stringValue,
         });
         this.props.updateCalculation(
             {
                 ...this.props.computationPayload,
-                levelingSeats: numericValue
+                levelingSeats: numericValue,
             },
             this.props.settingsPayload.autoCompute,
             false
@@ -170,7 +172,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                     firstDivisor: parseFloat(this.props.settingsPayload.firstDivisor),
                     electionThreshold: parseFloat(this.props.settingsPayload.electionThreshold),
                     districtSeats: parseInt(this.props.settingsPayload.districtSeats),
-                    levelingSeats: parseInt(this.props.settingsPayload.levelingSeats)
+                    levelingSeats: parseInt(this.props.settingsPayload.levelingSeats),
                 },
                 this.props.settingsPayload.autoCompute,
                 true
