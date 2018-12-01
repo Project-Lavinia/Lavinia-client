@@ -23,7 +23,7 @@ export function computation(state: ComputationState = unloadedState, action: Com
                 levelingSeats: action.levelingSeats,
                 current: action.results,
                 historical: action.results,
-                compared: action.results,
+                comparison: action.results,
             };
         case ComputationActionType.UPDATE_COMPUTATION:
             return {
@@ -39,12 +39,12 @@ export function computation(state: ComputationState = unloadedState, action: Com
         case ComputationActionType.SAVE_COMPUTATION:
             return {
                 ...state,
-                compared: action.result,
+                comparison: state.current,
             };
         case ComputationActionType.RESET_SAVED_COMPUTATION:
             return {
                 ...state,
-                compared: state.historical,
+                comparison: state.historical,
             };
         default:
             checkExhaustively(action);
