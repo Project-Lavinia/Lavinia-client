@@ -30,6 +30,7 @@ export interface PresentationProps {
     showPartiesWithoutSeats: boolean;
     results: LagueDhontResult;
     disproportionalityIndex: DisproportionalityIndex;
+    comparisonPartyResults: PartyResult[];
 }
 
 export class Presentation extends React.Component<PresentationProps, {}> {
