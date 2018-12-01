@@ -5,7 +5,7 @@ import {
     SeatsPerParty,
     SeatDistribution,
     SingleDistrict,
-    LevellingSeatOverview
+    LevellingSeatOverview,
 } from ".";
 import {
     getDistrictTableData,
@@ -16,7 +16,7 @@ import {
     flattenPartyRestQuotients,
     removeSeatDuplicates,
     sortSeatsByNumber,
-    getRoundsAssignedSeats
+    getRoundsAssignedSeats,
 } from "./presentation-utilities";
 import { RemainderQuotients } from "./RemainderQuotients/RemainderQuotients";
 import { toMax } from "../../utilities/reduce";
@@ -34,12 +34,8 @@ export interface PresentationProps {
 }
 
 export class Presentation extends React.Component<PresentationProps, {}> {
-    getPartyTableData(): PartyResult[] {
-        return getPartyTableData(
-            this.props.results.partyResults,
-            this.props.showPartiesWithoutSeats,
-            this.props.decimals
-        );
+    getPartyTableData(partyResults: PartyResult[]): PartyResult[] {
+        return getPartyTableData(partyResults, this.props.showPartiesWithoutSeats, this.props.decimals);
     }
 
     getDistrictTableData(): DistrictResult[] {
@@ -64,7 +60,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
         data.forEach((result) => {
             roundedData.push({
                 ...result,
-                partyResults: roundPartyResults(result.partyResults, this.props.decimals)
+                partyResults: roundPartyResults(result.partyResults, this.props.decimals),
             });
         });
         return roundedData;
@@ -110,7 +106,8 @@ export class Presentation extends React.Component<PresentationProps, {}> {
             case PresentationType.ElectionTable:
                 return (
                     <ElectionOverview
-                        partyResults={this.getPartyTableData()}
+                        partyResults={this.getPartyTableData(this.props.results.partyResults)}
+                        comparisonPartyResults={this.getPartyTableData(this.props.comparisonPartyResults)}
                         decimals={this.props.decimals}
                         partyNameWidth={this.getWidestStringWidth(this.getPartyNames())}
                         disproportionalityIndex={this.props.disproportionalityIndex}
