@@ -6,6 +6,7 @@ import {
     changeDecimals,
     changeShowPartiesNoSeats,
     changeDisproportionalityIndex,
+    toggleShowComparison,
 } from "../presentation-menu-actions";
 import { DisproportionalityIndex } from "../../Presentation/presentation-models";
 
@@ -22,6 +23,7 @@ interface StateProps
             | "showPartiesWithoutSeats"
             | "results"
             | "disproportionalityIndex"
+            | "showComparison"
         > {}
 
 function mapStateToProps(state: RootState): StateProps {
@@ -32,6 +34,7 @@ function mapStateToProps(state: RootState): StateProps {
         showPartiesWithoutSeats: state.presentationMenuState.showPartiesWithoutSeats,
         districtSelected: state.presentationMenuState.districtSelected,
         disproportionalityIndex: state.presentationMenuState.disproportionalityIndex,
+        showComparison: state.presentationMenuState.showComparison,
     };
 }
 
@@ -42,7 +45,11 @@ function mapStateToProps(state: RootState): StateProps {
 interface DispatchProps
     extends Pick<
             PresentationSettingsProps,
-            "changeDecimals" | "toggleShowPartiesWithoutSeats" | "selectDistrict" | "changeDisproportionalityIndex"
+            | "changeDecimals"
+            | "toggleShowPartiesWithoutSeats"
+            | "selectDistrict"
+            | "changeDisproportionalityIndex"
+            | "toggleShowComparison"
         > {}
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
@@ -60,6 +67,10 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
     },
     changeDisproportionalityIndex: (event: React.ChangeEvent<HTMLSelectElement>) => {
         const action = changeDisproportionalityIndex(event.target.value as DisproportionalityIndex);
+        dispatch(action);
+    },
+    toggleShowComparison: (event: React.ChangeEvent<HTMLInputElement>) => {
+        const action = toggleShowComparison(event.target.checked);
         dispatch(action);
     },
 });

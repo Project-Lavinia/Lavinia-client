@@ -21,33 +21,38 @@ export function presentationMenu(
                 currentPresentation: action.initialPresentation,
                 decimals: action.decimals,
                 decimalsNumber: action.decimalsNumber,
-                showPartiesWithoutSeats: action.showPartiesWithoutSeats
+                showPartiesWithoutSeats: action.showPartiesWithoutSeats,
             };
         case PresentationMenuActionType.ChangePresentation:
             return {
                 ...state,
-                currentPresentation: action.presentationSelected
+                currentPresentation: action.presentationSelected,
             };
         case PresentationMenuActionType.ChangeDecimals:
             return {
                 ...state,
                 decimals: action.decimals,
-                decimalsNumber: action.decimalsNumber
+                decimalsNumber: action.decimalsNumber,
             };
         case PresentationMenuActionType.ShowPartiesNoSeats:
             return {
                 ...state,
-                showPartiesWithoutSeats: action.showPartiesWithoutSeats
+                showPartiesWithoutSeats: action.showPartiesWithoutSeats,
             };
         case PresentationMenuActionType.SelectDistrict:
             return {
                 ...state,
-                districtSelected: action.districtSelected
+                districtSelected: action.districtSelected,
             };
         case PresentationMenuActionType.ChangeDisproportionalityIndex:
             return {
                 ...state,
-                disproportionalityIndex: action.index
+                disproportionalityIndex: action.index,
+            };
+        case PresentationMenuActionType.ToggleShowComparison:
+            return {
+                ...state,
+                showComparison: action.showComparison,
             };
         default:
             checkExhaustively(action);

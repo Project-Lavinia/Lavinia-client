@@ -5,6 +5,7 @@ import { PresentationType, DisproportionalityIndex } from "../../Presentation/pr
 import { DistrictSelect } from "./DistrictSelect";
 import { DisproportionalitySelect } from "./DisproportionalitySelect";
 import { NoSeatsCheckbox } from "./NoSeatsCheckbox";
+import { ComparisonCheckbox } from "./ComparisonCheckbox";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -18,6 +19,8 @@ export interface PresentationSettingsProps {
     results: LagueDhontResult;
     changeDisproportionalityIndex: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     disproportionalityIndex: DisproportionalityIndex;
+    toggleShowComparison: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    showComparison: boolean;
 }
 export class PresentationSettingsMenu extends React.Component<PresentationSettingsProps> {
     /**
@@ -61,6 +64,15 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         return false;
     }
 
+    /**
+     * Helper function for evaluating whether comparison should be shown.
+     *
+     * @returns true if comparison should be shown, false otherwise
+     */
+    showComparison(): boolean {
+        return this.props.currentPresentation === PresentationType.ElectionTable;
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -92,6 +104,11 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                         hidden={!this.showDisproportionalitySelect()}
                         changeDisproportionalityIndex={this.props.changeDisproportionalityIndex}
                         disproportionalityIndex={this.props.disproportionalityIndex}
+                    />
+                    <ComparisonCheckbox
+                        hidden={!this.showComparison()}
+                        showComparison={this.props.showComparison}
+                        toggleComparison={this.props.toggleShowComparison}
                     />
                 </form>
             </React.Fragment>

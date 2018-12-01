@@ -9,7 +9,8 @@ export enum PresentationMenuActionType {
     ChangeDecimals = "CHANGE_DECIMALS",
     ShowPartiesNoSeats = "SHOW_PARTIES_WITH_NO_SEATS",
     SelectDistrict = "SELECT_DISTRICT",
-    ChangeDisproportionalityIndex = "CHANGE_DISPROPORTIONALITY_INDEX"
+    ChangeDisproportionalityIndex = "CHANGE_DISPROPORTIONALITY_INDEX",
+    ToggleShowComparison = "TOGGLE_SHOW_COMPARISON",
 }
 
 /**
@@ -21,7 +22,8 @@ export type PresentationMenuAction =
     | ChangeDecimals
     | ChangeShowPartiesNoSeats
     | SelectDistrict
-    | ChangeDisproportionalityIndex;
+    | ChangeDisproportionalityIndex
+    | ToggleShowComparison;
 
 /**
  * Action for initializing the presentation.
@@ -43,7 +45,7 @@ export function initializePresentation(): InitializePresentation {
         initialPresentation: PresentationType.ElectionTable,
         decimals: "2",
         decimalsNumber: 2,
-        showPartiesWithoutSeats: false
+        showPartiesWithoutSeats: false,
     };
     console.log(`Action of type ${action.type} created`);
     return action;
@@ -65,7 +67,7 @@ export interface ChangePresentation {
 export function changePresentation(presentationSelected: PresentationType): ChangePresentation {
     const action: ChangePresentation = {
         type: PresentationMenuActionType.ChangePresentation,
-        presentationSelected
+        presentationSelected,
     };
     console.log(`Action of type ${action.type} created`);
     return action;
@@ -90,7 +92,7 @@ export function changeDecimals(decimals: string, decimalsNumber: number) {
     const action: ChangeDecimals = {
         type: PresentationMenuActionType.ChangeDecimals,
         decimals,
-        decimalsNumber
+        decimalsNumber,
     };
     return action;
 }
@@ -111,7 +113,7 @@ export interface ChangeShowPartiesNoSeats {
 export function changeShowPartiesNoSeats(showPartiesNoSeats: boolean) {
     const action: ChangeShowPartiesNoSeats = {
         type: PresentationMenuActionType.ShowPartiesNoSeats,
-        showPartiesWithoutSeats: showPartiesNoSeats
+        showPartiesWithoutSeats: showPartiesNoSeats,
     };
     return action;
 }
@@ -132,7 +134,7 @@ export interface SelectDistrict {
 export function selectDistrict(name: string): SelectDistrict {
     const action: SelectDistrict = {
         type: PresentationMenuActionType.SelectDistrict,
-        districtSelected: name
+        districtSelected: name,
     };
     console.log(`Action of type ${action.type} created`);
     return action;
@@ -154,8 +156,29 @@ export interface ChangeDisproportionalityIndex {
 export function changeDisproportionalityIndex(index: DisproportionalityIndex) {
     const action: ChangeDisproportionalityIndex = {
         type: PresentationMenuActionType.ChangeDisproportionalityIndex,
-        index
+        index,
     };
     console.log(`Action of type ${action.type} created`);
+    return action;
+}
+
+/**
+ * Action for changing whether to show comparison or not.
+ */
+export interface ToggleShowComparison {
+    type: PresentationMenuActionType.ToggleShowComparison;
+    showComparison: boolean;
+}
+
+/**
+ * Action creator for changing whether to show comparison or not.
+ *
+ * @param showComparison - true if to show comparison, else false
+ */
+export function toggleShowComparison(showComparison: boolean) {
+    const action: ToggleShowComparison = {
+        type: PresentationMenuActionType.ToggleShowComparison,
+        showComparison,
+    };
     return action;
 }
