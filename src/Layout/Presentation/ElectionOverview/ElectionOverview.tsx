@@ -6,6 +6,7 @@ import { DisproportionalityIndex } from "../presentation-models";
 
 export interface ElectionOverviewProps {
     partyResults: PartyResult[];
+    comparisonPartyResults: PartyResult[];
     decimals: number;
     partyNameWidth: number;
     disproportionalityIndex: DisproportionalityIndex;
@@ -51,27 +52,27 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                         Header: "Parti",
                         accessor: "partyName",
                         width: this.props.partyNameWidth + 165,
-                        Footer: <strong>Utvalg</strong>
+                        Footer: <strong>Utvalg</strong>,
                     },
                     {
                         Header: "Stemmer",
                         accessor: "votes",
-                        Footer: <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>
+                        Footer: <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>,
                     },
                     {
                         Header: "Distrikt",
                         accessor: "districtSeats",
-                        Footer: <strong>{data.map((value) => value.districtSeats).reduce(toSum, 0)}</strong>
+                        Footer: <strong>{data.map((value) => value.districtSeats).reduce(toSum, 0)}</strong>,
                     },
                     {
                         Header: "Utjevning",
                         accessor: "levelingSeats",
-                        Footer: <strong>{data.map((value) => value.levelingSeats).reduce(toSum, 0)}</strong>
+                        Footer: <strong>{data.map((value) => value.levelingSeats).reduce(toSum, 0)}</strong>,
                     },
                     {
                         Header: "Sum",
                         accessor: "totalSeats",
-                        Footer: <strong>{data.map((value) => value.totalSeats).reduce(toSum, 0)}</strong>
+                        Footer: <strong>{data.map((value) => value.totalSeats).reduce(toSum, 0)}</strong>,
                     },
                     {
                         Header: "Proporsjonalitet",
@@ -80,14 +81,14 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             <strong>
                                 {label}: {index.toFixed(this.props.decimals)}
                             </strong>
-                        )
-                    }
+                        ),
+                    },
                 ]}
                 defaultSorted={[
                     {
                         id: "totalSeats",
-                        desc: true
-                    }
+                        desc: true,
+                    },
                 ]}
             />
         );
