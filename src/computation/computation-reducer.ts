@@ -1,4 +1,4 @@
-import { ComputationState, unloadedState } from "./computation-state";
+﻿import { ComputationState, unloadedState } from "./computation-state";
 import { ComputationActionType, ComputationAction } from "./computation-actions";
 import { checkExhaustively } from "../utilities";
 
@@ -23,7 +23,7 @@ export function computation(state: ComputationState = unloadedState, action: Com
                 levelingSeats: action.levelingSeats,
                 current: action.results,
                 historical: action.results,
-                comparison: action.results,
+                compared: action.results,
             };
         case ComputationActionType.UPDATE_COMPUTATION:
             return {
@@ -39,7 +39,12 @@ export function computation(state: ComputationState = unloadedState, action: Com
         case ComputationActionType.SAVE_COMPUTATION:
             return {
                 ...state,
-                comparison: state.current,
+                compared: action.result,
+            };
+        case ComputationActionType.RESET_SAVED_COMPUTATION:
+            return {
+                ...state,
+                compared: state.historical,
             };
         default:
             checkExhaustively(action);

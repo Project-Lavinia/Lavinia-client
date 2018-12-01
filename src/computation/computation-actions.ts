@@ -8,13 +8,14 @@ import { getAlgorithmType, lagueDhont } from "./logic";
 export enum ComputationActionType {
     INITIALIZE_COMPUTATION = "INITIALIZE_COMPUTATION",
     UPDATE_COMPUTATION = "UPDATE_CALCULATION",
-    SAVE_COMPUTATION = "SAVE_COMPUTATION"
+    SAVE_COMPUTATION = "SAVE_COMPUTATION",
+    RESET_SAVED_COMPUTATION = "RESET_SAVED_COMPUTATION",
 }
 
 /**
  * Type containing all possible ComputationActions.
  */
-export type ComputationAction = InitializeComputation | UpdateComputation | SaveComputation;
+export type ComputationAction = InitializeComputation | UpdateComputation | SaveComputation | ResetSavedComputation;
 
 /**
  * Action for initializing the computation.
@@ -37,14 +38,14 @@ export function initializeComputation(electionType: ElectionType) {
         firstDivisor: election.firstDivisor,
         electionThreshold: election.threshold,
         districtSeats: election.seats,
-        levelingSeats: election.levelingSeats
+        levelingSeats: election.levelingSeats,
     };
 
     const results = lagueDhont(payload);
     const initializeAction: InitializeComputation = {
         type: ComputationActionType.INITIALIZE_COMPUTATION,
         ...payload,
-        results
+        results,
     };
     return initializeAction;
 }
@@ -69,7 +70,7 @@ export function updateComputation(payload: ComputationPayload) {
     const updateCalculationAction: UpdateComputation = {
         ...payload,
         type: ComputationActionType.UPDATE_COMPUTATION,
-        results
+        results,
     };
     return updateCalculationAction;
 }
@@ -93,7 +94,26 @@ export function saveComputation(year: string, result: LagueDhontResult) {
     const action: SaveComputation = {
         type: ComputationActionType.SAVE_COMPUTATION,
         result,
-        year
+        year,
+    };
+    return action;
+}
+
+/**
+ * Action for resetting the saved computation. The default should be the values
+ * from the default computation.
+ */
+export interface ResetSavedComputation {
+    type: ComputationActionType.RESET_SAVED_COMPUTATION;
+}
+
+/**
+ * Action creator for resetting the saved computation. The default should be
+ * the values from the default computation.
+ */
+export function resetSavedComputation() {
+    const action: ResetSavedComputation = {
+        type: ComputationActionType.RESET_SAVED_COMPUTATION,
     };
     return action;
 }
