@@ -1,4 +1,4 @@
-﻿import { ComputationState, unloadedState } from "./computation-state";
+import { ComputationState, unloadedState } from "./computation-state";
 import { ComputationActionType, ComputationAction } from "./computation-actions";
 import { checkExhaustively } from "../utilities";
 
@@ -22,6 +22,7 @@ export function computation(state: ComputationState = unloadedState, action: Com
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
                 current: action.results,
+                historical: action.results,
             };
         case ComputationActionType.UPDATE_COMPUTATION:
             return {
