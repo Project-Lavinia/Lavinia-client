@@ -18,6 +18,7 @@ export interface ComputationMenuProps {
     updateSettings: (settingsPayload: ComputationMenuPayload) => any;
     toggleAutoCompute: (autoCompute: boolean) => any;
     resetToHistoricalSettings: (settingsPayload: ComputationMenuPayload, election: Election) => any;
+    resetHistorical: (election: Election) => void;
     resetComparison: () => void;
 }
 
@@ -54,6 +55,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                 ...this.props.settingsPayload,
                 year: event.target.value,
             });
+            this.props.resetHistorical(election);
             this.props.resetComparison();
         }
     };

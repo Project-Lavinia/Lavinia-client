@@ -46,6 +46,11 @@ export function computation(state: ComputationState = unloadedState, action: Com
                 ...state,
                 comparison: state.historical,
             };
+        case ComputationActionType.UPDATE_HISTORICAL:
+            return {
+                ...state,
+                historical: action.historical,
+            };
         default:
             checkExhaustively(action);
             return state;

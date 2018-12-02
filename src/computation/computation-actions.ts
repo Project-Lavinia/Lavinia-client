@@ -10,12 +10,18 @@ export enum ComputationActionType {
     UPDATE_COMPUTATION = "UPDATE_CALCULATION",
     SAVE_COMPUTATION = "SAVE_COMPUTATION",
     RESET_SAVED_COMPUTATION = "RESET_SAVED_COMPUTATION",
+    UPDATE_HISTORICAL = "UPDATE_HISTORICAL",
 }
 
 /**
  * Type containing all possible ComputationActions.
  */
-export type ComputationAction = InitializeComputation | UpdateComputation | SaveComputation | ResetSavedComputation;
+export type ComputationAction =
+    | InitializeComputation
+    | UpdateComputation
+    | SaveComputation
+    | ResetSavedComputation
+    | UpdateHistorical;
 
 /**
  * Action for initializing the computation.
@@ -114,6 +120,35 @@ export interface ResetSavedComputation {
 export function resetSavedComputation() {
     const action: ResetSavedComputation = {
         type: ComputationActionType.RESET_SAVED_COMPUTATION,
+    };
+    return action;
+}
+
+/**
+ * Action for updating the historical reference for the computation.
+ */
+export interface UpdateHistorical {
+    type: ComputationActionType.UPDATE_HISTORICAL;
+    historical: LagueDhontResult;
+}
+
+/**
+ * Action creator for updating the historical reference for the computation.
+ *
+ * @param election - the election to calculate based on its default parameters
+ */
+export function updateHistorical(election: Election) {
+    const payload: ComputationPayload = {
+        election,
+        algorithm: getAlgorithmType(election.algorithm),
+        districtSeats: election.seats,
+        levelingSeats: election.levelingSeats,
+        electionThreshold: election.threshold,
+        firstDivisor: election.firstDivisor,
+    };
+    const action: UpdateHistorical = {
+        type: ComputationActionType.UPDATE_HISTORICAL,
+        historical: lagueDhont(payload),
     };
     return action;
 }
