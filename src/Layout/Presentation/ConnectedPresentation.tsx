@@ -12,6 +12,7 @@ const mapStateToProps = (state: RootState): PresentationProps => {
         showPartiesWithoutSeats: state.presentationMenuState.showPartiesWithoutSeats,
         districtSelected: state.presentationMenuState.districtSelected,
         disproportionalityIndex: state.presentationMenuState.disproportionalityIndex,
+        showComparison: state.presentationMenuState.showComparison,
     };
 };
 

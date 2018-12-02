@@ -22,6 +22,7 @@ import { RemainderQuotients } from "./RemainderQuotients/RemainderQuotients";
 import { toMax } from "../../utilities/reduce";
 import { LagueDhontResult, PartyResult, DistrictResult } from "../../computation";
 import { PresentationType, DisproportionalityIndex } from "./presentation-models";
+import { ElectionComparison } from "./ElectionOverview/ElectionComparison";
 
 export interface PresentationProps {
     currentPresentation: PresentationType;
@@ -31,6 +32,7 @@ export interface PresentationProps {
     results: LagueDhontResult;
     disproportionalityIndex: DisproportionalityIndex;
     comparisonPartyResults: PartyResult[];
+    showComparison: boolean;
 }
 
 export class Presentation extends React.Component<PresentationProps, {}> {
@@ -104,6 +106,14 @@ export class Presentation extends React.Component<PresentationProps, {}> {
     render() {
         switch (this.props.currentPresentation) {
             case PresentationType.ElectionTable:
+                if (this.props.showComparison) {
+                    return (
+                        <ElectionComparison
+                            comparisonPartyResults={this.getPartyTableData(this.props.comparisonPartyResults)}
+                            currentPartyResults={this.getPartyTableData(this.props.results.partyResults)}
+                        />
+                    );
+                }
                 return (
                     <ElectionOverview
                         partyResults={this.getPartyTableData(this.props.results.partyResults)}
