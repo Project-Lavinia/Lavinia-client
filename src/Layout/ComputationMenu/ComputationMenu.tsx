@@ -10,6 +10,7 @@ import { AlgorithmSelect } from "./AlgorithmSelect";
 import { AutoComputeCheckbox } from "./AutoComputeCheckbox";
 import { ResetButton } from "./ResetButton";
 import { SaveComparisonButton } from "./SaveComparisonButton";
+import { ResetComparisonButton } from "./ResetComparisonButton";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -22,6 +23,7 @@ export interface ComputationMenuProps {
     resetHistorical: (election: Election) => void;
     resetComparison: () => void;
     saveComparison: () => void;
+    showComparison: boolean;
 }
 
 export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
@@ -194,7 +196,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
 
     render() {
         return (
-            <div className={style.menu}>
+            <div className={`${style.menu}`}>
                 <h1 className="h2">Stortingsvalg</h1>
                 <form>
                     <YearSelect
@@ -216,7 +218,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         max={5}
                         defaultValue={this.props.computationPayload.election.firstDivisor}
                         integer={false}
-                        slider={true}
                     />
                     <SmartNumericInput
                         name="electionThreshold"
@@ -227,7 +228,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         max={15}
                         defaultValue={this.props.computationPayload.election.threshold}
                         integer={false}
-                        slider={true}
                     />
                     <SmartNumericInput
                         name="levelingSeats"
@@ -238,7 +238,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         max={100}
                         defaultValue={this.props.computationPayload.election.levelingSeats}
                         integer={true}
-                        slider={true}
                     />
                     <AutoComputeCheckbox
                         autoCompute={this.props.settingsPayload.autoCompute}
@@ -246,7 +245,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         toggleAutoCompute={this.toggleAutoCompute}
                     />
                     <ResetButton restoreToDefault={this.restoreToDefault} />
-                    <SaveComparisonButton saveComparison={this.props.saveComparison} />
+                    <div hidden={!this.props.showComparison}>
+                        <h2>Sammenlikning</h2>
+                        <div className="form-group row btn-group">
+                            <SaveComparisonButton saveComparison={this.props.saveComparison} />
+                            <ResetComparisonButton resetComparison={this.props.resetComparison} />
+                        </div>
+                    </div>
                 </form>
             </div>
         );

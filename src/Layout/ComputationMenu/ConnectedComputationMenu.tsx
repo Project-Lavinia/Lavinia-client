@@ -15,7 +15,7 @@ import { ComputationMenuPayload } from "./computation-menu-models";
 
 const mapStateToProps = (
     state: RootState
-): Pick<ComputationMenuProps, "computationPayload" | "settingsPayload" | "electionType"> => ({
+): Pick<ComputationMenuProps, "computationPayload" | "settingsPayload" | "electionType" | "showComparison"> => ({
     computationPayload: {
         election: state.computationState.election,
         algorithm: state.computationState.algorithm,
@@ -36,6 +36,7 @@ const mapStateToProps = (
         forceCompute: false,
     },
     electionType: state.requestedDataState.electionType,
+    showComparison: state.presentationMenuState.showComparison,
 });
 
 const mapDispatchToProps = (

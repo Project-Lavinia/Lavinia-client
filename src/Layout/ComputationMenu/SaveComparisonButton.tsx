@@ -8,14 +8,13 @@ export interface SaveComparisonButtonProps {
 export class SaveComparisonButton extends React.Component<SaveComparisonButtonProps> {
     render() {
         return (
-            <div className="form-group row">
-                <label htmlFor="saveComparison" className="col-sm-5 col-form-label">
-                    Sammenlikning
-                </label>
-                <div className="col-sm-7">
-                    <Button title={"Lagre"} id="saveComparison" onPress={this.props.saveComparison} type="button" />
-                </div>
-            </div>
+            <Button
+                title={"Lagre"}
+                accessibilityLabel={"Lagre sammenlikning"}
+                id="saveComparison"
+                onPress={this.props.saveComparison}
+                type="button"
+            />
         );
     }
 }
