@@ -70,47 +70,56 @@ export class ElectionComparison extends React.Component<ElectionComparisonProps>
         const data = this.getData(this.props.currentPartyResults, this.props.comparisonPartyResults);
         return (
             <ReactTable
+                className="-highlight -striped"
                 data={data}
+                pageSize={data.length > 10 ? 10 : data.length}
                 columns={[
                     {
                         id: "partyCode",
-                        Header: "Parti",
+                        Header: <abbr title="Partikode">P</abbr>,
                         accessor: (d: Comparison) => d.partyCode,
                     },
                     {
-                        id: "currentLeveling",
-                        Header: "Utj. Egen",
-                        accessor: (d: Comparison) => d.levelingSeats,
-                    },
-                    {
-                        id: "comparisonLeveling",
-                        Header: " Utj. Samm",
-                        accessor: (d: Comparison) => d.levelingSeatsComparison,
-                    },
-                    {
-                        id: "levelingDifference",
-                        Header: "ΔUtj.",
-                        accessor: (d: Comparison) => d.levelingSeatsDifference,
+                        id: "totalDifference",
+                        Header: <abbr title="Differanse av total sum mandater">Δ∑M</abbr>,
+                        accessor: (d: Comparison) => d.totalSeatsDifference,
+                        maxWidth: 70,
                     },
                     {
                         id: "currentDistrict",
-                        Header: "Dis. Egen",
+                        Header: <abbr title="Distriktsmandater valgt">DMV</abbr>,
                         accessor: (d: Comparison) => d.districtSeats,
+                        maxWidth: 70,
                     },
                     {
                         id: "comparisonDistrict",
-                        Header: "Dis. Samm",
+                        Header: <abbr title="Distriktsmandater sammenlikning">DMS</abbr>,
                         accessor: (d: Comparison) => d.districtSeatsComparison,
+                        maxWidth: 70,
                     },
                     {
                         id: "districtDifference",
-                        Header: "Dis. Diff",
+                        Header: <abbr title="Differanse av distriktsmandater">ΔDM</abbr>,
                         accessor: (d: Comparison) => d.districtSeatsDifference,
+                        maxWidth: 70,
                     },
                     {
-                        id: "totalDifference",
-                        Header: "ΔTot.",
-                        accessor: (d: Comparison) => d.totalSeatsDifference,
+                        id: "currentLeveling",
+                        Header: <abbr title="Utjevningsmandater valgt">UMV</abbr>,
+                        accessor: (d: Comparison) => d.levelingSeats,
+                        maxWidth: 70,
+                    },
+                    {
+                        id: "comparisonLeveling",
+                        Header: <abbr title="Utviklingsmandater sammenlikning">UMS</abbr>,
+                        accessor: (d: Comparison) => d.levelingSeatsComparison,
+                        maxWidth: 70,
+                    },
+                    {
+                        id: "levelingDifference",
+                        Header: <abbr title="Differanse av utjevningsmandater">ΔUM</abbr>,
+                        accessor: (d: Comparison) => d.levelingSeatsDifference,
+                        maxWidth: 70,
                     },
                 ]}
             />
