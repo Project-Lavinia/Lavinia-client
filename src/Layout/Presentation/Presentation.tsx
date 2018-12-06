@@ -163,7 +163,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                 return <LevellingSeatOverview levellingSeatQuotients={this.props.results.levelingSeatDistribution} />;
             default:
                 checkExhaustively(this.props.currentPresentation);
-                return <g />;
+                return;
         }
     }
 }
