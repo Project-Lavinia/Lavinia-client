@@ -11,13 +11,12 @@ export class AutoComputeCheckbox extends React.Component<AutoComputeCheckboxProp
     render() {
         return (
             <div className="form-group row">
-                <label htmlFor="autoCompute" className="col-sm-5 col-form-label">
+                <label htmlFor="autoCompute" className="text-left col-sm-10 col-form-label">
                     Oppdater automatisk
                 </label>
-                <div className="col-sm-7">
+                <div className="col-sm-2">
                     <input
                         className="form-control"
-                        style={{ width: "34px", margin: "0 15px 0 0" }}
                         type="checkbox"
                         name="autoCompute"
                         checked={this.props.autoCompute}

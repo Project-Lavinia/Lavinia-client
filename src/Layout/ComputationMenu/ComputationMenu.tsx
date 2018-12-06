@@ -245,9 +245,11 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         toggleAutoCompute={this.toggleAutoCompute}
                     />
                     <ResetButton restoreToDefault={this.restoreToDefault} />
-                    <div hidden={!this.props.showComparison}>
-                        <h2>Sammenlikning</h2>
-                        <div className="form-group row btn-group">
+                    <div hidden={!this.props.showComparison} className="form-group row ">
+                        <label className="col-form-label text-left col-sm-5" htmlFor="comparison_settings">
+                            Sammenlikning
+                        </label>
+                        <div className="btn-group-vertical col-sm-7">
                             <SaveComparisonButton saveComparison={this.props.saveComparison} />
                             <ResetComparisonButton resetComparison={this.props.resetComparison} />
                         </div>
