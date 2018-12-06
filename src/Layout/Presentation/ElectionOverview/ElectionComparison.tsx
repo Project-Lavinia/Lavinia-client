@@ -122,6 +122,12 @@ export class ElectionComparison extends React.Component<ElectionComparisonProps>
                         maxWidth: 70,
                     },
                 ]}
+                showPagination={data.length > 10}
+                showPageSizeOptions={false}
+                ofText={"/"}
+                nextText={"→"}
+                previousText={"←"}
+                pageText={"#"}
             />
         );
     }
