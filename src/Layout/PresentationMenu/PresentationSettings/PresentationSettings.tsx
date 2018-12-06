@@ -76,7 +76,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
     render() {
         return (
             <React.Fragment>
-                <h2>Presentasjonsinnstillinger</h2>
+                <h2 className="pt-3">Presentasjonsinnstillinger</h2>
                 <form>
                     <NoSeatsCheckbox
                         showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
