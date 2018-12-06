@@ -9,10 +9,13 @@ export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
     render() {
         return (
             <div className="form-group row">
-                <label className="col-sm-5 col-form-label">Algoritme</label>
-                <div className="col-sm-7">
+                <label className="text-left col-sm-3 col-form-label" htmlFor="algorithm_select">
+                    Algoritme
+                </label>
+                <div className="col-sm-9">
                     <select
                         className="form-control"
+                        id="algorithm_select"
                         name="calcMethod"
                         value={this.props.algorithm.toString()}
                         onChange={this.props.onAlgorithmChange}
