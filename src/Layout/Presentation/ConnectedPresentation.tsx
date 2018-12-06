@@ -3,7 +3,6 @@ import { Presentation, PresentationProps } from "./Presentation";
 import { connect } from "react-redux";
 
 const mapStateToProps = (state: RootState): PresentationProps => {
-    console.log("PresentationContainer mapped state to props");
     return {
         comparisonPartyResults: state.computationState.comparison.partyResults,
         results: state.computationState.current,
