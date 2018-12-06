@@ -2,7 +2,13 @@
 import { connect } from "react-redux";
 import { ComputationMenuProps, ComputationMenu } from "./ComputationMenu";
 import { updateComputationMenu, toggleAutoCompute } from ".";
-import { ComputationPayload, updateComputation, resetSavedComputation, updateHistorical } from "../../computation";
+import {
+    ComputationPayload,
+    updateComputation,
+    resetSavedComputation,
+    updateHistorical,
+    saveComparison,
+} from "../../computation";
 import { Election } from "../../requested-data/requested-data-models";
 import { getAlgorithmType } from "../../computation/logic";
 import { ComputationMenuPayload } from "./computation-menu-models";
@@ -42,6 +48,7 @@ const mapDispatchToProps = (
     | "resetToHistoricalSettings"
     | "resetComparison"
     | "resetHistorical"
+    | "saveComparison"
 > => ({
     updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => {
         if (autoCompute || forceCompute) {
@@ -77,6 +84,8 @@ const mapDispatchToProps = (
             };
             const updateCalculationAction = updateComputation(payload);
             dispatch(updateCalculationAction);
+            const updateHistoricalAction = updateHistorical(election);
+            dispatch(updateHistoricalAction);
         }
 
         const newSettingsPayload: ComputationMenuPayload = {
@@ -97,6 +106,10 @@ const mapDispatchToProps = (
     resetHistorical: (election: Election) => {
         const updateHistoricalAction = updateHistorical(election);
         dispatch(updateHistoricalAction);
+    },
+    saveComparison: () => {
+        const saveComparisonAction = saveComparison();
+        dispatch(saveComparisonAction);
     },
 });
 

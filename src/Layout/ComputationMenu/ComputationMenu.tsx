@@ -9,6 +9,7 @@ import { YearSelect } from "./YearSelect";
 import { AlgorithmSelect } from "./AlgorithmSelect";
 import { AutoComputeCheckbox } from "./AutoComputeCheckbox";
 import { ResetButton } from "./ResetButton";
+import { SaveComparisonButton } from "./SaveComparisonButton";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -20,6 +21,7 @@ export interface ComputationMenuProps {
     resetToHistoricalSettings: (settingsPayload: ComputationMenuPayload, election: Election) => any;
     resetHistorical: (election: Election) => void;
     resetComparison: () => void;
+    saveComparison: () => void;
 }
 
 export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
@@ -244,6 +246,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         toggleAutoCompute={this.toggleAutoCompute}
                     />
                     <ResetButton restoreToDefault={this.restoreToDefault} />
+                    <SaveComparisonButton saveComparison={this.props.saveComparison} />
                 </form>
             </div>
         );

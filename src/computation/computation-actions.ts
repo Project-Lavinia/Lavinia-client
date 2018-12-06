@@ -86,8 +86,6 @@ export function updateComputation(payload: ComputationPayload) {
  */
 export interface SaveComputation {
     type: ComputationActionType.SAVE_COMPUTATION;
-    result: LagueDhontResult;
-    year: string;
 }
 
 /**
@@ -96,11 +94,9 @@ export interface SaveComputation {
  * @param year - year identifies the data the computation was performed on.
  * @param result - the result of the computation.
  */
-export function saveComputation(year: string, result: LagueDhontResult) {
+export function saveComparison() {
     const action: SaveComputation = {
         type: ComputationActionType.SAVE_COMPUTATION,
-        result,
-        year,
     };
     return action;
 }
