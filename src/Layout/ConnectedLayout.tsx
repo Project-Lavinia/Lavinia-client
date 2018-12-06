@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch: any): LayoutProps => ({
             internationalName: "UNDEFINED",
             electionTypeId: -1,
             countryId: -1,
-            elections: []
+            elections: [],
         };
         const serializedState = localStorage.getItem("state");
         if (serializedState === null) {
@@ -24,15 +24,11 @@ const mapDispatchToProps = (dispatch: any): LayoutProps => ({
             const initializeSettingsAction = initializeComputationMenu(electionType);
             const initializePresentationAction = initializePresentation();
             dispatch(initializeRequestDataAction);
-            console.log(`Action of type ${initializeRequestDataAction.type} dispatched`);
             dispatch(initializeComputationAction);
-            console.log(`Action of type ${initializeComputationAction.type} dispatched`);
             dispatch(initializePresentationAction);
-            console.log(`Action of type ${initializePresentationAction.type} dispatched`);
             dispatch(initializeSettingsAction);
-            console.log(`Action of type ${initializeSettingsAction.type} dispatched`);
         }
-    }
+    },
 });
 
 export const ConnectedLayout = connect(
