@@ -47,7 +47,6 @@ export function initializePresentation(): InitializePresentation {
         decimalsNumber: 2,
         showPartiesWithoutSeats: false,
     };
-    console.log(`Action of type ${action.type} created`);
     return action;
 }
 
@@ -69,7 +68,6 @@ export function changePresentation(presentationSelected: PresentationType): Chan
         type: PresentationMenuActionType.ChangePresentation,
         presentationSelected,
     };
-    console.log(`Action of type ${action.type} created`);
     return action;
 }
 
@@ -136,7 +134,6 @@ export function selectDistrict(name: string): SelectDistrict {
         type: PresentationMenuActionType.SelectDistrict,
         districtSelected: name,
     };
-    console.log(`Action of type ${action.type} created`);
     return action;
 }
 
@@ -158,7 +155,6 @@ export function changeDisproportionalityIndex(index: DisproportionalityIndex) {
         type: PresentationMenuActionType.ChangeDisproportionalityIndex,
         index,
     };
-    console.log(`Action of type ${action.type} created`);
     return action;
 }
 

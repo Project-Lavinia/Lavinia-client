@@ -10,8 +10,7 @@ const mapDispatchToProps = (dispatch: any, ownProps: PresentationSelectionButton
     onPress: () => {
         const action = changePresentation(ownProps.presentationSelected);
         dispatch(action);
-        console.log(`Action ${action.type} dispatched`);
-    }
+    },
 });
 
 export const ConnectedPresentationSelectionButton = connect(
