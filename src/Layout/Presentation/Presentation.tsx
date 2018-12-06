@@ -23,6 +23,7 @@ import { toMax } from "../../utilities/reduce";
 import { LagueDhontResult, PartyResult, DistrictResult } from "../../computation";
 import { PresentationType, DisproportionalityIndex } from "./presentation-models";
 import { ElectionComparison } from "./ElectionOverview/ElectionComparison";
+import { checkExhaustively } from "../../utilities";
 
 export interface PresentationProps {
     currentPresentation: PresentationType;
@@ -161,7 +162,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
             case PresentationType.LevellingSeats:
                 return <LevellingSeatOverview levellingSeatQuotients={this.props.results.levelingSeatDistribution} />;
             default:
-                console.log(`Could not find presentation type ${this.props.currentPresentation}`);
+                checkExhaustively(this.props.currentPresentation);
                 return <g />;
         }
     }
