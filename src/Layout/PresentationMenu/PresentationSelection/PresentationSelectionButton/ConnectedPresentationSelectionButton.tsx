@@ -2,11 +2,11 @@
 import { connect } from "react-redux";
 import { changePresentation } from "../../presentation-menu-actions";
 
-interface PropsFromDispatch {
+interface DispatchProps {
     onPress: () => void;
 }
 
-const mapDispatchToProps = (dispatch: any, ownProps: PresentationSelectionButtonProps): PropsFromDispatch => ({
+const mapDispatchToProps = (dispatch: any, ownProps: PresentationSelectionButtonProps): DispatchProps => ({
     onPress: () => {
         const action = changePresentation(ownProps.presentationSelected);
         dispatch(action);
