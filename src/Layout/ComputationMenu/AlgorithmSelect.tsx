@@ -9,10 +9,10 @@ export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
     render() {
         return (
             <div className="form-group row">
-                <label className="text-left col-sm-3 col-form-label" htmlFor="algorithm_select">
+                <label className="text-left col-sm-4 col-form-label" htmlFor="algorithm_select">
                     Algoritme
                 </label>
-                <div className="col-sm-9">
+                <div className="col-sm-8">
                     <select
                         className="form-control"
                         id="algorithm_select"

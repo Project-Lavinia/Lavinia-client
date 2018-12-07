@@ -9,10 +9,10 @@ export class ResetButton extends React.Component<ResetButtonProps> {
     render() {
         return (
             <div className="form-group row">
-                <label htmlFor="reset" className="text-left col-sm-7 col-form-label">
+                <label htmlFor="reset" className="text-left col-sm-6 col-form-label">
                     Historiske instillinger
                 </label>
-                <div className="btn-group-vertical col-sm-5">
+                <div className="btn-group-vertical col-sm-6">
                     <Button title={"Gjenopprett"} onPress={this.props.restoreToDefault} type="button" />
                 </div>
             </div>
