@@ -111,7 +111,7 @@ export class ElectionComparison extends React.Component<ElectionComparisonProps>
                     },
                     {
                         id: "comparisonLeveling",
-                        Header: <abbr title="Utviklingsmandater sammenlikning">UMS</abbr>,
+                        Header: <abbr title="Utjevningsmandater sammenlikning">UMS</abbr>,
                         accessor: (d: Comparison) => d.levelingSeatsComparison,
                         maxWidth: 70,
                     },
