@@ -1,13 +1,25 @@
 ﻿import { ElectionType } from "../../requested-data/requested-data-models";
 import { ComputationMenuPayload } from "./computation-menu-models";
 
-export enum ComputationMenuAction {
-    InitializeSettings = "INITIALIZE_SETTINGS",
-    UpdateSettings = "UPDATE_SETTINGS",
-    ToggleAutoCompute = "TOGGLE_AUTO_COMPUTE"
+/**
+ * Enum containing all possible ComputationMenuAction types.
+ */
+export enum ComputationMenuActionType {
+    INITIALIZE_COMPUTATION_MENU = "INITIALIZE_COMPUTATION_MENU",
+    UPDATE_COMPUTATION_MENU = "UPDATE_COMPUTATION_MENU",
+    TOGGLE_AUTO_COMPUTE = "TOGGLE_AUTO_COMPUTE",
 }
-export interface InitializeComputationMenuAction {
-    type: ComputationMenuAction.InitializeSettings;
+
+/**
+ * Type containing all possible ComputationMenuActions.
+ */
+export type ComputationMenuAction = InitializeComputationMenu | UpdateComputationMenu | ToggleAutoCompute;
+
+/**
+ * Action for initializing the computation menu.
+ */
+export interface InitializeComputationMenu {
+    type: ComputationMenuActionType.INITIALIZE_COMPUTATION_MENU;
     electionYears: string[];
     year: string;
     algorithm: number;
@@ -18,8 +30,37 @@ export interface InitializeComputationMenuAction {
     autoCompute: boolean;
 }
 
-export interface UpdateComputationMenuAction {
-    type: ComputationMenuAction.UpdateSettings;
+/**
+ * Action creator for initializing the computation menu.
+ *
+ * @param electionType - election data fetched from the API.
+ */
+export function initializeComputationMenu(electionType: ElectionType) {
+    const election = electionType.elections[0]; // Most recent election
+    const electionYears: string[] = [];
+    for (const currentElection of electionType.elections) {
+        electionYears.push(currentElection.year.toString());
+    }
+
+    const action: InitializeComputationMenu = {
+        type: ComputationMenuActionType.INITIALIZE_COMPUTATION_MENU,
+        electionYears,
+        year: election.year.toString(),
+        algorithm: election.algorithm,
+        firstDivisor: election.firstDivisor.toString(),
+        electionThreshold: election.threshold.toString(),
+        districtSeats: election.seats.toString(),
+        levelingSeats: election.levelingSeats.toString(),
+        autoCompute: true,
+    };
+    return action;
+}
+
+/**
+ * Action for updating the computation menu.
+ */
+export interface UpdateComputationMenu {
+    type: ComputationMenuActionType.UPDATE_COMPUTATION_MENU;
     year: string;
     algorithm: number;
     firstDivisor: string;
@@ -28,49 +69,41 @@ export interface UpdateComputationMenuAction {
     levelingSeats: string;
 }
 
-export interface ToggleAutoComputeAction {
-    type: ComputationMenuAction.ToggleAutoCompute;
-    autoCompute: boolean;
-}
-
-export function initializeComputationMenu(electionType: ElectionType) {
-    const election = electionType.elections[0]; // Most recent election
-    const electionYears: string[] = [];
-    for (const currentElection of electionType.elections) {
-        electionYears.push(currentElection.year.toString());
-    }
-
-    const initializeSettingsAction: InitializeComputationMenuAction = {
-        type: ComputationMenuAction.InitializeSettings,
-        electionYears,
-        year: election.year.toString(),
-        algorithm: election.algorithm,
-        firstDivisor: election.firstDivisor.toString(),
-        electionThreshold: election.threshold.toString(),
-        districtSeats: election.seats.toString(),
-        levelingSeats: election.levelingSeats.toString(),
-        autoCompute: true
-    };
-    return initializeSettingsAction;
-}
-
+/**
+ * Action creator for updating the computation menu.
+ *
+ * @param settingsPayload - the displayed parameters
+ */
 export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
-    const updateSettingsAction: UpdateComputationMenuAction = {
-        type: ComputationMenuAction.UpdateSettings,
+    const action: UpdateComputationMenu = {
+        type: ComputationMenuActionType.UPDATE_COMPUTATION_MENU,
         year: settingsPayload.year,
         algorithm: settingsPayload.algorithm,
         firstDivisor: settingsPayload.firstDivisor,
         electionThreshold: settingsPayload.electionThreshold,
         districtSeats: settingsPayload.districtSeats,
-        levelingSeats: settingsPayload.levelingSeats
+        levelingSeats: settingsPayload.levelingSeats,
     };
-    return updateSettingsAction;
+    return action;
 }
 
+/**
+ * Action for toggling auto computation.
+ */
+export interface ToggleAutoCompute {
+    type: ComputationMenuActionType.TOGGLE_AUTO_COMPUTE;
+    autoCompute: boolean;
+}
+
+/**
+ * Action creator for toggling auto computation.
+ *
+ * @param autoCompute - true for computing automatically, else false
+ */
 export function toggleAutoCompute(autoCompute: boolean) {
-    const toggleAutoComputeAction: ToggleAutoComputeAction = {
-        type: ComputationMenuAction.ToggleAutoCompute,
-        autoCompute
+    const action: ToggleAutoCompute = {
+        type: ComputationMenuActionType.TOGGLE_AUTO_COMPUTE,
+        autoCompute,
     };
-    return toggleAutoComputeAction;
+    return action;
 }

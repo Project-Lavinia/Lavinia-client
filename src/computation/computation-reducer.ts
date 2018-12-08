@@ -1,16 +1,18 @@
 ﻿import { ComputationState, unloadedState } from "./computation-state";
-import { InitializeComputationAction, UpdateResultsAction, ComputationAction } from "./computation-actions";
+import { ComputationActionType, ComputationAction } from "./computation-actions";
+import { checkExhaustively } from "../utilities";
 
-type KnownAction = InitializeComputationAction | UpdateResultsAction;
-
-export function computationReducer(state: ComputationState | undefined, action: KnownAction): ComputationState {
-    if (state === undefined) {
-        state = unloadedState;
-    }
-
+/**
+ * Reducer for computations. Handles all state changes to the computation.
+ *
+ * @param state - the current state, with default parameters passed in iff it is
+ * undefined
+ * @param action - the action to act upon the state
+ * @returns a new state mutated by the action passed in as parameter
+ */
+export function computation(state: ComputationState = unloadedState, action: ComputationAction): ComputationState {
     switch (action.type) {
-        case ComputationAction.InitializeComputation:
-            console.log(`Action of type ${action.type} reduced`);
+        case ComputationActionType.INITIALIZE_COMPUTATION:
             return {
                 ...state,
                 election: action.election,
@@ -19,10 +21,11 @@ export function computationReducer(state: ComputationState | undefined, action: 
                 electionThreshold: action.electionThreshold,
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
-                results: action.results
+                current: action.results,
+                historical: action.results,
+                comparison: action.results,
             };
-        case ComputationAction.UpdateResults:
-            console.log(`Action of type ${action.type} reduced`);
+        case ComputationActionType.UPDATE_COMPUTATION:
             return {
                 ...state,
                 election: action.election,
@@ -31,10 +34,25 @@ export function computationReducer(state: ComputationState | undefined, action: 
                 electionThreshold: action.electionThreshold,
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
-                results: action.results
+                current: action.results,
+            };
+        case ComputationActionType.SAVE_COMPUTATION:
+            return {
+                ...state,
+                comparison: state.current,
+            };
+        case ComputationActionType.RESET_SAVED_COMPUTATION:
+            return {
+                ...state,
+                comparison: state.historical,
+            };
+        case ComputationActionType.UPDATE_HISTORICAL:
+            return {
+                ...state,
+                historical: action.historical,
             };
         default:
-            console.log(`Action of type ${action!.type} reduced to default`);
-            return state || unloadedState;
+            checkExhaustively(action);
+            return state;
     }
 }

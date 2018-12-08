@@ -4,7 +4,7 @@ import { Dictionary } from "../utilities/dictionary";
 export enum AlgorithmType {
     SainteLague = "SAINTE_LAGUE",
     DHondt = "D'HONDT",
-    Undefined = "UNDEFINED"
+    Undefined = "UNDEFINED",
 }
 
 export interface ComputationPayload {

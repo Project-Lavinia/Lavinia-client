@@ -8,7 +8,9 @@ export interface ComputationState {
     electionThreshold: number;
     districtSeats: number;
     levelingSeats: number;
-    results: LagueDhontResult;
+    historical: LagueDhontResult;
+    current: LagueDhontResult;
+    comparison: LagueDhontResult;
 }
 
 export const unloadedState: ComputationState = {
@@ -22,16 +24,26 @@ export const unloadedState: ComputationState = {
         firstDivisor: -1,
         threshold: -1,
         seats: -1,
-        levelingSeats: -1
+        levelingSeats: -1,
     },
     algorithm: AlgorithmType.Undefined,
     firstDivisor: -1,
     electionThreshold: -1,
     districtSeats: -1,
     levelingSeats: -1,
-    results: {
+    historical: {
         districtResults: [],
         partyResults: [],
-        levelingSeatDistribution: []
-    }
+        levelingSeatDistribution: [],
+    },
+    current: {
+        districtResults: [],
+        partyResults: [],
+        levelingSeatDistribution: [],
+    },
+    comparison: {
+        districtResults: [],
+        partyResults: [],
+        levelingSeatDistribution: [],
+    },
 };

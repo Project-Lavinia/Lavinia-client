@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import { RootState } from "./state";
 import { routerReducer, RouterState } from "react-router-redux";
-import { computationReducer } from "../computation";
-import { requestedDataAction } from "../requested-data";
-import { computationMenuReducer } from "../Layout/ComputationMenu";
-import { presentationMenuReducer } from "../Layout/PresentationMenu";
+import { computation } from "../computation";
+import { requestedData } from "../requested-data";
+import { computationMenu } from "../Layout/ComputationMenu";
+import { presentationMenu } from "../Layout/PresentationMenu";
 
 export { RootState, RouterState };
 
@@ -12,8 +12,8 @@ export { RootState, RouterState };
 // doesn't go well with redux@4
 export const rootReducer = combineReducers<RootState>({
     router: routerReducer as any,
-    computationState: computationReducer,
-    settingsState: computationMenuReducer,
-    presentationMenuState: presentationMenuReducer,
-    requestedDataState: requestedDataAction
+    computationState: computation,
+    settingsState: computationMenu,
+    presentationMenuState: presentationMenu,
+    requestedDataState: requestedData
 });

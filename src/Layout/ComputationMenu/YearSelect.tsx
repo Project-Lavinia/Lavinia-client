@@ -10,10 +10,13 @@ export class YearSelect extends React.Component<YearSelectProps> {
     render() {
         return (
             <div className="form-group row">
-                <label className="col-sm-5 col-form-label">År</label>
-                <div className="col-sm-7">
+                <label className="text-left col-sm-2 col-form-label" htmlFor="year_select">
+                    År
+                </label>
+                <div className="col-sm-10">
                     <select
-                        id="year"
+                        title="Velg algoritme"
+                        id="year_select"
                         value={this.props.year}
                         onChange={this.props.onYearChange}
                         className="form-control"

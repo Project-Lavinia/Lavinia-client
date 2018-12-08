@@ -9,6 +9,8 @@ import { YearSelect } from "./YearSelect";
 import { AlgorithmSelect } from "./AlgorithmSelect";
 import { AutoComputeCheckbox } from "./AutoComputeCheckbox";
 import { ResetButton } from "./ResetButton";
+import { SaveComparisonButton } from "./SaveComparisonButton";
+import { ResetComparisonButton } from "./ResetComparisonButton";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -18,6 +20,10 @@ export interface ComputationMenuProps {
     updateSettings: (settingsPayload: ComputationMenuPayload) => any;
     toggleAutoCompute: (autoCompute: boolean) => any;
     resetToHistoricalSettings: (settingsPayload: ComputationMenuPayload, election: Election) => any;
+    resetHistorical: (election: Election) => void;
+    resetComparison: () => void;
+    saveComparison: () => void;
+    showComparison: boolean;
 }
 
 export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
@@ -38,21 +44,23 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
      * @param event a ChangeEvent whose target carries the stringified year
      */
     onYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const year = parseInt(event.target.value);
-        const election = this.props.electionType.elections.find((election) => election.year === year);
+        const nextYear = parseInt(event.target.value);
+        const election = this.props.electionType.elections.find((election) => election.year === nextYear);
         if (election !== undefined) {
             this.props.updateCalculation(
                 {
                     ...this.props.computationPayload,
-                    election
+                    election,
                 },
                 this.props.settingsPayload.autoCompute,
                 false
             );
             this.props.updateSettings({
                 ...this.props.settingsPayload,
-                year: event.target.value
+                year: event.target.value,
             });
+            this.props.resetHistorical(election);
+            this.props.resetComparison();
         }
     };
 
@@ -67,14 +75,14 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
         this.props.updateCalculation(
             {
                 ...this.props.computationPayload,
-                algorithm: getAlgorithmType(algorithm)
+                algorithm: getAlgorithmType(algorithm),
             },
             this.props.settingsPayload.autoCompute,
             false
         );
         this.props.updateSettings({
             ...this.props.settingsPayload,
-            algorithm
+            algorithm,
         });
     };
 
@@ -88,12 +96,12 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     onFirstDivisorChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
-            firstDivisor: stringValue
+            firstDivisor: stringValue,
         });
         this.props.updateCalculation(
             {
                 ...this.props.computationPayload,
-                firstDivisor: numericValue
+                firstDivisor: numericValue,
             },
             this.props.settingsPayload.autoCompute,
             false
@@ -110,12 +118,12 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     onThresholdChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
-            electionThreshold: stringValue
+            electionThreshold: stringValue,
         });
         this.props.updateCalculation(
             {
                 ...this.props.computationPayload,
-                electionThreshold: numericValue
+                electionThreshold: numericValue,
             },
             this.props.settingsPayload.autoCompute,
             false
@@ -132,12 +140,12 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     onLevelingSeatsChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
-            levelingSeats: stringValue
+            levelingSeats: stringValue,
         });
         this.props.updateCalculation(
             {
                 ...this.props.computationPayload,
-                levelingSeats: numericValue
+                levelingSeats: numericValue,
             },
             this.props.settingsPayload.autoCompute,
             false
@@ -170,7 +178,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                     firstDivisor: parseFloat(this.props.settingsPayload.firstDivisor),
                     electionThreshold: parseFloat(this.props.settingsPayload.electionThreshold),
                     districtSeats: parseInt(this.props.settingsPayload.districtSeats),
-                    levelingSeats: parseInt(this.props.settingsPayload.levelingSeats)
+                    levelingSeats: parseInt(this.props.settingsPayload.levelingSeats),
                 },
                 this.props.settingsPayload.autoCompute,
                 true
@@ -188,7 +196,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
 
     render() {
         return (
-            <div className={style.menu}>
+            <div className={`${style.menu}`}>
                 <h1 className="h2">Stortingsvalg</h1>
                 <form>
                     <YearSelect
@@ -210,7 +218,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         max={5}
                         defaultValue={this.props.computationPayload.election.firstDivisor}
                         integer={false}
-                        slider={true}
                     />
                     <SmartNumericInput
                         name="electionThreshold"
@@ -221,7 +228,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         max={15}
                         defaultValue={this.props.computationPayload.election.threshold}
                         integer={false}
-                        slider={true}
                     />
                     <SmartNumericInput
                         name="levelingSeats"
@@ -232,7 +238,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         max={100}
                         defaultValue={this.props.computationPayload.election.levelingSeats}
                         integer={true}
-                        slider={true}
                     />
                     <AutoComputeCheckbox
                         autoCompute={this.props.settingsPayload.autoCompute}
@@ -240,6 +245,15 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         toggleAutoCompute={this.toggleAutoCompute}
                     />
                     <ResetButton restoreToDefault={this.restoreToDefault} />
+                    <div hidden={!this.props.showComparison} className="form-group row ">
+                        <label className="col-form-label text-left col-sm-6" htmlFor="comparison_settings">
+                            Sammenlikning
+                        </label>
+                        <div className="btn-group-vertical col-sm-6">
+                            <SaveComparisonButton saveComparison={this.props.saveComparison} />
+                            <ResetComparisonButton resetComparison={this.props.resetComparison} />
+                        </div>
+                    </div>
                 </form>
             </div>
         );
