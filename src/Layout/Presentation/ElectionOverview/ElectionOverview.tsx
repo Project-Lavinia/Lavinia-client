@@ -21,12 +21,12 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
         let label: string;
         switch (this.props.disproportionalityIndex) {
             case DisproportionalityIndex.LOOSEMORE_HANBY: {
-                label = "LHI";
+                label = "L-H";
                 index = proportionalities.map((value) => Math.abs(value)).reduce(toSum, 0) / 2;
                 break;
             }
             case DisproportionalityIndex.GALLAGHER: {
-                label = "GI";
+                label = "LSq";
                 index = Math.sqrt(proportionalities.map((value) => value * value).reduce(toSum, 0) / 2);
                 break;
             }
