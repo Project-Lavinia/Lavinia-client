@@ -13,11 +13,11 @@ export function requestedData(
     action: RequestedDataAction
 ): RequestedDataState {
     switch (action.type) {
-        case RequestedDataActionType.InitializeRequestedData:
+        case RequestedDataActionType.INITIALIZE_REQUESTED_DATA:
             return {
                 ...state,
                 electionType: action.electionType,
-                enableAutoSave: true
+                enableAutoSave: true,
             };
         default:
             return state;

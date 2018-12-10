@@ -4,7 +4,7 @@
  * Enum containing all possible RequestedDataAction types.
  */
 export enum RequestedDataActionType {
-    InitializeRequestedData = "INITIALIZE_REQUESTED_DATA"
+    INITIALIZE_REQUESTED_DATA = "INITIALIZE_REQUESTED_DATA",
 }
 
 /**
@@ -16,7 +16,7 @@ export type RequestedDataAction = InitializeRequestedData;
  * Action for initializing requested data.
  */
 export interface InitializeRequestedData {
-    type: RequestedDataActionType.InitializeRequestedData;
+    type: RequestedDataActionType.INITIALIZE_REQUESTED_DATA;
     electionType: ElectionType;
     enableAutoSave: boolean;
 }
@@ -28,9 +28,9 @@ export interface InitializeRequestedData {
  */
 export function initializeRequestedData(electionType: ElectionType) {
     const action: InitializeRequestedData = {
-        type: RequestedDataActionType.InitializeRequestedData,
+        type: RequestedDataActionType.INITIALIZE_REQUESTED_DATA,
         electionType,
-        enableAutoSave: true
+        enableAutoSave: true,
     };
     return action;
 }
