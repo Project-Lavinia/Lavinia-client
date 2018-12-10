@@ -3,6 +3,7 @@ import ReactTable from "react-table";
 import { PartyResult } from "../../../computation";
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
+import { checkExhaustively } from "../../../utilities";
 
 export interface ElectionOverviewProps {
     partyResults: PartyResult[];
@@ -30,6 +31,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                 break;
             }
             default: {
+                checkExhaustively(this.props.disproportionalityIndex);
                 label = "Error";
                 index = -1;
             }
