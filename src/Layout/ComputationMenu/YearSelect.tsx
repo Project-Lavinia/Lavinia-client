@@ -15,7 +15,7 @@ export class YearSelect extends React.Component<YearSelectProps> {
                 </label>
                 <div className="col-sm-10">
                     <select
-                        title="Velg algoritme"
+                        title="Velg år"
                         id="year_select"
                         value={this.props.year}
                         onChange={this.props.onYearChange}
