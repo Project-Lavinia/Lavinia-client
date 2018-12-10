@@ -26,7 +26,7 @@ export const unloadedState: ComputationState = {
         seats: -1,
         levelingSeats: -1,
     },
-    algorithm: AlgorithmType.Undefined,
+    algorithm: AlgorithmType.UNDEFINED,
     firstDivisor: -1,
     electionThreshold: -1,
     districtSeats: -1,

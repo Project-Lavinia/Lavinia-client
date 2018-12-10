@@ -34,7 +34,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
      * @returns true if it should be hidden, false if it should not
      */
     shouldHideFirstDivisor(): boolean {
-        return this.props.computationPayload.algorithm === AlgorithmType.DHondt;
+        return this.props.computationPayload.algorithm === AlgorithmType.D_HONDT;
     }
 
     /**
