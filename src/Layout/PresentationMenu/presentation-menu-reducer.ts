@@ -15,7 +15,7 @@ export function presentationMenu(
     action: PresentationMenuAction
 ): PresentationMenuState {
     switch (action.type) {
-        case PresentationMenuActionType.InitializePresentation:
+        case PresentationMenuActionType.INITIALIZE_PRESENTATION:
             return {
                 ...state,
                 currentPresentation: action.initialPresentation,
@@ -23,33 +23,33 @@ export function presentationMenu(
                 decimalsNumber: action.decimalsNumber,
                 showPartiesWithoutSeats: action.showPartiesWithoutSeats,
             };
-        case PresentationMenuActionType.ChangePresentation:
+        case PresentationMenuActionType.CHANGE_PRESENTATION:
             return {
                 ...state,
                 currentPresentation: action.presentationSelected,
             };
-        case PresentationMenuActionType.ChangeDecimals:
+        case PresentationMenuActionType.CHANGE_DECIMALS:
             return {
                 ...state,
                 decimals: action.decimals,
                 decimalsNumber: action.decimalsNumber,
             };
-        case PresentationMenuActionType.ShowPartiesNoSeats:
+        case PresentationMenuActionType.SHOW_PARTIES_NO_SEATS:
             return {
                 ...state,
                 showPartiesWithoutSeats: action.showPartiesWithoutSeats,
             };
-        case PresentationMenuActionType.SelectDistrict:
+        case PresentationMenuActionType.SELECT_DISTRICT:
             return {
                 ...state,
                 districtSelected: action.districtSelected,
             };
-        case PresentationMenuActionType.ChangeDisproportionalityIndex:
+        case PresentationMenuActionType.CHANGE_DISPROPORTIONALITY_INDEX:
             return {
                 ...state,
                 disproportionalityIndex: action.index,
             };
-        case PresentationMenuActionType.ToggleShowComparison:
+        case PresentationMenuActionType.TOGGLE_SHOW_COMPARISON:
             return {
                 ...state,
                 showComparison: action.showComparison,

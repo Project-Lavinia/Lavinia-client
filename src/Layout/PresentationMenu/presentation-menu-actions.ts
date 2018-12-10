@@ -4,13 +4,13 @@
  * Enum containing all possible PresentationMenuAction types.
  */
 export enum PresentationMenuActionType {
-    InitializePresentation = "INITIALIZE_PRESENTATION",
-    ChangePresentation = "CHANGE_PRESENTATION",
-    ChangeDecimals = "CHANGE_DECIMALS",
-    ShowPartiesNoSeats = "SHOW_PARTIES_WITH_NO_SEATS",
-    SelectDistrict = "SELECT_DISTRICT",
-    ChangeDisproportionalityIndex = "CHANGE_DISPROPORTIONALITY_INDEX",
-    ToggleShowComparison = "TOGGLE_SHOW_COMPARISON",
+    INITIALIZE_PRESENTATION = "INITIALIZE_PRESENTATION",
+    CHANGE_PRESENTATION = "CHANGE_PRESENTATION",
+    CHANGE_DECIMALS = "CHANGE_DECIMALS",
+    SHOW_PARTIES_NO_SEATS = "SHOW_PARTIES_WITH_NO_SEATS",
+    SELECT_DISTRICT = "SELECT_DISTRICT",
+    CHANGE_DISPROPORTIONALITY_INDEX = "CHANGE_DISPROPORTIONALITY_INDEX",
+    TOGGLE_SHOW_COMPARISON = "TOGGLE_SHOW_COMPARISON",
 }
 
 /**
@@ -29,7 +29,7 @@ export type PresentationMenuAction =
  * Action for initializing the presentation.
  */
 export interface InitializePresentation {
-    type: PresentationMenuActionType.InitializePresentation;
+    type: PresentationMenuActionType.INITIALIZE_PRESENTATION;
     initialPresentation: PresentationType;
     decimals: string;
     decimalsNumber: number;
@@ -41,7 +41,7 @@ export interface InitializePresentation {
  */
 export function initializePresentation(): InitializePresentation {
     const action: InitializePresentation = {
-        type: PresentationMenuActionType.InitializePresentation,
+        type: PresentationMenuActionType.INITIALIZE_PRESENTATION,
         initialPresentation: PresentationType.ElectionTable,
         decimals: "2",
         decimalsNumber: 2,
@@ -54,7 +54,7 @@ export function initializePresentation(): InitializePresentation {
  * Action for changing the presentation.
  */
 export interface ChangePresentation {
-    type: PresentationMenuActionType.ChangePresentation;
+    type: PresentationMenuActionType.CHANGE_PRESENTATION;
     presentationSelected: PresentationType;
 }
 
@@ -65,7 +65,7 @@ export interface ChangePresentation {
  */
 export function changePresentation(presentationSelected: PresentationType): ChangePresentation {
     const action: ChangePresentation = {
-        type: PresentationMenuActionType.ChangePresentation,
+        type: PresentationMenuActionType.CHANGE_PRESENTATION,
         presentationSelected,
     };
     return action;
@@ -75,7 +75,7 @@ export function changePresentation(presentationSelected: PresentationType): Chan
  * Action for changing displayed decimals.
  */
 export interface ChangeDecimals {
-    type: PresentationMenuActionType.ChangeDecimals;
+    type: PresentationMenuActionType.CHANGE_DECIMALS;
     decimals: string;
     decimalsNumber: number;
 }
@@ -88,7 +88,7 @@ export interface ChangeDecimals {
  */
 export function changeDecimals(decimals: string, decimalsNumber: number) {
     const action: ChangeDecimals = {
-        type: PresentationMenuActionType.ChangeDecimals,
+        type: PresentationMenuActionType.CHANGE_DECIMALS,
         decimals,
         decimalsNumber,
     };
@@ -99,7 +99,7 @@ export function changeDecimals(decimals: string, decimalsNumber: number) {
  * Action for changing whether parties with no seats are shown.
  */
 export interface ChangeShowPartiesNoSeats {
-    type: PresentationMenuActionType.ShowPartiesNoSeats;
+    type: PresentationMenuActionType.SHOW_PARTIES_NO_SEATS;
     showPartiesWithoutSeats: boolean;
 }
 
@@ -110,7 +110,7 @@ export interface ChangeShowPartiesNoSeats {
  */
 export function changeShowPartiesNoSeats(showPartiesNoSeats: boolean) {
     const action: ChangeShowPartiesNoSeats = {
-        type: PresentationMenuActionType.ShowPartiesNoSeats,
+        type: PresentationMenuActionType.SHOW_PARTIES_NO_SEATS,
         showPartiesWithoutSeats: showPartiesNoSeats,
     };
     return action;
@@ -120,7 +120,7 @@ export function changeShowPartiesNoSeats(showPartiesNoSeats: boolean) {
  * Action for selecting which district should be displayed.
  */
 export interface SelectDistrict {
-    type: PresentationMenuActionType.SelectDistrict;
+    type: PresentationMenuActionType.SELECT_DISTRICT;
     districtSelected: string;
 }
 
@@ -131,7 +131,7 @@ export interface SelectDistrict {
  */
 export function selectDistrict(name: string): SelectDistrict {
     const action: SelectDistrict = {
-        type: PresentationMenuActionType.SelectDistrict,
+        type: PresentationMenuActionType.SELECT_DISTRICT,
         districtSelected: name,
     };
     return action;
@@ -141,7 +141,7 @@ export function selectDistrict(name: string): SelectDistrict {
  * Action for changing which disproportionality index to use.
  */
 export interface ChangeDisproportionalityIndex {
-    type: PresentationMenuActionType.ChangeDisproportionalityIndex;
+    type: PresentationMenuActionType.CHANGE_DISPROPORTIONALITY_INDEX;
     index: DisproportionalityIndex;
 }
 
@@ -152,7 +152,7 @@ export interface ChangeDisproportionalityIndex {
  */
 export function changeDisproportionalityIndex(index: DisproportionalityIndex) {
     const action: ChangeDisproportionalityIndex = {
-        type: PresentationMenuActionType.ChangeDisproportionalityIndex,
+        type: PresentationMenuActionType.CHANGE_DISPROPORTIONALITY_INDEX,
         index,
     };
     return action;
@@ -162,7 +162,7 @@ export function changeDisproportionalityIndex(index: DisproportionalityIndex) {
  * Action for changing whether to show comparison or not.
  */
 export interface ToggleShowComparison {
-    type: PresentationMenuActionType.ToggleShowComparison;
+    type: PresentationMenuActionType.TOGGLE_SHOW_COMPARISON;
     showComparison: boolean;
 }
 
@@ -173,7 +173,7 @@ export interface ToggleShowComparison {
  */
 export function toggleShowComparison(showComparison: boolean) {
     const action: ToggleShowComparison = {
-        type: PresentationMenuActionType.ToggleShowComparison,
+        type: PresentationMenuActionType.TOGGLE_SHOW_COMPARISON,
         showComparison,
     };
     return action;
