@@ -27,7 +27,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
      * Helper function for reducing code in render(), allows conditional
      * rendering.
      *
-     * @returns true if the view requires decimals, false otherwise
+     * @returns true if the view contains decimals, false otherwise
      */
     needsDecimals(): boolean {
         return (
