@@ -1,10 +1,10 @@
 import { Election } from "../requested-data/requested-data-models";
-import { Dictionary } from "../utilities/Dictionary";
+import { Dictionary } from "../utilities/dictionary";
 
 export enum AlgorithmType {
-    SainteLague = "SAINTE_LAGUE",
-    DHondt = "D'HONDT",
-    Undefined = "UNDEFINED"
+    SAINTE_LAGUE = "SAINTE_LAGUE",
+    D_HONDT = "D_HONDT",
+    UNDEFINED = "UNDEFINED",
 }
 
 export interface ComputationPayload {

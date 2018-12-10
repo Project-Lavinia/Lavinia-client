@@ -2,19 +2,27 @@
 import { connect } from "react-redux";
 import { ComputationMenuProps, ComputationMenu } from "./ComputationMenu";
 import { updateComputationMenu, toggleAutoCompute } from ".";
-import { ComputationPayload, updateElectionData } from "../../computation";
+import {
+    ComputationPayload,
+    updateComputation,
+    resetSavedComputation,
+    updateHistorical,
+    saveComparison,
+} from "../../computation";
 import { Election } from "../../requested-data/requested-data-models";
 import { getAlgorithmType } from "../../computation/logic";
 import { ComputationMenuPayload } from "./computation-menu-models";
 
-const mapStateToProps = (state: RootState): Partial<ComputationMenuProps> => ({
+const mapStateToProps = (
+    state: RootState
+): Pick<ComputationMenuProps, "computationPayload" | "settingsPayload" | "electionType" | "showComparison"> => ({
     computationPayload: {
         election: state.computationState.election,
         algorithm: state.computationState.algorithm,
         firstDivisor: state.computationState.firstDivisor,
         electionThreshold: state.computationState.electionThreshold,
         districtSeats: state.computationState.districtSeats,
-        levelingSeats: state.computationState.levelingSeats
+        levelingSeats: state.computationState.levelingSeats,
     },
     settingsPayload: {
         electionYears: state.settingsState.electionYears,
@@ -25,12 +33,24 @@ const mapStateToProps = (state: RootState): Partial<ComputationMenuProps> => ({
         districtSeats: state.settingsState.districtSeats,
         levelingSeats: state.settingsState.levelingSeats,
         autoCompute: state.settingsState.autoCompute,
-        forceCompute: false
+        forceCompute: false,
     },
-    electionType: state.requestedDataState.electionType
+    electionType: state.requestedDataState.electionType,
+    showComparison: state.presentationMenuState.showComparison,
 });
 
-const mapDispatchToProps = (dispatch: any): Partial<ComputationMenuProps> => ({
+const mapDispatchToProps = (
+    dispatch: any
+): Pick<
+    ComputationMenuProps,
+    | "updateCalculation"
+    | "updateSettings"
+    | "toggleAutoCompute"
+    | "resetToHistoricalSettings"
+    | "resetComparison"
+    | "resetHistorical"
+    | "saveComparison"
+> => ({
     updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => {
         if (autoCompute || forceCompute) {
             const payload: ComputationPayload = {
@@ -39,9 +59,9 @@ const mapDispatchToProps = (dispatch: any): Partial<ComputationMenuProps> => ({
                 firstDivisor: computationPayload.firstDivisor,
                 electionThreshold: computationPayload.electionThreshold,
                 districtSeats: computationPayload.districtSeats,
-                levelingSeats: computationPayload.levelingSeats
+                levelingSeats: computationPayload.levelingSeats,
             };
-            const updateCalculationAction = updateElectionData(payload);
+            const updateCalculationAction = updateComputation(payload);
             dispatch(updateCalculationAction);
         }
     },
@@ -61,10 +81,12 @@ const mapDispatchToProps = (dispatch: any): Partial<ComputationMenuProps> => ({
                 firstDivisor: election.firstDivisor,
                 electionThreshold: election.threshold,
                 districtSeats: election.seats,
-                levelingSeats: election.levelingSeats
+                levelingSeats: election.levelingSeats,
             };
-            const updateCalculationAction = updateElectionData(payload);
+            const updateCalculationAction = updateComputation(payload);
             dispatch(updateCalculationAction);
+            const updateHistoricalAction = updateHistorical(election);
+            dispatch(updateHistoricalAction);
         }
 
         const newSettingsPayload: ComputationMenuPayload = {
@@ -73,11 +95,23 @@ const mapDispatchToProps = (dispatch: any): Partial<ComputationMenuProps> => ({
             firstDivisor: election.firstDivisor.toString(),
             electionThreshold: election.threshold.toString(),
             districtSeats: election.seats.toString(),
-            levelingSeats: election.levelingSeats.toString()
+            levelingSeats: election.levelingSeats.toString(),
         };
         const updateSettingsAction = updateComputationMenu(newSettingsPayload);
         dispatch(updateSettingsAction);
-    }
+    },
+    resetComparison: () => {
+        const resetSavedComputationAction = resetSavedComputation();
+        dispatch(resetSavedComputationAction);
+    },
+    resetHistorical: (election: Election) => {
+        const updateHistoricalAction = updateHistorical(election);
+        dispatch(updateHistoricalAction);
+    },
+    saveComparison: () => {
+        const saveComparisonAction = saveComparison();
+        dispatch(saveComparisonAction);
+    },
 });
 
 export const ConnectedComputationMenu = connect(

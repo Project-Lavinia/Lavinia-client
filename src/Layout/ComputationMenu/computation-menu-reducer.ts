@@ -1,24 +1,22 @@
-import {
-    InitializeComputationMenuAction,
-    UpdateComputationMenuAction,
-    ToggleAutoComputeAction,
-    ComputationMenuAction
-} from "./computation-menu-actions";
+import { ComputationMenuActionType, ComputationMenuAction } from "./computation-menu-actions";
 import { ComputationMenuState, unloadedState } from "./computation-menu-state";
+import { checkExhaustively } from "../../utilities";
 
-type KnownAction = InitializeComputationMenuAction | UpdateComputationMenuAction | ToggleAutoComputeAction;
-
-export function computationMenuReducer(
-    state: ComputationMenuState | undefined,
-    action: KnownAction
+/**
+ * Reducer for the computation menu. Handles all state changes to the
+ * computation menu.
+ *
+ * @param state - the current state, with default parameters passed in iff it is
+ * undefined
+ * @param action - the action to act upon the state
+ * @returns a new state mutated by the action passed in as parameter
+ */
+export function computationMenu(
+    state: ComputationMenuState = unloadedState,
+    action: ComputationMenuAction
 ): ComputationMenuState {
-    if (state === undefined) {
-        state = unloadedState;
-    }
-
     switch (action.type) {
-        case ComputationMenuAction.InitializeSettings:
-            console.log(`Action of type ${action.type} reduced`);
+        case ComputationMenuActionType.INITIALIZE_COMPUTATION_MENU:
             return {
                 ...state,
                 electionYears: action.electionYears,
@@ -28,10 +26,9 @@ export function computationMenuReducer(
                 electionThreshold: action.electionThreshold,
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
-                autoCompute: action.autoCompute
+                autoCompute: action.autoCompute,
             };
-        case ComputationMenuAction.UpdateSettings:
-            console.log(`Action of type ${action.type} reduced`);
+        case ComputationMenuActionType.UPDATE_COMPUTATION_MENU:
             return {
                 ...state,
                 year: action.year,
@@ -39,16 +36,15 @@ export function computationMenuReducer(
                 firstDivisor: action.firstDivisor,
                 electionThreshold: action.electionThreshold,
                 districtSeats: action.districtSeats,
-                levelingSeats: action.levelingSeats
+                levelingSeats: action.levelingSeats,
             };
-        case ComputationMenuAction.ToggleAutoCompute:
-            console.log(`Action of type ${action.type} reduced`);
+        case ComputationMenuActionType.TOGGLE_AUTO_COMPUTE:
             return {
                 ...state,
-                autoCompute: action.autoCompute
+                autoCompute: action.autoCompute,
             };
         default:
-            console.log(`Action of type ${action!.type} reduced to default`);
-            return state || unloadedState;
+            checkExhaustively(action);
+            return state;
     }
 }

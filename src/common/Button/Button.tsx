@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 
 export interface ButtonProps {
     title: string;
@@ -15,7 +15,7 @@ export class Button<TP> extends React.Component<TP & ButtonProps, {}> {
                 title={this.props.accessibilityLabel}
                 onClick={this.props.onPress}
                 type={this.props.type}
-                className={this.props.className}
+                className={`btn${this.props.className ? " " + this.props.className : ""}`}
             >
                 {this.props.title}
             </button>

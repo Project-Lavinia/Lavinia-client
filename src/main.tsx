@@ -5,8 +5,8 @@ import { ConnectedRouter } from "react-router-redux";
 import { createBrowserHistory } from "history";
 import { configureStore, loadState, saveState } from "./store";
 import { App } from ".";
-import { throttle } from "lodash";
 import "./main.css";
+import { debounce } from "lodash";
 
 const persistedState = loadState();
 
@@ -14,12 +14,12 @@ const history = createBrowserHistory();
 const store = configureStore(history, persistedState);
 
 store.subscribe(
-    throttle(() => {
+    debounce(() => {
         const currentState = store.getState();
         if (currentState.requestedDataState.enableAutoSave) {
             saveState(currentState);
         }
-    }, 3000)
+    }, 500)
 );
 
 ReactDOM.render(

@@ -2,11 +2,14 @@ import * as React from "react";
 import ReactTable from "react-table";
 import { DistrictResult, PartyResult } from "../../../computation/computation-models";
 import { toSum } from "../../../utilities/reduce";
+import { DisproportionalityIndex } from "../presentation-models";
+import { checkExhaustively } from "../../../utilities";
 
 export interface SingleDistrictProps {
     districtResults: DistrictResult[];
     districtSelected: string;
     decimals: number;
+    disproportionalityIndex: DisproportionalityIndex;
 }
 
 export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
@@ -18,6 +21,26 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
     render() {
         const data = this.getData();
         const decimals = this.props.decimals;
+        const proportionalities = data.map((value) => value.proportionality);
+        let label: string;
+        let index: number;
+        switch (this.props.disproportionalityIndex) {
+            case DisproportionalityIndex.LOOSEMORE_HANBY: {
+                label = "L-H";
+                index = proportionalities.map((value) => Math.abs(value)).reduce(toSum, 0) / 2;
+                break;
+            }
+            case DisproportionalityIndex.GALLAGHER: {
+                label = "LSq";
+                index = Math.sqrt(proportionalities.map((value) => value * value).reduce(toSum, 0) / 2);
+                break;
+            }
+            default: {
+                checkExhaustively(this.props.disproportionalityIndex);
+                label = "Error";
+                index = -1;
+            }
+        }
         return (
             <React.Fragment>
                 <h1 className="h1">{this.props.districtSelected}</h1>
@@ -34,7 +57,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                 <span>
                                     <strong>Utvalg</strong>
                                 </span>
-                            )
+                            ),
                         },
                         {
                             Header: "Stemmer",
@@ -43,7 +66,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                 <span>
                                     <strong>{data.map((value) => value.votes).reduce(toSum)}</strong>
                                 </span>
-                            )
+                            ),
                         },
                         {
                             Header: "Mandater",
@@ -56,7 +79,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                         <span>
                                             <strong>{data.map((value) => value.districtSeats).reduce(toSum)}</strong>
                                         </span>
-                                    )
+                                    ),
                                 },
                                 {
                                     Header: "Utjevning",
@@ -65,9 +88,9 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                         <span>
                                             <strong>{data.map((value) => value.levelingSeats).reduce(toSum)}</strong>
                                         </span>
-                                    )
-                                }
-                            ]
+                                    ),
+                                },
+                            ],
                         },
                         {
                             Header: "Mandater",
@@ -76,7 +99,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                 <span>
                                     <strong>{data.map((value) => value.totalSeats).reduce(toSum)}</strong>
                                 </span>
-                            )
+                            ),
                         },
                         {
                             Header: "Prop.",
@@ -84,14 +107,11 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             Footer: (
                                 <span>
                                     <strong>
-                                        {data
-                                            .map((value) => value.proportionality)
-                                            .reduce(toSum)
-                                            .toFixed(decimals)}
+                                        {label}: {index.toFixed(decimals)}
                                     </strong>
                                 </span>
-                            )
-                        }
+                            ),
+                        },
                     ]}
                     showPageSizeOptions={false}
                     ofText={"/"}

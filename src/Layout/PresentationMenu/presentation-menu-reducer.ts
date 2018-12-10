@@ -1,65 +1,61 @@
 ﻿import { unloadedState, PresentationMenuState } from "./presentation-menu-state";
-import {
-    PresentationMenuAction,
-    InitializePresentationAction,
-    ChangePresentationAction,
-    ChangeDecimalsAction,
-    ChangeShowPartiesNoSeats,
-    SelectDistrictAction
-} from "./presentation-menu-actions";
+import { PresentationMenuActionType, PresentationMenuAction } from "./presentation-menu-actions";
+import { checkExhaustively } from "../../utilities";
 
-type KnownAction =
-    | InitializePresentationAction
-    | ChangePresentationAction
-    | ChangeDecimalsAction
-    | ChangeShowPartiesNoSeats
-    | SelectDistrictAction;
-
-export function presentationMenuReducer(
-    state: PresentationMenuState | undefined,
-    action: KnownAction
+/**
+ * Reducer for the presentation menu. Handles all state changes to the presentation menu.
+ *
+ * @param state - the current state, with default parameters iff it is
+ * undefined.
+ * @param action - the action to act upon the state.
+ * @returns a new state mutated by the action passed in as parameter.
+ */
+export function presentationMenu(
+    state: PresentationMenuState = unloadedState,
+    action: PresentationMenuAction
 ): PresentationMenuState {
-    if (state === undefined) {
-        state = unloadedState;
-    }
-
     switch (action.type) {
-        case PresentationMenuAction.InitializePresentation:
-            console.log(`Action of type ${action.type} reduced`);
+        case PresentationMenuActionType.INITIALIZE_PRESENTATION:
             return {
                 ...state,
                 currentPresentation: action.initialPresentation,
                 decimals: action.decimals,
                 decimalsNumber: action.decimalsNumber,
-                showPartiesWithoutSeats: action.showPartiesWithoutSeats
+                showPartiesWithoutSeats: action.showPartiesWithoutSeats,
             };
-        case PresentationMenuAction.ChangePresentation:
-            console.log(`Action of type ${action.type} reduced`);
+        case PresentationMenuActionType.CHANGE_PRESENTATION:
             return {
                 ...state,
-                currentPresentation: action.presentationSelected
+                currentPresentation: action.presentationSelected,
             };
-        case PresentationMenuAction.ChangeDecimals:
-            console.log(`Action of type ${action.type} reduced`);
+        case PresentationMenuActionType.CHANGE_DECIMALS:
             return {
                 ...state,
                 decimals: action.decimals,
-                decimalsNumber: action.decimalsNumber
+                decimalsNumber: action.decimalsNumber,
             };
-        case PresentationMenuAction.ShowPartiesNoSeats:
-            console.log(`Action of type ${action.type} reduced`);
+        case PresentationMenuActionType.SHOW_PARTIES_NO_SEATS:
             return {
                 ...state,
-                showPartiesWithoutSeats: action.showPartiesWithoutSeats
+                showPartiesWithoutSeats: action.showPartiesWithoutSeats,
             };
-        case PresentationMenuAction.SelectDistrict:
-            console.log(`Action of type ${action.type} reduced`);
+        case PresentationMenuActionType.SELECT_DISTRICT:
             return {
                 ...state,
-                districtSelected: action.districtSelected
+                districtSelected: action.districtSelected,
+            };
+        case PresentationMenuActionType.CHANGE_DISPROPORTIONALITY_INDEX:
+            return {
+                ...state,
+                disproportionalityIndex: action.index,
+            };
+        case PresentationMenuActionType.TOGGLE_SHOW_COMPARISON:
+            return {
+                ...state,
+                showComparison: action.showComparison,
             };
         default:
-            console.log(`Action of type ${action!.type} reduced to default`);
-            return state || unloadedState;
+            checkExhaustively(action);
+            return state;
     }
 }

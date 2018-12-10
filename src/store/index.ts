@@ -7,10 +7,11 @@ import { logger } from "../middleware";
 import { RootState, rootReducer } from "../reducers";
 
 export function configureStore(history: History, initialState?: RootState): Store<RootState> {
-    let middleware = applyMiddleware(logger, routerMiddleware(history));
+    let middleware = applyMiddleware(routerMiddleware(history));
 
     if (process.env.NODE_ENV !== "production") {
         middleware = composeWithDevTools(middleware);
+        middleware = applyMiddleware(logger);
     }
 
     const store = createStore(rootReducer as any, initialState as any, middleware) as Store<RootState>;

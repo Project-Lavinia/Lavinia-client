@@ -19,14 +19,14 @@ export class SmartNumericInput extends React.Component<SmartNumericInputProps, {
         const value = this.validateInput(this.props.value);
         return (
             <div hidden={this.props.hidden} className="form-group row">
-                <label htmlFor={this.props.name} className="col-sm-5 col-form-label">
+                <label htmlFor={this.props.name} className="text-left col-sm-7 col-form-label">
                     {this.props.title}
                 </label>
-                <div className="col-sm-7">
+                <div className="col-sm-5">
                     <input
                         className="form-control"
                         type={"number"}
-                        style={this.props.slider ? { width: "50%" } : {}}
+                        style={this.props.slider ? { width: "100%" } : {}}
                         name={this.props.name}
                         onChange={this.updateNumeric}
                         placeholder={value.numericValue.toString()}

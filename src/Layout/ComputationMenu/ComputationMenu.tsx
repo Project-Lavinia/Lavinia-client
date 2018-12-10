@@ -1,10 +1,16 @@
 import * as React from "react";
-import { SmartNumericInput, Button } from "../../common";
+import { SmartNumericInput } from "../../common";
 import * as style from "./ComputationMenu.css";
 import { ElectionType, Election } from "../../requested-data/requested-data-models";
 import { ComputationPayload, AlgorithmType } from "../../computation";
 import { getAlgorithmType } from "../../computation/logic";
 import { ComputationMenuPayload } from "./computation-menu-models";
+import { YearSelect } from "./YearSelect";
+import { AlgorithmSelect } from "./AlgorithmSelect";
+import { AutoComputeCheckbox } from "./AutoComputeCheckbox";
+import { ResetButton } from "./ResetButton";
+import { SaveComparisonButton } from "./SaveComparisonButton";
+import { ResetComparisonButton } from "./ResetComparisonButton";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -14,91 +20,153 @@ export interface ComputationMenuProps {
     updateSettings: (settingsPayload: ComputationMenuPayload) => any;
     toggleAutoCompute: (autoCompute: boolean) => any;
     resetToHistoricalSettings: (settingsPayload: ComputationMenuPayload, election: Election) => any;
+    resetHistorical: (election: Election) => void;
+    resetComparison: () => void;
+    saveComparison: () => void;
+    showComparison: boolean;
 }
 
 export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
+    /**
+     * Helper function to determine whether the first divisor SmartNumericInput
+     * should be visible.
+     *
+     * @returns true if it should be hidden, false if it should not
+     */
     shouldHideFirstDivisor(): boolean {
-        return this.props.computationPayload.algorithm === AlgorithmType.DHondt;
+        return this.props.computationPayload.algorithm === AlgorithmType.D_HONDT;
     }
+
+    /**
+     * Helper function to update the calculation and settings on user
+     * interaction.
+     *
+     * @param event a ChangeEvent whose target carries the stringified year
+     */
     onYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const year = parseInt(event.target.value);
-        const election = this.props.electionType.elections.find((election) => election.year === year);
+        const nextYear = parseInt(event.target.value);
+        const election = this.props.electionType.elections.find((election) => election.year === nextYear);
         if (election !== undefined) {
             this.props.updateCalculation(
                 {
                     ...this.props.computationPayload,
-                    election
+                    election,
                 },
                 this.props.settingsPayload.autoCompute,
                 false
             );
             this.props.updateSettings({
                 ...this.props.settingsPayload,
-                year: event.target.value
+                year: event.target.value,
             });
+            this.props.resetHistorical(election);
+            this.props.resetComparison();
         }
     };
+
+    /**
+     * Helper function to update the calculation and settings on user
+     * interaction.
+     *
+     * @param event a ChangeEvent whose target carries the numerified algorithm
+     */
     onAlgorithmChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const algorithm = parseInt(event.target.value);
         this.props.updateCalculation(
             {
                 ...this.props.computationPayload,
-                algorithm: getAlgorithmType(algorithm)
+                algorithm: getAlgorithmType(algorithm),
             },
             this.props.settingsPayload.autoCompute,
             false
         );
         this.props.updateSettings({
             ...this.props.settingsPayload,
-            algorithm
+            algorithm,
         });
     };
+
+    /**
+     * Helper function to update the calculation and settings on
+     * user interaction.
+     *
+     * @param stringValue the string value of the first divisor
+     * @param numericValue the numeric value of the first divisor
+     */
     onFirstDivisorChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
-            firstDivisor: stringValue
+            firstDivisor: stringValue,
         });
         this.props.updateCalculation(
             {
                 ...this.props.computationPayload,
-                firstDivisor: numericValue
+                firstDivisor: numericValue,
             },
             this.props.settingsPayload.autoCompute,
             false
         );
     };
+
+    /**
+     * Helper function to update the calculation and settings on
+     * user interaction.
+     *
+     * @param stringValue the string value of the threshold
+     * @param numericValue the numeric value of the threshold
+     */
     onThresholdChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
-            electionThreshold: stringValue
+            electionThreshold: stringValue,
         });
         this.props.updateCalculation(
             {
                 ...this.props.computationPayload,
-                electionThreshold: numericValue
+                electionThreshold: numericValue,
             },
             this.props.settingsPayload.autoCompute,
             false
         );
     };
+
+    /**
+     * Helper function to update the calculation and settings on
+     * user interaction.
+     *
+     * @param stringValue the string value of the no. of levelling seats
+     * @param numericValue the numeric value of the no. of levelling seats
+     */
     onLevelingSeatsChange = (stringValue: string, numericValue: number) => {
         this.props.updateSettings({
             ...this.props.settingsPayload,
-            levelingSeats: stringValue
+            levelingSeats: stringValue,
         });
         this.props.updateCalculation(
             {
                 ...this.props.computationPayload,
-                levelingSeats: numericValue
+                levelingSeats: numericValue,
             },
             this.props.settingsPayload.autoCompute,
             false
         );
     };
+
+    /**
+     * Helper function to update whether or not automatic computation is
+     * enabled. Ensures computation is performed whenever toggled.
+     *
+     * @param event ChangeEvent for whether or not it is checked
+     */
     toggleAutoCompute = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.props.toggleAutoCompute(event.target.checked);
         this.computeManually();
     };
+
+    /**
+     * Helper function to perform a manual computation of the current values.
+     *
+     */
     computeManually = () => {
         const year = parseInt(this.props.settingsPayload.year);
         const election = this.props.electionType.elections.find((e) => e.year === year);
@@ -110,59 +178,36 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                     firstDivisor: parseFloat(this.props.settingsPayload.firstDivisor),
                     electionThreshold: parseFloat(this.props.settingsPayload.electionThreshold),
                     districtSeats: parseInt(this.props.settingsPayload.districtSeats),
-                    levelingSeats: parseInt(this.props.settingsPayload.levelingSeats)
+                    levelingSeats: parseInt(this.props.settingsPayload.levelingSeats),
                 },
                 this.props.settingsPayload.autoCompute,
                 true
             );
         }
     };
+
+    /**
+     * Helper function for restoring both the settings and the computation to
+     * their original, default state for the current year selected.
+     */
     restoreToDefault = () => {
         this.props.resetToHistoricalSettings(this.props.settingsPayload, this.props.computationPayload.election);
     };
 
     render() {
         return (
-            <div className={style.menu}>
+            <div className={`${style.menu}`}>
                 <h1 className="h2">Stortingsvalg</h1>
                 <form>
-                    <div className="form-group row">
-                        <label className="col-sm-5 col-form-label">År</label>
-                        <div className="col-sm-7">
-                            <select
-                                id="year"
-                                value={this.props.settingsPayload.year}
-                                onChange={this.onYearChange}
-                                className="form-control"
-                                name="year"
-                            >
-                                {this.props.settingsPayload.electionYears.map((item, index) => {
-                                    return (
-                                        <option
-                                            key={index} // By convention all children should have a unique key prop
-                                            value={item}
-                                        >
-                                            {item}
-                                        </option>
-                                    );
-                                })}
-                            </select>
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <label className="col-sm-5 col-form-label">Algoritme</label>
-                        <div className="col-sm-7">
-                            <select
-                                className="form-control"
-                                name="calcMethod"
-                                value={this.props.settingsPayload.algorithm.toString()}
-                                onChange={this.onAlgorithmChange}
-                            >
-                                <option value="1">Sainte Lagüe</option>
-                                <option value="2">d'Hondt</option>>
-                            </select>
-                        </div>
-                    </div>
+                    <YearSelect
+                        electionYears={this.props.settingsPayload.electionYears}
+                        onYearChange={this.onYearChange}
+                        year={this.props.settingsPayload.year}
+                    />
+                    <AlgorithmSelect
+                        algorithm={this.props.settingsPayload.algorithm}
+                        onAlgorithmChange={this.onAlgorithmChange}
+                    />
                     <SmartNumericInput
                         hidden={this.shouldHideFirstDivisor()}
                         name="firstDivisor"
@@ -173,7 +218,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         max={5}
                         defaultValue={this.props.computationPayload.election.firstDivisor}
                         integer={false}
-                        slider={true}
                     />
                     <SmartNumericInput
                         name="electionThreshold"
@@ -184,7 +228,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         max={15}
                         defaultValue={this.props.computationPayload.election.threshold}
                         integer={false}
-                        slider={true}
                     />
                     <SmartNumericInput
                         name="levelingSeats"
@@ -195,38 +238,20 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         max={100}
                         defaultValue={this.props.computationPayload.election.levelingSeats}
                         integer={true}
-                        slider={true}
                     />
-                    {/*<div className="form-group row">
-                    <label htmlFor="districtSeat" className="col-sm-5 col-form-label">Distriksmandater</label>
-                    <div className="col-sm-7">
-                        <input className="form-control" classID="districtSeat" type="number" name="districSeat" min="0" step="1" max="500" />
-                    </div>
-                </div>*/}
-                    <div className="form-group row">
-                        <label htmlFor="autoCompute" className="col-sm-5 col-form-label">
-                            Oppdater automatisk
+                    <AutoComputeCheckbox
+                        autoCompute={this.props.settingsPayload.autoCompute}
+                        computeManually={this.computeManually}
+                        toggleAutoCompute={this.toggleAutoCompute}
+                    />
+                    <ResetButton restoreToDefault={this.restoreToDefault} />
+                    <div hidden={!this.props.showComparison} className="form-group row ">
+                        <label className="col-form-label text-left col-sm-6" htmlFor="comparison_settings">
+                            Sammenlikning
                         </label>
-                        <div className="col-sm-7">
-                            <input
-                                className="form-control"
-                                style={{ width: "34px", margin: "0 15px 0 0" }}
-                                type="checkbox"
-                                name="autoCompute"
-                                checked={this.props.settingsPayload.autoCompute}
-                                onChange={this.toggleAutoCompute}
-                            />
-                            {!this.props.settingsPayload.autoCompute && (
-                                <Button title={"Kalkuler"} onPress={this.computeManually} type="button" />
-                            )}
-                        </div>
-                    </div>
-                    <div className="form-group row">
-                        <label htmlFor="reset" className="col-sm-5 col-form-label">
-                            Historiske instillinger
-                        </label>
-                        <div className="col-sm-7">
-                            <Button title={"Gjenopprett"} onPress={this.restoreToDefault} type="button" />
+                        <div className="btn-group-vertical col-sm-6">
+                            <SaveComparisonButton saveComparison={this.props.saveComparison} />
+                            <ResetComparisonButton resetComparison={this.props.resetComparison} />
                         </div>
                     </div>
                 </form>

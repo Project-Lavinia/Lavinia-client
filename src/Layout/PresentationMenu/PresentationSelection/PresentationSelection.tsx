@@ -41,7 +41,7 @@ export class PresentationSelection extends React.Component {
                 <ConnectedPresentationSelectionButton
                     className="btn-block"
                     title={"Fylkestabeller"}
-                    presentationSelected={PresentationType.SingleCountyTable}
+                    presentationSelected={PresentationType.SingleDistrict}
                 />
                 <ConnectedPresentationSelectionButton
                     className="btn-block"

@@ -1,5 +1,5 @@
 ﻿import { AlgorithmType, Result, SeatResult, PartyResult, DistributionResult, DistrictResult, LevelingSeat } from "..";
-import { Dictionary } from "../../utilities/Dictionary";
+import { Dictionary } from "../../utilities/dictionary";
 
 const illegalPartyCodes = new Set(["BLANKE"]);
 
@@ -43,7 +43,7 @@ export function distributeSeats(
         const seatResult: SeatResult = {
             seatIndex: i,
             winner: "",
-            partyResults: []
+            partyResults: [],
         };
 
         let currentWinner = "";
@@ -53,7 +53,7 @@ export function distributeSeats(
             const currentQuotient = result.votes / getDenominator(algorithm, seatsWon[result.partyCode], firstDivisor);
             seatResult.partyResults.push({
                 partyCode: result.partyCode,
-                quotient: currentQuotient
+                quotient: currentQuotient,
             });
 
             if (currentQuotient > currentMaxQuotient && !illegalPartyCodes.has(result.partyCode)) {
@@ -69,7 +69,7 @@ export function distributeSeats(
 
     return {
         seatsWon: currentSeatsWon,
-        seatResults
+        seatResults,
     };
 }
 
@@ -83,13 +83,13 @@ export function distributeSeats(
  */
 export function getDenominator(algorithm: AlgorithmType, numberOfSeatsAssigned: number, firstDivisor: number) {
     switch (algorithm) {
-        case AlgorithmType.SainteLague:
+        case AlgorithmType.SAINTE_LAGUE:
             if (numberOfSeatsAssigned === 0) {
                 return firstDivisor;
             } else {
                 return 2 * numberOfSeatsAssigned + 1;
             }
-        case AlgorithmType.DHondt:
+        case AlgorithmType.D_HONDT:
             return numberOfSeatsAssigned + 1;
         default:
             console.error(`ERROR! ${algorithm.toString()} does not have an associated denominator function!`);
@@ -208,7 +208,7 @@ export function generateLevelingSeatArray(
                         partyCode,
                         quotient: adjustedQuotient,
                         seatNumber: 0,
-                        quotientNumber: 0
+                        quotientNumber: 0,
                     };
                     levelingSeats.push(seat);
                 }
@@ -227,10 +227,10 @@ export function generateLevelingSeatArray(
 export function getAlgorithmType(type: number) {
     switch (type) {
         case 1:
-            return AlgorithmType.SainteLague;
+            return AlgorithmType.SAINTE_LAGUE;
         case 2:
-            return AlgorithmType.DHondt;
+            return AlgorithmType.D_HONDT;
         default:
-            return AlgorithmType.Undefined;
+            return AlgorithmType.UNDEFINED;
     }
 }
