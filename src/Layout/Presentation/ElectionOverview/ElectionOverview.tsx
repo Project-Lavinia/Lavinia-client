@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import ReactTable from "react-table";
 import { PartyResult } from "../../../computation";
 import { toSum } from "../../../utilities/reduce";
@@ -106,6 +106,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
         return (
             <ReactTable
                 className="-highlight -striped"
+                multiSort={false}
                 data={data}
                 pageSize={data.length}
                 filterable={true}
