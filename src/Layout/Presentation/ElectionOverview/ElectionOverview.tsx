@@ -83,14 +83,10 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
             <ReactTable
                 className="-highlight -striped"
                 data={data}
-                defaultPageSize={data.length >= 10 ? 10 : data.length}
-                pageSize={data.length >= 10 ? 10 : data.length}
-                showPagination={data.length > 10}
+                pageSize={data.length}
+                showPagination={false}
                 showPageSizeOptions={false}
-                ofText={"/"}
-                nextText={"→"}
-                previousText={"←"}
-                pageText={"#"}
+                style={{ textAlign: "center", height: "60vh" } as React.CSSProperties}
                 columns={[
                     {
                         Header: "Parti",
