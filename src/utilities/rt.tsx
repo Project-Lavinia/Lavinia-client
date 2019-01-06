@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Filter } from "react-table";
 
 /**
  * Helper function for select-based filters.
@@ -34,4 +35,77 @@ export function selectFilterWithOptions(options: { value: string; title: string 
             </select>
         );
     };
+}
+
+export function allGreaterThanEqualsMethod(filter: Filter, rows: any) {
+    if (filter.value === "all") {
+        return true;
+    }
+    if (filter.value === "true") {
+        return rows[filter.id] > 0;
+    }
+    if (filter.value === "false") {
+        return rows[filter.id] === 0;
+    }
+    return false;
+}
+
+/**
+ * Utility function for comparing values to an inclusive threshold.
+ *
+ * @param threshold threshold to compare the row to.
+ * @returns a function that uses the threshold as a "greater than or equals",
+ * or "less than" comparison.
+ * @example thresholdFilterMethod(5) => (filter: Filter, row: any) => {
+ * if (filter.value === "all") {
+ *     return true;
+ * }
+ * if (filter.value === "gteq") {
+ *     return row[filter.id] >= 5
+ * }
+ * if (filter.value === "lt") {
+ *     return row[filter.id] < 5
+ * }
+ * return false;
+ */
+export function thresholdFilterMethod(threshold: number) {
+    return (filter: Filter, rows: any) => {
+        if (filter.value === "all") {
+            return true;
+        }
+        if (filter.value === "gteq") {
+            return rows[filter.id] >= threshold;
+        }
+        if (filter.value === "lt") {
+            return rows[filter.id] < threshold;
+        }
+        return false;
+    };
+}
+
+/**
+ * Utility function that wraps the thresholdFilterMethod and passes 0. In other
+ * words it filters on gteq (greater than or equals) 0 or lt (less than) 0.
+ *
+ * @param filter contains the id of the column and value from the select filter
+ * @param rows holds the data of all the rows
+ */
+export function positiveOrNegativeFilterMethod() {
+    return thresholdFilterMethod(0);
+}
+
+/**
+ *
+ * @param filter contains the id of the column and value from the select filter
+ * @param rows holds the data of all the rows
+ */
+export function caseInsensitiveFilterMethod(filter: Filter, rows: any) {
+    const id = filter.pivotId || filter.id;
+    const value: string = filter.value;
+    const lowerCaseInput = value.toLowerCase();
+    return rows[id] !== undefined
+        ? String(rows[id])
+              .toLowerCase()
+              .startsWith(lowerCaseInput)
+        : true;
 }
