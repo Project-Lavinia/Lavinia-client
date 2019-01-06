@@ -1,10 +1,17 @@
-import * as React from "react";
+﻿import * as React from "react";
 import ReactTable from "react-table";
 import { PartyResult } from "../../../computation";
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
 import { roundNumber } from "../../../utilities/number";
+import {
+    selectFilterWithOptions,
+    thresholdFilterMethod,
+    allGreaterThanEqualsMethod,
+    positiveOrNegativeFilterMethod,
+    caseInsensitiveFilterMethod,
+} from "../../../utilities/rt";
 
 export interface ElectionOverviewProps {
     partyResults: PartyResult[];
@@ -39,7 +46,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
         }
         return data;
     };
-    
+
     /**
      * Utility for checking whether the difference column should be displayed,
      * ie -- are there any differences?
@@ -78,56 +85,87 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                 index = -1;
             }
         }
+        const allTrueFalseOptions = [
+            { value: "all", title: "Alle" },
+            { value: "true", title: "Ja" },
+            { value: "false", title: "Nei" },
+        ];
+
+        const thresholdOptions = [
+            { value: "all", title: "Alle" },
+            { value: "gteq", title: `≥ ${this.props.threshold}%` },
+            { value: "lt", title: `< ${this.props.threshold}%` },
+        ];
+
+        const thresholdIsZeroOptions = [
+            { value: "all", title: "Alle" },
+            { value: "gteq", title: `≥ 0` },
+            { value: "lt", title: `< 0` },
+        ];
 
         return (
             <ReactTable
                 className="-highlight -striped"
                 data={data}
                 pageSize={data.length}
+                filterable={true}
                 showPagination={false}
                 showPageSizeOptions={false}
                 style={{ textAlign: "center", height: "60vh" } as React.CSSProperties}
                 columns={[
                     {
                         Header: "Parti",
-                        accessor: "partyName",
-                        width: this.props.partyNameWidth + 165,
+                        accessor: "partyCode",
+                        filterMethod: caseInsensitiveFilterMethod,
                         Footer: <strong>Utvalg</strong>,
                     },
                     {
                         Header: "%",
                         id: "%",
+                        Filter: selectFilterWithOptions(thresholdOptions),
+                        filterMethod: thresholdFilterMethod(this.props.threshold),
                         accessor: (d: ElectionOverviewDatum) => roundNumber(d.percentVotes, decimals),
                     },
                     {
                         Header: "Stemmer",
                         accessor: "votes",
+                        filterable: false,
                         Footer: <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>,
                     },
                     {
                         Header: "Distrikt",
                         accessor: "districtSeats",
+                        Filter: selectFilterWithOptions(allTrueFalseOptions),
+                        filterMethod: allGreaterThanEqualsMethod,
                         Footer: <strong>{data.map((value) => value.districtSeats).reduce(toSum, 0)}</strong>,
                     },
+
                     {
                         Header: "Utjevning",
                         accessor: "levelingSeats",
+                        Filter: selectFilterWithOptions(allTrueFalseOptions),
+                        filterMethod: allGreaterThanEqualsMethod,
                         Footer: <strong>{data.map((value) => value.levelingSeats).reduce(toSum, 0)}</strong>,
                     },
                     {
                         Header: "Sum",
                         accessor: "totalSeats",
+                        filterable: false,
                         Footer: <strong>{data.map((value) => value.totalSeats).reduce(toSum, 0)}</strong>,
                     },
                     {
                         Header: "Differanse",
                         accessor: "totalSeatDifference",
+                        Filter: selectFilterWithOptions(thresholdIsZeroOptions),
+                        filterMethod: positiveOrNegativeFilterMethod(),
                         show: this.shouldShowDifference(data),
                     },
                     {
                         Header: "Prop.",
                         id: "proportionality",
                         accessor: (d: ElectionOverviewDatum) => roundNumber(d.proportionality, decimals),
+                        Filter: selectFilterWithOptions(thresholdIsZeroOptions),
+                        filterMethod: positiveOrNegativeFilterMethod(),
                         Footer: (
                             <strong>
                                 {label}: {index.toFixed(this.props.decimals)}
