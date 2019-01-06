@@ -1,4 +1,4 @@
-﻿import { RootState } from "../../reducers";
+import { RootState } from "../../reducers";
 import { Presentation, PresentationProps } from "./Presentation";
 import { connect } from "react-redux";
 
@@ -12,6 +12,7 @@ const mapStateToProps = (state: RootState): PresentationProps => {
         districtSelected: state.presentationMenuState.districtSelected,
         disproportionalityIndex: state.presentationMenuState.disproportionalityIndex,
         showComparison: state.presentationMenuState.showComparison,
+        threshold: state.computationState.electionThreshold,
     };
 };
 

@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import ReactTable from "react-table";
 import { PartyResult } from "../../../computation";
 import { toSum } from "../../../utilities/reduce";
@@ -9,6 +9,7 @@ export interface ElectionOverviewProps {
     partyResults: PartyResult[];
     comparisonPartyResults: PartyResult[];
     decimals: number;
+    threshold: number;
     partyNameWidth: number;
     disproportionalityIndex: DisproportionalityIndex;
 }
