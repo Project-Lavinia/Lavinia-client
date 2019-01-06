@@ -121,6 +121,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         partyResults={this.props.results.partyResults}
                         comparisonPartyResults={this.props.comparisonPartyResults}
                         decimals={this.props.decimals}
+                        showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
                         partyNameWidth={this.getWidestStringWidth(this.getPartyNames())}
                         disproportionalityIndex={this.props.disproportionalityIndex}
                         threshold={this.props.threshold}

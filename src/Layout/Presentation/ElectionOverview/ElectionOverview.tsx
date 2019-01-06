@@ -13,6 +13,7 @@ export interface ElectionOverviewProps {
     threshold: number;
     partyNameWidth: number;
     disproportionalityIndex: DisproportionalityIndex;
+    showPartiesWithoutSeats: boolean;
 }
 
 export class ElectionOverview extends React.Component<ElectionOverviewProps, {}> {
