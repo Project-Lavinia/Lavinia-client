@@ -21,15 +21,17 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
         const proportionalities = data.map((value) => value.proportionality);
         let index: number;
         let label: string;
+        const LSq = Math.sqrt(proportionalities.map((value) => value * value).reduce(toSum, 0) / 2);
+        const LH = proportionalities.map((value) => Math.abs(value)).reduce(toSum, 0) / 2;
         switch (this.props.disproportionalityIndex) {
             case DisproportionalityIndex.LOOSEMORE_HANBY: {
                 label = "L-H";
-                index = proportionalities.map((value) => Math.abs(value)).reduce(toSum, 0) / 2;
+                index = LH;
                 break;
             }
             case DisproportionalityIndex.GALLAGHER: {
                 label = "LSq";
-                index = Math.sqrt(proportionalities.map((value) => value * value).reduce(toSum, 0) / 2);
+                index = LSq;
                 break;
             }
             default: {
