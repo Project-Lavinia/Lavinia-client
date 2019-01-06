@@ -118,8 +118,8 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                 }
                 return (
                     <ElectionOverview
-                        partyResults={this.getPartyTableData(this.props.results.partyResults)}
-                        comparisonPartyResults={this.getPartyTableData(this.props.comparisonPartyResults)}
+                        partyResults={this.props.results.partyResults}
+                        comparisonPartyResults={this.props.comparisonPartyResults}
                         decimals={this.props.decimals}
                         partyNameWidth={this.getWidestStringWidth(this.getPartyNames())}
                         disproportionalityIndex={this.props.disproportionalityIndex}

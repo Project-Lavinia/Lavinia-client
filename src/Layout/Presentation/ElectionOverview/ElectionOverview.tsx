@@ -4,6 +4,7 @@ import { PartyResult } from "../../../computation";
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
+import { roundNumber } from "../../../utilities/number";
 
 export interface ElectionOverviewProps {
     partyResults: PartyResult[];
@@ -58,6 +59,11 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                         Footer: <strong>Utvalg</strong>,
                     },
                     {
+                        Header: "%",
+                        id: "%",
+                        accessor: (d: ElectionOverviewDatum) => roundNumber(d.percentVotes, decimals),
+                    },
+                    {
                         Header: "Stemmer",
                         accessor: "votes",
                         Footer: <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>,
@@ -78,8 +84,9 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                         Footer: <strong>{data.map((value) => value.totalSeats).reduce(toSum, 0)}</strong>,
                     },
                     {
-                        Header: "Proporsjonalitet",
-                        accessor: "proportionality",
+                        Header: "Prop.",
+                        id: "proportionality",
+                        accessor: (d: ElectionOverviewDatum) => roundNumber(d.proportionality, decimals),
                         Footer: (
                             <strong>
                                 {label}: {index.toFixed(this.props.decimals)}
