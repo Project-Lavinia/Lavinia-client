@@ -16,10 +16,47 @@ export interface ElectionOverviewProps {
     showPartiesWithoutSeats: boolean;
 }
 
+interface ElectionOverviewDatum extends PartyResult {
+    totalSeatDifference: number;
+}
+
 export class ElectionOverview extends React.Component<ElectionOverviewProps, {}> {
+    makeData = (): ElectionOverviewDatum[] => {
+        const data: ElectionOverviewDatum[] = [];
+        const currents = this.props.partyResults;
+        const comparisons = this.props.comparisonPartyResults;
+        // Sanity check
+        for (let i = 0; i < currents.length; i++) {
+            const difference = currents[i].totalSeats - comparisons[i].totalSeats;
+            const datum: ElectionOverviewDatum = {
+                ...this.props.partyResults[i],
+                totalSeatDifference: difference,
+            };
+            data.push(datum);
+        }
+        if (!this.props.showPartiesWithoutSeats) {
+            return data.filter((datum) => datum.totalSeats > 0 || datum.totalSeatDifference !== 0);
+        }
+        return data;
+    };
+    
+    /**
+     * Utility for checking whether the difference column should be displayed,
+     * ie -- are there any differences?
+     *
+     * @param data the data, required to figure out if there is a difference.
+     * @returns true if there is a difference, else false.
+     */
+    shouldShowDifference = (data: ElectionOverviewDatum[]) => {
+        return data.some((datum) => datum.totalSeatDifference !== 0);
+    };
+
     render() {
-        const data = this.props.partyResults;
-        const proportionalities = data.map((value) => value.proportionality);
+        const data = this.makeData();
+        const proportionalities = this.props.showPartiesWithoutSeats
+            ? data.map((value) => value.proportionality)
+            : data.filter((datum) => datum.totalSeats > 0).map((value) => value.proportionality);
+        const decimals = this.props.decimals;
         let index: number;
         let label: string;
         const LSq = Math.sqrt(proportionalities.map((value) => value * value).reduce(toSum, 0) / 2);
@@ -85,6 +122,11 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                         Header: "Sum",
                         accessor: "totalSeats",
                         Footer: <strong>{data.map((value) => value.totalSeats).reduce(toSum, 0)}</strong>,
+                    },
+                    {
+                        Header: "Differanse",
+                        accessor: "totalSeatDifference",
+                        show: this.shouldShowDifference(data),
                     },
                     {
                         Header: "Prop.",
