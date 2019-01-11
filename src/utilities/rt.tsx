@@ -53,7 +53,7 @@ export function allGreaterThanEqualsMethod(filter: Filter, rows: any) {
 /**
  * filterMethod that for an "all-true-false" option set that evaluates rows
  * that are either zero or not zero (or the filter is disabled with "all").
- * 
+ *
  * @param filter contains the id of the column and value from the select filter.
  * @param rows holds the data of all the rows.
  */
@@ -130,3 +130,29 @@ export function caseInsensitiveFilterMethod(filter: Filter, rows: any) {
               .startsWith(lowerCaseInput)
         : true;
 }
+
+/**
+ * Contains all the translateable fields for a ReactTable component.
+ */
+interface ReactTableTranslation {
+    pageText: string;
+    ofText: string;
+    nextText: string;
+    previousText: string;
+    loadingText: string;
+    noDataText: string;
+    rowsText: string;
+}
+
+/**
+ * Norwegian implementation of ReactTableTranslation
+ */
+export const norwegian: ReactTableTranslation = {
+    pageText: "Side",
+    loadingText: "Laster inn...",
+    nextText: "Neste",
+    previousText: "Forrige",
+    noDataText: "Ingen data",
+    ofText: "av",
+    rowsText: "rader",
+};
