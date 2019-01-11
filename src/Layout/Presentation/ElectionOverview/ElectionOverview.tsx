@@ -11,6 +11,7 @@ import {
     allGreaterThanEqualsMethod,
     positiveOrNegativeFilterMethod,
     caseInsensitiveFilterMethod,
+    zeroNotZeroFilterMethod,
 } from "../../../utilities/rt";
 
 export interface ElectionOverviewProps {
@@ -99,8 +100,8 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
 
         const thresholdIsZeroOptions = [
             { value: "all", title: "Alle" },
-            { value: "gteq", title: `≥ 0` },
-            { value: "lt", title: `< 0` },
+            { value: "gteq", title: "≥ 0" },
+            { value: "lt", title: "< 0" },
         ];
 
         return (
@@ -157,8 +158,8 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                     {
                         Header: "Differanse",
                         accessor: "totalSeatDifference",
-                        Filter: selectFilterWithOptions(thresholdIsZeroOptions),
-                        filterMethod: positiveOrNegativeFilterMethod(),
+                        Filter: selectFilterWithOptions(allTrueFalseOptions),
+                        filterMethod: zeroNotZeroFilterMethod,
                         show: this.shouldShowDifference(data),
                     },
                     {

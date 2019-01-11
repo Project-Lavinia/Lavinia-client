@@ -51,7 +51,26 @@ export function allGreaterThanEqualsMethod(filter: Filter, rows: any) {
 }
 
 /**
- * Utility function for comparing values to an inclusive threshold.
+ * filterMethod that for an "all-true-false" option set that evaluates rows
+ * that are either zero or not zero (or the filter is disabled with "all").
+ * 
+ * @param filter contains the id of the column and value from the select filter.
+ * @param rows holds the data of all the rows.
+ */
+export function zeroNotZeroFilterMethod(filter: Filter, rows: any) {
+    if (filter.value === "all") {
+        return true;
+    }
+    if (filter.value === "true") {
+        return rows[filter.id] !== 0;
+    }
+    if (filter.value === "false") {
+        return rows[filter.id] === 0;
+    }
+    return false;
+}
+
+/**
  *
  * @param threshold threshold to compare the row to.
  * @returns a function that uses the threshold as a "greater than or equals",
