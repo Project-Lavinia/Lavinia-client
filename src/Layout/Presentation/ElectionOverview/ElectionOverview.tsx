@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import ReactTable from "react-table";
 import { PartyResult } from "../../../computation";
 import { toSum } from "../../../utilities/reduce";
@@ -12,6 +12,7 @@ import {
     positiveOrNegativeFilterMethod,
     caseInsensitiveFilterMethod,
     zeroNotZeroFilterMethod,
+    norwegian,
 } from "../../../utilities/rt";
 
 export interface ElectionOverviewProps {
@@ -29,11 +30,14 @@ interface ElectionOverviewDatum extends PartyResult {
 }
 
 export class ElectionOverview extends React.Component<ElectionOverviewProps, {}> {
+    /**
+     * Helper for making data. Creates a PartyResult with an additional field,
+     * so that difference can be displayed based on the comparison.
+     */
     makeData = (): ElectionOverviewDatum[] => {
         const data: ElectionOverviewDatum[] = [];
         const currents = this.props.partyResults;
         const comparisons = this.props.comparisonPartyResults;
-        // Sanity check
         for (let i = 0; i < currents.length; i++) {
             const difference = currents[i].totalSeats - comparisons[i].totalSeats;
             const datum: ElectionOverviewDatum = {
@@ -42,6 +46,8 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
             };
             data.push(datum);
         }
+
+        // Ensures that parties that have rows or used to have rows are shown.
         if (!this.props.showPartiesWithoutSeats) {
             return data.filter((datum) => datum.totalSeats > 0 || datum.totalSeatDifference !== 0);
         }
@@ -109,11 +115,12 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                 className="-highlight -striped"
                 multiSort={false}
                 data={data}
-                pageSize={data.length}
                 filterable={true}
-                showPagination={false}
+                showPagination={data.length > 7}
                 showPageSizeOptions={false}
-                style={{ textAlign: "center", height: "60vh" } as React.CSSProperties}
+                pageSize={7}
+                {...norwegian}
+                style={{ textAlign: "center" } as React.CSSProperties}
                 columns={[
                     {
                         Header: "Parti",
