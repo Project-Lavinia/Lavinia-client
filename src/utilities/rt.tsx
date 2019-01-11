@@ -71,6 +71,7 @@ export function zeroNotZeroFilterMethod(filter: Filter, rows: any) {
 }
 
 /**
+ * filterMethod for comparing values to an inclusive threshold.
  *
  * @param threshold threshold to compare the row to.
  * @returns a function that uses the threshold as a "greater than or equals",
