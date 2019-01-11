@@ -104,7 +104,7 @@ export function thresholdFilterMethod(threshold: number) {
 }
 
 /**
- * Utility function that wraps the thresholdFilterMethod and passes 0. In other
+ * filterMethod that wraps the thresholdFilterMethod and passes 0. In other
  * words it filters on gteq (greater than or equals) 0 or lt (less than) 0.
  *
  * @param filter contains the id of the column and value from the select filter
@@ -115,6 +115,7 @@ export function positiveOrNegativeFilterMethod() {
 }
 
 /**
+ * filterMethod that slightly modifies the default to be case insensitive.
  *
  * @param filter contains the id of the column and value from the select filter
  * @param rows holds the data of all the rows
