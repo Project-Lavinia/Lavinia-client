@@ -6,6 +6,7 @@ import { initializeRequestedData } from "../requested-data";
 import { initializeComputation } from "../computation";
 import { initializeComputationMenu } from "./ComputationMenu";
 import { initializePresentation } from "./PresentationMenu";
+import { stateIsInvalid } from "../store/version";
 
 const mapDispatchToProps = (dispatch: any): LayoutProps => ({
     initializeState: async () => {
@@ -16,8 +17,7 @@ const mapDispatchToProps = (dispatch: any): LayoutProps => ({
             countryId: -1,
             elections: [],
         };
-        const serializedState = localStorage.getItem("state");
-        if (serializedState === null) {
+        if (stateIsInvalid()) {
             const electionType = await request<ElectionType>(uri, failover);
             const initializeRequestDataAction = initializeRequestedData(electionType);
             const initializeComputationAction = initializeComputation(electionType);
