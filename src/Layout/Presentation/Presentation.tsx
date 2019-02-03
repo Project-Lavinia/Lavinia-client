@@ -35,6 +35,7 @@ export interface PresentationProps {
     comparisonPartyResults: PartyResult[];
     showComparison: boolean;
     threshold: number;
+    showFilters: boolean;
 }
 
 export class Presentation extends React.Component<PresentationProps, {}> {
@@ -125,6 +126,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         partyNameWidth={this.getWidestStringWidth(this.getPartyNames())}
                         disproportionalityIndex={this.props.disproportionalityIndex}
                         threshold={this.props.threshold}
+                        showFilters={this.props.showFilters}
                     />
                 );
             case PresentationType.DistrictTable:

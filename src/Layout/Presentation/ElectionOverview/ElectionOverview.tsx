@@ -23,6 +23,7 @@ export interface ElectionOverviewProps {
     partyNameWidth: number;
     disproportionalityIndex: DisproportionalityIndex;
     showPartiesWithoutSeats: boolean;
+    showFilters: boolean;
 }
 
 interface ElectionOverviewDatum extends PartyResult {
@@ -115,7 +116,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                 className="-highlight -striped"
                 multiSort={false}
                 data={data}
-                filterable={true}
+                filterable={this.props.showFilters}
                 showPagination={data.length > 7}
                 showPageSizeOptions={false}
                 pageSize={7}

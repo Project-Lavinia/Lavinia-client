@@ -6,6 +6,7 @@ import { DistrictSelect } from "./DistrictSelect";
 import { DisproportionalitySelect } from "./DisproportionalitySelect";
 import { NoSeatsCheckbox } from "./NoSeatsCheckbox";
 import { ComparisonCheckbox } from "./ComparisonCheckbox";
+import { FiltersCheckbox } from "./FiltersCheckbox";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -21,6 +22,8 @@ export interface PresentationSettingsProps {
     disproportionalityIndex: DisproportionalityIndex;
     toggleShowComparison: (event: React.ChangeEvent<HTMLInputElement>) => void;
     showComparison: boolean;
+    toggleShowFilters: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    showFilters: boolean;
 }
 export class PresentationSettingsMenu extends React.Component<PresentationSettingsProps> {
     /**
@@ -81,6 +84,10 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                     <NoSeatsCheckbox
                         showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
                         toggleShowPartiesWithoutSeats={this.props.toggleShowPartiesWithoutSeats}
+                    />
+                    <FiltersCheckbox
+                        showFilters={this.props.showFilters}
+                        toggleShowFilters={this.props.toggleShowFilters}
                     />
                     <SmartNumericInput
                         hidden={!this.needsDecimals()}

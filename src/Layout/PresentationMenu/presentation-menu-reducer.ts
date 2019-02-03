@@ -54,6 +54,11 @@ export function presentationMenu(
                 ...state,
                 showComparison: action.showComparison,
             };
+        case PresentationMenuActionType.TOGGLE_SHOW_FILTERS:
+            return {
+                ...state,
+                showFilters: action.showFilters,
+            };
         default:
             checkExhaustively(action);
             return state;

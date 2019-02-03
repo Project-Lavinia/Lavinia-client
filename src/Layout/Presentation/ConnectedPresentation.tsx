@@ -13,6 +13,7 @@ const mapStateToProps = (state: RootState): PresentationProps => {
         disproportionalityIndex: state.presentationMenuState.disproportionalityIndex,
         showComparison: state.presentationMenuState.showComparison,
         threshold: state.computationState.electionThreshold,
+        showFilters: state.presentationMenuState.showFilters,
     };
 };
 

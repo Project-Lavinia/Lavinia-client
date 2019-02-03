@@ -11,6 +11,7 @@ export enum PresentationMenuActionType {
     SELECT_DISTRICT = "SELECT_DISTRICT",
     CHANGE_DISPROPORTIONALITY_INDEX = "CHANGE_DISPROPORTIONALITY_INDEX",
     TOGGLE_SHOW_COMPARISON = "TOGGLE_SHOW_COMPARISON",
+    TOGGLE_SHOW_FILTERS = "TOGGLE_SHOW_FILTERS",
 }
 
 /**
@@ -23,7 +24,8 @@ export type PresentationMenuAction =
     | ChangeShowPartiesNoSeats
     | SelectDistrict
     | ChangeDisproportionalityIndex
-    | ToggleShowComparison;
+    | ToggleShowComparison
+    | ToggleShowFilters;
 
 /**
  * Action for initializing the presentation.
@@ -175,6 +177,27 @@ export function toggleShowComparison(showComparison: boolean) {
     const action: ToggleShowComparison = {
         type: PresentationMenuActionType.TOGGLE_SHOW_COMPARISON,
         showComparison,
+    };
+    return action;
+}
+
+/**
+ * Action for toggling filters' visibility.
+ */
+export interface ToggleShowFilters {
+    type: PresentationMenuActionType.TOGGLE_SHOW_FILTERS;
+    showFilters: boolean;
+}
+
+/**
+ * Action creator for toggling filters' visibility.
+ *
+ * @param showFilters - true if filters visible, else false.
+ */
+export function toggleShowFilters(showFilters: boolean) {
+    const action: ToggleShowFilters = {
+        type: PresentationMenuActionType.TOGGLE_SHOW_FILTERS,
+        showFilters,
     };
     return action;
 }
