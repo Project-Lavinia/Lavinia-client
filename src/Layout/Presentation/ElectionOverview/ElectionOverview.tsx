@@ -117,9 +117,9 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                 multiSort={false}
                 data={data}
                 filterable={this.props.showFilters}
-                showPagination={data.length > 7}
+                showPagination={this.props.showFilters ? data.length > 8 : data.length > 10}
                 showPageSizeOptions={false}
-                pageSize={7}
+                pageSize={this.props.showFilters ? 8 : 10}
                 {...norwegian}
                 style={{ textAlign: "center" } as React.CSSProperties}
                 columns={[
