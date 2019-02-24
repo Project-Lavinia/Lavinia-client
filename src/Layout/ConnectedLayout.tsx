@@ -9,7 +9,7 @@ import { initializePresentation } from "./PresentationMenu";
 
 const mapDispatchToProps = (dispatch: any): LayoutProps => ({
     initializeState: async () => {
-        const uri = "https://mandater-testing.azurewebsites.net/api/v1.0.0/no/pe?deep=true";
+        const uri = "https://lavinia-api-staging.azurewebsites.net/api/v1.0.0/no/pe?deep=true";
         const failover: ElectionType = {
             internationalName: "UNDEFINED",
             electionTypeId: -1,
