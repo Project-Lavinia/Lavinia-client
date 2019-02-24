@@ -106,6 +106,10 @@ export interface SeatPartyResult {
     partyCode: string;
     /** The quotient the party got in the distribution */
     quotient: number;
+    /** The denominator used to calculate the result */
+    denominator: number;
+    /** The number of votes used to calculate the result */
+    votes: number;
 }
 
 export interface SeatResult {

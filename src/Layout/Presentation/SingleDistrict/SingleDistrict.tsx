@@ -1,6 +1,6 @@
 import * as React from "react";
 import ReactTable from "react-table";
-import { DistrictResult, PartyResult } from "../../../computation/computation-models";
+import { DistrictResult, PartyResult, SeatResult } from "../../../computation/computation-models";
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
@@ -13,15 +13,24 @@ export interface SingleDistrictProps {
 }
 
 export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
-    getData(): PartyResult[] {
-        return this.props.districtResults.find((district) => district.name === this.props.districtSelected)!
-            .partyResults;
-    }
+    getDistrictResult = (name: string): DistrictResult | undefined => {
+        return this.props.districtResults.find((district) => district.name === name);
+    };
+    getData = (): PartyResult[] | undefined => {
+        const districtResult = this.getDistrictResult(this.props.districtSelected);
+        return districtResult ? districtResult.partyResults : undefined;
+    };
 
     render() {
-        const data = this.getData();
+        const data = this.getData()!;
         const decimals = this.props.decimals;
         const proportionalities = data.map((value) => value.proportionality);
+        const lastSeat = this.getLastSeat();
+        const lastSeatByQuotient = lastSeat!.partyResults.sort((a, b) => (a.quotient <= b.quotient ? 1 : -1));
+        const winner = lastSeatByQuotient[0];
+        const runnerUp = lastSeatByQuotient[1];
+        const moreVotesToWin = (winner.quotient * runnerUp.denominator - runnerUp.votes - 1).toFixed(0);
+        console.log(runnerUp);
         let label: string;
         let index: number;
         switch (this.props.disproportionalityIndex) {
@@ -44,6 +53,10 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         return (
             <React.Fragment>
                 <h1 className="h1">{this.props.districtSelected}</h1>
+                <p>
+                    Sistemandat i {this.props.districtSelected} gikk til {winner.partyCode}. {runnerUp.partyCode}{" "}
+                    trengte {moreVotesToWin} flere stemmer for å ta mandatet.
+                </p>
                 <ReactTable
                     className="-highlight -striped"
                     data={data}
@@ -122,4 +135,11 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
             </React.Fragment>
         );
     }
+    getLastSeat = (): SeatResult | undefined => {
+        const districtResult = this.getDistrictResult(this.props.districtSelected);
+        if (districtResult) {
+            return districtResult.districtSeatResult[districtResult.districtSeatResult.length - 1];
+        }
+        return undefined;
+    };
 }

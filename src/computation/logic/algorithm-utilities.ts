@@ -50,10 +50,13 @@ export function distributeSeats(
         let currentMaxQuotient = -1;
 
         for (const result of results) {
-            const currentQuotient = result.votes / getDenominator(algorithm, seatsWon[result.partyCode], firstDivisor);
+            const currentDenominator = getDenominator(algorithm, seatsWon[result.partyCode], firstDivisor);
+            const currentQuotient = result.votes / currentDenominator;
             seatResult.partyResults.push({
                 partyCode: result.partyCode,
                 quotient: currentQuotient,
+                denominator: currentDenominator,
+                votes: result.votes,
             });
 
             if (currentQuotient > currentMaxQuotient && !illegalPartyCodes.has(result.partyCode)) {
