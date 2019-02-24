@@ -4,6 +4,7 @@ import { DistrictResult, PartyResult, SeatResult } from "../../../computation/co
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
+import { getVulnerableSeat } from "../../../utilities/district";
 
 export interface SingleDistrictProps {
     districtResults: DistrictResult[];
@@ -25,12 +26,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         const data = this.getData()!;
         const decimals = this.props.decimals;
         const proportionalities = data.map((value) => value.proportionality);
-        const lastSeat = this.getLastSeat();
-        const lastSeatByQuotient = lastSeat!.partyResults.sort((a, b) => (a.quotient <= b.quotient ? 1 : -1));
-        const winner = lastSeatByQuotient[0];
-        const runnerUp = lastSeatByQuotient[1];
-        const moreVotesToWin = (winner.quotient * runnerUp.denominator - runnerUp.votes - 1).toFixed(0);
-        console.log(runnerUp);
+        const vulnerable = getVulnerableSeat(this.getDistrictResult(this.props.districtSelected)!);
         let label: string;
         let index: number;
         switch (this.props.disproportionalityIndex) {
@@ -54,8 +50,9 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
             <React.Fragment>
                 <h1 className="h1">{this.props.districtSelected}</h1>
                 <p>
-                    Sistemandat i {this.props.districtSelected} gikk til {winner.partyCode}. {runnerUp.partyCode}{" "}
-                    trengte {moreVotesToWin} flere stemmer for å ta mandatet.
+                    Sistemandat i {this.props.districtSelected} gikk til {vulnerable.winner.partyCode}.{" "}
+                    {vulnerable.runnerUp.partyCode} trengte {vulnerable.moreVotesToWin.toFixed(0)} flere stemmer for å
+                    ta mandatet.
                 </p>
                 <ReactTable
                     className="-highlight -striped"
