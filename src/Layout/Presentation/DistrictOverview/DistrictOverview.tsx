@@ -2,6 +2,7 @@
 import ReactTable from "react-table";
 import { DistrictResult } from "../../../computation";
 import { toMin, toMax, toMean, toSum } from "../../../utilities/reduce";
+import { getMostVulnerableSeat } from "../../../utilities/district";
 
 export interface DistrictOverviewProps {
     districtResults: DistrictResult[];
@@ -19,6 +20,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const highestVsAverageInPercentage = (1 / highestVotingPower / (1 / averageVotingPower)) * 100;
         const lowestVsAverageInPercentage = (1 / lowestVotingPower / (1 / averageVotingPower)) * 100;
         const highestVsLowestInPercentage = (1 / highestVotingPower / (1 / lowestVotingPower)) * 100;
+        const mostVulnerable = getMostVulnerableSeat(data);
         return (
             <React.Fragment>
                 <h2>Fylkesoversikt</h2>
@@ -40,6 +42,19 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                 </span>
                 <br />
                 <br />
+                <span>
+                    {"Det mest utsatte sistemandatet var i "}
+                    {mostVulnerable.district}
+                    {" og ble vunnet av "}
+                    {mostVulnerable.winner.partyCode}
+                    {". "}
+                    {mostVulnerable.runnerUp.partyCode}
+                    {" ville trengt "}
+                    {mostVulnerable.moreVotesToWin.toFixed(0)}
+                    {" flere stemmer for å vinne det."}
+                </span>
+                <br />
+                <br />
                 <ReactTable
                     className="-highlight -striped"
                     defaultPageSize={this.props.districtResults.length}
@@ -54,7 +69,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                                 <span>
                                     <strong>Alle fylker</strong>
                                 </span>
-                            )
+                            ),
                         },
                         {
                             Header: "Stemmer",
@@ -63,7 +78,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                                 <span>
                                     <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>
                                 </span>
-                            )
+                            ),
                         },
                         {
                             Header: "Distrikt",
@@ -72,7 +87,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                                 <span>
                                     <strong>{data.map((value) => value.districtSeats).reduce(toSum, 0)}</strong>
                                 </span>
-                            )
+                            ),
                         },
                         {
                             Header: "Utjevning",
@@ -81,7 +96,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                                 <span>
                                     <strong>{data.map((value) => value.levelingSeats).reduce(toSum, 0)}</strong>
                                 </span>
-                            )
+                            ),
                         },
                         {
                             Header: "Sum",
@@ -91,7 +106,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                                     <strong>{data.map((value) => value.totalSeats).reduce(toSum, 0)}</strong>
                                     <br />
                                 </span>
-                            )
+                            ),
                         },
                         {
                             Header: "Stemmer/mandat",
@@ -100,8 +115,8 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                                 <span>
                                     <strong>{averageVotingPower.toFixed(decimals)}</strong>
                                 </span>
-                            )
-                        }
+                            ),
+                        },
                     ]}
                 />
             </React.Fragment>
