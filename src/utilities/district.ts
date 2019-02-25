@@ -16,7 +16,7 @@ export function getVulnerableSeat(districtResult: DistrictResult): VulnerableSea
     const lastSeatByQuotient = lastSeat!.partyResults.sort((a, b) => (a.quotient <= b.quotient ? 1 : -1));
     const winner = lastSeatByQuotient[0];
     const runnerUp = lastSeatByQuotient[1];
-    const moreVotesToWin = winner.quotient * runnerUp.denominator - runnerUp.votes - 1;
+    const moreVotesToWin = Math.floor(winner.quotient * runnerUp.denominator - runnerUp.votes) + 1;
     return {
         winner,
         runnerUp,
