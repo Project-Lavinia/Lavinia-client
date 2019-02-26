@@ -48,7 +48,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         }
         return (
             <React.Fragment>
-                <h1 className="h1">{this.props.districtSelected}</h1>
+                <h2 className="h2">{this.props.districtSelected}</h2>
                 <p>
                     Sistemandat i {this.props.districtSelected} gikk til {vulnerable.winner.partyCode}.{" "}
                     {vulnerable.runnerUp.partyCode} trengte {vulnerable.moreVotesToWin.toFixed(0)} flere stemmer for å
