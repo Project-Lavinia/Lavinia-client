@@ -20,31 +20,33 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const highestVsAverageInPercentage = (1 / highestVotingPower / (1 / averageVotingPower)) * 100;
         const lowestVsAverageInPercentage = (1 / lowestVotingPower / (1 / averageVotingPower)) * 100;
         const highestVsLowestInPercentage = (1 / highestVotingPower / (1 / lowestVotingPower)) * 100;
+        const mostInfluentialDistrict = (
+            <strong>{data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name}</strong>
+        );
+        const leastInfluentialDistrict = (
+            <strong>{data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name}</strong>
+        );
         const mostVulnerable = getMostVulnerableSeat(data);
         return (
             <React.Fragment>
                 <h2>Fylkesoversikt</h2>
-                <span>
+                <p>
                     {"En stemme i "}
-                    <strong>{data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name}</strong>
+                    {mostInfluentialDistrict}
                     {" hadde mest innflytelse, og telte "}
                     {highestVsAverageInPercentage.toFixed(decimals) + "%"}
                     {" av en gjennomsnittlig stemme"}
-                </span>
-                <span>
                     {", mens en stemme i "}
-                    <strong>{data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name}</strong>
+                    {leastInfluentialDistrict}
                     {" hadde minst innflytelse, og bare telte "}
-                    {lowestVsAverageInPercentage.toFixed(decimals) + "%!"}
+                    {lowestVsAverageInPercentage.toFixed(decimals) + "%."}
                     {" En stemme i det mest innflytelsesrike fylket telte altså "}
                     {highestVsLowestInPercentage.toFixed(decimals) + "%"}
                     {" mer enn en stemme i det minst innflytelsesrike fylket."}
-                </span>
-                <br />
-                <br />
-                <span>
-                    {"Det mest utsatte sistemandatet var i "}
-                    {mostVulnerable.district}
+                </p>
+                <p>
+                    {"Det mest utsatte sistemandatet relativt til kvotient var i "}
+                    {<strong>{mostVulnerable.district}</strong>}
                     {" og ble vunnet av "}
                     {mostVulnerable.winner.partyCode}
                     {". "}
@@ -52,9 +54,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                     {" ville trengt "}
                     {mostVulnerable.moreVotesToWin.toFixed(0)}
                     {" flere stemmer for å vinne det."}
-                </span>
-                <br />
-                <br />
+                </p>
                 <ReactTable
                     className="-highlight -striped"
                     defaultPageSize={this.props.districtResults.length}
