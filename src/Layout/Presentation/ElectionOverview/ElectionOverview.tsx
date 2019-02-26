@@ -112,84 +112,88 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
         ];
 
         return (
-            <ReactTable
-                className="-highlight -striped"
-                multiSort={false}
-                data={data}
-                filterable={this.props.showFilters}
-                showPagination={this.props.showFilters ? data.length > 8 : data.length > 10}
-                showPageSizeOptions={false}
-                pageSize={this.props.showFilters ? 8 : data.length > 10 ? 10 : data.length}
-                {...norwegian}
-                style={{ textAlign: "center" } as React.CSSProperties}
-                columns={[
-                    {
-                        Header: "Parti",
-                        accessor: "partyCode",
-                        filterMethod: caseInsensitiveFilterMethod,
-                        Footer: <strong>Utvalg</strong>,
-                    },
-                    {
-                        Header: "%",
-                        id: "%",
-                        Filter: selectFilterWithOptions(thresholdOptions),
-                        filterMethod: thresholdFilterMethod(this.props.threshold),
-                        accessor: (d: ElectionOverviewDatum) => roundNumber(d.percentVotes, decimals),
-                    },
-                    {
-                        Header: "Stemmer",
-                        accessor: "votes",
-                        filterable: false,
-                        Footer: <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>,
-                    },
-                    {
-                        Header: "Distrikt",
-                        accessor: "districtSeats",
-                        Filter: selectFilterWithOptions(allTrueFalseOptions),
-                        filterMethod: allGreaterThanEqualsMethod,
-                        Footer: <strong>{data.map((value) => value.districtSeats).reduce(toSum, 0)}</strong>,
-                    },
+            <React.Fragment>
+                <h2 className="h2">Landsoversikt</h2>
+                <br />
+                <ReactTable
+                    className="-highlight -striped"
+                    multiSort={false}
+                    data={data}
+                    filterable={this.props.showFilters}
+                    showPagination={this.props.showFilters ? data.length > 8 : data.length > 10}
+                    showPageSizeOptions={false}
+                    pageSize={this.props.showFilters ? 8 : data.length > 10 ? 10 : data.length}
+                    {...norwegian}
+                    style={{ textAlign: "center" } as React.CSSProperties}
+                    columns={[
+                        {
+                            Header: "Parti",
+                            accessor: "partyCode",
+                            filterMethod: caseInsensitiveFilterMethod,
+                            Footer: <strong>Utvalg</strong>,
+                        },
+                        {
+                            Header: "%",
+                            id: "%",
+                            Filter: selectFilterWithOptions(thresholdOptions),
+                            filterMethod: thresholdFilterMethod(this.props.threshold),
+                            accessor: (d: ElectionOverviewDatum) => roundNumber(d.percentVotes, decimals),
+                        },
+                        {
+                            Header: "Stemmer",
+                            accessor: "votes",
+                            filterable: false,
+                            Footer: <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>,
+                        },
+                        {
+                            Header: "Distrikt",
+                            accessor: "districtSeats",
+                            Filter: selectFilterWithOptions(allTrueFalseOptions),
+                            filterMethod: allGreaterThanEqualsMethod,
+                            Footer: <strong>{data.map((value) => value.districtSeats).reduce(toSum, 0)}</strong>,
+                        },
 
-                    {
-                        Header: "Utjevning",
-                        accessor: "levelingSeats",
-                        Filter: selectFilterWithOptions(allTrueFalseOptions),
-                        filterMethod: allGreaterThanEqualsMethod,
-                        Footer: <strong>{data.map((value) => value.levelingSeats).reduce(toSum, 0)}</strong>,
-                    },
-                    {
-                        Header: "Sum",
-                        accessor: "totalSeats",
-                        filterable: false,
-                        Footer: <strong>{data.map((value) => value.totalSeats).reduce(toSum, 0)}</strong>,
-                    },
-                    {
-                        Header: "Differanse",
-                        accessor: "totalSeatDifference",
-                        Filter: selectFilterWithOptions(allTrueFalseOptions),
-                        filterMethod: zeroNotZeroFilterMethod,
-                        show: this.shouldShowDifference(data),
-                    },
-                    {
-                        Header: "Prop.",
-                        id: "proportionality",
-                        accessor: (d: ElectionOverviewDatum) => roundNumber(d.proportionality, decimals),
-                        Filter: selectFilterWithOptions(thresholdIsZeroOptions),
-                        filterMethod: positiveOrNegativeFilterMethod(),
-                        Footer: (
-                            <strong>
-                                {label}: {index.toFixed(this.props.decimals)}
-                            </strong>
-                        ),
-                    },
-                ]}
-                defaultSorted={[
-                    {
-                        id: "totalSeats",
-                        desc: true,
-                    },
-                ]}
-            />
+                        {
+                            Header: "Utjevning",
+                            accessor: "levelingSeats",
+                            Filter: selectFilterWithOptions(allTrueFalseOptions),
+                            filterMethod: allGreaterThanEqualsMethod,
+                            Footer: <strong>{data.map((value) => value.levelingSeats).reduce(toSum, 0)}</strong>,
+                        },
+                        {
+                            Header: "Sum",
+                            accessor: "totalSeats",
+                            filterable: false,
+                            Footer: <strong>{data.map((value) => value.totalSeats).reduce(toSum, 0)}</strong>,
+                        },
+                        {
+                            Header: "Differanse",
+                            accessor: "totalSeatDifference",
+                            Filter: selectFilterWithOptions(allTrueFalseOptions),
+                            filterMethod: zeroNotZeroFilterMethod,
+                            show: this.shouldShowDifference(data),
+                        },
+                        {
+                            Header: "Prop.",
+                            id: "proportionality",
+                            accessor: (d: ElectionOverviewDatum) => roundNumber(d.proportionality, decimals),
+                            Filter: selectFilterWithOptions(thresholdIsZeroOptions),
+                            filterMethod: positiveOrNegativeFilterMethod(),
+                            Footer: (
+                                <strong>
+                                    {label}: {index.toFixed(this.props.decimals)}
+                                </strong>
+                            ),
+                        },
+                    ]}
+                    defaultSorted={[
+                        {
+                            id: "totalSeats",
+                            desc: true,
+                        },
+                    ]}
+                />
+            </React.Fragment>
         );
     }
 }
