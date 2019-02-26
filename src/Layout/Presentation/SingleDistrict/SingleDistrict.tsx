@@ -50,9 +50,15 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
             <React.Fragment>
                 <h2 className="h2">{this.props.districtSelected}</h2>
                 <p>
-                    Sistemandat i {this.props.districtSelected} gikk til {vulnerable.winner.partyCode}.{" "}
-                    {vulnerable.runnerUp.partyCode} trengte {vulnerable.moreVotesToWin.toFixed(0)} flere stemmer for å
-                    ta mandatet.
+                    {"Sistemandat i "}
+                    {this.props.districtSelected}
+                    {" gikk til "}
+                    {vulnerable.winner.partyCode}
+                    {". "}
+                    {vulnerable.runnerUp.partyCode}
+                    {" hadde nærmest kvotient, og trengte "}
+                    {vulnerable.moreVotesToWin}
+                    {" flere stemmer for å ta mandatet."}
                 </p>
                 <ReactTable
                     className="-highlight -striped"
