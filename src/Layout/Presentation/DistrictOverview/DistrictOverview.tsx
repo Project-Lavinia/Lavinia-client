@@ -2,7 +2,7 @@
 import ReactTable from "react-table";
 import { DistrictResult } from "../../../computation";
 import { toMin, toMax, toMean, toSum } from "../../../utilities/reduce";
-import { getMostVulnerableSeat } from "../../../utilities/district";
+import { getMostVulnerableSeatByQuotient } from "../../../utilities/district";
 
 export interface DistrictOverviewProps {
     districtResults: DistrictResult[];
@@ -26,7 +26,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const leastInfluentialDistrict = (
             <strong>{data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name}</strong>
         );
-        const mostVulnerable = getMostVulnerableSeat(data);
+        const mostVulnerable = getMostVulnerableSeatByQuotient(data);
         return (
             <React.Fragment>
                 <h2>Fylkesoversikt</h2>

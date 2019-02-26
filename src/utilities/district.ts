@@ -1,17 +1,17 @@
 import { DistrictResult, SeatPartyResult } from "../computation";
 
-export function getMostVulnerableSeat(districtResults: DistrictResult[]) {
+export function getMostVulnerableSeatByQuotient(districtResults: DistrictResult[]) {
     const vulnerableDistrictSeats: VulnerableDistrictSeat[] = [];
     districtResults.forEach((districtResult) => {
         vulnerableDistrictSeats.push({
-            ...getVulnerableSeat(districtResult),
+            ...getVulnerableSeatByQuotient(districtResult),
             district: districtResult.name,
         });
     });
     return vulnerableDistrictSeats.sort((a, b) => (a.moreVotesToWin >= b.moreVotesToWin ? 1 : -1))[0];
 }
 
-export function getVulnerableSeat(districtResult: DistrictResult): VulnerableSeat {
+export function getVulnerableSeatByQuotient(districtResult: DistrictResult): VulnerableSeat {
     const lastSeat = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 1];
     const lastSeatByQuotient = lastSeat!.partyResults.sort((a, b) => (a.quotient <= b.quotient ? 1 : -1));
     const winner = lastSeatByQuotient[0];
