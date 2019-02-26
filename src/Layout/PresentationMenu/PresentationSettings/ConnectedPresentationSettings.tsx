@@ -7,6 +7,7 @@ import {
     changeShowPartiesNoSeats,
     changeDisproportionalityIndex,
     toggleShowComparison,
+    toggleShowFilters,
 } from "../presentation-menu-actions";
 import { DisproportionalityIndex } from "../../Presentation/presentation-models";
 
@@ -24,6 +25,7 @@ interface StateProps
             | "results"
             | "disproportionalityIndex"
             | "showComparison"
+            | "showFilters"
         > {}
 
 function mapStateToProps(state: RootState): StateProps {
@@ -35,6 +37,7 @@ function mapStateToProps(state: RootState): StateProps {
         districtSelected: state.presentationMenuState.districtSelected,
         disproportionalityIndex: state.presentationMenuState.disproportionalityIndex,
         showComparison: state.presentationMenuState.showComparison,
+        showFilters: state.presentationMenuState.showFilters,
     };
 }
 
@@ -50,6 +53,7 @@ interface DispatchProps
             | "selectDistrict"
             | "changeDisproportionalityIndex"
             | "toggleShowComparison"
+            | "toggleShowFilters"
         > {}
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
@@ -71,6 +75,10 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
     },
     toggleShowComparison: (event: React.ChangeEvent<HTMLInputElement>) => {
         const action = toggleShowComparison(event.target.checked);
+        dispatch(action);
+    },
+    toggleShowFilters: (event: React.ChangeEvent<HTMLInputElement>) => {
+        const action = toggleShowFilters(event.target.checked);
         dispatch(action);
     },
 });

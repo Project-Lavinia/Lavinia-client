@@ -6,6 +6,7 @@ import { DistrictSelect } from "./DistrictSelect";
 import { DisproportionalitySelect } from "./DisproportionalitySelect";
 import { NoSeatsCheckbox } from "./NoSeatsCheckbox";
 import { ComparisonCheckbox } from "./ComparisonCheckbox";
+import { FiltersCheckbox } from "./FiltersCheckbox";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -21,6 +22,8 @@ export interface PresentationSettingsProps {
     disproportionalityIndex: DisproportionalityIndex;
     toggleShowComparison: (event: React.ChangeEvent<HTMLInputElement>) => void;
     showComparison: boolean;
+    toggleShowFilters: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    showFilters: boolean;
 }
 export class PresentationSettingsMenu extends React.Component<PresentationSettingsProps> {
     /**
@@ -73,6 +76,15 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         return this.props.currentPresentation === PresentationType.ElectionTable;
     }
 
+    /**
+     * Helper function for evaluating whether filters checkbox should be shown.
+     *
+     * @returns true if filters checkbox should be shown, false otherwise
+     */
+    showFilters(): boolean {
+        return this.props.currentPresentation === PresentationType.ElectionTable;
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -81,6 +93,11 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                     <NoSeatsCheckbox
                         showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
                         toggleShowPartiesWithoutSeats={this.props.toggleShowPartiesWithoutSeats}
+                    />
+                    <FiltersCheckbox
+                        hidden={!this.showFilters()}
+                        showFilters={this.props.showFilters}
+                        toggleShowFilters={this.props.toggleShowFilters}
                     />
                     <SmartNumericInput
                         hidden={!this.needsDecimals()}
