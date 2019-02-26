@@ -76,6 +76,15 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         return this.props.currentPresentation === PresentationType.ElectionTable;
     }
 
+    /**
+     * Helper function for evaluating whether filters checkbox should be shown.
+     *
+     * @returns true if filters checkbox should be shown, false otherwise
+     */
+    showFilters(): boolean {
+        return this.props.currentPresentation === PresentationType.ElectionTable;
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -86,6 +95,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                         toggleShowPartiesWithoutSeats={this.props.toggleShowPartiesWithoutSeats}
                     />
                     <FiltersCheckbox
+                        hidden={!this.showFilters()}
                         showFilters={this.props.showFilters}
                         toggleShowFilters={this.props.toggleShowFilters}
                     />

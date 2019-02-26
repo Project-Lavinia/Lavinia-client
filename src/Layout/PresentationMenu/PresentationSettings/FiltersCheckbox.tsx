@@ -1,6 +1,7 @@
 import * as React from "react";
 
 interface FiltersCheckboxProps {
+    hidden: boolean;
     showFilters: boolean;
     toggleShowFilters: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -8,7 +9,7 @@ interface FiltersCheckboxProps {
 export class FiltersCheckbox extends React.Component<FiltersCheckboxProps> {
     render() {
         return (
-            <div className="form-group mb-3">
+            <div className="form-group mb-3" hidden={this.props.hidden}>
                 <div className="form-check form-check-inline">
                     <input
                         className="form-check-input"
