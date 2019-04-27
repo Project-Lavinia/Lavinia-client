@@ -167,6 +167,30 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     };
 
     /**
+     * Helper function to update the calculation and settings on user
+     * interaction.
+     *
+     * @param stringValue the string value of the area factor
+     * @param numericValue the numeric value of the area factor
+     */
+    onAreaFactorChange = (stringValue: string, numericValue: number) => {
+        this.props.updateSettings({
+            ...this.props.settingsPayload,
+            areaFactor: stringValue,
+        });
+        // Workaround for nested spread being a pain
+        const payload = this.props.computationPayload;
+        payload.parameters.areaFactor = numericValue;
+        this.props.updateCalculation(
+            {
+                ...payload,
+            },
+            this.props.settingsPayload.autoCompute,
+            false
+        );
+    };
+
+    /**
      * Helper function to update whether or not automatic computation is
      * enabled. Ensures computation is performed whenever toggled.
      *
@@ -223,6 +247,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     };
 
     render() {
+        const currentParameters = this.props.computationPayload.parameters;
         return (
             <div className={`${style.menu}`}>
                 <h1 className="h2">Stortingsvalg</h1>
@@ -266,6 +291,16 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         max={100}
                         defaultValue={this.props.computationPayload.election.levelingSeats}
                         integer={true}
+                    />
+                    <SmartNumericInput
+                        name="areaFactor"
+                        title="Arealfaktor"
+                        value={this.props.settingsPayload.areaFactor}
+                        onChange={this.onAreaFactorChange}
+                        min={0}
+                        max={3}
+                        defaultValue={currentParameters.areaFactor}
+                        integer={false}
                     />
                     <AutoComputeCheckbox
                         autoCompute={this.props.settingsPayload.autoCompute}
