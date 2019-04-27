@@ -1,3 +1,5 @@
+import { Dictionary } from "../utilities/dictionary";
+
 export interface County {
     countyId: number;
     name: string;
@@ -37,4 +39,68 @@ export interface Result {
     countyName: string;
     partyCode: string;
     partyName: string;
+}
+
+// New models
+
+export interface Votes {
+    party: string;
+    votes: number;
+    district: string;
+    electionYear: number;
+    electionType: string;
+}
+
+export interface Metrics {
+    district: string;
+    electionYear: number;
+    area: number;
+    population: number;
+    seats: number;
+}
+
+export interface RawAlgorithm {
+    id: number;
+    algorithm: string;
+    parameters: [
+        {
+            id: number;
+            key: string;
+            value: number;
+        }
+    ];
+}
+
+export interface Algorithm {
+    id: number;
+    algorithm: string;
+    parameters: Dictionary<number>;
+}
+
+export interface RawParameters {
+    electionYear: number;
+    electionType: string;
+    algorithm: RawAlgorithm;
+    threshold: number;
+    areaFactor: number;
+    districtSeats: [
+        {
+            id: number;
+            key: string;
+            value: number;
+        }
+    ];
+    levelingSeats: number;
+    totalVotes: number;
+}
+
+export interface Parameters {
+    electionYear: number;
+    electionType: string;
+    algorithm: RawAlgorithm;
+    threshold: number;
+    areaFactor: number;
+    districtSeats: Dictionary<number>;
+    levelingSeats: number;
+    totalVotes: number;
 }
