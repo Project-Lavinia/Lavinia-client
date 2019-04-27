@@ -1,6 +1,7 @@
 ﻿import { ComputationPayload, LagueDhontResult } from "./computation-models";
-import { ElectionType, Election } from "../requested-data/requested-data-models";
+import { ElectionType, Election, Votes, Metrics, Parameters } from "../requested-data/requested-data-models";
 import { getAlgorithmType, lagueDhont } from "./logic";
+import { unloadedParameters } from "./computation-state";
 
 /**
  * Enum containing all possible ComputationAction types.
@@ -36,8 +37,18 @@ export interface InitializeComputation extends ComputationPayload {
  *
  * @param electionType - election data fetched from the API.
  */
-export function initializeComputation(electionType: ElectionType) {
+export function initializeComputation(
+    electionType: ElectionType,
+    votes: Votes[],
+    metrics: Metrics[],
+    parameters: Parameters[]
+) {
     const election: Election = electionType.elections[0]; // Most recent election
+    const filterVotes: Votes[] = votes.filter((vote) => vote.electionYear === 2017);
+    const filterMetrics: Metrics[] = metrics.filter((metric) => metric.electionYear === 2017);
+    const filterParameters: Parameters =
+        parameters.find((parameter) => parameter.electionYear === 2017) || unloadedParameters;
+
     const payload: ComputationPayload = {
         election,
         algorithm: getAlgorithmType(election.algorithm),
@@ -45,6 +56,9 @@ export function initializeComputation(electionType: ElectionType) {
         electionThreshold: election.threshold,
         districtSeats: election.seats,
         levelingSeats: election.levelingSeats,
+        votes: filterVotes,
+        metrics: filterMetrics,
+        parameters: filterParameters,
     };
 
     const results = lagueDhont(payload);
@@ -133,7 +147,7 @@ export interface UpdateHistorical {
  *
  * @param election - the election to calculate based on its default parameters
  */
-export function updateHistorical(election: Election) {
+export function updateHistorical(election: Election, votes: Votes[], metrics: Metrics[], parameters: Parameters) {
     const payload: ComputationPayload = {
         election,
         algorithm: getAlgorithmType(election.algorithm),
@@ -141,6 +155,9 @@ export function updateHistorical(election: Election) {
         levelingSeats: election.levelingSeats,
         electionThreshold: election.threshold,
         firstDivisor: election.firstDivisor,
+        votes,
+        metrics,
+        parameters,
     };
     const action: UpdateHistorical = {
         type: ComputationActionType.UPDATE_HISTORICAL,

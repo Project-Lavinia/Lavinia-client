@@ -1,4 +1,4 @@
-import { Election } from "../requested-data/requested-data-models";
+import { Election, Votes, Metrics, Parameters } from "../requested-data/requested-data-models";
 import { Dictionary } from "../utilities/dictionary";
 
 export enum AlgorithmType {
@@ -14,6 +14,9 @@ export interface ComputationPayload {
     electionThreshold: number;
     districtSeats: number;
     levelingSeats: number;
+    votes: Votes[];
+    metrics: Metrics[];
+    parameters: Parameters;
 }
 
 export interface DistrictResult {

@@ -9,7 +9,7 @@ import {
     updateHistorical,
     saveComparison,
 } from "../../computation";
-import { Election } from "../../requested-data/requested-data-models";
+import { Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
 import { getAlgorithmType } from "../../computation/logic";
 import { ComputationMenuPayload } from "./computation-menu-models";
 
@@ -23,6 +23,9 @@ const mapStateToProps = (
         electionThreshold: state.computationState.electionThreshold,
         districtSeats: state.computationState.districtSeats,
         levelingSeats: state.computationState.levelingSeats,
+        votes: state.computationState.votes,
+        metrics: state.computationState.metrics,
+        parameters: state.computationState.parameters,
     },
     settingsPayload: {
         electionYears: state.settingsState.electionYears,
@@ -60,6 +63,9 @@ const mapDispatchToProps = (
                 electionThreshold: computationPayload.electionThreshold,
                 districtSeats: computationPayload.districtSeats,
                 levelingSeats: computationPayload.levelingSeats,
+                votes: computationPayload.votes,
+                metrics: computationPayload.metrics,
+                parameters: computationPayload.parameters,
             };
             const updateCalculationAction = updateComputation(payload);
             dispatch(updateCalculationAction);
@@ -73,7 +79,13 @@ const mapDispatchToProps = (
         const toggleAutoComputeAction = toggleAutoCompute(isChecked);
         dispatch(toggleAutoComputeAction);
     },
-    resetToHistoricalSettings: (settingsPayload: ComputationMenuPayload, election: Election) => {
+    resetToHistoricalSettings: (
+        settingsPayload: ComputationMenuPayload,
+        election: Election,
+        votes: Votes[],
+        metrics: Metrics[],
+        parameters: Parameters
+    ) => {
         if (settingsPayload.autoCompute) {
             const payload: ComputationPayload = {
                 election,
@@ -82,10 +94,13 @@ const mapDispatchToProps = (
                 electionThreshold: election.threshold,
                 districtSeats: election.seats,
                 levelingSeats: election.levelingSeats,
+                votes,
+                metrics,
+                parameters,
             };
             const updateCalculationAction = updateComputation(payload);
             dispatch(updateCalculationAction);
-            const updateHistoricalAction = updateHistorical(election);
+            const updateHistoricalAction = updateHistorical(election, votes, metrics, parameters);
             dispatch(updateHistoricalAction);
         }
 
@@ -104,8 +119,8 @@ const mapDispatchToProps = (
         const resetSavedComputationAction = resetSavedComputation();
         dispatch(resetSavedComputationAction);
     },
-    resetHistorical: (election: Election) => {
-        const updateHistoricalAction = updateHistorical(election);
+    resetHistorical: (election: Election, votes: Votes[], metrics: Metrics[], parameters: Parameters) => {
+        const updateHistoricalAction = updateHistorical(election, votes, metrics, parameters);
         dispatch(updateHistoricalAction);
     },
     saveComparison: () => {

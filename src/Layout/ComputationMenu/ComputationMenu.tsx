@@ -1,8 +1,8 @@
 import * as React from "react";
 import { SmartNumericInput } from "../../common";
 import * as style from "./ComputationMenu.css";
-import { ElectionType, Election } from "../../requested-data/requested-data-models";
-import { ComputationPayload, AlgorithmType } from "../../computation";
+import { ElectionType, Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
+import { ComputationPayload, AlgorithmType, unloadedParameters } from "../../computation";
 import { getAlgorithmType } from "../../computation/logic";
 import { ComputationMenuPayload } from "./computation-menu-models";
 import { YearSelect } from "./YearSelect";
@@ -14,13 +14,22 @@ import { ResetComparisonButton } from "./ResetComparisonButton";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
+    votes: Votes[];
+    metrics: Metrics[];
+    parameters: Parameters[];
     settingsPayload: ComputationMenuPayload;
     computationPayload: ComputationPayload;
     updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => any;
     updateSettings: (settingsPayload: ComputationMenuPayload) => any;
     toggleAutoCompute: (autoCompute: boolean) => any;
-    resetToHistoricalSettings: (settingsPayload: ComputationMenuPayload, election: Election) => any;
-    resetHistorical: (election: Election) => void;
+    resetToHistoricalSettings: (
+        settingsPayload: ComputationMenuPayload,
+        election: Election,
+        votes: Votes[],
+        metrics: Metrics[],
+        parameters: Parameters
+    ) => any;
+    resetHistorical: (election: Election, votes: Votes[], metrics: Metrics[], parameters: Parameters) => void;
     resetComparison: () => void;
     saveComparison: () => void;
     showComparison: boolean;
@@ -46,6 +55,11 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     onYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const nextYear = parseInt(event.target.value);
         const election = this.props.electionType.elections.find((election) => election.year === nextYear);
+        const votes = this.props.votes.filter((vote) => vote.electionYear === nextYear);
+        const metrics = this.props.metrics.filter((metric) => metric.electionYear === nextYear);
+        const parameters =
+            this.props.parameters.find((parameter) => parameter.electionYear === nextYear) || unloadedParameters;
+
         if (election !== undefined) {
             this.props.updateCalculation(
                 {
@@ -59,7 +73,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                 ...this.props.settingsPayload,
                 year: event.target.value,
             });
-            this.props.resetHistorical(election);
+            this.props.resetHistorical(election, votes, metrics, parameters);
             this.props.resetComparison();
         }
     };
@@ -170,6 +184,10 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     computeManually = () => {
         const year = parseInt(this.props.settingsPayload.year);
         const election = this.props.electionType.elections.find((e) => e.year === year);
+        const votes = this.props.votes.filter((vote) => vote.electionYear === year);
+        const metrics = this.props.metrics.filter((metric) => metric.electionYear === year);
+        const parameters =
+            this.props.parameters.find((parameter) => parameter.electionYear === year) || unloadedParameters;
         if (election !== undefined && election !== null) {
             this.props.updateCalculation(
                 {
@@ -179,6 +197,9 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                     electionThreshold: parseFloat(this.props.settingsPayload.electionThreshold),
                     districtSeats: parseInt(this.props.settingsPayload.districtSeats),
                     levelingSeats: parseInt(this.props.settingsPayload.levelingSeats),
+                    votes,
+                    metrics,
+                    parameters,
                 },
                 this.props.settingsPayload.autoCompute,
                 true
@@ -191,7 +212,14 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
      * their original, default state for the current year selected.
      */
     restoreToDefault = () => {
-        this.props.resetToHistoricalSettings(this.props.settingsPayload, this.props.computationPayload.election);
+        const compPayload = this.props.computationPayload;
+        this.props.resetToHistoricalSettings(
+            this.props.settingsPayload,
+            compPayload.election,
+            compPayload.votes,
+            compPayload.metrics,
+            compPayload.parameters
+        );
     };
 
     render() {

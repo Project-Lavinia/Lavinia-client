@@ -19,6 +19,21 @@ export function requestedData(
                 electionType: action.electionType,
                 enableAutoSave: true,
             };
+        case RequestedDataActionType.INTIIALIZE_REQUESTED_VOTES:
+            return {
+                ...state,
+                votes: action.votes,
+            };
+        case RequestedDataActionType.INITIALIZE_REQUESTED_METRICS:
+            return {
+                ...state,
+                metrics: action.metrics,
+            };
+        case RequestedDataActionType.INIITALIZE_REQUESTED_PARAMETERS:
+            return {
+                ...state,
+                parameters: action.parameters,
+            };
         default:
             return state;
     }
