@@ -97,7 +97,7 @@ export interface RawParameters {
 export interface Parameters {
     electionYear: number;
     electionType: string;
-    algorithm: RawAlgorithm;
+    algorithm: Algorithm;
     threshold: number;
     areaFactor: number;
     districtSeats: Dictionary<number>;
