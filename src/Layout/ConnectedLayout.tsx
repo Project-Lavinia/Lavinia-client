@@ -17,9 +17,9 @@ import { rawParametersToParametersConverter } from "../requested-data/requested-
 const mapDispatchToProps = (dispatch: any): LayoutProps => ({
     initializeState: async () => {
         const votesUri =
-            "http://lavinia-api-staging.azurewebsites.net/api/v2.0.0/votes/previous?number=3&partyCode=ALL&district=ALL";
+            "https://lavinia-api-staging.azurewebsites.net/api/v2.0.0/votes/previous?number=3&partyCode=ALL&district=ALL";
         const metricsUri =
-            "http://lavinia-api-staging.azurewebsites.net/api/v2.0.0/metrics/previous?number=3&district=ALL";
+            "https://lavinia-api-staging.azurewebsites.net/api/v2.0.0/metrics/previous?number=3&district=ALL";
         const parametersUri = "http://lavinia-api-staging.azurewebsites.net/api/v2.0.0/parameters/previous?number=3";
 
         const uri = "https://mandater-testing.azurewebsites.net/api/v1.0.0/no/pe?deep=true";
@@ -46,7 +46,7 @@ const mapDispatchToProps = (dispatch: any): LayoutProps => ({
             const electionType = await request<ElectionType>(uri, failover);
             const initializeRequestDataAction = initializeRequestedData(electionType);
             const initializeComputationAction = initializeComputation(electionType, votes, metrics, parameters);
-            const initializeSettingsAction = initializeComputationMenu(electionType);
+            const initializeSettingsAction = initializeComputationMenu(electionType, parameters[0]);
             const initializePresentationAction = initializePresentation();
             dispatch(initializeRequestDataAction);
             dispatch(initializeComputationAction);

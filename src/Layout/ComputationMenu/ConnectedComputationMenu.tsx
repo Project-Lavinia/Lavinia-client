@@ -15,7 +15,10 @@ import { ComputationMenuPayload } from "./computation-menu-models";
 
 const mapStateToProps = (
     state: RootState
-): Pick<ComputationMenuProps, "computationPayload" | "settingsPayload" | "electionType" | "showComparison"> => ({
+): Pick<
+    ComputationMenuProps,
+    "computationPayload" | "settingsPayload" | "electionType" | "showComparison" | "parameters" | "metrics" | "votes"
+> => ({
     computationPayload: {
         election: state.computationState.election,
         algorithm: state.computationState.algorithm,
@@ -37,9 +40,13 @@ const mapStateToProps = (
         levelingSeats: state.settingsState.levelingSeats,
         autoCompute: state.settingsState.autoCompute,
         forceCompute: false,
+        areaFactor: state.settingsState.areaFactor,
     },
     electionType: state.requestedDataState.electionType,
     showComparison: state.presentationMenuState.showComparison,
+    parameters: state.requestedDataState.parameters,
+    metrics: state.requestedDataState.metrics,
+    votes: state.requestedDataState.votes,
 });
 
 const mapDispatchToProps = (
@@ -89,11 +96,11 @@ const mapDispatchToProps = (
         if (settingsPayload.autoCompute) {
             const payload: ComputationPayload = {
                 election,
-                algorithm: getAlgorithmType(election.algorithm),
-                firstDivisor: election.firstDivisor,
-                electionThreshold: election.threshold,
-                districtSeats: election.seats,
-                levelingSeats: election.levelingSeats,
+                algorithm: getAlgorithmType(parameters.algorithm.id),
+                firstDivisor: parameters.algorithm.parameters["First Divisor"],
+                electionThreshold: parameters.threshold,
+                districtSeats: parameters.districtSeats.SUM,
+                levelingSeats: parameters.levelingSeats,
                 votes,
                 metrics,
                 parameters,
