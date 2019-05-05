@@ -3,6 +3,10 @@
 import { Dictionary, dictionaryToArray } from "../../utilities/dictionary";
 
 import { distributeSeats, distributeLevelingSeats, calculateProportionality, finalizeDistrictCalculations } from ".";
+import { distributeDistrictSeatsOnDistricts } from "./utils";
+
+// Constant
+const DISTRICTSEATS = "SUM";
 
 export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     const partyResults: Dictionary<PartyResult> = {};
@@ -22,7 +26,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
             percentVotes: 0,
             votesPerSeat: 0,
             districtSeatResult: [],
-            partyResults: []
+            partyResults: [],
         };
         districtPartyResults[county.name] = {};
         for (const party of county.results) {
@@ -37,7 +41,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
                 districtSeats: 0,
                 levelingSeats: 0,
                 totalSeats: 0,
-                proportionality: 0
+                proportionality: 0,
             };
             if (partyResults[party.partyCode] === undefined) {
                 partyResults[party.partyCode] = {
@@ -48,7 +52,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
                     districtSeats: 0,
                     levelingSeats: 0,
                     totalSeats: 0,
-                    proportionality: 0
+                    proportionality: 0,
                 };
             } else {
                 partyResults[party.partyCode].votes += party.votes;
@@ -69,7 +73,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
                         districtSeats: 0,
                         levelingSeats: 0,
                         totalSeats: 0,
-                        proportionality: 0
+                        proportionality: 0,
                     };
                 }
             }
@@ -86,12 +90,19 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
         }
     }
 
+    // Calculate the district seats for each district
+    const districtSeats = distributeDistrictSeatsOnDistricts(
+        payload.parameters.areaFactor,
+        payload.parameters.districtSeats[DISTRICTSEATS],
+        payload.metrics
+    );
+
     // st. lague iterates over each county, and in turn, each party of the party, so first we have to create objects for partyCodes
     for (const county of payload.election.counties) {
         const distributionResult = distributeSeats(
             payload.algorithm,
             payload.firstDivisor,
-            county.seats,
+            districtSeats[county.name],
             county.results
         );
 
@@ -126,7 +137,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     const result: LagueDhontResult = {
         partyResults: partyResultArray,
         districtResults: districtResultArray,
-        levelingSeatDistribution
+        levelingSeatDistribution,
     };
 
     return result;

@@ -8,6 +8,18 @@ export interface RawDictionaryEntry {
     value: number;
 }
 
+export function copyDictionary<T>(dictionary: Dictionary<T>): Dictionary<T> {
+    const copy: Dictionary<T> = {};
+
+    for (const entry in dictionary) {
+        if (dictionary.hasOwnProperty(entry)) {
+            copy[entry] = dictionary[entry];
+        }
+    }
+
+    return copy;
+}
+
 export function dictionaryToArray<T>(dictionary: Dictionary<T>): T[] {
     const array: T[] = [];
 

@@ -1,6 +1,7 @@
 import { Dictionary } from "../../utilities/dictionary";
 import { DistrictResultv2, PartyResultv2, NationalPartyResult, ComputationPayload } from "..";
 import { Metrics } from "../../requested-data/requested-data-models";
+import { sainteLagues, distributionByQuotient } from "./distribution";
 
 export function buildDistrictResults(metrics: Metrics[]): Dictionary<DistrictResultv2> {
     const districtResults: Dictionary<DistrictResultv2> = {};
@@ -70,9 +71,6 @@ export function calculatePercentages(
     partyResults: Dictionary<Dictionary<PartyResultv2>>,
     nationalPartyResults: Dictionary<NationalPartyResult>
 ) {
-    // Now that all the votes have been summed up, we can calculate the
-    // percentage of the district or total votes each party and district received
-
     // Iterate over all parties
     for (const party in partyResults) {
         if (partyResults.hasOwnProperty(party)) {
@@ -94,4 +92,41 @@ export function calculatePercentages(
             }
         }
     }
+}
+
+/**
+ * Distributes the district seats over the districts as per:
+ * https://lovdata.no/lov/2002-06-28-57/§11-3
+ *
+ * @param areaFactor The area factor the area should be multiplied with when calculating the numerator for the quotient
+ * @param numDistrictSeats The number of district seats that should be distributed
+ * @param metrics A list of all the districts with their metrics relevant for this distribution
+ */
+export function distributeDistrictSeatsOnDistricts(
+    areaFactor: number,
+    numDistrictSeats: number,
+    metrics: Metrics[]
+): Dictionary<number> {
+    let districtSeats: Dictionary<number> = {};
+    const baseValues: Dictionary<number> = {};
+
+    // Wrap Sainte Lagues so it only takes one argument
+    function denominatorFunction(seatsWon: number): number {
+        return sainteLagues(seatsWon, 1);
+    }
+
+    if (areaFactor === -1) {
+        // If we don't have an area factor, just return the predetermined values
+        metrics.map((metric) => (districtSeats[metric.district] = metric.seats));
+    } else {
+        metrics.map((metric) => {
+            // Fill districtSeats with all the districts, with no wins yet
+            districtSeats[metric.district] = 0;
+            // Calculate the distribution numbers for each district to be used as numerators in the quotients
+            baseValues[metric.district] = metric.population + metric.area * areaFactor;
+        });
+
+        districtSeats = distributionByQuotient(numDistrictSeats, districtSeats, baseValues, denominatorFunction);
+    }
+    return districtSeats;
 }
