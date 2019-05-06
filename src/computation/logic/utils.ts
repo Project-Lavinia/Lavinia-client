@@ -1,4 +1,4 @@
-import { Dictionary } from "../../utilities/dictionary";
+import { Dictionary, copyDictionary } from "../../utilities/dictionary";
 import { DistrictResultv2, PartyResultv2, NationalPartyResult, ComputationPayload } from "..";
 import { Metrics } from "../../requested-data/requested-data-models";
 import { sainteLagues, distributionByQuotient } from "./distribution";
@@ -117,16 +117,35 @@ export function distributeDistrictSeatsOnDistricts(
 
     if (areaFactor === -1) {
         // If we don't have an area factor, just return the predetermined values
-        metrics.map((metric) => (districtSeats[metric.district] = metric.seats));
+        metrics.forEach((metric) => (districtSeats[metric.district] = metric.seats));
     } else {
-        metrics.map((metric) => {
+        metrics.forEach((metric) => {
             // Fill districtSeats with all the districts, with no wins yet
             districtSeats[metric.district] = 0;
             // Calculate the distribution numbers for each district to be used as numerators in the quotients
             baseValues[metric.district] = metric.population + metric.area * areaFactor;
         });
 
-        districtSeats = distributionByQuotient(numDistrictSeats, districtSeats, baseValues, denominatorFunction);
+        // IMPORTANT! Assuming 19 leveling seats! Needs to be fixed
+        districtSeats = distributionByQuotient(numDistrictSeats + 19, districtSeats, baseValues, denominatorFunction);
+        districtSeats = subtractLevelingSeats(districtSeats);
     }
     return districtSeats;
+}
+
+/**
+ * Subtracts the leveling seats from the seat mapping.
+ *
+ * @param seatMapping The mapping between district and number of seats to subtract from
+ */
+function subtractLevelingSeats(seatMapping: Dictionary<number>): Dictionary<number> {
+    const copyMapping = copyDictionary(seatMapping);
+
+    for (const name in copyMapping) {
+        if (copyMapping.hasOwnProperty(name)) {
+            copyMapping[name]--;
+        }
+    }
+
+    return copyMapping;
 }

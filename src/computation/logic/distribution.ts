@@ -41,7 +41,7 @@ export function distributionByQuotient(
             winner = tieBreaker(winners, baseValue);
 
             // Return the losers back into the distribution
-            winners.map((entry) => {
+            winners.forEach((entry) => {
                 if (entry.key !== winner.key) {
                     sortedQuotients.insert(entry);
                 }
