@@ -121,6 +121,7 @@ module.exports = (env) => {
             }),
             new HtmlWebpackPlugin({
                 template: "assets/index.html",
+                favicon: "assets/favicon.ico",
             }),
             new HardSourceWebpackPlugin(),
         ],
