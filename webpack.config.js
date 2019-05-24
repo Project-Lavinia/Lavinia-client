@@ -12,122 +12,133 @@ var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var WebpackCleanupPlugin = require("webpack-cleanup-plugin");
 var HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
-module.exports = {
-    context: sourcePath,
-    entry: {
-        app: "./main.tsx"
-    },
-    output: {
-        path: outPath,
-        filename: "bundle.js",
-        chunkFilename: "[chunkhash].js",
-        publicPath: "/"
-    },
-    target: "web",
-    resolve: {
-        extensions: [".js", ".ts", ".tsx"],
-        // Fix webpack"s default behavior to not load packages with jsnext:main module
-        // (jsnext:main directs not usually distributable es6 format, but es6 sources)
-        mainFields: ["module", "browser", "main"],
-        alias: {
-            app: path.resolve(__dirname, "src/app/")
-        }
-    },
-    module: {
-        rules: [
-            // .ts, .tsx
-            {
-                test: /\.tsx?$/,
-                use: [
-                    isProduction && {
-                        loader: "babel-loader",
-                        options: { plugins: ["react-hot-loader/babel"] }
-                    },
-                    "ts-loader"
-                ].filter(Boolean)
+module.exports = (env) => {
+    console.log(env.API_URL);
+    return {
+        context: sourcePath,
+        entry: {
+            app: "./main.tsx",
+        },
+        output: {
+            path: outPath,
+            filename: "bundle.js",
+            chunkFilename: "[chunkhash].js",
+            publicPath: "/",
+        },
+        target: "web",
+        resolve: {
+            extensions: [".js", ".ts", ".tsx"],
+            // Fix webpack"s default behavior to not load packages with jsnext:main module
+            // (jsnext:main directs not usually distributable es6 format, but es6 sources)
+            mainFields: ["module", "browser", "main"],
+            alias: {
+                app: path.resolve(__dirname, "src/app/"),
             },
-            // css
-            {
-                test: /\.css$/,
-                use: [
-                    isProduction ? MiniCssExtractPlugin.loader : "style-loader",
-                    {
-                        loader: "css-loader",
-                        query: {
-                            modules: true,
-                            sourceMap: !isProduction,
-                            importLoaders: 1,
-                            localIdentName: isProduction ? "[hash:base64:5]" : "[local]__[hash:base64:5]"
-                        }
-                    },
-                    {
-                        loader: "postcss-loader",
-                        options: {
-                            ident: "postcss",
-                            plugins: [
-                                require("postcss-import")({ addDependencyTo: webpack }),
-                                require("postcss-url")(),
-                                require("postcss-cssnext")(),
-                                require("postcss-reporter")(),
-                                require("postcss-browser-reporter")({
-                                    disabled: isProduction
-                                })
-                            ]
-                        }
-                    }
-                ]
-            },
-            // static assets
-            { test: /\.html$/, use: "html-loader" },
-            { test: /\.(png|svg)$/, use: "url-loader?limit=10000" },
-            { test: /\.(jpg|gif)$/, use: "file-loader" }
-        ]
-    },
-    optimization: {
-        splitChunks: {
-            name: true,
-            cacheGroups: {
-                commons: {
-                    chunks: "initial",
-                    minChunks: 2
+        },
+        module: {
+            rules: [
+                // .ts, .tsx
+                {
+                    test: /\.tsx?$/,
+                    use: [
+                        isProduction && {
+                            loader: "babel-loader",
+                            options: { plugins: ["react-hot-loader/babel"] },
+                        },
+                        "ts-loader",
+                    ].filter(Boolean),
                 },
-                vendors: {
-                    test: /[\\/]node_modules[\\/]/,
-                    chunks: "all",
-                    priority: -10
-                }
-            }
+                // css
+                {
+                    test: /\.css$/,
+                    use: [
+                        isProduction ? MiniCssExtractPlugin.loader : "style-loader",
+                        {
+                            loader: "css-loader",
+                            query: {
+                                modules: true,
+                                sourceMap: !isProduction,
+                                importLoaders: 1,
+                                localIdentName: isProduction ? "[hash:base64:5]" : "[local]__[hash:base64:5]",
+                            },
+                        },
+                        {
+                            loader: "postcss-loader",
+                            options: {
+                                ident: "postcss",
+                                plugins: [
+                                    require("postcss-import")({ addDependencyTo: webpack }),
+                                    require("postcss-url")(),
+                                    require("postcss-cssnext")(),
+                                    require("postcss-reporter")(),
+                                    require("postcss-browser-reporter")({
+                                        disabled: isProduction,
+                                    }),
+                                ],
+                            },
+                        },
+                    ],
+                },
+                // static assets
+                { test: /\.html$/, use: "html-loader" },
+                { test: /\.(png|svg)$/, use: "url-loader?limit=10000" },
+                { test: /\.(jpg|gif)$/, use: "file-loader" },
+            ],
         },
-        runtimeChunk: true
-    },
-    plugins: [
-        new webpack.EnvironmentPlugin({
-            NODE_ENV: "development", // use "development" unless process.env.NODE_ENV is defined
-            DEBUG: false
-        }),
-        new WebpackCleanupPlugin(),
-        new MiniCssExtractPlugin({
-            filename: "[contenthash].css",
-            disable: !isProduction
-        }),
-        new HtmlWebpackPlugin({
-            template: "assets/index.html"
-        }),
-        new HardSourceWebpackPlugin()
-    ],
-    devServer: {
-        contentBase: sourcePath,
-        hot: true,
-        inline: true,
-        historyApiFallback: {
-            disableDotRule: true
+        optimization: {
+            splitChunks: {
+                name: true,
+                cacheGroups: {
+                    commons: {
+                        chunks: "initial",
+                        minChunks: 2,
+                    },
+                    vendors: {
+                        test: /[\\/]node_modules[\\/]/,
+                        chunks: "all",
+                        priority: -10,
+                    },
+                },
+            },
+            runtimeChunk: true,
         },
-        stats: "minimal"
-    },
-    node: {
-        // workaround for webpack-dev-server issue
-        // https://github.com/webpack/webpack-dev-server/issues/60#issuecomment-103411179
-        fs: "empty",
-        net: "empty"
-    }
+        plugins: [
+            new webpack.EnvironmentPlugin({
+                NODE_ENV: "development", // use "development" unless process.env.NODE_ENV is defined
+                DEBUG: false,
+                API_URL:
+                    JSON.stringify(env.API_URL) ||
+                    "https://mandater-testing.azurewebsites.net/api/v1.0.0/no/pe?deep=true",
+            }),
+            new webpack.DefinePlugin({
+                __API_URL__:
+                    JSON.stringify(env.API_URL) ||
+                    "https://mandater-testing.azurewebsites.net/api/v1.0.0/no/pe?deep=true",
+            }),
+            new WebpackCleanupPlugin(),
+            new MiniCssExtractPlugin({
+                filename: "[contenthash].css",
+                disable: !isProduction,
+            }),
+            new HtmlWebpackPlugin({
+                template: "assets/index.html",
+            }),
+            new HardSourceWebpackPlugin(),
+        ],
+        devServer: {
+            contentBase: sourcePath,
+            hot: true,
+            inline: true,
+            historyApiFallback: {
+                disableDotRule: true,
+            },
+            stats: "minimal",
+        },
+        node: {
+            // workaround for webpack-dev-server issue
+            // https://github.com/webpack/webpack-dev-server/issues/60#issuecomment-103411179
+            fs: "empty",
+            net: "empty",
+        },
+    };
 };

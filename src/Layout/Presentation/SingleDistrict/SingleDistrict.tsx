@@ -4,7 +4,7 @@ import { DistrictResult, PartyResult, SeatResult } from "../../../computation/co
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
-import { getVulnerableSeatByQuotient } from "../../../utilities/district";
+import { getVulnerableSeatByQuotient, getVulnerableSeatByVotes } from "../../../utilities/district";
 
 export interface SingleDistrictProps {
     districtResults: DistrictResult[];
@@ -27,6 +27,9 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         const decimals = this.props.decimals;
         const proportionalities = data.map((value) => value.proportionality);
         const vulnerable = getVulnerableSeatByQuotient(this.getDistrictResult(this.props.districtSelected)!);
+        const vulnerableVotes = getVulnerableSeatByVotes(this.getDistrictResult(this.props.districtSelected)!);
+        console.log(process.env.DEBUG);
+        console.log(`Vulnerable by votes: ${vulnerableVotes.partyCode}: ${vulnerableVotes.moreVotesToWin}`);
         let label: string;
         let index: number;
         switch (this.props.disproportionalityIndex) {

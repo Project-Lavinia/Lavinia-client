@@ -6,8 +6,9 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "webpack-dev-server --mode development --hot --progress --color --port 3000 --open",
+        "start": "webpack-dev-server --env.API_URL \"https://lavinia-api-staging.azurewebsites.net/api/v1.0.0/no/pe?deep=true\" --mode development  --hot --progress --color --port 3000 --open",
         "build": "webpack -p --progress --colors",
+        "build:dev": "webpack --env.NODE_ENV \"development\" --env.API_URL \"https://lavinia-api-staging.azurewebsites.net/api/v1.0.0/no/pe?deep=true\"",
         "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
         "precommit": "pretty-quick --staged && tslint -p ."
     },
