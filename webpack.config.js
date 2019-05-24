@@ -13,7 +13,6 @@ var WebpackCleanupPlugin = require("webpack-cleanup-plugin");
 var HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 module.exports = (env) => {
-    console.log(env.API_URL);
     return {
         context: sourcePath,
         entry: {
