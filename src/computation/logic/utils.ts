@@ -104,6 +104,7 @@ export function calculatePercentages(
  */
 export function distributeDistrictSeatsOnDistricts(
     areaFactor: number,
+    levelingSeats: number,
     numDistrictSeats: number,
     metrics: Metrics[]
 ): Dictionary<number> {
@@ -127,7 +128,12 @@ export function distributeDistrictSeatsOnDistricts(
         });
 
         // IMPORTANT! Assuming 19 leveling seats! Needs to be fixed
-        districtSeats = distributionByQuotient(numDistrictSeats + 19, districtSeats, baseValues, denominatorFunction);
+        districtSeats = distributionByQuotient(
+            numDistrictSeats + levelingSeats,
+            districtSeats,
+            baseValues,
+            denominatorFunction
+        );
         districtSeats = subtractLevelingSeats(districtSeats);
     }
     return districtSeats;
