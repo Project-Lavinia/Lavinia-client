@@ -20,7 +20,7 @@ const mapDispatchToProps = (dispatch: any): LayoutProps => ({
         let defaultUri: string;
 
         const votesPath = "votes/previous?number=3&partyCode=ALL&district=ALL";
-        const metricsPath = "votes/previous?number=3&partyCode=ALL&district=ALL";
+        const metricsPath = "metrics/previous?number=3&partyCode=ALL&district=ALL";
         const parametersPath = "parameters/previous?number=3";
         let votesUri: string;
         let metricsUri: string;
