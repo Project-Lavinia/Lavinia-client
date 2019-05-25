@@ -16,13 +16,22 @@ import { rawParametersToParametersConverter } from "../requested-data/requested-
 
 const mapDispatchToProps = (dispatch: any): LayoutProps => ({
     initializeState: async () => {
-        const votesUri =
-            "https://lavinia-api-staging.azurewebsites.net/api/v2.0.0/votes/previous?number=3&partyCode=ALL&district=ALL";
-        const metricsUri =
-            "https://lavinia-api-staging.azurewebsites.net/api/v2.0.0/metrics/previous?number=3&district=ALL";
-        const parametersUri = "http://lavinia-api-staging.azurewebsites.net/api/v2.0.0/parameters/previous?number=3";
+        const electionTypePath = "no/pe?deep=true";
+        let defaultUri: string;
 
-        const uri = "https://mandater-testing.azurewebsites.net/api/v1.0.0/no/pe?deep=true";
+        const votesPath = "votes/previous?number=3&partyCode=ALL&district=ALL";
+        const metricsPath = "votes/previous?number=3&partyCode=ALL&district=ALL";
+        const parametersPath = "parameters/previous?number=3";
+        let votesUri: string;
+        let metricsUri: string;
+        let parametersUri: string;
+
+        defaultUri = process.env.API_V1 + electionTypePath;
+
+        votesUri = process.env.API_V2 + votesPath;
+        metricsUri = process.env.API_V2 + metricsPath;
+        parametersUri = process.env.API_V2 + parametersPath;
+
         const failover: ElectionType = {
             internationalName: "UNDEFINED",
             electionTypeId: -1,
@@ -43,15 +52,16 @@ const mapDispatchToProps = (dispatch: any): LayoutProps => ({
             const initializeRequestedParametersAction = InitializeRequestedParameters(parameters);
             dispatch(initializeRequestedParametersAction);
 
-            const electionType = await request<ElectionType>(uri, failover);
+            const electionType = await request<ElectionType>(defaultUri, failover);
             const initializeRequestDataAction = initializeRequestedData(electionType);
-            const initializeComputationAction = initializeComputation(electionType, votes, metrics, parameters);
+
             const initializeSettingsAction = initializeComputationMenu(electionType, parameters[0]);
             const initializePresentationAction = initializePresentation();
             dispatch(initializeRequestDataAction);
-            dispatch(initializeComputationAction);
             dispatch(initializePresentationAction);
             dispatch(initializeSettingsAction);
+            const initializeComputationAction = initializeComputation(electionType, votes, metrics, parameters);
+            dispatch(initializeComputationAction);
         }
     },
 });

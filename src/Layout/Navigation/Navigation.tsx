@@ -10,7 +10,7 @@ export class Navigation extends React.Component<{}, {}> {
                         <a href="">Lavinia</a>
                     </li>
                     <li>
-                        <a target="_blank" href="https://mandater-testing.azurewebsites.net/swagger">
+                        <a target="_blank" href={process.env.SWAGGERUI}>
                             API
                         </a>
                     </li>

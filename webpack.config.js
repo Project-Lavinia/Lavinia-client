@@ -11,18 +11,21 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var WebpackCleanupPlugin = require("webpack-cleanup-plugin");
 var HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
+var DotenvWebpackPlugin = require("dotenv-webpack");
 
 module.exports = (env) => {
     console.log("environment:", env);
+
     return {
         context: sourcePath,
+        devtool: "inline-source-map",
         entry: {
             app: "./main.tsx",
         },
         output: {
             path: outPath,
             filename: "bundle.js",
-            chunkFilename: "[chunkhash].js",
+            chunkFilename: "[name].[chunkhash].js",
             publicPath: "/",
         },
         target: "web",
@@ -88,36 +91,30 @@ module.exports = (env) => {
         optimization: {
             splitChunks: {
                 name: true,
+                chunks: "all",
                 cacheGroups: {
                     commons: {
-                        chunks: "initial",
-                        minChunks: 2,
+                        minChunks: 6,
                     },
                     vendors: {
                         test: /[\\/]node_modules[\\/]/,
-                        chunks: "all",
-                        priority: -10,
+                        name(module) {
+                            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+                            return `${packageName.replace("@", "")}`;
+                        },
                     },
                 },
             },
             runtimeChunk: true,
         },
         plugins: [
-            new webpack.EnvironmentPlugin({
-                NODE_ENV: "development", // use "development" unless process.env.NODE_ENV is defined
-                DEBUG: false,
-                API_URL:
-                    JSON.stringify(env.API_URL) ||
-                    "https://mandater-testing.azurewebsites.net/api/v1.0.0/no/pe?deep=true",
-            }),
-            new webpack.DefinePlugin({
-                __API_URL__:
-                    JSON.stringify(env.API_URL) ||
-                    "https://mandater-testing.azurewebsites.net/api/v1.0.0/no/pe?deep=true",
+            new DotenvWebpackPlugin({
+                path: "./",
+                defaults: true,
             }),
             new WebpackCleanupPlugin(),
             new MiniCssExtractPlugin({
-                filename: "[contenthash].css",
+                filename: "[name].[contenthash].css",
                 disable: !isProduction,
             }),
             new HtmlWebpackPlugin({
