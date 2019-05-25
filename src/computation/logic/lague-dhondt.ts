@@ -91,18 +91,19 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     }
 
     // Calculate the district seats for each district
-    const districtSeats = distributeDistrictSeatsOnDistricts(
+    // Temporarily disabled
+    /*const districtSeats = distributeDistrictSeatsOnDistricts(
         payload.parameters.areaFactor,
         payload.parameters.districtSeats[DISTRICTSEATS],
         payload.metrics
-    );
+    );*/
 
     // st. lague iterates over each county, and in turn, each party of the party, so first we have to create objects for partyCodes
     for (const county of payload.election.counties) {
         const distributionResult = distributeSeats(
             payload.algorithm,
             payload.firstDivisor,
-            districtSeats[county.name],
+            county.seats,
             county.results
         );
 
