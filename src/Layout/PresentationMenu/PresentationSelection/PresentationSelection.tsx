@@ -8,7 +8,7 @@ export interface PresentationSelectionProps {
 
 export class PresentationSelection extends React.Component {
     static defaultProps: PresentationSelectionProps = {
-        currentSelection: PresentationType.ElectionTable
+        currentSelection: PresentationType.ElectionTable,
     };
     constructor(props: PresentationSelectionProps) {
         super(props);
@@ -32,11 +32,6 @@ export class PresentationSelection extends React.Component {
                     className="btn-block"
                     title={"Mandatfordeling"}
                     presentationSelected={PresentationType.SeatDistribution}
-                />
-                <ConnectedPresentationSelectionButton
-                    className="btn-block"
-                    title={"Mandater per parti"}
-                    presentationSelected={PresentationType.SeatsPerParty}
                 />
                 <ConnectedPresentationSelectionButton
                     className="btn-block"

@@ -5,5 +5,4 @@ export * from "./ElectionOverview";
 export * from "./LevellingSeatOverview";
 export * from "./RemainderQuotients";
 export * from "./SeatDistribution";
-export * from "./SeatsPerParty";
 export * from "./SingleDistrict";

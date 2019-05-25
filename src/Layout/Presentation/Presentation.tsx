@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-    ElectionOverview,
-    DistrictOverview,
-    SeatsPerParty,
-    SeatDistribution,
-    SingleDistrict,
-    LevellingSeatOverview,
-} from ".";
+import { ElectionOverview, DistrictOverview, SeatDistribution, SingleDistrict, LevellingSeatOverview } from ".";
 import {
     getDistrictTableData,
     getPartyTableData,
@@ -144,8 +137,6 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         districtWidth={this.getWidestStringWidth(this.getDistricts())}
                     />
                 );
-            case PresentationType.SeatsPerParty:
-                return <SeatsPerParty partyResults={this.getSeatsPerPartyData()} />;
             case PresentationType.SingleDistrict:
                 return (
                     <SingleDistrict
