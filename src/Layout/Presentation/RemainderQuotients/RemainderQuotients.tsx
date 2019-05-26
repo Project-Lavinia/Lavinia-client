@@ -154,12 +154,14 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
 
         return (
             <React.Fragment>
-                <p>
-                    Par på formen fylke-parti med oransje celler indikerer at partiet har vunnet et utjevningsmandat i
-                    det korresponderende fylket. Kvotientene er delt på 10 000 og representerer verdien ved utdeling av
-                    siste distriktsmandat i fylket for det respektive partiet.
-                </p>
-                <p />
+                <div className="card has-background-dark has-text-light">
+                    <p className="card-content">
+                        Par på formen fylke-parti med inverterte celler indikerer at partiet har vunnet et
+                        utjevningsmandat i det korresponderende fylket. Kvotientene er delt på 10 000 og representerer
+                        verdien ved utdeling av siste distriktsmandat i fylket for det respektive partiet.
+                    </p>
+                </div>
+
                 <div className="section">
                     <ReactTable
                         data={data}
