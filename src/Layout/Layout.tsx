@@ -1,8 +1,9 @@
 ﻿import * as React from "react";
 import { ConnectedPresentation } from "./Presentation";
 import { ConnectedComputationMenu } from "./ComputationMenu";
-import { PresentationMenu } from "./PresentationMenu";
+import { ConnectedPresentationSettings } from "./PresentationMenu";
 import { ConnectedNavigation } from "./Navigation/ConnectedNavigation";
+import { PresentationSelection } from "./PresentationMenu/PresentationSelection/PresentationSelection";
 
 export interface LayoutProps {
     initializeState: () => any;
@@ -15,20 +16,26 @@ export class Layout extends React.Component<LayoutProps, {}> {
 
     public render() {
         return (
-            <div className="container-fluid">
+            <React.Fragment>
                 <ConnectedNavigation />
-                <div className="row">
-                    <div className="col-md-3">
+                <div className="columns">
+                    <div className="column is-narrow">
                         <ConnectedComputationMenu />
                     </div>
-                    <div className="col-md-6">
+                    <div className="column">
+                        <div className="columns">
+                            <div className="column">
+                                <PresentationSelection />
+                            </div>
+                            <div className="column">
+                                <ConnectedPresentationSettings />
+                            </div>
+                        </div>
+
                         <ConnectedPresentation />
                     </div>
-                    <div className="col-md-3">
-                        <PresentationMenu />
-                    </div>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }

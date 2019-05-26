@@ -18,13 +18,13 @@ export class SmartNumericInput extends React.Component<SmartNumericInputProps, {
     render() {
         const value = this.validateInput(this.props.value);
         return (
-            <div hidden={this.props.hidden} className="form-group row">
-                <label htmlFor={this.props.name} className="text-left col-sm-7 col-form-label">
+            <div hidden={this.props.hidden} className="field">
+                <label htmlFor={this.props.name} className="label">
                     {this.props.title}
                 </label>
-                <div className="col-sm-5">
+                <div className="control">
                     <input
-                        className="form-control"
+                        className="input is-primary"
                         type={"number"}
                         style={this.props.slider ? { width: "100%" } : {}}
                         name={this.props.name}
@@ -35,6 +35,7 @@ export class SmartNumericInput extends React.Component<SmartNumericInputProps, {
                         step={this.props.integer ? 1 : 0.1}
                         max={this.props.max}
                     />
+
                     {this.props.slider && (
                         <input
                             className="form-control"

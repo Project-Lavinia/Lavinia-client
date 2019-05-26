@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Button } from "../../common";
 
 export interface SaveComparisonButtonProps {
     saveComparison: () => void;
@@ -8,13 +7,15 @@ export interface SaveComparisonButtonProps {
 export class SaveComparisonButton extends React.Component<SaveComparisonButtonProps> {
     render() {
         return (
-            <Button
-                title={"Lagre"}
-                accessibilityLabel={"Lagre sammenlikning"}
+            <button
+                className="button is-primary is-fullwidth"
+                title={"Lagre sammenlikning"}
                 id="saveComparison"
-                onPress={this.props.saveComparison}
+                onClick={this.props.saveComparison}
                 type="button"
-            />
+            >
+                Lagre
+            </button>
         );
     }
 }

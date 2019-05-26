@@ -22,7 +22,7 @@ export class Navigation extends React.Component<NavigationProps> {
         return (
             <nav className="navbar" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
-                    <a className="navbar-item" href="https://bulma.io">
+                    <a className="navbar-item" href="./">
                         <img src={LaviniaLogo} width="112" height="28" />
                     </a>
 

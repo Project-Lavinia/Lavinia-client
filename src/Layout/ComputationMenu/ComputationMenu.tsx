@@ -8,8 +8,8 @@ import { YearSelect } from "./YearSelect";
 import { AlgorithmSelect } from "./AlgorithmSelect";
 import { AutoComputeCheckbox } from "./AutoComputeCheckbox";
 import { ResetButton } from "./ResetButton";
-import { SaveComparisonButton } from "./SaveComparisonButton";
-import { ResetComparisonButton } from "./ResetComparisonButton";
+import { ComparisonOptions } from "./ComparisonOptions";
+import { ComputeManuallyButton } from "./ComputeManuallyButton";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -249,8 +249,15 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
         const currentParameters = this.props.computationPayload.parameters;
         return (
             <div>
-                <h1 className="h2">Stortingsvalg</h1>
+                <h1 className="is-size-6-mobile is-size-4-tablet is-size-2-desktop is-size-1-widescreen">
+                    Stortingsvalg
+                </h1>
                 <form>
+                    <AutoComputeCheckbox
+                        autoCompute={this.props.settingsPayload.autoCompute}
+                        computeManually={this.computeManually}
+                        toggleAutoCompute={this.toggleAutoCompute}
+                    />
                     <YearSelect
                         electionYears={this.props.settingsPayload.electionYears}
                         onYearChange={this.onYearChange}
@@ -301,21 +308,17 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={currentParameters.areaFactor}
                         integer={false}
                     />
-                    <AutoComputeCheckbox
+                    <ComputeManuallyButton
                         autoCompute={this.props.settingsPayload.autoCompute}
                         computeManually={this.computeManually}
-                        toggleAutoCompute={this.toggleAutoCompute}
                     />
+
                     <ResetButton restoreToDefault={this.restoreToDefault} />
-                    <div hidden={!this.props.showComparison} className="form-group row ">
-                        <label className="col-form-label text-left col-sm-6" htmlFor="comparison_settings">
-                            Sammenlikning
-                        </label>
-                        <div className="btn-group-vertical col-sm-6">
-                            <SaveComparisonButton saveComparison={this.props.saveComparison} />
-                            <ResetComparisonButton resetComparison={this.props.resetComparison} />
-                        </div>
-                    </div>
+                    <ComparisonOptions
+                        showComparison={this.props.showComparison}
+                        resetComparison={this.props.resetComparison}
+                        saveComparison={this.props.saveComparison}
+                    />
                 </form>
             </div>
         );
