@@ -21,39 +21,44 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const lowestVsAverageInPercentage = (1 / lowestVotingPower / (1 / averageVotingPower)) * 100;
         const highestVsLowestInPercentage = (1 / highestVotingPower / (1 / lowestVotingPower)) * 100;
         const mostInfluentialDistrict = (
-            <strong>{data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name}</strong>
+            <span className="has-text-success">
+                {data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name}
+            </span>
         );
         const leastInfluentialDistrict = (
-            <strong>{data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name}</strong>
+            <span className="has-text-danger">
+                {data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name}
+            </span>
         );
         const mostVulnerable = getMostVulnerableSeatByQuotient(data);
         return (
             <React.Fragment>
-                <p>
-                    {"En stemme i "}
-                    {mostInfluentialDistrict}
-                    {" hadde mest innflytelse, og telte "}
-                    {highestVsAverageInPercentage.toFixed(decimals) + "%"}
-                    {" av en gjennomsnittlig stemme"}
-                    {", mens en stemme i "}
-                    {leastInfluentialDistrict}
-                    {" hadde minst innflytelse, og bare telte "}
-                    {lowestVsAverageInPercentage.toFixed(decimals) + "%."}
-                    {" En stemme i det mest innflytelsesrike fylket telte altså "}
-                    {highestVsLowestInPercentage.toFixed(decimals) + "%"}
-                    {" mer enn en stemme i det minst innflytelsesrike fylket."}
-                </p>
-                <p>
-                    {"Det mest utsatte sistemandatet relativt til kvotient var i "}
-                    {<strong>{mostVulnerable.district}</strong>}
-                    {" og ble vunnet av "}
-                    {mostVulnerable.winner.partyCode}
-                    {". "}
-                    {mostVulnerable.runnerUp.partyCode}
-                    {" ville trengt "}
-                    {mostVulnerable.moreVotesToWin.toFixed(0)}
-                    {" flere stemmer for å vinne det."}
-                </p>
+                <div className="card has-background-dark has-text-light">
+                    <p className="card-content">
+                        {"En stemme i "}
+                        {mostInfluentialDistrict}
+                        {" hadde mest innflytelse, og telte "}
+                        {highestVsAverageInPercentage.toFixed(decimals) + "%"}
+                        {" av en gjennomsnittlig stemme"}
+                        {", mens en stemme i "}
+                        {leastInfluentialDistrict}
+                        {" hadde minst innflytelse, og bare telte "}
+                        {lowestVsAverageInPercentage.toFixed(decimals) + "%."}
+                        {" En stemme i det mest innflytelsesrike fylket telte altså "}
+                        {highestVsLowestInPercentage.toFixed(decimals) + "%"}
+                        {" mer enn en stemme i det minst innflytelsesrike fylket."}
+                        {" Det mest utsatte sistemandatet relativt til kvotient var i "}
+                        {<span className="has-text-warning">{mostVulnerable.district}</span>}
+                        {" og ble vunnet av "}
+                        {mostVulnerable.winner.partyCode}
+                        {". "}
+                        {mostVulnerable.runnerUp.partyCode}
+                        {" ville trengt "}
+                        {mostVulnerable.moreVotesToWin.toFixed(0)}
+                        {" flere stemmer for å vinne det."}
+                    </p>
+                </div>
+
                 <ReactTable
                     className="-highlight -striped"
                     defaultPageSize={this.props.districtResults.length}
