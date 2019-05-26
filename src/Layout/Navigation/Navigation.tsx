@@ -58,11 +58,12 @@ export class Navigation extends React.Component<NavigationProps> {
                                 >
                                     Om Lavinia
                                 </a>
-                                <a href={process.env.SWAGGERUI} className="navbar-item">
+                                <a target="_blank" href={process.env.SWAGGERUI} className="navbar-item">
                                     API
                                 </a>
                                 <hr className="navbar-divider" />
                                 <a
+                                    target="_blank"
                                     href="https://www.github.com/Project-Lavinia/Lavinia-Client/issues"
                                     className="navbar-item"
                                 >
@@ -71,17 +72,6 @@ export class Navigation extends React.Component<NavigationProps> {
                             </div>
                         </div>
                     </div>
-
-                    {/* <div className="navbar-end">
-                        <div className="navbar-item">
-                            <div className="buttons">
-                                <a className="button is-primary">
-                                    <strong>Sign up</strong>
-                                </a>
-                                <a className="button is-light">Log in</a>
-                            </div>
-                        </div>
-                    </div> */}
                 </div>
             </nav>
         );

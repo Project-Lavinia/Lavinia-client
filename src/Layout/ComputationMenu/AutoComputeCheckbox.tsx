@@ -9,7 +9,7 @@ export interface AutoComputeCheckboxProps {
 export class AutoComputeCheckbox extends React.Component<AutoComputeCheckboxProps> {
     render() {
         return (
-            <label htmlFor="autoCompute" className="checkbox">
+            <label htmlFor="autoCompute" className="label is-normal">
                 <input
                     type="checkbox"
                     name="autoCompute"

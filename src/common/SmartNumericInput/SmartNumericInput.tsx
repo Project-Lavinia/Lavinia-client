@@ -24,7 +24,7 @@ export class SmartNumericInput extends React.Component<SmartNumericInputProps, {
                 </label>
                 <div className="control">
                     <input
-                        className="input is-primary"
+                        className="input is-dark"
                         type={"number"}
                         style={this.props.slider ? { width: "100%" } : {}}
                         name={this.props.name}

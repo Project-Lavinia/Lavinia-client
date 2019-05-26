@@ -47,9 +47,11 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
         const modified = this.props.districtResults;
         if (!this.props.showPartiesWithoutSeats) {
             modified.forEach((result) => {
-                result.partyResults.filter((result) => result.totalSeats > 0).forEach((result) => {
-                    wonSeat.add(result.partyCode);
-                });
+                result.partyResults
+                    .filter((result) => result.totalSeats > 0)
+                    .forEach((result) => {
+                        wonSeat.add(result.partyCode);
+                    });
             });
         }
         this.props.districtResults.forEach((result) => {
@@ -62,7 +64,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                 current.levellingSeatRounds.push({
                     partyCode: result.partyCode,
                     quotient: result.quotient,
-                    wonLevellingSeat: false
+                    wonLevellingSeat: false,
                 });
             });
             const typedCurrent: SimpleDistrictResult = current;
@@ -97,15 +99,23 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
             columns.push({
                 Header: element.partyCode,
                 accessor: `levellingSeatRounds[${i}]`,
+                minWidth: 50,
                 Cell: (row) => {
                     if (row.value !== undefined) {
                         return (
                             <div
-                                style={{
-                                    textAlign: "center",
+                                className={
+                                    row.value.wonLevellingSeat
+                                        ? " has-text-centered has-background-dark has-text-white"
+                                        : "has-text-centered"
+                                }
+                                style={
+                                    {
+                                        /* textAlign: "center",
                                     color: row.value.wonLevellingSeat ? "white" : "black",
-                                    backgroundColor: row.value.wonLevellingSeat ? "#ff6e00" : "white"
-                                }}
+                                    backgroundColor: row.value.wonLevellingSeat ? "#ff6e00" : "white", */
+                                    }
+                                }
                             >
                                 {Number(row.value.quotient / 10000).toFixed(this.props.decimals)}
                             </div>
@@ -114,7 +124,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                         return (
                             <div
                                 style={{
-                                    textAlign: "center"
+                                    textAlign: "center",
                                 }}
                             >
                                 {(0).toFixed(this.props.decimals)}
@@ -122,7 +132,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                         );
                     }
                 },
-                sortable: false
+                sortable: false,
             });
         }
         columns.sort((a: Column, b: Column) => {
@@ -134,7 +144,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
         });
         columns.unshift({
             Header: "Fylker",
-            accessor: "district"
+            accessor: "district",
         });
 
         return columns;
@@ -144,22 +154,24 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
 
         return (
             <React.Fragment>
-                <h2>{"Restkvotienter"}</h2>
-                <p style={{ textAlign: "justify" }}>
-                    {
-                        "Par på formen fylke-parti med oransje celler indikerer at partiet har vunnet et utjevningsmandat i det korresponderende fylket. Kvotientene er delt på 10 000 og representerer verdien ved utdeling av siste distriktsmandat i fylket for det respektive partiet."
-                    }
+                <p>
+                    Par på formen fylke-parti med oransje celler indikerer at partiet har vunnet et utjevningsmandat i
+                    det korresponderende fylket. Kvotientene er delt på 10 000 og representerer verdien ved utdeling av
+                    siste distriktsmandat i fylket for det respektive partiet.
                 </p>
-                <ReactTable
-                    data={data}
-                    columns={this.getColumns()}
-                    defaultPageSize={10}
-                    showPageSizeOptions={false}
-                    ofText={"/"}
-                    nextText={"→"}
-                    previousText={"←"}
-                    pageText={"#"}
-                />
+                <p />
+                <div className="section">
+                    <ReactTable
+                        data={data}
+                        columns={this.getColumns()}
+                        defaultPageSize={10}
+                        showPageSizeOptions={false}
+                        ofText={"/"}
+                        nextText={"→"}
+                        previousText={"←"}
+                        pageText={"#"}
+                    />
+                </div>
             </React.Fragment>
         );
     }

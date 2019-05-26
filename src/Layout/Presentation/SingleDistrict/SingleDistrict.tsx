@@ -5,10 +5,12 @@ import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
 import { getVulnerableSeatByQuotient, getVulnerableSeatByVotes } from "../../../utilities/district";
+import { DistrictSelect } from "./DistrictSelect";
 
 export interface SingleDistrictProps {
     districtResults: DistrictResult[];
     districtSelected: string;
+    selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     decimals: number;
     disproportionalityIndex: DisproportionalityIndex;
 }
@@ -51,18 +53,27 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         }
         return (
             <React.Fragment>
-                <h2 className="h2">{this.props.districtSelected}</h2>
-                <p>
-                    {"Sistemandat i "}
-                    {this.props.districtSelected}
-                    {" gikk til "}
-                    {vulnerable.winner.partyCode}
-                    {". "}
-                    {vulnerable.runnerUp.partyCode}
-                    {" hadde nærmest kvotient, og trengte "}
-                    {vulnerable.moreVotesToWin}
-                    {" flere stemmer for å ta mandatet."}
-                </p>
+                <DistrictSelect
+                    selectDistrict={this.props.selectDistrict}
+                    districtSelected={this.props.districtSelected}
+                    districtResults={this.props.districtResults}
+                />
+                <div className="card">
+                    <div className="card-content">
+                        <p>
+                            {"Sistemandat i "}
+                            {this.props.districtSelected}
+                            {" gikk til "}
+                            {vulnerable.winner.partyCode}
+                            {". "}
+                            {vulnerable.runnerUp.partyCode}
+                            {" hadde nærmest kvotient, og trengte "}
+                            {vulnerable.moreVotesToWin}
+                            {" flere stemmer for å ta mandatet."}
+                        </p>
+                    </div>
+                </div>
+
                 <ReactTable
                     className="-highlight -striped"
                     data={data}

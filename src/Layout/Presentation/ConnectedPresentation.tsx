@@ -1,8 +1,9 @@
 import { RootState } from "../../reducers";
 import { Presentation, PresentationProps } from "./Presentation";
 import { connect } from "react-redux";
+import { selectDistrict } from "../PresentationMenu";
 
-const mapStateToProps = (state: RootState): PresentationProps => {
+const mapStateToProps = (state: RootState): Partial<PresentationProps> => {
     return {
         comparisonPartyResults: state.computationState.comparison.partyResults,
         results: state.computationState.current,
@@ -17,7 +18,13 @@ const mapStateToProps = (state: RootState): PresentationProps => {
     };
 };
 
+const mapDispatchToProps = (dispatch: any): Partial<PresentationProps> => ({
+    selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => {
+        dispatch(selectDistrict(event.target.value));
+    },
+});
+
 export const ConnectedPresentation = connect(
     mapStateToProps,
-    {}
+    mapDispatchToProps
 )(Presentation as any);

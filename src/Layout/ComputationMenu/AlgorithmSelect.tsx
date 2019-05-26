@@ -10,10 +10,10 @@ export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
         return (
             <div className="field">
                 <label className="label" htmlFor="algorithm_select">
-                    Metode
+                    Valgt metode
                 </label>
                 <div className="control">
-                    <div className="select is-primary is-fullwidth">
+                    <div className="select is-dark is-fullwidth">
                         <select
                             title="Beregningsmetode"
                             className="form-control"

@@ -1,12 +1,13 @@
 ﻿import * as React from "react";
 import { PresentationType } from "../../Presentation/presentation-models";
-import { ConnectedPresentationSelectionButton } from ".";
+import { selectionLookup } from "./presentation-selection-utilities";
 
 export interface PresentationSelectionProps {
-    currentSelection: PresentationType;
+    changeSelection?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    currentSelection?: PresentationType;
 }
 
-export class PresentationSelection extends React.Component {
+export class PresentationSelection extends React.Component<PresentationSelectionProps> {
     static defaultProps: PresentationSelectionProps = {
         currentSelection: PresentationType.ElectionTable,
     };
@@ -14,41 +15,27 @@ export class PresentationSelection extends React.Component {
         super(props);
     }
 
+    getSelectionOptions = () => {
+        return selectionLookup.map((item) => {
+            return (
+                <option key={item.type} value={item.type}>
+                    {item.displayName}
+                </option>
+            );
+        });
+    };
+
     render() {
         return (
-            <React.Fragment>
-                <h2>Presentasjonstyper</h2>
-                <ConnectedPresentationSelectionButton
-                    className="btn-block"
-                    title={"Landsoversikt"}
-                    presentationSelected={PresentationType.ElectionTable}
-                />
-                <ConnectedPresentationSelectionButton
-                    className="btn-block"
-                    title={"Distriktsoversikt"}
-                    presentationSelected={PresentationType.DistrictTable}
-                />
-                <ConnectedPresentationSelectionButton
-                    className="btn-block"
-                    title={"Mandatfordeling"}
-                    presentationSelected={PresentationType.SeatDistribution}
-                />
-                <ConnectedPresentationSelectionButton
-                    className="btn-block"
-                    title={"Fylkestabeller"}
-                    presentationSelected={PresentationType.SingleDistrict}
-                />
-                <ConnectedPresentationSelectionButton
-                    className="btn-block"
-                    title={"Restkvotienter"}
-                    presentationSelected={PresentationType.RemainderQuotients}
-                />
-                <ConnectedPresentationSelectionButton
-                    className="btn-block"
-                    title={"Utjevningsmandater"}
-                    presentationSelected={PresentationType.LevellingSeats}
-                />
-            </React.Fragment>
+            <div className="field">
+                <div className="control">
+                    <div className="select is-dark is-fullwidth is-medium">
+                        <select onChange={this.props.changeSelection} value={this.props.currentSelection}>
+                            {this.getSelectionOptions()}
+                        </select>
+                    </div>
+                </div>
+            </div>
         );
     }
 }

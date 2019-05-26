@@ -8,7 +8,7 @@ export class SaveComparisonButton extends React.Component<SaveComparisonButtonPr
     render() {
         return (
             <button
-                className="button is-primary is-fullwidth"
+                className="button is-light is-fullwidth"
                 title={"Lagre sammenlikning"}
                 id="saveComparison"
                 onClick={this.props.saveComparison}

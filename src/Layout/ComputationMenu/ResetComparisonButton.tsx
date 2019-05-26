@@ -8,7 +8,7 @@ export class ResetComparisonButton extends React.Component<ResetComparisonButton
     render() {
         return (
             <button
-                className="button is-danger is-fullwidth"
+                className="button is-dark is-fullwidth"
                 title={"Gjenopprett sammenlikning"}
                 id="resetComparison"
                 onClick={this.props.resetComparison}

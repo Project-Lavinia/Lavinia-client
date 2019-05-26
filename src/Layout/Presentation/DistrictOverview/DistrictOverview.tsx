@@ -29,7 +29,6 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const mostVulnerable = getMostVulnerableSeatByQuotient(data);
         return (
             <React.Fragment>
-                <h2>Fylkesoversikt</h2>
                 <p>
                     {"En stemme i "}
                     {mostInfluentialDistrict}

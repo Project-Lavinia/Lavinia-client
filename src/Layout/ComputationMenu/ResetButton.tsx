@@ -8,7 +8,7 @@ export class ResetButton extends React.Component<ResetButtonProps> {
     render() {
         return (
             <div>
-                <button className="button is-danger is-fullwidth" onClick={this.props.restoreToDefault} type="button">
+                <button className="button is-dark is-fullwidth" onClick={this.props.restoreToDefault} type="button">
                     Tilbakestill Innstillinger
                 </button>
             </div>

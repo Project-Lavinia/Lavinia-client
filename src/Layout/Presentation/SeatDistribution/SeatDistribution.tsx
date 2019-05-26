@@ -13,8 +13,8 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
             {
                 Header: "Fylke",
                 accessor: "name",
-                width: this.props.districtWidth * 10
-            }
+                width: this.props.districtWidth * 10,
+            },
         ];
 
         for (const districtResult of this.props.districtResults) {
@@ -27,7 +27,7 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
                 columns.push({
                     Header: element.partyCode,
                     accessor: `partyResults[${partyIndex}].totalSeats`,
-                    minWidth: 50
+                    minWidth: 50,
                 });
             }
         }
@@ -38,7 +38,6 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
     render() {
         return (
             <React.Fragment>
-                <h2>Mandatfordeling</h2>
                 <ReactTable
                     className="-highlight -striped"
                     defaultPageSize={19}

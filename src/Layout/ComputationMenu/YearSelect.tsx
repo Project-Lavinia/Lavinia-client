@@ -11,10 +11,10 @@ export class YearSelect extends React.Component<YearSelectProps> {
         return (
             <div className="field">
                 <label className="label" htmlFor="year_select">
-                    År
+                    Valgt år
                 </label>
                 <div className="control">
-                    <div className="select is-primary is-fullwidth">
+                    <div className="select is-dark is-fullwidth">
                         <select
                             title="Velg år"
                             id="year_select"

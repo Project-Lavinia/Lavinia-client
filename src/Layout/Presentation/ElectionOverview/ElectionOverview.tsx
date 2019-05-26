@@ -113,8 +113,6 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
 
         return (
             <React.Fragment>
-                <h2 className="h2">Landsoversikt</h2>
-                <br />
                 <ReactTable
                     className="-highlight -striped"
                     multiSort={false}

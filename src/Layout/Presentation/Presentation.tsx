@@ -29,6 +29,7 @@ export interface PresentationProps {
     showComparison: boolean;
     threshold: number;
     showFilters: boolean;
+    selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export class Presentation extends React.Component<PresentationProps, {}> {
@@ -144,6 +145,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         districtResults={this.getSingleDistrictData()}
                         decimals={this.props.decimals}
                         disproportionalityIndex={this.props.disproportionalityIndex}
+                        selectDistrict={this.props.selectDistrict}
                     />
                 );
             case PresentationType.RemainderQuotients:
