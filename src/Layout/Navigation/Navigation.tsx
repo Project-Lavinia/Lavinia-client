@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as LaviniaLogo from "../../assets/lavinia_logo.png";
 
 export interface NavigationProps {
     hamburgerExpanded?: boolean;
@@ -22,7 +23,7 @@ export class Navigation extends React.Component<NavigationProps> {
             <nav className="navbar" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
                     <a className="navbar-item" href="https://bulma.io">
-                        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" />
+                        <img src={LaviniaLogo} width="112" height="28" />
                     </a>
 
                     <a
