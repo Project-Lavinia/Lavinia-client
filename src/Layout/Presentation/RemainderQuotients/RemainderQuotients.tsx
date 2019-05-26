@@ -104,11 +104,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                     if (row.value !== undefined) {
                         return (
                             <div
-                                className={
-                                    row.value.wonLevellingSeat
-                                        ? " has-text-centered has-background-dark has-text-white"
-                                        : "has-text-centered"
-                                }
+                                className={row.value.wonLevellingSeat ? "has-background-dark has-text-white" : ""}
                                 style={
                                     {
                                         /* textAlign: "center",
@@ -164,6 +160,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
 
                 <div className="section">
                     <ReactTable
+                        className="has-text-centered"
                         data={data}
                         columns={this.getColumns()}
                         defaultPageSize={10}

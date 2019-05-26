@@ -24,8 +24,8 @@ export class Layout extends React.Component<LayoutProps, {}> {
                         <ConnectedComputationMenu />
                     </div>
                     <div className="column">
-                        <ConnectedPresentationSelection />
                         <ConnectedPresentationSettings />
+                        <ConnectedPresentationSelection />
                         <ConnectedPresentation />
                     </div>
                 </div>

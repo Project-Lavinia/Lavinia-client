@@ -40,14 +40,14 @@ export class LevellingSeatOverview extends React.Component<LevellingSeatOverview
             columns.push({
                 Header: `${i + 1}.`,
                 accessor: `seatsWon[${i}]`,
-                minWidth: 150
+                minWidth: 150,
             });
         }
 
         // Set the first column
         columns.unshift({
             Header: "Parti",
-            accessor: "partyCode"
+            accessor: "partyCode",
         });
         return columns;
     }
@@ -56,7 +56,6 @@ export class LevellingSeatOverview extends React.Component<LevellingSeatOverview
         const columns = this.getColumns();
         return (
             <React.Fragment>
-                <h3>Utjevningsmandater</h3>
                 <ReactTable
                     className="-highlight -striped"
                     data={data}

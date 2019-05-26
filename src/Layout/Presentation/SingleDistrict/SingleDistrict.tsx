@@ -58,7 +58,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                     districtSelected={this.props.districtSelected}
                     districtResults={this.props.districtResults}
                 />
-                <div className="card">
+                <div className="card has-background-dark has-text-light">
                     <div className="card-content">
                         <p>
                             {"Sistemandat i "}
@@ -75,7 +75,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                 </div>
 
                 <ReactTable
-                    className="-highlight -striped"
+                    className="-highlight -striped has-text-centered"
                     data={data}
                     pageSize={data.length <= 10 ? data.length : 10}
                     showPagination={data.length > 10}
