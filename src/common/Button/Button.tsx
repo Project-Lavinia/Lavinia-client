@@ -5,7 +5,7 @@ export interface ButtonProps {
     onPress?: () => any;
     accessibilityLabel?: string;
     className?: string;
-    type?: string;
+    type: "button" | "submit" | "reset" | undefined;
 }
 
 export class Button<TP> extends React.Component<TP & ButtonProps, {}> {

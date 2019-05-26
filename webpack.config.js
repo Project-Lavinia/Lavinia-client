@@ -65,21 +65,6 @@ module.exports = (env) => {
                                 localIdentName: isProduction ? "[hash:base64:5]" : "[local]__[hash:base64:5]",
                             },
                         },
-                        {
-                            loader: "postcss-loader",
-                            options: {
-                                ident: "postcss",
-                                plugins: [
-                                    require("postcss-import")({ addDependencyTo: webpack }),
-                                    require("postcss-url")(),
-                                    require("postcss-cssnext")(),
-                                    require("postcss-reporter")(),
-                                    require("postcss-browser-reporter")({
-                                        disabled: isProduction,
-                                    }),
-                                ],
-                            },
-                        },
                     ],
                 },
                 // static assets
@@ -131,12 +116,6 @@ module.exports = (env) => {
                 disableDotRule: true,
             },
             stats: "minimal",
-        },
-        node: {
-            // workaround for webpack-dev-server issue
-            // https://github.com/webpack/webpack-dev-server/issues/60#issuecomment-103411179
-            fs: "empty",
-            net: "empty",
         },
     };
 };

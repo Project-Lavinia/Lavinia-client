@@ -1,6 +1,5 @@
 import * as React from "react";
 import { SmartNumericInput } from "../../common";
-import * as style from "./ComputationMenu.css";
 import { ElectionType, Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
 import { ComputationPayload, AlgorithmType, unloadedParameters } from "../../computation";
 import { getAlgorithmType } from "../../computation/logic";
@@ -249,7 +248,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     render() {
         const currentParameters = this.props.computationPayload.parameters;
         return (
-            <div className={`${style.menu}`}>
+            <div>
                 <h1 className="h2">Stortingsvalg</h1>
                 <form>
                     <YearSelect

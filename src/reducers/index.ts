@@ -1,19 +1,17 @@
 import { combineReducers } from "redux";
 import { RootState } from "./state";
-import { routerReducer, RouterState } from "react-router-redux";
 import { computation } from "../computation";
 import { requestedData } from "../requested-data";
 import { computationMenu } from "../Layout/ComputationMenu";
 import { presentationMenu } from "../Layout/PresentationMenu";
+import { ui } from "../Layout/ui-reducer";
 
-export { RootState, RouterState };
+export { RootState };
 
-// NOTE: current type definition of Reducer in 'react-router-redux' and 'redux-actions' module
-// doesn't go well with redux@4
 export const rootReducer = combineReducers<RootState>({
-    router: routerReducer as any,
     computationState: computation,
     settingsState: computationMenu,
     presentationMenuState: presentationMenu,
-    requestedDataState: requestedData
+    requestedDataState: requestedData,
+    uiState: ui,
 });

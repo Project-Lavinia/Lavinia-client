@@ -1,8 +1,8 @@
 ﻿import * as React from "react";
 import { ConnectedPresentation } from "./Presentation";
 import { ConnectedComputationMenu } from "./ComputationMenu";
-import { Navigation } from "./Navigation";
 import { PresentationMenu } from "./PresentationMenu";
+import { ConnectedNavigation } from "./Navigation/ConnectedNavigation";
 
 export interface LayoutProps {
     initializeState: () => any;
@@ -16,7 +16,7 @@ export class Layout extends React.Component<LayoutProps, {}> {
     public render() {
         return (
             <div className="container-fluid">
-                <Navigation />
+                <ConnectedNavigation />
                 <div className="row">
                     <div className="col-md-3">
                         <ConnectedComputationMenu />
