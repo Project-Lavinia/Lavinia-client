@@ -1,6 +1,7 @@
 import { PartyResult } from "../../../computation/computation-models";
 import * as React from "react";
 import ReactTable from "react-table";
+import { norwegian } from "../../../utilities/rt";
 
 export interface ElectionComparisonProps {
     comparisonPartyResults: PartyResult[];
@@ -70,7 +71,7 @@ export class ElectionComparison extends React.Component<ElectionComparisonProps>
         const data = this.getData(this.props.currentPartyResults, this.props.comparisonPartyResults);
         return (
             <ReactTable
-                className="-highlight -striped"
+                className="-highlight -striped has-text-centered"
                 data={data}
                 pageSize={data.length > 10 ? 10 : data.length}
                 columns={[
@@ -124,10 +125,7 @@ export class ElectionComparison extends React.Component<ElectionComparisonProps>
                 ]}
                 showPagination={data.length > 10}
                 showPageSizeOptions={false}
-                ofText={"/"}
-                nextText={"→"}
-                previousText={"←"}
-                pageText={"#"}
+                {...norwegian}
             />
         );
     }

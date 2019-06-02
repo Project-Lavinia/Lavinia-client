@@ -6,6 +6,7 @@ import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
 import { getVulnerableSeatByQuotient, getVulnerableSeatByVotes } from "../../../utilities/district";
 import { DistrictSelect } from "./DistrictSelect";
+import { norwegian } from "../../../utilities/rt";
 
 export interface SingleDistrictProps {
     districtResults: DistrictResult[];
@@ -64,9 +65,9 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             {"Sistemandat i "}
                             {this.props.districtSelected}
                             {" gikk til "}
-                            {vulnerable.winner.partyCode}
+                            {<span className="has-text-success">${vulnerable.winner.partyCode}</span>}
                             {". "}
-                            {vulnerable.runnerUp.partyCode}
+                            {<span className="has-text-warning">${vulnerable.runnerUp.partyCode}</span>}
                             {" hadde nærmest kvotient, og trengte "}
                             {vulnerable.moreVotesToWin}
                             {" flere stemmer for å ta mandatet."}
@@ -120,16 +121,16 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                         </span>
                                     ),
                                 },
+                                {
+                                    Header: "Sum Mandater",
+                                    accessor: "totalSeats",
+                                    Footer: (
+                                        <span>
+                                            <strong>{data.map((value) => value.totalSeats).reduce(toSum)}</strong>
+                                        </span>
+                                    ),
+                                },
                             ],
-                        },
-                        {
-                            Header: "Mandater",
-                            accessor: "totalSeats",
-                            Footer: (
-                                <span>
-                                    <strong>{data.map((value) => value.totalSeats).reduce(toSum)}</strong>
-                                </span>
-                            ),
                         },
                         {
                             Header: "Prop.",
@@ -144,10 +145,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         },
                     ]}
                     showPageSizeOptions={false}
-                    ofText={"/"}
-                    nextText={"→"}
-                    previousText={"←"}
-                    pageText={"#"}
+                    {...norwegian}
                 />
             </React.Fragment>
         );

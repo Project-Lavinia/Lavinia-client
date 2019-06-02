@@ -43,7 +43,7 @@ export class Navigation extends React.Component<NavigationProps> {
                     <div className="navbar-start">
                         <a className="navbar-item">Home</a>
 
-                        <a target="_blank" href="https://www.github.com/Project-Lavinia/wiki" className="navbar-item">
+                        <a target="_blank" href="https://project-lavinia.github.io/" className="navbar-item">
                             Hjelp
                         </a>
 

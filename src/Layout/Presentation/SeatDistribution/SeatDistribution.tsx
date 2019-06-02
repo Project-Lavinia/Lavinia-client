@@ -1,6 +1,7 @@
 import * as React from "react";
 import ReactTable, { Column } from "react-table";
 import { DistrictResult } from "../../../computation/computation-models";
+import { norwegian } from "../../../utilities/rt";
 
 export interface SeatDistributionProps {
     districtResults: DistrictResult[];
@@ -44,6 +45,7 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
                     showPaginationBottom={false}
                     data={this.props.districtResults}
                     columns={this.generateColumns()}
+                    {...norwegian}
                 />
             </React.Fragment>
         );

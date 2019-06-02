@@ -3,6 +3,7 @@ import ReactTable from "react-table";
 import { DistrictResult } from "../../../computation";
 import { toMin, toMax, toMean, toSum } from "../../../utilities/reduce";
 import { getMostVulnerableSeatByQuotient } from "../../../utilities/district";
+import { norwegian } from "../../../utilities/rt";
 
 export interface DistrictOverviewProps {
     districtResults: DistrictResult[];
@@ -64,6 +65,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                     defaultPageSize={this.props.districtResults.length}
                     showPaginationBottom={false}
                     data={data}
+                    {...norwegian}
                     columns={[
                         {
                             Header: "Fylke",

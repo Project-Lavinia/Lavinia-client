@@ -1,6 +1,7 @@
 import * as React from "react";
 import ReactTable, { Column } from "react-table";
 import { LevelingSeat, DistrictResult } from "../../../computation";
+import { norwegian } from "../../../utilities/rt";
 
 /**
  * Data here is represented as a simplified DistrictResult. For representing
@@ -165,10 +166,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                         columns={this.getColumns()}
                         defaultPageSize={10}
                         showPageSizeOptions={false}
-                        ofText={"/"}
-                        nextText={"→"}
-                        previousText={"←"}
-                        pageText={"#"}
+                        {...norwegian}
                     />
                 </div>
             </React.Fragment>
