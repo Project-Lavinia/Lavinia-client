@@ -159,16 +159,14 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                     </p>
                 </div>
 
-                <div className="section">
-                    <ReactTable
-                        className="has-text-centered"
-                        data={data}
-                        columns={this.getColumns()}
-                        defaultPageSize={10}
-                        showPageSizeOptions={false}
-                        {...norwegian}
-                    />
-                </div>
+                <ReactTable
+                    className="has-text-centered"
+                    data={data}
+                    columns={this.getColumns()}
+                    defaultPageSize={10}
+                    showPageSizeOptions={false}
+                    {...norwegian}
+                />
             </React.Fragment>
         );
     }
