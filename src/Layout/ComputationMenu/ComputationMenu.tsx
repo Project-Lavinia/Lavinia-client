@@ -65,6 +65,9 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                 {
                     ...this.props.computationPayload,
                     election,
+                    metrics,
+                    votes,
+                    parameters,
                 },
                 this.props.settingsPayload.autoCompute,
                 false
