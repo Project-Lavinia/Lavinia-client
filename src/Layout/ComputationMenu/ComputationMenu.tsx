@@ -151,6 +151,28 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
      * Helper function to update the calculation and settings on
      * user interaction.
      *
+     * @param stringValue the string value of the no. of district seats
+     * @param numericValue the numeric value of the no. of district seats
+     */
+    onDistrictSeatsChange = (stringValue: string, numericValue: number) => {
+        this.props.updateSettings({
+            ...this.props.settingsPayload,
+            districtSeats: stringValue,
+        });
+        this.props.updateCalculation(
+            {
+                ...this.props.computationPayload,
+                districtSeats: numericValue,
+            },
+            this.props.settingsPayload.autoCompute,
+            false
+        );
+    };
+
+    /**
+     * Helper function to update the calculation and settings on
+     * user interaction.
+     *
      * @param stringValue the string value of the no. of levelling seats
      * @param numericValue the numeric value of the no. of levelling seats
      */
@@ -284,6 +306,16 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         max={15}
                         defaultValue={this.props.computationPayload.election.threshold}
                         integer={false}
+                    />
+                    <SmartNumericInput
+                        name="districtSeats"
+                        title="Distriktsmandater"
+                        value={this.props.settingsPayload.districtSeats}
+                        onChange={this.onDistrictSeatsChange}
+                        min={0}
+                        max={500}
+                        defaultValue={this.props.computationPayload.election.seats}
+                        integer={true}
                     />
                     <SmartNumericInput
                         name="levelingSeats"
