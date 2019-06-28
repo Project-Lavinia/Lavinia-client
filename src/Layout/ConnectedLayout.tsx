@@ -19,9 +19,9 @@ const mapDispatchToProps = (dispatch: any): LayoutProps => ({
         const electionTypePath = "no/pe?deep=true";
         let defaultUri: string;
 
-        const votesPath = "votes/previous?number=3&partyCode=ALL&district=ALL";
-        const metricsPath = "metrics/previous?number=3&partyCode=ALL&district=ALL";
-        const parametersPath = "parameters/previous?number=3";
+        const votesPath = "votes?partyCode=ALL&district=ALL";
+        const metricsPath = "metrics?district=ALL";
+        const parametersPath = "parameters";
         let votesUri: string;
         let metricsUri: string;
         let parametersUri: string;
