@@ -12,7 +12,7 @@ export function configureStore(history: History, initialState?: RootState): Stor
         middleware = applyMiddleware(logger);
     }
 
-    const store = createStore(rootReducer as any, initialState as any, middleware) as Store<RootState>;
+    const store = createStore(rootReducer, initialState, middleware);
 
     if (module.hot) {
         module.hot.accept("../reducers", () => {
