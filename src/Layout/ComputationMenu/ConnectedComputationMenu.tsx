@@ -10,7 +10,7 @@ import {
     saveComparison,
 } from "../../computation";
 import { Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
-import { getAlgorithmType } from "../../computation/logic";
+import { getAlgorithmTypeString } from "../../computation/logic";
 import { ComputationMenuPayload } from "./computation-menu-models";
 
 const mapStateToProps = (
@@ -93,10 +93,11 @@ const mapDispatchToProps = (
         metrics: Metrics[],
         parameters: Parameters
     ) => {
+        console.log(parameters);
         if (settingsPayload.autoCompute) {
             const payload: ComputationPayload = {
                 election,
-                algorithm: getAlgorithmType(parameters.algorithm.id),
+                algorithm: getAlgorithmTypeString(parameters.algorithm.algorithm),
                 firstDivisor: parameters.algorithm.parameters["First Divisor"],
                 electionThreshold: parameters.threshold,
                 districtSeats: parameters.districtSeats.SUM,

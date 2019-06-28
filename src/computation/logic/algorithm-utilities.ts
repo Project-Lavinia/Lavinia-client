@@ -237,3 +237,19 @@ export function getAlgorithmType(type: number) {
             return AlgorithmType.UNDEFINED;
     }
 }
+
+/**
+ * Converts string IDs into their matching algorithm types
+ *
+ * @param type The string ID of the algorithm
+ */
+export function getAlgorithmTypeString(type: string) {
+    switch (type) {
+        case "Sainte Laguës (modified)":
+            return AlgorithmType.SAINTE_LAGUE;
+        case "d'Hondt":
+            return AlgorithmType.D_HONDT;
+        default:
+            return AlgorithmType.UNDEFINED;
+    }
+}

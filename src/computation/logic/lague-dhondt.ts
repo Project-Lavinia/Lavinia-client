@@ -14,6 +14,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     const districtResults: Dictionary<DistrictResult> = {};
 
     let totalVotes = 0;
+    console.log(payload);
 
     // Assemble a list of all parties as well as the number of votes per district
     for (const county of payload.election.counties) {
@@ -141,6 +142,6 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
         districtResults: districtResultArray,
         levelingSeatDistribution,
     };
-
+    console.log(result);
     return result;
 }
