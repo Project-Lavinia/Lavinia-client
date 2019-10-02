@@ -118,7 +118,7 @@ export function calculateProportionality(
     for (const partyCode in partyResults) {
         if (partyResults.hasOwnProperty(partyCode) && !illegalPartyCodes.has(partyCode)) {
             const percentSeats = (partyResults[partyCode].totalSeats / totalSeats) * 100;
-            partyResults[partyCode].proportionality = partyResults[partyCode].percentVotes - percentSeats;
+            partyResults[partyCode].proportionality = percentSeats - partyResults[partyCode].percentVotes;
         }
     }
 
@@ -130,7 +130,7 @@ export function calculateProportionality(
                     const percentSeats =
                         (districtPartyResults[county][partyCode].totalSeats / totalDistrictSeats) * 100;
                     districtPartyResults[county][partyCode].proportionality =
-                        districtPartyResults[county][partyCode].percentVotes - percentSeats;
+                        percentSeats - districtPartyResults[county][partyCode].percentVotes;
                 }
             }
         }
