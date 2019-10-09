@@ -6,7 +6,7 @@ import { distributeSeats, distributeLevelingSeats, calculateProportionality, fin
 import { distributeDistrictSeatsOnDistricts } from "./utils";
 
 // Constant
-const DISTRICTSEATS = "SUM";
+// const DISTRICTSEATS = "SUM";
 
 export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     const partyResults: Dictionary<PartyResult> = {};
@@ -16,11 +16,20 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     let totalVotes = 0;
     console.log(payload);
 
+    // Calculate the district seats for each district
+    // NOTE: Only works when levelingSeats % 19 == 0
+    const districtSeats = distributeDistrictSeatsOnDistricts(
+        payload.parameters.areaFactor,
+        19,
+        payload.districtSeats,
+        payload.metrics
+    );
+
     // Assemble a list of all parties as well as the number of votes per district
     for (const county of payload.election.counties) {
         districtResults[county.name] = {
             name: county.name,
-            districtSeats: county.seats,
+            districtSeats: districtSeats[county.name],
             levelingSeats: 0,
             totalSeats: 0,
             votes: 0,
@@ -90,15 +99,6 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
                 (districtPartyResults[county.name][party.partyCode].votes / districtResults[county.name].votes) * 100;
         }
     }
-
-    // Calculate the district seats for each district
-    // NOTE: Only works when levelingSeats % 19 == 0
-    const districtSeats = distributeDistrictSeatsOnDistricts(
-        payload.parameters.areaFactor,
-        19,
-        payload.parameters.districtSeats[DISTRICTSEATS],
-        payload.metrics
-    );
 
     // st. lague iterates over each county, and in turn, each party of the party, so first we have to create objects for partyCodes
     for (const county of payload.election.counties) {
