@@ -14,7 +14,6 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     const districtResults: Dictionary<DistrictResult> = {};
 
     let totalVotes = 0;
-    console.log(payload);
 
     // Calculate the district seats for each district
     // NOTE: Only works when levelingSeats % 19 == 0
@@ -39,6 +38,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
             partyResults: [],
         };
         districtPartyResults[county.name] = {};
+
         for (const party of county.results) {
             totalVotes += party.votes;
 
@@ -90,7 +90,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
         }
     }
 
-    // Update percentages as all votes are counted
+    // Update percentages as all votes have been counted
     for (const county of payload.election.counties) {
         districtResults[county.name].percentVotes = (districtResults[county.name].votes / totalVotes) * 100;
         for (const party of county.results) {
@@ -142,6 +142,5 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
         districtResults: districtResultArray,
         levelingSeatDistribution,
     };
-    console.log(result);
     return result;
 }

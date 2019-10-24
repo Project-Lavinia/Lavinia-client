@@ -46,27 +46,37 @@ export function distributeSeats(
             partyResults: [],
         };
 
-        let currentWinner = "";
-        let currentMaxQuotient = -1;
+        let currentWinner = {
+            partyCode: "",
+            quotient: -1,
+            denominator: -1,
+            votes: -1,
+        };
 
         for (const result of results) {
             const currentDenominator = getDenominator(algorithm, seatsWon[result.partyCode], firstDivisor);
             const currentQuotient = result.votes / currentDenominator;
-            seatResult.partyResults.push({
+            const currentPartyResult = {
                 partyCode: result.partyCode,
                 quotient: currentQuotient,
                 denominator: currentDenominator,
                 votes: result.votes,
-            });
+            };
+            seatResult.partyResults.push(currentPartyResult);
 
-            if (currentQuotient > currentMaxQuotient && !illegalPartyCodes.has(result.partyCode)) {
-                currentMaxQuotient = currentQuotient;
-                currentWinner = result.partyCode;
+            if (currentQuotient > currentWinner.quotient && !illegalPartyCodes.has(result.partyCode)) {
+                currentWinner = currentPartyResult;
             }
         }
-        seatsWon[currentWinner] += 1;
-        currentSeatsWon[currentWinner] += 1;
-        seatResult.winner = currentWinner;
+        seatsWon[currentWinner.partyCode] += 1;
+        currentSeatsWon[currentWinner.partyCode] += 1;
+
+        const updatedDenominator = getDenominator(algorithm, seatsWon[currentWinner.partyCode], firstDivisor);
+        const updatedQuotient = currentWinner.votes / updatedDenominator;
+        currentWinner.denominator = updatedDenominator;
+        currentWinner.quotient = updatedQuotient;
+
+        seatResult.winner = currentWinner.partyCode;
         seatResults.push(seatResult);
     }
 
