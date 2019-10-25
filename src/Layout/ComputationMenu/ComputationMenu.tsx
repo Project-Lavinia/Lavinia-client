@@ -320,16 +320,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         integer={false}
                     />
                     <SmartNumericInput
-                        name="districtSeats"
-                        title="Distriktsmandater"
-                        value={this.props.settingsPayload.districtSeats}
-                        onChange={this.onDistrictSeatsChange}
-                        min={0}
-                        max={500}
-                        defaultValue={this.props.computationPayload.election.seats}
-                        integer={true}
-                    />
-                    <SmartNumericInput
                         name="levelingSeats"
                         title="Utjevningsmandater"
                         value={this.props.settingsPayload.levelingSeats}
@@ -340,6 +330,17 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         integer={true}
                     />
                     <SmartNumericInput
+                        name="districtSeats"
+                        title="Distriktsmandater"
+                        value={this.props.settingsPayload.districtSeats}
+                        onChange={this.onDistrictSeatsChange}
+                        min={0}
+                        max={500}
+                        defaultValue={this.props.computationPayload.election.seats}
+                        integer={true}
+                        hidden={parseInt(this.props.settingsPayload.year) < 2005}
+                    />
+                    <SmartNumericInput
                         name="areaFactor"
                         title="Arealfaktor"
                         value={this.props.settingsPayload.areaFactor}
@@ -348,6 +349,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         max={3}
                         defaultValue={currentParameters.areaFactor}
                         integer={false}
+                        hidden={parseInt(this.props.settingsPayload.year) < 2005}
                     />
                     <ComputeManuallyButton
                         autoCompute={this.props.settingsPayload.autoCompute}
