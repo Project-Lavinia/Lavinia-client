@@ -231,7 +231,7 @@ export function calculateFinalQuotients(
                           party.districtSeats,
                           district.votes / district.districtSeats,
                           party.votes,
-                          firstDivisor
+                          1
                       )
                     : calculateQuotient(algorithm, party.districtSeats, party.votes, firstDivisor);
 
@@ -292,7 +292,7 @@ export function generateLevelingSeatArray(
                               partyResult.votes,
                               1
                           )
-                        : calculateQuotient(algorithm, partyResult.totalSeats, partyResult.votes, 1.4);
+                        : calculateQuotient(algorithm, partyResult.districtSeats, partyResult.votes, 1.4);
                     const seat: LevelingSeat = {
                         district: countyName,
                         partyCode,
