@@ -138,7 +138,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     const districtResultArray = dictionaryToArray(districtResults);
     const partyResultArray = dictionaryToArray(partyResults);
 
-    const useAdjustedQuotients = true; // payload.parameters.electionYear > 2005;
+    const useAdjustedQuotients = payload.parameters.electionYear > 2005;
     const finalQuotients = calculateFinalQuotients(
         payload.algorithm,
         payload.firstDivisor,

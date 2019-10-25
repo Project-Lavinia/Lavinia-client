@@ -189,7 +189,8 @@ export function distributeLevelingSeatsOnDistricts(
                 levelingPartyCodes,
                 partyResults,
                 districtResults,
-                districtPartyResults
+                districtPartyResults,
+                true
             );
         }
         const seat = levelingSeats[0];
@@ -246,7 +247,8 @@ export function distributeLevelingSeatsOnDistrictsPre2005(
                 levelingPartyCodes,
                 partyResults,
                 districtResults,
-                districtPartyResults
+                districtPartyResults,
+                false
             );
         }
         const seat = levelingSeats[0];

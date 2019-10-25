@@ -273,7 +273,8 @@ export function generateLevelingSeatArray(
     levelingPartyCodes: string[],
     partyResults: Dictionary<PartyResult>,
     districtResults: Dictionary<DistrictResult>,
-    districtPartyResults: Dictionary<Dictionary<PartyResult>>
+    districtPartyResults: Dictionary<Dictionary<PartyResult>>,
+    useAdjustedQuotient: boolean
 ): LevelingSeat[] {
     let levelingSeats: LevelingSeat[] = [];
 
@@ -283,13 +284,15 @@ export function generateLevelingSeatArray(
             for (const partyCode of levelingPartyCodes) {
                 const partyResult = districtPartyResults[countyName][partyCode];
                 if (partyResult !== undefined) {
-                    const adjustedQuotient = calculateAdjustedQuotient(
-                        algorithm,
-                        partyResult.totalSeats,
-                        averageVotesPerSeat,
-                        partyResult.votes,
-                        1
-                    );
+                    const adjustedQuotient = useAdjustedQuotient
+                        ? calculateAdjustedQuotient(
+                              algorithm,
+                              partyResult.districtSeats,
+                              averageVotesPerSeat,
+                              partyResult.votes,
+                              1
+                          )
+                        : calculateQuotient(algorithm, partyResult.totalSeats, partyResult.votes, 1.4);
                     const seat: LevelingSeat = {
                         district: countyName,
                         partyCode,
