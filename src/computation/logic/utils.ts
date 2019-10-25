@@ -248,6 +248,7 @@ export function distributeLevelingSeatsOnDistrictsPre2005(
                 districtResults,
                 districtPartyResults
             );
+            console.log(levelingSeats);
         }
         const seat = levelingSeats[0];
         seat.quotientNumber = quotientIndex++;
@@ -257,7 +258,12 @@ export function distributeLevelingSeatsOnDistrictsPre2005(
             partySeats[seat.partyCode] = 0;
         }
 
+        console.log(
+            seat.partyCode + "-" + seat.district + ", Quotient: " + seat.quotient + ", Number: " + seat.quotientNumber
+        );
+
         if (numberOfSeats < partyResults[seat.partyCode].levelingSeats) {
+            console.log(seat.partyCode + " won a seat in " + seat.district + "!");
             seat.seatNumber = seatIndex++;
 
             partySeats[seat.partyCode]++;

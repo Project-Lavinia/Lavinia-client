@@ -93,7 +93,6 @@ const mapDispatchToProps = (
         metrics: Metrics[],
         parameters: Parameters
     ) => {
-        console.log(parameters);
         if (settingsPayload.autoCompute) {
             const payload: ComputationPayload = {
                 election,
@@ -106,10 +105,10 @@ const mapDispatchToProps = (
                 metrics,
                 parameters,
             };
-            const updateCalculationAction = updateComputation(payload);
-            dispatch(updateCalculationAction);
             const updateHistoricalAction = updateHistorical(election, votes, metrics, parameters);
             dispatch(updateHistoricalAction);
+            const updateCalculationAction = updateComputation(payload);
+            dispatch(updateCalculationAction);
         }
 
         const newSettingsPayload: ComputationMenuPayload = {

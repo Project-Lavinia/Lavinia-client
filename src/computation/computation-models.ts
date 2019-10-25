@@ -56,6 +56,26 @@ export interface DistrictResultv2 {
     votesPerSeat: number;
 }
 
+/**
+ * Stores the quotients for all the parties in a district
+ */
+export interface DistrictQuotients {
+    /**
+     * The district, the key of the row
+     */
+    district: string;
+    levellingSeatRounds: PartyQuotient[];
+}
+
+/**
+ * Stores the quotient of a party and whether it won a leveling seat in a specific district
+ */
+export interface PartyQuotient {
+    partyCode: string;
+    quotient: number;
+    wonLevellingSeat: boolean;
+}
+
 export interface DistributionResult {
     /** A dictionary taking partyCodes and returning the matching number of seats won in this distribution */
     seatsWon: Dictionary<number>;
@@ -70,6 +90,8 @@ export interface LagueDhontResult {
     districtResults: DistrictResult[];
     /** A list of information regarding the distribution of the leveling seats */
     levelingSeatDistribution: PartyRestQuotients[];
+    /** A list of what the final quotients were for each party in each district */
+    finalQuotients: DistrictQuotients[];
 }
 
 export interface LevelingSeat {

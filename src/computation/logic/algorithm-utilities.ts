@@ -1,4 +1,13 @@
-﻿import { AlgorithmType, Result, SeatResult, PartyResult, DistributionResult, DistrictResult, LevelingSeat } from "..";
+﻿import {
+    AlgorithmType,
+    Result,
+    SeatResult,
+    PartyResult,
+    DistributionResult,
+    DistrictResult,
+    LevelingSeat,
+    DistrictQuotients,
+} from "..";
 import { Dictionary } from "../../utilities/dictionary";
 
 const illegalPartyCodes = new Set(["BLANKE"]);
@@ -18,6 +27,7 @@ export function distributeSeats(
     firstDivisor: number,
     numSeats: number,
     results: Result[],
+    averageVotesPerSeat?: number,
     partyResults?: Dictionary<PartyResult>
 ): DistributionResult {
     const seatsWon: Dictionary<number> = {};
@@ -55,7 +65,16 @@ export function distributeSeats(
 
         for (const result of results) {
             const currentDenominator = getDenominator(algorithm, seatsWon[result.partyCode], firstDivisor);
-            const currentQuotient = result.votes / currentDenominator;
+            const currentQuotient =
+                averageVotesPerSeat != null
+                    ? calculateAdjustedQuotient(
+                          algorithm,
+                          seatsWon[result.partyCode],
+                          averageVotesPerSeat,
+                          result.votes,
+                          firstDivisor
+                      )
+                    : calculateQuotient(algorithm, seatsWon[result.partyCode], result.votes, firstDivisor);
             const currentPartyResult = {
                 partyCode: result.partyCode,
                 quotient: currentQuotient,
@@ -149,18 +168,29 @@ export function calculateProportionality(
 
 export function calculateAdjustedQuotient(
     algorithm: AlgorithmType,
-    partyResult: PartyResult,
-    districtResult: DistrictResult
+    seatsWon: number,
+    averageVotesPerSeat: number,
+    votes: number,
+    firstDivisor: number
 ): number {
-    const averageSeatsPerVote = districtResult.votes / districtResult.districtSeats;
+    const quotient = calculateQuotient(algorithm, seatsWon, votes, firstDivisor);
+
+    return quotient / averageVotesPerSeat;
+}
+
+export function calculateQuotient(
+    algorithm: AlgorithmType,
+    seatsWon: number,
+    votes: number,
+    firstDivisor: number
+): number {
     const denominator = getDenominator(
         algorithm,
-        partyResult.totalSeats,
-        1 // When computing the leveling seats, use the unmodified Sainte Lagües
+        seatsWon,
+        firstDivisor // When computing the leveling seats, use the unmodified Sainte Lagües
     );
-    const quotient = partyResult.votes / denominator;
 
-    return quotient / averageSeatsPerVote;
+    return votes / denominator;
 }
 
 /**
@@ -176,6 +206,47 @@ export function finalizeDistrictCalculations(districtResults: Dictionary<Distric
                 districtResults[district].votes / districtResults[district].totalSeats;
         }
     }
+}
+
+export function calculateFinalQuotients(
+    algorithm: AlgorithmType,
+    firstDivisor: number,
+    adjusted: boolean,
+    districtResults: Dictionary<DistrictResult>
+) {
+    const finalQuotients: DistrictQuotients[] = [];
+    for (const districtName in districtResults) {
+        if (districtResults.hasOwnProperty(districtName)) {
+            const district = districtResults[districtName];
+
+            const districtQuotient: DistrictQuotients = {
+                district: district.name,
+                levellingSeatRounds: [],
+            };
+
+            district.partyResults.forEach((party) => {
+                const quotient = adjusted
+                    ? calculateAdjustedQuotient(
+                          algorithm,
+                          party.districtSeats,
+                          district.votes / district.districtSeats,
+                          party.votes,
+                          firstDivisor
+                      )
+                    : calculateQuotient(algorithm, party.districtSeats, party.votes, firstDivisor);
+
+                districtQuotient.levellingSeatRounds.push({
+                    partyCode: party.partyCode,
+                    quotient,
+                    wonLevellingSeat: party.levelingSeats > 0,
+                });
+            });
+
+            finalQuotients.push(districtQuotient);
+        }
+    }
+
+    return finalQuotients;
 }
 
 /**
@@ -208,13 +279,16 @@ export function generateLevelingSeatArray(
 
     for (const countyName in districtResults) {
         if (districtPartyResults.hasOwnProperty(countyName)) {
+            const averageVotesPerSeat = districtResults[countyName].votes / districtResults[countyName].districtSeats;
             for (const partyCode of levelingPartyCodes) {
                 const partyResult = districtPartyResults[countyName][partyCode];
                 if (partyResult !== undefined) {
                     const adjustedQuotient = calculateAdjustedQuotient(
                         algorithm,
-                        partyResult,
-                        districtResults[countyName]
+                        partyResult.totalSeats,
+                        averageVotesPerSeat,
+                        partyResult.votes,
+                        1
                     );
                     const seat: LevelingSeat = {
                         district: countyName,

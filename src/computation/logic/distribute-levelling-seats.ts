@@ -65,6 +65,7 @@ export function distributeLevelingSeats(
         payload.firstDivisor,
         payload.levelingSeats,
         levelingParties,
+        undefined,
         partyResults
     );
 

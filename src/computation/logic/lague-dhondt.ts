@@ -4,6 +4,7 @@ import { Dictionary, dictionaryToArray } from "../../utilities/dictionary";
 
 import { distributeSeats, distributeLevelingSeats, calculateProportionality, finalizeDistrictCalculations } from ".";
 import { distributeDistrictSeatsOnDistricts } from "./utils";
+import { calculateFinalQuotients } from "./algorithm-utilities";
 
 // Constant
 // const DISTRICTSEATS = "SUM";
@@ -137,10 +138,19 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     const districtResultArray = dictionaryToArray(districtResults);
     const partyResultArray = dictionaryToArray(partyResults);
 
+    const useAdjustedQuotients = true; // payload.parameters.electionYear > 2005;
+    const finalQuotients = calculateFinalQuotients(
+        payload.algorithm,
+        payload.firstDivisor,
+        useAdjustedQuotients,
+        districtResults
+    );
+
     const result: LagueDhontResult = {
         partyResults: partyResultArray,
         districtResults: districtResultArray,
         levelingSeatDistribution,
+        finalQuotients,
     };
     return result;
 }
