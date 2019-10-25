@@ -71,12 +71,18 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                 this.props.settingsPayload.autoCompute,
                 false
             );
-            this.props.updateSettings({
-                ...this.props.settingsPayload,
-                year: event.target.value,
-            });
             this.props.resetHistorical(election, votes, metrics, parameters);
             this.props.resetComparison();
+            this.props.resetToHistoricalSettings(
+                {
+                    ...this.props.settingsPayload,
+                    year: event.target.value,
+                },
+                election,
+                votes,
+                metrics,
+                parameters
+            );
         }
     };
 
