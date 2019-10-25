@@ -82,45 +82,18 @@ export class ElectionComparison extends React.Component<ElectionComparisonProps>
                     },
                     {
                         id: "totalDifference",
-                        Header: <abbr title="Differanse av total sum mandater">Δ∑M</abbr>,
+                        Header: <abbr title="Differanse av total sum mandater">Total endring</abbr>,
                         accessor: (d: Comparison) => d.totalSeatsDifference,
-                        maxWidth: 70,
-                    },
-                    {
-                        id: "currentDistrict",
-                        Header: <abbr title="Distriktsmandater valgt">DMV</abbr>,
-                        accessor: (d: Comparison) => d.districtSeats,
-                        maxWidth: 70,
-                    },
-                    {
-                        id: "comparisonDistrict",
-                        Header: <abbr title="Distriktsmandater sammenlikning">DMS</abbr>,
-                        accessor: (d: Comparison) => d.districtSeatsComparison,
-                        maxWidth: 70,
                     },
                     {
                         id: "districtDifference",
-                        Header: <abbr title="Differanse av distriktsmandater">ΔDM</abbr>,
+                        Header: <abbr title="Differanse av distriktsmandater">Endring distrikt</abbr>,
                         accessor: (d: Comparison) => d.districtSeatsDifference,
-                        maxWidth: 70,
-                    },
-                    {
-                        id: "currentLeveling",
-                        Header: <abbr title="Utjevningsmandater valgt">UMV</abbr>,
-                        accessor: (d: Comparison) => d.levelingSeats,
-                        maxWidth: 70,
-                    },
-                    {
-                        id: "comparisonLeveling",
-                        Header: <abbr title="Utjevningsmandater sammenlikning">UMS</abbr>,
-                        accessor: (d: Comparison) => d.levelingSeatsComparison,
-                        maxWidth: 70,
                     },
                     {
                         id: "levelingDifference",
-                        Header: <abbr title="Differanse av utjevningsmandater">ΔUM</abbr>,
+                        Header: <abbr title="Differanse av utjevningsmandater">Endring utjevning</abbr>,
                         accessor: (d: Comparison) => d.levelingSeatsDifference,
-                        maxWidth: 70,
                     },
                 ]}
                 showPagination={data.length > 10}
