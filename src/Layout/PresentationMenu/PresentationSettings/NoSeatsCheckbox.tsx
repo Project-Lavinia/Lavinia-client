@@ -16,7 +16,7 @@ export class NoSeatsCheckbox extends React.Component<NoSeatsCheckboxProps> {
                         checked={this.props.showPartiesWithoutSeats}
                         onChange={this.props.toggleShowPartiesWithoutSeats}
                     />
-                    &nbsp;Vis partier uten mandater
+                    &nbsp;Vis alle partier
                 </label>
             </div>
         );
