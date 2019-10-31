@@ -28,6 +28,7 @@ export interface PresentationProps {
     comparisonPartyResults: PartyResult[];
     showComparison: boolean;
     threshold: number;
+    year: number;
     showFilters: boolean;
     selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -153,6 +154,8 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                     <RemainderQuotients
                         districtResults={this.getSeatDistributionData()}
                         levellingSeats={this.getLevellingSeats()}
+                        finalQuotients={this.props.results.finalQuotients}
+                        year={this.props.year}
                         decimals={this.props.decimals}
                         showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
                     />

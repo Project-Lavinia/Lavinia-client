@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { selectDistrict } from "../PresentationMenu";
 
 const mapStateToProps = (state: RootState): Partial<PresentationProps> => {
+    const year = parseInt(state.settingsState.year);
     return {
         comparisonPartyResults: state.computationState.comparison.partyResults,
         results: state.computationState.current,
@@ -13,9 +14,10 @@ const mapStateToProps = (state: RootState): Partial<PresentationProps> => {
         districtSelected: state.presentationMenuState.districtSelected,
         disproportionalityIndex: state.presentationMenuState.disproportionalityIndex,
         showComparison: state.presentationMenuState.showComparison,
+        year,
         threshold: state.computationState.electionThreshold,
         showFilters: state.presentationMenuState.showFilters,
-    };
+    } as PresentationProps;
 };
 
 const mapDispatchToProps = (dispatch: any): Partial<PresentationProps> => ({

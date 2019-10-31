@@ -1,31 +1,13 @@
 import * as React from "react";
 import ReactTable, { Column } from "react-table";
-import { LevelingSeat, DistrictResult } from "../../../computation";
+import { LevelingSeat, DistrictResult, DistrictQuotients } from "../../../computation";
 import { norwegian } from "../../../utilities/rt";
-
-/**
- * Data here is represented as a simplified DistrictResult. For representing
- * this data we need a district (because each row is essentially keyed by
- * district), and then we need to ensure each district has a value for quotient
- * and "wonLevellingSeat" for non-participating parties
- */
-interface SimpleDistrictResult {
-    /**
-     * The district, the key of the row
-     */
-    district: string;
-    levellingSeatRounds: LevellingSeatRound[];
-}
-
-interface LevellingSeatRound {
-    partyCode: string;
-    quotient: number;
-    wonLevellingSeat: boolean;
-}
 
 export interface RemainderQuotientsProps {
     districtResults: DistrictResult[];
     levellingSeats: LevelingSeat[];
+    finalQuotients: DistrictQuotients[];
+    year: number;
     decimals: number;
     showPartiesWithoutSeats: boolean;
 }
@@ -42,10 +24,10 @@ export interface RemainderQuotientsProps {
  */
 
 export class RemainderQuotients extends React.Component<RemainderQuotientsProps> {
-    makeData(): SimpleDistrictResult[] {
-        const data: SimpleDistrictResult[] = [];
+    makeData(): DistrictQuotients[] {
         const wonSeat: Set<string> = new Set();
         const modified = this.props.districtResults;
+        let modifiedQuotients: DistrictQuotients[] = [];
         if (!this.props.showPartiesWithoutSeats) {
             modified.forEach((result) => {
                 result.partyResults
@@ -54,41 +36,20 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                         wonSeat.add(result.partyCode);
                     });
             });
-        }
-        this.props.districtResults.forEach((result) => {
-            const current: any = {};
-            current.district = result.name;
-            current.levellingSeatRounds = [];
-            const lastIndex = result.districtSeatResult.length - 1;
 
-            result.districtSeatResult[lastIndex].partyResults.forEach((result) => {
-                current.levellingSeatRounds.push({
-                    partyCode: result.partyCode,
-                    quotient: result.quotient,
-                    wonLevellingSeat: false,
-                });
+            this.props.finalQuotients.forEach((district) => {
+                const districtQuotients: DistrictQuotients = {
+                    district: district.district,
+                    levellingSeatRounds: district.levellingSeatRounds.filter((party) => wonSeat.has(party.partyCode)),
+                };
+                modifiedQuotients.push(districtQuotients);
             });
-            const typedCurrent: SimpleDistrictResult = current;
-            if (!this.props.showPartiesWithoutSeats) {
-                typedCurrent.levellingSeatRounds = typedCurrent.levellingSeatRounds.filter((result) =>
-                    wonSeat.has(result.partyCode)
-                );
-            }
-            data.push(typedCurrent);
-        });
+        } else {
+            modifiedQuotients = this.props.finalQuotients;
+        }
 
-        /**
-         * Cross reference with levelling seats to get highlighted cells
-         */
-        this.props.levellingSeats.forEach((seat) => {
-            const districtIndex = data.findIndex((entry) => entry.district === seat.district);
-            const partyIndex = data[districtIndex].levellingSeatRounds.findIndex(
-                (result) => result.partyCode === seat.partyCode
-            );
-            data[districtIndex].levellingSeatRounds[partyIndex].wonLevellingSeat = true;
-        });
-
-        return data;
+        console.log(modifiedQuotients);
+        return modifiedQuotients;
     }
 
     getColumns(): Column[] {
@@ -103,6 +64,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                 minWidth: 50,
                 Cell: (row) => {
                     if (row.value !== undefined) {
+                        const quotient = this.props.year < 2005 ? row.value.quotient / 10000 : row.value.quotient;
                         return (
                             <div
                                 className={row.value.wonLevellingSeat ? "has-background-dark has-text-white" : ""}
@@ -114,7 +76,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                                     }
                                 }
                             >
-                                {Number(row.value.quotient / 10000).toFixed(this.props.decimals)}
+                                {Number(quotient).toFixed(this.props.decimals)}
                             </div>
                         );
                     } else {
@@ -153,9 +115,10 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
             <React.Fragment>
                 <div className="card has-background-dark has-text-light">
                     <p className="card-content">
-                        Par på formen fylke-parti med inverterte celler indikerer at partiet har vunnet et
-                        utjevningsmandat i det korresponderende fylket. Kvotientene er delt på 10 000 og representerer
-                        verdien ved utdeling av siste distriktsmandat i fylket for det respektive partiet.
+                        Markerte celler indikerer at partiet har vunnet et utjevningsmandat i det korresponderende
+                        fylket. Kvotientene
+                        {this.props.year < 2005 ? "er delt på 10 000 og " : " "}
+                        representerer verdien ved utdeling av siste distriktsmandat i fylket for det respektive partiet.
                     </p>
                 </div>
 
