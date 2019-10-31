@@ -130,17 +130,17 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             Footer: <strong>Utvalg</strong>,
                         },
                         {
+                            Header: "Stemmer",
+                            accessor: "votes",
+                            filterable: false,
+                            Footer: <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>,
+                        },
+                        {
                             Header: "%",
                             id: "%",
                             Filter: selectFilterWithOptions(thresholdOptions),
                             filterMethod: thresholdFilterMethod(this.props.threshold),
                             accessor: (d: ElectionOverviewDatum) => roundNumber(d.percentVotes, decimals),
-                        },
-                        {
-                            Header: "Stemmer",
-                            accessor: "votes",
-                            filterable: false,
-                            Footer: <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>,
                         },
                         {
                             Header: "Distrikt",
