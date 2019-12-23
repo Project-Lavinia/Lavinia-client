@@ -41,8 +41,6 @@ export interface Result {
     partyName: string;
 }
 
-// New models
-
 export interface Votes {
     party: string;
     votes: number;
