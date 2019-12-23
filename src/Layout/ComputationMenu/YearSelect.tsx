@@ -24,10 +24,7 @@ export class YearSelect extends React.Component<YearSelectProps> {
                         >
                             {this.props.electionYears.map((item, index) => {
                                 return (
-                                    <option
-                                        key={index} // By convention all children should have a unique key prop
-                                        value={item}
-                                    >
+                                    <option key={index} value={item}>
                                         {item}
                                     </option>
                                 );

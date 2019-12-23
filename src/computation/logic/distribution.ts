@@ -1,5 +1,5 @@
 import { copyDictionary, Dictionary } from "../../utilities/dictionary";
-import { SortedReverseDict, KeyValuePair } from "./sorted-reverse-dict";
+import { QuotientDictionary } from "./quotient-dictionary";
 
 /**
  * A general function for distributing a number of items on a number of names based on updated quotients.
@@ -19,66 +19,19 @@ export function distributionByQuotient(
     denominatorFunction: (timesWon: number) => number
 ): Dictionary<number> {
     const updatedDistribution = copyDictionary(distributeOn);
-    const sortedQuotients = new SortedReverseDict();
-
-    // Fill the sortedQuotients with all the entries expected to have the starting list fully sorted
-    for (const entry in updatedDistribution) {
-        if (updatedDistribution.hasOwnProperty(entry)) {
-            const quotient = baseValue[entry] / denominatorFunction(updatedDistribution[entry]);
-            sortedQuotients.insert({ key: entry, value: quotient });
-        }
-    }
+    const quotientDictionary = new QuotientDictionary(denominatorFunction);
+    quotientDictionary.populateQuotients(updatedDistribution, baseValue);
 
     // Begin drawing winners
     for (let distributionIndex = 0; distributionIndex < numberToDistribute; distributionIndex++) {
-        // Get winner (potentially more than 1)
-        const winners = sortedQuotients.popTop();
-        let winner: KeyValuePair;
-
-        // If more than 1 districts share the lead
-        if (winners.length > 1) {
-            // Select a winner
-            winner = tieBreaker(winners, baseValue);
-
-            // Return the losers back into the distribution
-            winners.forEach((entry) => {
-                if (entry.key !== winner.key) {
-                    sortedQuotients.insert(entry);
-                }
-            });
-        } else {
-            winner = winners[0];
-        }
-
+        let winner = quotientDictionary.getWinner(baseValue);
         updatedDistribution[winner.key]++;
 
         // Calculate new quotient
-        const quotient = baseValue[winner.key] / denominatorFunction(updatedDistribution[winner.key]);
-        sortedQuotients.insert({ key: winner.key, value: quotient });
+        quotientDictionary.insertParty(winner.key, baseValue[winner.key], updatedDistribution[winner.key]);
     }
 
     return updatedDistribution;
-}
-
-/**
- * Breaks ties in the distribution of items on names
- *
- * @param winners The list of multiple winners from the distribution stage
- * @param baseValue The dictionary from winners to their respective numerators
- */
-function tieBreaker(winners: KeyValuePair[], baseValue: Dictionary<number>): KeyValuePair {
-    const winnersCopy = [...winners];
-
-    // Find the highest numerator of the winners
-    const numerators = winners.map((entry) => baseValue[entry.key]);
-    const maxNumerator = Math.max(...numerators);
-
-    // Filter out all winners that did not have the highest numerator
-    winnersCopy.filter((item) => baseValue[item.key] === maxNumerator);
-
-    // We will always do the coin flip, because if there is only 1 item there is 100% chance of it being selected.
-    // And the coinflip should be performed if there are more than 1 item remaining at this stage
-    return winnersCopy[Math.floor(Math.random() * winnersCopy.length)];
 }
 
 /**
