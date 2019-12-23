@@ -1,5 +1,5 @@
 import { SortedReverseDict, KeyValuePair } from "./sorted-reverse-dict";
-import { Dictionary } from "utilities/dictionary";
+import { Dictionary } from "../../utilities/dictionary";
 
 export class QuotientDictionary extends SortedReverseDict {
     denominatorFunction: (timesWon: number) => number;

@@ -24,7 +24,7 @@ export function distributionByQuotient(
 
     // Begin drawing winners
     for (let distributionIndex = 0; distributionIndex < numberToDistribute; distributionIndex++) {
-        let winner = quotientDictionary.getWinner(baseValue);
+        const winner = quotientDictionary.getWinner(baseValue);
         updatedDistribution[winner.key]++;
 
         // Calculate new quotient
