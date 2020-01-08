@@ -12,6 +12,7 @@ import {
 import { Metrics } from "../../requested-data/requested-data-models";
 import { sainteLagues, distributionByQuotient } from "./distribution";
 import { generateLevelingSeatArray } from ".";
+import { KeyValuePair } from "./sorted-reverse-dict";
 
 export function buildDistrictResults(metrics: Metrics[]): Dictionary<DistrictResultv2> {
     const districtResults: Dictionary<DistrictResultv2> = {};
@@ -280,4 +281,25 @@ export function distributeLevelingSeatsOnDistrictsPre2005(
         levelingSeats.shift();
     }
     return partyRestQuotients;
+}
+
+/**
+ * Breaks ties in the distribution of items on names
+ *
+ * @param winners The list of multiple winners from the distribution stage
+ * @param baseValue The dictionary from winners to their respective numerators
+ */
+export function tieBreaker(winners: KeyValuePair[], baseValue: Dictionary<number>): KeyValuePair {
+    const winnersCopy = [...winners];
+
+    // Find the highest numerator of the winners
+    const numerators = winners.map((entry) => baseValue[entry.key]);
+    const maxNumerator = Math.max(...numerators);
+
+    // Filter out all winners that did not have the highest numerator
+    winnersCopy.filter((item) => baseValue[item.key] === maxNumerator);
+
+    // We will always do the coin flip, because if there is only 1 item there is 100% chance of it being selected.
+    // And the coinflip should be performed if there are more than 1 item remaining at this stage
+    return winnersCopy[Math.floor(Math.random() * winnersCopy.length)];
 }

@@ -1,5 +1,7 @@
 import { copyDictionary, Dictionary } from "../../utilities/dictionary";
 import { QuotientDictionary } from "./quotient-dictionary";
+import { SortedReverseDict, KeyValuePair } from "./sorted-reverse-dict";
+import { tieBreaker } from "./utils";
 
 /**
  * A general function for distributing a number of items on a number of names based on updated quotients.
@@ -29,6 +31,46 @@ export function distributionByQuotient(
 
         // Calculate new quotient
         quotientDictionary.insertParty(winner.key, baseValue[winner.key], updatedDistribution[winner.key]);
+    }
+
+    return updatedDistribution;
+}
+
+/**
+ * A general function for distributing a number of items on a number of names based on fractions.
+ *
+ * Distributes by first giving seats to all parties that earned full seats, and then
+ * gives the remaining seats to the parties with the highest remaining fraction.
+ *
+ *
+ * @param numberToDistribute Number of items to distribute
+ * @param distributeOn A dictionary of names to distribute on, if there is already a partial distribution the values in this dictionary will be used as a starting point for how many items they have already received
+ * @param baseValue The value used as the numerator for each name
+ * @param distributionValue The number of votes necessary to win 1 seat
+ */
+export function distributionByFraction(
+    numberToDistribute: number,
+    distributeOn: Dictionary<number>,
+    baseValue: Dictionary<number>,
+    distributionValue: number
+): Dictionary<number> {
+    const updatedDistribution = copyDictionary(distributeOn);
+    const surplus = new SortedReverseDict();
+
+    for (const party in baseValue) {
+        if (baseValue.hasOwnProperty(party)) {
+            const fraction = baseValue[party] / distributionValue;
+            const fullWins = Math.floor(fraction);
+            const remainder = fraction - fullWins;
+            updatedDistribution[party] += fullWins;
+            numberToDistribute -= fullWins;
+            surplus.insert({ key: party, value: remainder } as KeyValuePair);
+        }
+    }
+
+    for (let seatSurplus = 0; seatSurplus < numberToDistribute; seatSurplus++) {
+        const winner = tieBreaker(surplus.popTop(), baseValue);
+        updatedDistribution[winner.key];
     }
 
     return updatedDistribution;
