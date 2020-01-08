@@ -70,7 +70,7 @@ export function distributionByFraction(
 
     for (let seatSurplus = 0; seatSurplus < numberToDistribute; seatSurplus++) {
         const winner = tieBreaker(surplus.popTop(), baseValue);
-        updatedDistribution[winner.key];
+        updatedDistribution[winner.key]++;
     }
 
     return updatedDistribution;
