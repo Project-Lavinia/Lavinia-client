@@ -113,10 +113,8 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
 
         return (
             <React.Fragment>
-                <h2 className="h2">Landsoversikt</h2>
-                <br />
                 <ReactTable
-                    className="-highlight -striped"
+                    className="-highlight -striped has-text-centered"
                     multiSort={false}
                     data={data}
                     filterable={this.props.showFilters}
@@ -124,7 +122,6 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                     showPageSizeOptions={false}
                     pageSize={this.props.showFilters ? 8 : data.length > 10 ? 10 : data.length}
                     {...norwegian}
-                    style={{ textAlign: "center" } as React.CSSProperties}
                     columns={[
                         {
                             Header: "Parti",
@@ -133,17 +130,17 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             Footer: <strong>Utvalg</strong>,
                         },
                         {
+                            Header: "Stemmer",
+                            accessor: "votes",
+                            filterable: false,
+                            Footer: <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>,
+                        },
+                        {
                             Header: "%",
                             id: "%",
                             Filter: selectFilterWithOptions(thresholdOptions),
                             filterMethod: thresholdFilterMethod(this.props.threshold),
                             accessor: (d: ElectionOverviewDatum) => roundNumber(d.percentVotes, decimals),
-                        },
-                        {
-                            Header: "Stemmer",
-                            accessor: "votes",
-                            filterable: false,
-                            Footer: <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>,
                         },
                         {
                             Header: "Distrikt",

@@ -1,5 +1,5 @@
 ﻿import { AlgorithmType, LagueDhontResult } from "./computation-models";
-import { Election } from "../requested-data/requested-data-models";
+import { Election, Votes, Metrics, Parameters } from "../requested-data/requested-data-models";
 
 export interface ComputationState {
     election: Election;
@@ -11,7 +11,25 @@ export interface ComputationState {
     historical: LagueDhontResult;
     current: LagueDhontResult;
     comparison: LagueDhontResult;
+    votes: Votes[];
+    metrics: Metrics[];
+    parameters: Parameters;
 }
+
+export const unloadedParameters: Parameters = {
+    algorithm: {
+        algorithm: "UNDEFINED",
+        id: -1,
+        parameters: {},
+    },
+    areaFactor: -1,
+    districtSeats: {},
+    electionType: "UNDEFINED",
+    electionYear: -1,
+    levelingSeats: -1,
+    threshold: -1,
+    totalVotes: -1,
+};
 
 export const unloadedState: ComputationState = {
     election: {
@@ -35,15 +53,21 @@ export const unloadedState: ComputationState = {
         districtResults: [],
         partyResults: [],
         levelingSeatDistribution: [],
+        finalQuotients: [],
     },
     current: {
         districtResults: [],
         partyResults: [],
         levelingSeatDistribution: [],
+        finalQuotients: [],
     },
     comparison: {
         districtResults: [],
         partyResults: [],
         levelingSeatDistribution: [],
+        finalQuotients: [],
     },
+    votes: [],
+    metrics: [],
+    parameters: unloadedParameters,
 };

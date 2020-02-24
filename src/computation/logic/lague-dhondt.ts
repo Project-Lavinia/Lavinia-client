@@ -3,6 +3,11 @@
 import { Dictionary, dictionaryToArray } from "../../utilities/dictionary";
 
 import { distributeSeats, distributeLevelingSeats, calculateProportionality, finalizeDistrictCalculations } from ".";
+import { distributeDistrictSeatsOnDistricts } from "./utils";
+import { calculateFinalQuotients } from "./algorithm-utilities";
+
+// Constant
+// const DISTRICTSEATS = "SUM";
 
 export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     const partyResults: Dictionary<PartyResult> = {};
@@ -11,20 +16,30 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
 
     let totalVotes = 0;
 
+    // Calculate the district seats for each district
+    // NOTE: Only works when levelingSeats % 19 == 0
+    const districtSeats = distributeDistrictSeatsOnDistricts(
+        payload.parameters.areaFactor,
+        19,
+        payload.districtSeats,
+        payload.metrics
+    );
+
     // Assemble a list of all parties as well as the number of votes per district
     for (const county of payload.election.counties) {
         districtResults[county.name] = {
             name: county.name,
-            districtSeats: county.seats,
+            districtSeats: districtSeats[county.name],
             levelingSeats: 0,
             totalSeats: 0,
             votes: 0,
             percentVotes: 0,
             votesPerSeat: 0,
             districtSeatResult: [],
-            partyResults: []
+            partyResults: [],
         };
         districtPartyResults[county.name] = {};
+
         for (const party of county.results) {
             totalVotes += party.votes;
 
@@ -37,7 +52,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
                 districtSeats: 0,
                 levelingSeats: 0,
                 totalSeats: 0,
-                proportionality: 0
+                proportionality: 0,
             };
             if (partyResults[party.partyCode] === undefined) {
                 partyResults[party.partyCode] = {
@@ -48,7 +63,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
                     districtSeats: 0,
                     levelingSeats: 0,
                     totalSeats: 0,
-                    proportionality: 0
+                    proportionality: 0,
                 };
             } else {
                 partyResults[party.partyCode].votes += party.votes;
@@ -69,14 +84,14 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
                         districtSeats: 0,
                         levelingSeats: 0,
                         totalSeats: 0,
-                        proportionality: 0
+                        proportionality: 0,
                     };
                 }
             }
         }
     }
 
-    // Update percentages as all votes are counted
+    // Update percentages as all votes have been counted
     for (const county of payload.election.counties) {
         districtResults[county.name].percentVotes = (districtResults[county.name].votes / totalVotes) * 100;
         for (const party of county.results) {
@@ -91,7 +106,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
         const distributionResult = distributeSeats(
             payload.algorithm,
             payload.firstDivisor,
-            county.seats,
+            districtSeats[county.name],
             county.results
         );
 
@@ -123,11 +138,19 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     const districtResultArray = dictionaryToArray(districtResults);
     const partyResultArray = dictionaryToArray(partyResults);
 
+    const useAdjustedQuotients = payload.parameters.electionYear >= 2005;
+    const finalQuotients = calculateFinalQuotients(
+        payload.algorithm,
+        payload.firstDivisor,
+        useAdjustedQuotients,
+        districtResults
+    );
+
     const result: LagueDhontResult = {
         partyResults: partyResultArray,
         districtResults: districtResultArray,
-        levelingSeatDistribution
+        levelingSeatDistribution,
+        finalQuotients,
     };
-
     return result;
 }

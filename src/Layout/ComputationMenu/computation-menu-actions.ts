@@ -1,4 +1,4 @@
-﻿import { ElectionType } from "../../requested-data/requested-data-models";
+﻿import { ElectionType, Parameters } from "../../requested-data/requested-data-models";
 import { ComputationMenuPayload } from "./computation-menu-models";
 
 /**
@@ -28,6 +28,7 @@ export interface InitializeComputationMenu {
     districtSeats: string;
     levelingSeats: string;
     autoCompute: boolean;
+    areaFactor: string;
 }
 
 /**
@@ -35,8 +36,7 @@ export interface InitializeComputationMenu {
  *
  * @param electionType - election data fetched from the API.
  */
-export function initializeComputationMenu(electionType: ElectionType) {
-    const election = electionType.elections[0]; // Most recent election
+export function initializeComputationMenu(electionType: ElectionType, parameters: Parameters) {
     const electionYears: string[] = [];
     for (const currentElection of electionType.elections) {
         electionYears.push(currentElection.year.toString());
@@ -45,13 +45,14 @@ export function initializeComputationMenu(electionType: ElectionType) {
     const action: InitializeComputationMenu = {
         type: ComputationMenuActionType.INITIALIZE_COMPUTATION_MENU,
         electionYears,
-        year: election.year.toString(),
-        algorithm: election.algorithm,
-        firstDivisor: election.firstDivisor.toString(),
-        electionThreshold: election.threshold.toString(),
-        districtSeats: election.seats.toString(),
-        levelingSeats: election.levelingSeats.toString(),
+        year: parameters.electionYear.toString(),
+        algorithm: parameters.algorithm.id,
+        firstDivisor: parameters.algorithm.parameters["First Divisor"].toString(),
+        electionThreshold: parameters.threshold.toString(),
+        districtSeats: parameters.districtSeats.SUM.toString(),
+        levelingSeats: parameters.levelingSeats.toString(),
         autoCompute: true,
+        areaFactor: parameters.areaFactor.toString(),
     };
     return action;
 }
@@ -67,6 +68,7 @@ export interface UpdateComputationMenu {
     electionThreshold: string;
     districtSeats: string;
     levelingSeats: string;
+    areaFactor: string;
 }
 
 /**
@@ -83,6 +85,7 @@ export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
         electionThreshold: settingsPayload.electionThreshold,
         districtSeats: settingsPayload.districtSeats,
         levelingSeats: settingsPayload.levelingSeats,
+        areaFactor: settingsPayload.areaFactor,
     };
     return action;
 }

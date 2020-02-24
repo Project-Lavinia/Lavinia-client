@@ -2,7 +2,6 @@
 import { LagueDhontResult } from "../../../computation";
 import { SmartNumericInput } from "../../../common";
 import { PresentationType, DisproportionalityIndex } from "../../Presentation/presentation-models";
-import { DistrictSelect } from "./DistrictSelect";
 import { DisproportionalitySelect } from "./DisproportionalitySelect";
 import { NoSeatsCheckbox } from "./NoSeatsCheckbox";
 import { ComparisonCheckbox } from "./ComparisonCheckbox";
@@ -87,9 +86,8 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
 
     render() {
         return (
-            <React.Fragment>
-                <h2 className="pt-3">Presentasjonsinnstillinger</h2>
-                <form>
+            <div className="columns">
+                <div className="column">
                     <NoSeatsCheckbox
                         showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
                         toggleShowPartiesWithoutSeats={this.props.toggleShowPartiesWithoutSeats}
@@ -99,36 +97,38 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                         showFilters={this.props.showFilters}
                         toggleShowFilters={this.props.toggleShowFilters}
                     />
-                    <SmartNumericInput
-                        hidden={!this.needsDecimals()}
-                        name="decimalPlaces"
-                        defaultValue={2}
-                        min={0}
-                        max={16}
-                        integer={true}
-                        slider={true}
-                        title="Antall desimaler"
-                        value={this.props.decimals}
-                        onChange={this.props.changeDecimals}
-                    />
-                    <DistrictSelect
-                        hidden={!this.showDistrictSelect()}
-                        districtResults={this.props.results.districtResults}
-                        selectDistrict={this.props.selectDistrict}
-                        districtSelected={this.props.districtSelected}
-                    />
-                    <DisproportionalitySelect
-                        hidden={!this.showDisproportionalitySelect()}
-                        changeDisproportionalityIndex={this.props.changeDisproportionalityIndex}
-                        disproportionalityIndex={this.props.disproportionalityIndex}
-                    />
                     <ComparisonCheckbox
                         hidden={!this.showComparison()}
                         showComparison={this.props.showComparison}
                         toggleComparison={this.props.toggleShowComparison}
                     />
-                </form>
-            </React.Fragment>
+                </div>
+                <div className="column">
+                    <div className="columns">
+                        <div className="column">
+                            <SmartNumericInput
+                                hidden={!this.needsDecimals()}
+                                name="decimalPlaces"
+                                defaultValue={2}
+                                min={0}
+                                max={16}
+                                integer={true}
+                                slider={false}
+                                title="Antall desimaler"
+                                value={this.props.decimals}
+                                onChange={this.props.changeDecimals}
+                            />
+                        </div>
+                        <div className="column">
+                            <DisproportionalitySelect
+                                hidden={!this.showDisproportionalitySelect()}
+                                changeDisproportionalityIndex={this.props.changeDisproportionalityIndex}
+                                disproportionalityIndex={this.props.disproportionalityIndex}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
         );
     }
 }

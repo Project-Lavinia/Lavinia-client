@@ -8,4 +8,5 @@ export interface ComputationMenuPayload {
     levelingSeats: string;
     autoCompute: boolean;
     forceCompute: boolean;
+    areaFactor: string;
 }

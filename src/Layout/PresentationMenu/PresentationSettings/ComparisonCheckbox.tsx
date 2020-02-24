@@ -9,19 +9,16 @@ export interface ComparisonCheckboxProps {
 export class ComparisonCheckbox extends React.Component<ComparisonCheckboxProps> {
     render() {
         return (
-            <div hidden={this.props.hidden} className="form-group mb-3">
-                <div className="form-check form-check-inline">
+            <div hidden={this.props.hidden} className="field">
+                <label className="label" htmlFor="comparison-checkbox">
                     <input
-                        className="form-check-input"
                         type="checkbox"
                         name="comparison-checkbox"
                         checked={this.props.showComparison}
                         onChange={this.props.toggleComparison}
                     />
-                    <label className="form-check-label" htmlFor="comparison-checkbox">
-                        Sammenlign
-                    </label>
-                </div>
+                    &nbsp;Detaljert sammenlikning
+                </label>
             </div>
         );
     }

@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-    ElectionOverview,
-    DistrictOverview,
-    SeatsPerParty,
-    SeatDistribution,
-    SingleDistrict,
-    LevellingSeatOverview,
-} from ".";
+import { ElectionOverview, DistrictOverview, SeatDistribution, SingleDistrict, LevellingSeatOverview } from ".";
 import {
     getDistrictTableData,
     getPartyTableData,
@@ -35,7 +28,9 @@ export interface PresentationProps {
     comparisonPartyResults: PartyResult[];
     showComparison: boolean;
     threshold: number;
+    year: number;
     showFilters: boolean;
+    selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export class Presentation extends React.Component<PresentationProps, {}> {
@@ -144,8 +139,6 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         districtWidth={this.getWidestStringWidth(this.getDistricts())}
                     />
                 );
-            case PresentationType.SeatsPerParty:
-                return <SeatsPerParty partyResults={this.getSeatsPerPartyData()} />;
             case PresentationType.SingleDistrict:
                 return (
                     <SingleDistrict
@@ -153,6 +146,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         districtResults={this.getSingleDistrictData()}
                         decimals={this.props.decimals}
                         disproportionalityIndex={this.props.disproportionalityIndex}
+                        selectDistrict={this.props.selectDistrict}
                     />
                 );
             case PresentationType.RemainderQuotients:
@@ -160,6 +154,8 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                     <RemainderQuotients
                         districtResults={this.getSeatDistributionData()}
                         levellingSeats={this.getLevellingSeats()}
+                        finalQuotients={this.props.results.finalQuotients}
+                        year={this.props.year}
                         decimals={this.props.decimals}
                         showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
                     />

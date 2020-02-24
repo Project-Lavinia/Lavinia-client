@@ -27,6 +27,7 @@ export function computationMenu(
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
                 autoCompute: action.autoCompute,
+                areaFactor: action.areaFactor,
             };
         case ComputationMenuActionType.UPDATE_COMPUTATION_MENU:
             return {
@@ -37,6 +38,7 @@ export function computationMenu(
                 electionThreshold: action.electionThreshold,
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
+                areaFactor: action.areaFactor,
             };
         case ComputationMenuActionType.TOGGLE_AUTO_COMPUTE:
             return {

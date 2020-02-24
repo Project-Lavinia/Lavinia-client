@@ -1,4 +1,4 @@
-import { Election } from "../requested-data/requested-data-models";
+import { Election, Votes, Metrics, Parameters } from "../requested-data/requested-data-models";
 import { Dictionary } from "../utilities/dictionary";
 
 export enum AlgorithmType {
@@ -14,6 +14,9 @@ export interface ComputationPayload {
     electionThreshold: number;
     districtSeats: number;
     levelingSeats: number;
+    votes: Votes[];
+    metrics: Metrics[];
+    parameters: Parameters;
 }
 
 export interface DistrictResult {
@@ -36,6 +39,43 @@ export interface DistrictResult {
     partyResults: PartyResult[];
 }
 
+export interface DistrictResultv2 {
+    /** Name of the district */
+    name: string;
+    /** Number of district seats available */
+    districtSeats: number;
+    /** Number of leveling seats received */
+    levelingSeats: number;
+    /** Total number of seats received */
+    totalSeats: number;
+    /** Total number of votes cast in the district */
+    votes: number;
+    /** How many percent of all votes were cast in this district */
+    percentVotes: number;
+    /** Average number of votes per seat */
+    votesPerSeat: number;
+}
+
+/**
+ * Stores the quotients for all the parties in a district
+ */
+export interface DistrictQuotients {
+    /**
+     * The district, the key of the row
+     */
+    district: string;
+    levellingSeatRounds: PartyQuotient[];
+}
+
+/**
+ * Stores the quotient of a party and whether it won a leveling seat in a specific district
+ */
+export interface PartyQuotient {
+    partyCode: string;
+    quotient: number;
+    wonLevellingSeat: boolean;
+}
+
 export interface DistributionResult {
     /** A dictionary taking partyCodes and returning the matching number of seats won in this distribution */
     seatsWon: Dictionary<number>;
@@ -50,6 +90,8 @@ export interface LagueDhontResult {
     districtResults: DistrictResult[];
     /** A list of information regarding the distribution of the leveling seats */
     levelingSeatDistribution: PartyRestQuotients[];
+    /** A list of what the final quotients were for each party in each district */
+    finalQuotients: DistrictQuotients[];
 }
 
 export interface LevelingSeat {
@@ -87,6 +129,29 @@ export interface PartyResult {
     totalSeats: number;
     /** The difference between the partys number of votes and seats, either nationally or within the district */
     proportionality: number;
+}
+export interface NationalPartyResult {
+    /** The partyCode associated with the party */
+    partyCode: string;
+    /** The party name of the party */
+    partyName: string;
+    /** The number of votes the party received, nationally or within the district */
+    votes: number;
+    /** The percent of votes the party received, nationally or within the district */
+    percentVotes: number;
+    /** The number of seats the party received, nationally or within the district */
+    districtSeats: number;
+    /** The number of leveling seats the party received, nationally or within the district */
+    levelingSeats: number;
+    /** The total number of seats the party received within, nationally or the district */
+    totalSeats: number;
+    /** The difference between the partys number of votes and seats, nationally or within the district */
+    proportionality: number;
+}
+
+export interface PartyResultv2 extends NationalPartyResult {
+    /** The district which the results are from */
+    district: string;
 }
 
 export interface Result {

@@ -24,6 +24,9 @@ export function computation(state: ComputationState = unloadedState, action: Com
                 current: action.results,
                 historical: action.results,
                 comparison: action.results,
+                votes: action.votes,
+                metrics: action.metrics,
+                parameters: action.parameters,
             };
         case ComputationActionType.UPDATE_COMPUTATION:
             return {
@@ -35,6 +38,9 @@ export function computation(state: ComputationState = unloadedState, action: Com
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
                 current: action.results,
+                votes: action.votes,
+                metrics: action.metrics,
+                parameters: action.parameters,
             };
         case ComputationActionType.SAVE_COMPUTATION:
             return {

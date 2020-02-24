@@ -1,6 +1,7 @@
 import * as React from "react";
 import ReactTable, { Column } from "react-table";
 import { PartyRestQuotients } from "../../../computation";
+import { norwegian } from "../../../utilities/rt";
 
 interface LevellingSeatOverviewProps {
     levellingSeatQuotients: PartyRestQuotients[];
@@ -40,14 +41,14 @@ export class LevellingSeatOverview extends React.Component<LevellingSeatOverview
             columns.push({
                 Header: `${i + 1}.`,
                 accessor: `seatsWon[${i}]`,
-                minWidth: 150
+                minWidth: 150,
             });
         }
 
         // Set the first column
         columns.unshift({
             Header: "Parti",
-            accessor: "partyCode"
+            accessor: "partyCode",
         });
         return columns;
     }
@@ -56,19 +57,15 @@ export class LevellingSeatOverview extends React.Component<LevellingSeatOverview
         const columns = this.getColumns();
         return (
             <React.Fragment>
-                <h3>Utjevningsmandater</h3>
                 <ReactTable
-                    className="-highlight -striped"
+                    className="-highlight -striped has-text-centered"
                     data={data}
                     columns={columns}
                     defaultPageSize={data.length > 10 ? 10 : data.length}
                     pageSize={data.length > 10 ? 10 : data.length}
                     showPageSizeOptions={false}
                     showPagination={data.length > 10 ? true : false}
-                    ofText={"/"}
-                    nextText={"→"}
-                    previousText={"←"}
-                    pageText={"#"}
+                    {...norwegian}
                 />
             </React.Fragment>
         );

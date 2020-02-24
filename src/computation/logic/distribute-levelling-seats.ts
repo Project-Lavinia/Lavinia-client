@@ -1,6 +1,7 @@
-import { ComputationPayload, PartyResult, DistrictResult, PartyRestQuotients, LevelingSeat, Result } from "..";
+import { ComputationPayload, PartyResult, DistrictResult, PartyRestQuotients, Result } from "..";
 import { Dictionary, dictionaryToArray } from "../../utilities/dictionary";
-import { distributeSeats, generateLevelingSeatArray } from ".";
+import { distributeSeats } from ".";
+import { distributeLevelingSeatsOnDistricts, distributeLevelingSeatsOnDistrictsPre2005 } from "./utils";
 
 export function distributeLevelingSeats(
     payload: ComputationPayload,
@@ -24,7 +25,7 @@ export function distributeLevelingSeats(
             partyCode,
             partyName: "",
             votes: partyResults[partyCode].votes,
-            percentage: -1
+            percentage: -1,
         };
         levelingParties.push(party);
     }
@@ -53,7 +54,7 @@ export function distributeLevelingSeats(
             partyCode,
             partyName: "",
             votes: partyResults[partyCode].votes,
-            percentage: -1
+            percentage: -1,
         };
         levelingParties.push(party);
     }
@@ -64,6 +65,7 @@ export function distributeLevelingSeats(
         payload.firstDivisor,
         payload.levelingSeats,
         levelingParties,
+        undefined,
         partyResults
     );
 
@@ -77,53 +79,24 @@ export function distributeLevelingSeats(
 
     levelingPartyCodes = levelingPartyCodes.filter((partyCode) => partyResults[partyCode].levelingSeats > 0);
 
-    let finishedDistricts: string[] = [];
-    let levelingSeats: LevelingSeat[] = [];
-    const partyRestQuotients: Dictionary<PartyRestQuotients> = {};
+    let partyRestQuotients: Dictionary<PartyRestQuotients> = {};
 
-    const partySeats: Dictionary<number> = {};
-    let seatIndex = 1;
-    let quotientIndex = 1;
-    while (seatIndex <= payload.levelingSeats) {
-        if (levelingSeats.length === 0) {
-            finishedDistricts = [];
-            levelingSeats = generateLevelingSeatArray(
-                payload.algorithm,
-                levelingPartyCodes,
-                partyResults,
-                districtResults,
-                districtPartyResults
-            );
-        }
-        const seat = levelingSeats[0];
-        seat.quotientNumber = quotientIndex++;
-        let numberOfSeats = partySeats[seat.partyCode];
-        if (numberOfSeats === undefined) {
-            numberOfSeats = 0;
-            partySeats[seat.partyCode] = 0;
-        }
-
-        if (numberOfSeats < partyResults[seat.partyCode].levelingSeats && !finishedDistricts.includes(seat.district)) {
-            seat.seatNumber = seatIndex++;
-
-            partySeats[seat.partyCode]++;
-            districtResults[seat.district].levelingSeats++;
-            districtPartyResults[seat.district][seat.partyCode].levelingSeats++;
-            districtPartyResults[seat.district][seat.partyCode].totalSeats++;
-
-            finishedDistricts.push(seat.district);
-        }
-
-        if (partyRestQuotients[seat.partyCode] === undefined) {
-            partyRestQuotients[seat.partyCode] = {
-                partyCode: seat.partyCode,
-                levelingSeats: [seat]
-            };
-        } else {
-            partyRestQuotients[seat.partyCode].levelingSeats.push(seat);
-        }
-
-        levelingSeats.shift();
+    if (payload.election.year < 2005) {
+        partyRestQuotients = distributeLevelingSeatsOnDistrictsPre2005(
+            payload,
+            levelingPartyCodes,
+            partyResults,
+            districtPartyResults,
+            districtResults
+        );
+    } else {
+        partyRestQuotients = distributeLevelingSeatsOnDistricts(
+            payload,
+            levelingPartyCodes,
+            partyResults,
+            districtPartyResults,
+            districtResults
+        );
     }
 
     const levelingSeatDistribution = dictionaryToArray(partyRestQuotients);

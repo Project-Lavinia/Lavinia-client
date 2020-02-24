@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Button } from "../../common";
 
 export interface ResetComparisonButtonProps {
     resetComparison: () => void;
@@ -8,13 +7,15 @@ export interface ResetComparisonButtonProps {
 export class ResetComparisonButton extends React.Component<ResetComparisonButtonProps> {
     render() {
         return (
-            <Button
-                title={"Gjenopprett"}
-                accessibilityLabel={"Gjenopprett sammenlikning"}
+            <button
+                className="button is-dark is-fullwidth"
+                title={"Gjenopprett sammenlikning"}
                 id="resetComparison"
-                onPress={this.props.resetComparison}
+                onClick={this.props.resetComparison}
                 type="button"
-            />
+            >
+                Gjenopprett
+            </button>
         );
     }
 }

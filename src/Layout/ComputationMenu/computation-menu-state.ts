@@ -7,7 +7,7 @@ export interface ComputationMenuState {
     districtSeats: string;
     levelingSeats: string;
     autoCompute: boolean;
-    areaFactor: number;
+    areaFactor: string;
 }
 
 export const unloadedState: ComputationMenuState = {
@@ -19,5 +19,5 @@ export const unloadedState: ComputationMenuState = {
     districtSeats: "",
     levelingSeats: "",
     autoCompute: true,
-    areaFactor: -1
+    areaFactor: "",
 };

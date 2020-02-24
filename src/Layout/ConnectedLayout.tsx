@@ -1,16 +1,37 @@
 ﻿import { LayoutProps, Layout } from "./Layout";
 import { connect } from "react-redux";
 import { request } from "../utilities/api-requests";
-import { ElectionType } from "../requested-data/requested-data-models";
-import { initializeRequestedData } from "../requested-data";
+import { ElectionType, Votes, Metrics, RawParameters, Parameters } from "../requested-data/requested-data-models";
+import {
+    initializeRequestedData,
+    initializeRequestedVotes,
+    initializeRequestedMetrics,
+    InitializeRequestedParameters,
+} from "../requested-data";
 import { initializeComputation } from "../computation";
 import { initializeComputationMenu } from "./ComputationMenu";
 import { initializePresentation } from "./PresentationMenu";
 import { stateIsInvalid } from "../store/version";
+import { rawParametersToParametersConverter } from "../requested-data/requested-data-utilities";
 
 const mapDispatchToProps = (dispatch: any): LayoutProps => ({
     initializeState: async () => {
-        const uri = "https://mandater-testing.azurewebsites.net/api/v1.0.0/no/pe?deep=true";
+        const electionTypePath = "no/pe?deep=true";
+        let defaultUri: string;
+
+        const votesPath = "votes?partyCode=ALL&district=ALL";
+        const metricsPath = "metrics?district=ALL";
+        const parametersPath = "parameters";
+        let votesUri: string;
+        let metricsUri: string;
+        let parametersUri: string;
+
+        defaultUri = process.env.API_V1 + electionTypePath;
+
+        votesUri = process.env.API_V2 + votesPath;
+        metricsUri = process.env.API_V2 + metricsPath;
+        parametersUri = process.env.API_V2 + parametersPath;
+
         const failover: ElectionType = {
             internationalName: "UNDEFINED",
             electionTypeId: -1,
@@ -18,15 +39,29 @@ const mapDispatchToProps = (dispatch: any): LayoutProps => ({
             elections: [],
         };
         if (stateIsInvalid()) {
-            const electionType = await request<ElectionType>(uri, failover);
+            const votes = await request<Array<Votes>>(votesUri, []);
+            const initializeRequestedVotesAction = initializeRequestedVotes(votes);
+            dispatch(initializeRequestedVotesAction);
+
+            const metrics = await request<Array<Metrics>>(metricsUri, []);
+            const initializeRequestedMetricsAction = initializeRequestedMetrics(metrics);
+            dispatch(initializeRequestedMetricsAction);
+
+            const rawParameters = await request<Array<RawParameters>>(parametersUri, []);
+            const parameters = rawParameters.map<Parameters>((raw) => rawParametersToParametersConverter(raw));
+            const initializeRequestedParametersAction = InitializeRequestedParameters(parameters);
+            dispatch(initializeRequestedParametersAction);
+
+            const electionType = await request<ElectionType>(defaultUri, failover);
             const initializeRequestDataAction = initializeRequestedData(electionType);
-            const initializeComputationAction = initializeComputation(electionType);
-            const initializeSettingsAction = initializeComputationMenu(electionType);
+
+            const initializeSettingsAction = initializeComputationMenu(electionType, parameters[0]);
             const initializePresentationAction = initializePresentation();
             dispatch(initializeRequestDataAction);
-            dispatch(initializeComputationAction);
             dispatch(initializePresentationAction);
             dispatch(initializeSettingsAction);
+            const initializeComputationAction = initializeComputation(electionType, votes, metrics, parameters);
+            dispatch(initializeComputationAction);
         }
     },
 });

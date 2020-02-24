@@ -1,6 +1,7 @@
 import * as React from "react";
 import ReactTable, { Column } from "react-table";
 import { DistrictResult } from "../../../computation/computation-models";
+import { norwegian } from "../../../utilities/rt";
 
 export interface SeatDistributionProps {
     districtResults: DistrictResult[];
@@ -13,8 +14,8 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
             {
                 Header: "Fylke",
                 accessor: "name",
-                width: this.props.districtWidth * 10
-            }
+                width: this.props.districtWidth * 10,
+            },
         ];
 
         for (const districtResult of this.props.districtResults) {
@@ -27,7 +28,7 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
                 columns.push({
                     Header: element.partyCode,
                     accessor: `partyResults[${partyIndex}].totalSeats`,
-                    minWidth: 50
+                    minWidth: 50,
                 });
             }
         }
@@ -38,13 +39,13 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
     render() {
         return (
             <React.Fragment>
-                <h2>Mandatfordeling</h2>
                 <ReactTable
-                    className="-highlight -striped"
+                    className="-highlight -striped has-text-centered"
                     defaultPageSize={19}
                     showPaginationBottom={false}
                     data={this.props.districtResults}
                     columns={this.generateColumns()}
+                    {...norwegian}
                 />
             </React.Fragment>
         );
