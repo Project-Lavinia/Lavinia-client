@@ -52,7 +52,7 @@
         "webpack-dev-server": ">=3.4.1"
     },
     "dependencies": {
-        "axios": "^0.18.0",
+        "axios": "^0.18.1",
         "classnames": "^2.2.6",
         "lodash": ">=4.17.11",
         "react": "^16.8.6",
