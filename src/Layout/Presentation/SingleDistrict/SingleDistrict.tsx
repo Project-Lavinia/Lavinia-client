@@ -65,9 +65,9 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             {"Sistemandat i "}
                             {this.props.districtSelected}
                             {" gikk til "}
-                            {<span className="has-text-success">${vulnerable.winner.partyCode}</span>}
+                            {<span className="has-text-success">{vulnerable.winner.partyCode}</span>}
                             {". "}
-                            {<span className="has-text-warning">${vulnerable.runnerUp.partyCode}</span>}
+                            {<span className="has-text-warning">{vulnerable.runnerUp.partyCode}</span>}
                             {" hadde nærmest kvotient, og trengte "}
                             {vulnerable.moreVotesToWin}
                             {" flere stemmer for å ta mandatet."}
