@@ -49,6 +49,9 @@ export class SmartNumericInput extends React.Component<SmartNumericInputProps, {
                         />
                     )}
                 </div>
+                {this.props.defaultValue.toString() !== this.props.value && (
+                    <label>Orginalt: {this.props.defaultValue}</label>
+                )}
             </div>
         );
     }

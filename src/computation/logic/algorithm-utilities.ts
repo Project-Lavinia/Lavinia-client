@@ -326,6 +326,22 @@ export function getAlgorithmType(type: number) {
 }
 
 /**
+ * Converts numerical IDs into their matching algorithm name
+ *
+ * @param type The numerical ID of the algorithm
+ */
+export function getAlgorithmName(type: number) {
+    switch (type) {
+        case 1:
+            return "Sainte-Lagüe";
+        case 2:
+            return "d'Hondt";
+        default:
+            return "Udefinert";
+    }
+}
+
+/**
  * Converts string IDs into their matching algorithm types
  *
  * @param type The string ID of the algorithm
