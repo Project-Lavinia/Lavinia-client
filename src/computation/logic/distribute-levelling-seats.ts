@@ -71,7 +71,6 @@ export function distributeLevelingSeats(
         partyResults
     );
 
-    console.log(levelingSeatsDistribution.seatsWon);
     for (const partyCode in levelingSeatsDistribution.seatsWon) {
         if (levelingSeatsDistribution.seatsWon.hasOwnProperty(partyCode)) {
             const levelingSeats = levelingSeatsDistribution.seatsWon[partyCode];
