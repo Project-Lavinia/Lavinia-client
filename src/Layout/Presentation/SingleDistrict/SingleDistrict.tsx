@@ -7,6 +7,7 @@ import { checkExhaustively } from "../../../utilities";
 import { getVulnerableSeatByQuotient, getVulnerableSeatByVotes } from "../../../utilities/district";
 import { DistrictSelect } from "./DistrictSelect";
 import { norwegian } from "../../../utilities/rt";
+import { roundNumber } from "../../../utilities/number";
 
 export interface SingleDistrictProps {
     districtResults: DistrictResult[];
@@ -101,16 +102,8 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         },
                         {
                             Header: "%",
-                            accessor: "percentVotes",
-                            Footer: (
-                                <span>
-                                    <strong>
-                                        {Math.min(data.map((value) => value.percentVotes).reduce(toSum), 100).toFixed(
-                                            decimals
-                                        )}
-                                    </strong>
-                                </span>
-                            ),
+                            id: "%",
+                            accessor: (d: PartyResult) => roundNumber(d.percentVotes, decimals),
                         },
                         {
                             Header: "Mandater",
