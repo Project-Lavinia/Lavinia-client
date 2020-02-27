@@ -100,6 +100,19 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             ),
                         },
                         {
+                            Header: "%",
+                            accessor: "percentVotes",
+                            Footer: (
+                                <span>
+                                    <strong>
+                                        {Math.min(data.map((value) => value.percentVotes).reduce(toSum), 100).toFixed(
+                                            decimals
+                                        )}
+                                    </strong>
+                                </span>
+                            ),
+                        },
+                        {
                             Header: "Mandater",
                             accessor: "totalSeats",
                             columns: [
