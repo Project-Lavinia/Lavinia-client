@@ -34,6 +34,7 @@ export function distributeLevelingSeats(
     const nationalDistribution = distributeSeats(
         payload.algorithm,
         payload.firstDivisor,
+        Number.MIN_SAFE_INTEGER,
         payload.districtSeats + payload.levelingSeats,
         levelingParties
     );
@@ -54,7 +55,7 @@ export function distributeLevelingSeats(
             partyCode,
             partyName: "",
             votes: partyResults[partyCode].votes,
-            percentage: -1,
+            percentage: partyResults[partyCode].percentVotes,
         };
         levelingParties.push(party);
     }
@@ -63,12 +64,14 @@ export function distributeLevelingSeats(
     const levelingSeatsDistribution = distributeSeats(
         payload.algorithm,
         payload.firstDivisor,
+        Number.MIN_SAFE_INTEGER,
         payload.levelingSeats,
         levelingParties,
         undefined,
         partyResults
     );
 
+    console.log(levelingSeatsDistribution.seatsWon);
     for (const partyCode in levelingSeatsDistribution.seatsWon) {
         if (levelingSeatsDistribution.seatsWon.hasOwnProperty(partyCode)) {
             const levelingSeats = levelingSeatsDistribution.seatsWon[partyCode];

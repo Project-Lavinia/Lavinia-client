@@ -25,6 +25,7 @@ export interface InitializeComputationMenu {
     algorithm: number;
     firstDivisor: string;
     electionThreshold: string;
+    districtThreshold: string;
     districtSeats: string;
     levelingSeats: string;
     autoCompute: boolean;
@@ -49,6 +50,7 @@ export function initializeComputationMenu(electionType: ElectionType, parameters
         algorithm: parameters.algorithm.id,
         firstDivisor: parameters.algorithm.parameters["First Divisor"].toString(),
         electionThreshold: parameters.threshold.toString(),
+        districtThreshold: "0",
         districtSeats: parameters.districtSeats.SUM.toString(),
         levelingSeats: parameters.levelingSeats.toString(),
         autoCompute: true,
@@ -66,6 +68,7 @@ export interface UpdateComputationMenu {
     algorithm: number;
     firstDivisor: string;
     electionThreshold: string;
+    districtThreshold: string;
     districtSeats: string;
     levelingSeats: string;
     areaFactor: string;
@@ -83,6 +86,7 @@ export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
         algorithm: settingsPayload.algorithm,
         firstDivisor: settingsPayload.firstDivisor,
         electionThreshold: settingsPayload.electionThreshold,
+        districtThreshold: settingsPayload.districtThreshold,
         districtSeats: settingsPayload.districtSeats,
         levelingSeats: settingsPayload.levelingSeats,
         areaFactor: settingsPayload.areaFactor,
