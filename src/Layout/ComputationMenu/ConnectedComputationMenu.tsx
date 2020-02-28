@@ -120,6 +120,7 @@ const mapDispatchToProps = (
             algorithm: election.algorithm,
             firstDivisor: election.firstDivisor.toString(),
             electionThreshold: election.threshold.toString(),
+            districtThreshold: "0",
             districtSeats: election.seats.toString(),
             levelingSeats: election.levelingSeats.toString(),
         };
