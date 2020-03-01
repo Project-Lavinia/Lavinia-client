@@ -25,6 +25,7 @@ const illegalPartyCodes = new Set(["BLANKE"]);
 export function distributeSeats(
     algorithm: AlgorithmType,
     firstDivisor: number,
+    districtThreshold: number,
     numSeats: number,
     results: Result[],
     averageVotesPerSeat?: number,
@@ -83,7 +84,11 @@ export function distributeSeats(
             };
             seatResult.partyResults.push(currentPartyResult);
 
-            if (currentQuotient > currentWinner.quotient && !illegalPartyCodes.has(result.partyCode)) {
+            if (
+                currentQuotient > currentWinner.quotient &&
+                !illegalPartyCodes.has(result.partyCode) &&
+                result.percentage > districtThreshold
+            ) {
                 currentWinner = currentPartyResult;
             }
         }

@@ -4,6 +4,7 @@ export interface ComputationMenuPayload {
     algorithm: number;
     firstDivisor: string;
     electionThreshold: string;
+    districtThreshold: string;
     districtSeats: string;
     levelingSeats: string;
     areaFactor: string;

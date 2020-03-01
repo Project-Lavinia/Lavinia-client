@@ -6,6 +6,7 @@ export interface ComputationState {
     algorithm: AlgorithmType;
     firstDivisor: number;
     electionThreshold: number;
+    districtThreshold: number;
     districtSeats: number;
     levelingSeats: number;
     areaFactor: number;
@@ -48,6 +49,7 @@ export const unloadedState: ComputationState = {
     algorithm: AlgorithmType.UNDEFINED,
     firstDivisor: -1,
     electionThreshold: -1,
+    districtThreshold: -1,
     districtSeats: -1,
     levelingSeats: -1,
     areaFactor: -1,

@@ -6,6 +6,7 @@ export interface ComputationMenuState {
     algorithm: number;
     firstDivisor: string;
     electionThreshold: string;
+    districtThreshold: string;
     districtSeats: string;
     levelingSeats: string;
     autoCompute: boolean;
@@ -19,6 +20,7 @@ export const unloadedState: ComputationMenuState = {
     algorithm: -1,
     firstDivisor: "",
     electionThreshold: "",
+    districtThreshold: "",
     districtSeats: "",
     levelingSeats: "",
     autoCompute: true,
