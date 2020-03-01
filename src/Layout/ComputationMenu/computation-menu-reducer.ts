@@ -28,6 +28,14 @@ export function computationMenu(
                 levelingSeats: action.levelingSeats,
                 areaFactor: action.areaFactor,
                 autoCompute: action.autoCompute,
+                comparison: {
+                    algorithm: action.algorithm,
+                    areaFactor: action.areaFactor,
+                    districtSeats: action.districtSeats,
+                    electionThreshold: action.electionThreshold,
+                    firstDivisor: action.firstDivisor,
+                    levelingSeats: action.levelingSeats,
+                },
             };
         case ComputationMenuActionType.UPDATE_COMPUTATION_MENU:
             return {
@@ -39,6 +47,28 @@ export function computationMenu(
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
                 areaFactor: action.areaFactor,
+            };
+        case ComputationMenuActionType.SAVE_SETTINGS:
+            return {
+                ...state,
+                comparison: {
+                    algorithm: state.algorithm,
+                    areaFactor: state.areaFactor,
+                    districtSeats: state.districtSeats,
+                    electionThreshold: state.electionThreshold,
+                    firstDivisor: state.firstDivisor,
+                    levelingSeats: state.levelingSeats,
+                },
+            };
+        case ComputationMenuActionType.RESET_SAVED_SETTINGS:
+            return {
+                ...state,
+                algorithm: state.comparison.algorithm,
+                areaFactor: state.comparison.areaFactor,
+                districtSeats: state.comparison.districtSeats,
+                electionThreshold: state.comparison.electionThreshold,
+                firstDivisor: state.comparison.firstDivisor,
+                levelingSeats: state.comparison.levelingSeats,
             };
         case ComputationMenuActionType.TOGGLE_AUTO_COMPUTE:
             return {

@@ -8,6 +8,7 @@ export interface SmartNumericInputProps {
     defaultValue: number;
     min: number;
     max: number;
+    originalValue?: string;
     integer?: boolean;
     slider?: boolean;
     style?: React.CSSProperties;
@@ -49,9 +50,7 @@ export class SmartNumericInput extends React.Component<SmartNumericInputProps, {
                         />
                     )}
                 </div>
-                {this.props.defaultValue.toString() !== this.props.value && (
-                    <label>Orginalt: {this.props.defaultValue}</label>
-                )}
+                {this.props.originalValue !== this.props.value && <label>Orginalt: {this.props.originalValue}</label>}
             </div>
         );
     }

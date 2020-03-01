@@ -1,7 +1,7 @@
 ﻿import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import { ComputationMenuProps, ComputationMenu } from "./ComputationMenu";
-import { updateComputationMenu, toggleAutoCompute } from ".";
+import { updateComputationMenu, toggleAutoCompute, saveSettings, resetSavedSettings } from ".";
 import {
     ComputationPayload,
     updateComputation,
@@ -42,6 +42,7 @@ const mapStateToProps = (
         autoCompute: state.settingsState.autoCompute,
         forceCompute: false,
         areaFactor: state.settingsState.areaFactor,
+        comparison: state.settingsState.comparison,
     },
     electionType: state.requestedDataState.electionType,
     showComparison: state.presentationMenuState.showComparison,
@@ -125,10 +126,14 @@ const mapDispatchToProps = (
         };
         const updateSettingsAction = updateComputationMenu(newSettingsPayload);
         dispatch(updateSettingsAction);
+        const saveSettingsAction = saveSettings();
+        dispatch(saveSettingsAction);
     },
     resetComparison: () => {
         const resetSavedComputationAction = resetSavedComputation();
         dispatch(resetSavedComputationAction);
+        const resetSavedSettingsAction = resetSavedSettings();
+        dispatch(resetSavedSettingsAction);
     },
     resetHistorical: (election: Election, votes: Votes[], metrics: Metrics[], parameters: Parameters) => {
         const updateHistoricalAction = updateHistorical(election, votes, metrics, parameters);
@@ -137,6 +142,8 @@ const mapDispatchToProps = (
     saveComparison: () => {
         const saveComparisonAction = saveComparison();
         dispatch(saveComparisonAction);
+        const saveSettingsAction = saveSettings();
+        dispatch(saveSettingsAction);
     },
 });
 

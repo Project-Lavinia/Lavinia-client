@@ -9,4 +9,14 @@ export interface ComputationMenuPayload {
     areaFactor: string;
     autoCompute: boolean;
     forceCompute: boolean;
+    comparison: ComputationMenuComparison;
+}
+
+export interface ComputationMenuComparison {
+    algorithm: number;
+    firstDivisor: string;
+    electionThreshold: string;
+    districtSeats: string;
+    levelingSeats: string;
+    areaFactor: string;
 }

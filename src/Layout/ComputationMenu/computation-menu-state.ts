@@ -1,3 +1,5 @@
+import { ComputationMenuComparison } from "./computation-menu-models";
+
 export interface ComputationMenuState {
     electionYears: string[];
     year: string;
@@ -8,6 +10,7 @@ export interface ComputationMenuState {
     levelingSeats: string;
     autoCompute: boolean;
     areaFactor: string;
+    comparison: ComputationMenuComparison;
 }
 
 export const unloadedState: ComputationMenuState = {
@@ -20,4 +23,12 @@ export const unloadedState: ComputationMenuState = {
     levelingSeats: "",
     autoCompute: true,
     areaFactor: "",
+    comparison: {
+        algorithm: -1,
+        areaFactor: "",
+        districtSeats: "",
+        electionThreshold: "",
+        firstDivisor: "",
+        levelingSeats: "",
+    },
 };

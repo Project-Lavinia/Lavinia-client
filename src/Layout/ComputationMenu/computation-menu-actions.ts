@@ -8,12 +8,19 @@ export enum ComputationMenuActionType {
     INITIALIZE_COMPUTATION_MENU = "INITIALIZE_COMPUTATION_MENU",
     UPDATE_COMPUTATION_MENU = "UPDATE_COMPUTATION_MENU",
     TOGGLE_AUTO_COMPUTE = "TOGGLE_AUTO_COMPUTE",
+    SAVE_SETTINGS = "SAVE_SETTINGS",
+    RESET_SAVED_SETTINGS = "RESET_SAVED_SETTINGS",
 }
 
 /**
  * Type containing all possible ComputationMenuActions.
  */
-export type ComputationMenuAction = InitializeComputationMenu | UpdateComputationMenu | ToggleAutoCompute;
+export type ComputationMenuAction =
+    | InitializeComputationMenu
+    | UpdateComputationMenu
+    | ToggleAutoCompute
+    | SaveSettings
+    | ResetSavedSettings;
 
 /**
  * Action for initializing the computation menu.
@@ -86,6 +93,42 @@ export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
         districtSeats: settingsPayload.districtSeats,
         levelingSeats: settingsPayload.levelingSeats,
         areaFactor: settingsPayload.areaFactor,
+    };
+    return action;
+}
+
+/**
+ * Action for saving the current computation settings.
+ */
+export interface SaveSettings {
+    type: ComputationMenuActionType.SAVE_SETTINGS;
+}
+
+/**
+ * Action creator for saving the computation settings.
+ */
+
+export function saveSettings() {
+    const action: SaveSettings = {
+        type: ComputationMenuActionType.SAVE_SETTINGS,
+    };
+    return action;
+}
+
+/**
+ * Action for resetting the computation settings to the saved settings.
+ */
+export interface ResetSavedSettings {
+    type: ComputationMenuActionType.RESET_SAVED_SETTINGS;
+}
+
+/**
+ * Action creator for resetting the computation settings to the saved settings.
+ */
+
+export function resetSavedSettings() {
+    const action: ResetSavedSettings = {
+        type: ComputationMenuActionType.RESET_SAVED_SETTINGS,
     };
     return action;
 }
