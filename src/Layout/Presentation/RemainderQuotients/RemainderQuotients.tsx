@@ -18,9 +18,9 @@ export interface RemainderQuotientsProps {
  *
  * @param districtResults results of a computation having been run on an
  * election
- * @returns an array of data representing the last remainder from a Sainte-Lagüe
- * or D'Hondt calculation in a given district for a given party, and whether or
- * not they won a levelling seat in that district-party
+ * @returns an array of data representing the last remainder from a Sainte-Lagüe,
+ * D'Hondt, Largest fraction (Hare) or Largest fraction (Droop) calculation in a given district for a given party,
+ * and whether or not they won a levelling seat in that district-party
  */
 
 export class RemainderQuotients extends React.Component<RemainderQuotientsProps> {
@@ -48,7 +48,6 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
             modifiedQuotients = this.props.finalQuotients;
         }
 
-        console.log(modifiedQuotients);
         return modifiedQuotients;
     }
 

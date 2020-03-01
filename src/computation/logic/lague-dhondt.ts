@@ -107,6 +107,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
             payload.algorithm,
             payload.firstDivisor,
             districtSeats[county.name],
+            districtResults[county.name].votes,
             county.results
         );
 

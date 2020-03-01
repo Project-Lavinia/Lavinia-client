@@ -13,6 +13,7 @@ import { Metrics } from "../../requested-data/requested-data-models";
 import { sainteLagues, distributionByQuotient } from "./distribution";
 import { generateLevelingSeatArray } from ".";
 import { KeyValuePair } from "./sorted-reverse-dict";
+import { AlgorithmType } from "../computation-models";
 
 export function buildDistrictResults(metrics: Metrics[]): Dictionary<DistrictResultv2> {
     const districtResults: Dictionary<DistrictResultv2> = {};
@@ -186,7 +187,7 @@ export function distributeLevelingSeatsOnDistricts(
         if (levelingSeats.length === 0) {
             finishedDistricts = [];
             levelingSeats = generateLevelingSeatArray(
-                payload.algorithm,
+                AlgorithmType.SAINTE_LAGUE,
                 levelingPartyCodes,
                 partyResults,
                 districtResults,

@@ -23,7 +23,9 @@ export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
                             onChange={this.props.onAlgorithmChange}
                         >
                             <option value="1">Sainte-Lagüe</option>
-                            <option value="2">d'Hondt</option>>
+                            <option value="2">d'Hondt</option>
+                            <option value="3">Største brøk (Hare)</option>
+                            <option value="4">Største brøk (Droop)</option>>
                         </select>
                     </div>
                 </div>

@@ -26,6 +26,7 @@ export function distributeSeats(
     algorithm: AlgorithmType,
     firstDivisor: number,
     numSeats: number,
+    totalVotes: number,
     results: Result[],
     averageVotesPerSeat?: number,
     partyResults?: Dictionary<PartyResult>
@@ -64,7 +65,13 @@ export function distributeSeats(
         };
 
         for (const result of results) {
-            const currentDenominator = getDenominator(algorithm, seatsWon[result.partyCode], firstDivisor);
+            const currentDenominator = getDenominator(
+                algorithm,
+                seatsWon[result.partyCode],
+                firstDivisor,
+                numSeats,
+                totalVotes
+            );
             const currentQuotient =
                 averageVotesPerSeat != null
                     ? calculateAdjustedQuotient(
@@ -72,9 +79,18 @@ export function distributeSeats(
                           seatsWon[result.partyCode],
                           averageVotesPerSeat,
                           result.votes,
-                          firstDivisor
+                          firstDivisor,
+                          numSeats,
+                          totalVotes
                       )
-                    : calculateQuotient(algorithm, seatsWon[result.partyCode], result.votes, firstDivisor);
+                    : calculateQuotient(
+                          algorithm,
+                          seatsWon[result.partyCode],
+                          result.votes,
+                          firstDivisor,
+                          numSeats,
+                          totalVotes
+                      );
             const currentPartyResult = {
                 partyCode: result.partyCode,
                 quotient: currentQuotient,
@@ -90,7 +106,13 @@ export function distributeSeats(
         seatsWon[currentWinner.partyCode] += 1;
         currentSeatsWon[currentWinner.partyCode] += 1;
 
-        const updatedDenominator = getDenominator(algorithm, seatsWon[currentWinner.partyCode], firstDivisor);
+        const updatedDenominator = getDenominator(
+            algorithm,
+            seatsWon[currentWinner.partyCode],
+            firstDivisor,
+            numSeats,
+            totalVotes
+        );
         const updatedQuotient = currentWinner.votes / updatedDenominator;
         currentWinner.denominator = updatedDenominator;
         currentWinner.quotient = updatedQuotient;
@@ -113,7 +135,13 @@ export function distributeSeats(
  * @param numberOfSeatsAssigned The number of partyResults assigned to the party in question
  * @param firstDivisor The first divisor to use if the party has 0 partyResults
  */
-export function getDenominator(algorithm: AlgorithmType, numberOfSeatsAssigned: number, firstDivisor: number) {
+export function getDenominator(
+    algorithm: AlgorithmType,
+    numberOfSeatsAssigned: number,
+    firstDivisor: number,
+    totalSeats: number,
+    totalVotes: number
+) {
     switch (algorithm) {
         case AlgorithmType.SAINTE_LAGUE:
             if (numberOfSeatsAssigned === 0) {
@@ -123,6 +151,12 @@ export function getDenominator(algorithm: AlgorithmType, numberOfSeatsAssigned: 
             }
         case AlgorithmType.D_HONDT:
             return numberOfSeatsAssigned + 1;
+        case AlgorithmType.LARGEST_FRACTION_HARE:
+            const averageVotesPerSeatH = totalVotes / totalSeats;
+            return (numberOfSeatsAssigned + 1) * averageVotesPerSeatH;
+        case AlgorithmType.LARGEST_FRACTION_DROOP:
+            const averageVotesPerSeatD = totalVotes / (totalSeats + 1) + 1;
+            return (numberOfSeatsAssigned + 1) * averageVotesPerSeatD;
         default:
             console.error(`ERROR! ${algorithm.toString()} does not have an associated denominator function!`);
             return Number.MIN_SAFE_INTEGER;
@@ -171,9 +205,11 @@ export function calculateAdjustedQuotient(
     seatsWon: number,
     averageVotesPerSeat: number,
     votes: number,
-    firstDivisor: number
+    firstDivisor: number,
+    totalSeats: number,
+    totalVotes: number
 ): number {
-    const quotient = calculateQuotient(algorithm, seatsWon, votes, firstDivisor);
+    const quotient = calculateQuotient(algorithm, seatsWon, votes, firstDivisor, totalSeats, totalVotes);
 
     return quotient / averageVotesPerSeat;
 }
@@ -182,12 +218,16 @@ export function calculateQuotient(
     algorithm: AlgorithmType,
     seatsWon: number,
     votes: number,
-    firstDivisor: number
+    firstDivisor: number,
+    totalSeats: number,
+    totalVotes: number
 ): number {
     const denominator = getDenominator(
         algorithm,
         seatsWon,
-        firstDivisor // When computing the leveling seats, use the unmodified Sainte Lagües
+        firstDivisor, // When computing the leveling seats, use the unmodified Sainte Lagües
+        totalSeats,
+        totalVotes
     );
 
     return votes / denominator;
@@ -231,9 +271,18 @@ export function calculateFinalQuotients(
                           party.districtSeats,
                           district.votes / district.districtSeats,
                           party.votes,
-                          1
+                          1,
+                          district.districtSeats,
+                          district.votes
                       )
-                    : calculateQuotient(algorithm, party.districtSeats, party.votes, firstDivisor);
+                    : calculateQuotient(
+                          algorithm,
+                          party.districtSeats,
+                          party.votes,
+                          firstDivisor,
+                          district.districtSeats,
+                          district.votes
+                      );
 
                 districtQuotient.levellingSeatRounds.push({
                     partyCode: party.partyCode,
@@ -290,9 +339,18 @@ export function generateLevelingSeatArray(
                               partyResult.districtSeats,
                               averageVotesPerSeat,
                               partyResult.votes,
-                              1
+                              1,
+                              districtResults[countyName].levelingSeats,
+                              districtResults[countyName].votes
                           )
-                        : calculateQuotient(algorithm, partyResult.districtSeats, partyResult.votes, 1.4);
+                        : calculateQuotient(
+                              algorithm,
+                              partyResult.districtSeats,
+                              partyResult.votes,
+                              1.4,
+                              districtResults[countyName].levelingSeats,
+                              districtResults[countyName].votes
+                          );
                     const seat: LevelingSeat = {
                         district: countyName,
                         partyCode,
@@ -320,6 +378,10 @@ export function getAlgorithmType(type: number) {
             return AlgorithmType.SAINTE_LAGUE;
         case 2:
             return AlgorithmType.D_HONDT;
+        case 3:
+            return AlgorithmType.LARGEST_FRACTION_HARE;
+        case 4:
+            return AlgorithmType.LARGEST_FRACTION_DROOP;
         default:
             return AlgorithmType.UNDEFINED;
     }
@@ -336,6 +398,10 @@ export function getAlgorithmTypeString(type: string) {
             return AlgorithmType.SAINTE_LAGUE;
         case "d'Hondt":
             return AlgorithmType.D_HONDT;
+        case "Largest fraction (Hare)":
+            return AlgorithmType.LARGEST_FRACTION_HARE;
+        case "Largest fraction (Droop)":
+            return AlgorithmType.LARGEST_FRACTION_DROOP;
         default:
             return AlgorithmType.UNDEFINED;
     }

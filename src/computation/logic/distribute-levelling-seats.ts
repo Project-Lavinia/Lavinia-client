@@ -35,6 +35,7 @@ export function distributeLevelingSeats(
         payload.algorithm,
         payload.firstDivisor,
         payload.districtSeats + payload.levelingSeats,
+        payload.parameters.totalVotes,
         levelingParties
     );
 
@@ -64,6 +65,7 @@ export function distributeLevelingSeats(
         payload.algorithm,
         payload.firstDivisor,
         payload.levelingSeats,
+        payload.parameters.totalVotes,
         levelingParties,
         undefined,
         partyResults

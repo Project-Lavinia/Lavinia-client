@@ -4,6 +4,8 @@ import { Dictionary } from "../utilities/dictionary";
 export enum AlgorithmType {
     SAINTE_LAGUE = "SAINTE_LAGUE",
     D_HONDT = "D_HONDT",
+    LARGEST_FRACTION_HARE = "LARGEST_FRACTION_HARE",
+    LARGEST_FRACTION_DROOP = "LARGEST_FRACTION_DROOP",
     UNDEFINED = "UNDEFINED",
 }
 
