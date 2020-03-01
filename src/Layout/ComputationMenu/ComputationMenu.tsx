@@ -351,6 +351,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         min={0}
                         max={15}
                         defaultValue={0}
+                        originalValue={this.props.settingsPayload.comparison.districtThreshold}
                         integer={false}
                     />
                     <SmartNumericInput

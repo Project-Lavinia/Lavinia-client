@@ -34,6 +34,7 @@ export function computationMenu(
                     areaFactor: action.areaFactor,
                     districtSeats: action.districtSeats,
                     electionThreshold: action.electionThreshold,
+                    districtThreshold: action.districtThreshold,
                     firstDivisor: action.firstDivisor,
                     levelingSeats: action.levelingSeats,
                 },
@@ -58,6 +59,7 @@ export function computationMenu(
                     areaFactor: state.areaFactor,
                     districtSeats: state.districtSeats,
                     electionThreshold: state.electionThreshold,
+                    districtThreshold: state.districtThreshold,
                     firstDivisor: state.firstDivisor,
                     levelingSeats: state.levelingSeats,
                 },
@@ -69,6 +71,7 @@ export function computationMenu(
                 areaFactor: state.comparison.areaFactor,
                 districtSeats: state.comparison.districtSeats,
                 electionThreshold: state.comparison.electionThreshold,
+                districtThreshold: state.comparison.districtThreshold,
                 firstDivisor: state.comparison.firstDivisor,
                 levelingSeats: state.comparison.levelingSeats,
             };

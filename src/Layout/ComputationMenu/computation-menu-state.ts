@@ -30,6 +30,7 @@ export const unloadedState: ComputationMenuState = {
         areaFactor: "",
         districtSeats: "",
         electionThreshold: "",
+        districtThreshold: "",
         firstDivisor: "",
         levelingSeats: "",
     },
