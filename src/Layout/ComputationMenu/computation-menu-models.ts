@@ -6,7 +6,7 @@ export interface ComputationMenuPayload {
     electionThreshold: string;
     districtSeats: string;
     levelingSeats: string;
+    areaFactor: string;
     autoCompute: boolean;
     forceCompute: boolean;
-    areaFactor: string;
 }

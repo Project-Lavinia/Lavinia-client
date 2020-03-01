@@ -51,8 +51,8 @@ export function initializeComputationMenu(electionType: ElectionType, parameters
         electionThreshold: parameters.threshold.toString(),
         districtSeats: parameters.districtSeats.SUM.toString(),
         levelingSeats: parameters.levelingSeats.toString(),
-        autoCompute: true,
         areaFactor: parameters.areaFactor.toString(),
+        autoCompute: true,
     };
     return action;
 }

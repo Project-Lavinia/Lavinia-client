@@ -208,12 +208,10 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
             ...this.props.settingsPayload,
             areaFactor: stringValue,
         });
-        // Workaround for nested spread being a pain
-        const payload = this.props.computationPayload;
-        payload.parameters.areaFactor = numericValue;
         this.props.updateCalculation(
             {
-                ...payload,
+                ...this.props.computationPayload,
+                areaFactor: numericValue,
             },
             this.props.settingsPayload.autoCompute,
             false
@@ -251,6 +249,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                     electionThreshold: parseFloat(this.props.settingsPayload.electionThreshold),
                     districtSeats: parseInt(this.props.settingsPayload.districtSeats),
                     levelingSeats: parseInt(this.props.settingsPayload.levelingSeats),
+                    areaFactor: parseInt(this.props.settingsPayload.areaFactor),
                     votes,
                     metrics,
                     parameters,
@@ -277,7 +276,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     };
 
     render() {
-        const currentParameters = this.props.computationPayload.parameters;
         return (
             <div>
                 <h1 className="is-size-6-mobile is-size-4-tablet is-size-2-desktop is-size-1-widescreen">
@@ -348,7 +346,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         onChange={this.onAreaFactorChange}
                         min={0}
                         max={3}
-                        defaultValue={currentParameters.areaFactor}
+                        defaultValue={this.props.computationPayload.parameters.areaFactor}
                         integer={false}
                         hidden={parseInt(this.props.settingsPayload.year) < 2005}
                     />

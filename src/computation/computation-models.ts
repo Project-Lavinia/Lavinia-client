@@ -14,6 +14,7 @@ export interface ComputationPayload {
     electionThreshold: number;
     districtSeats: number;
     levelingSeats: number;
+    areaFactor: number;
     votes: Votes[];
     metrics: Metrics[];
     parameters: Parameters;

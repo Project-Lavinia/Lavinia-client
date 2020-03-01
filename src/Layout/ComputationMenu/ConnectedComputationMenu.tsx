@@ -26,6 +26,7 @@ const mapStateToProps = (
         electionThreshold: state.computationState.electionThreshold,
         districtSeats: state.computationState.districtSeats,
         levelingSeats: state.computationState.levelingSeats,
+        areaFactor: state.computationState.areaFactor,
         votes: state.computationState.votes,
         metrics: state.computationState.metrics,
         parameters: state.computationState.parameters,
@@ -70,6 +71,7 @@ const mapDispatchToProps = (
                 electionThreshold: computationPayload.electionThreshold,
                 districtSeats: computationPayload.districtSeats,
                 levelingSeats: computationPayload.levelingSeats,
+                areaFactor: computationPayload.areaFactor,
                 votes: computationPayload.votes,
                 metrics: computationPayload.metrics,
                 parameters: computationPayload.parameters,
@@ -101,6 +103,7 @@ const mapDispatchToProps = (
                 electionThreshold: parameters.threshold,
                 districtSeats: parameters.districtSeats.SUM,
                 levelingSeats: parameters.levelingSeats,
+                areaFactor: parameters.areaFactor,
                 votes,
                 metrics,
                 parameters,
@@ -118,6 +121,7 @@ const mapDispatchToProps = (
             electionThreshold: election.threshold.toString(),
             districtSeats: election.seats.toString(),
             levelingSeats: election.levelingSeats.toString(),
+            areaFactor: parameters.areaFactor.toString(),
         };
         const updateSettingsAction = updateComputationMenu(newSettingsPayload);
         dispatch(updateSettingsAction);

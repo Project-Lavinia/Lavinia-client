@@ -8,6 +8,7 @@ export interface ComputationState {
     electionThreshold: number;
     districtSeats: number;
     levelingSeats: number;
+    areaFactor: number;
     historical: LagueDhontResult;
     current: LagueDhontResult;
     comparison: LagueDhontResult;
@@ -49,6 +50,7 @@ export const unloadedState: ComputationState = {
     electionThreshold: -1,
     districtSeats: -1,
     levelingSeats: -1,
+    areaFactor: -1,
     historical: {
         districtResults: [],
         partyResults: [],
