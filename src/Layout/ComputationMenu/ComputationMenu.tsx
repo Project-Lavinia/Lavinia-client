@@ -156,6 +156,28 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
      * Helper function to update the calculation and settings on
      * user interaction.
      *
+     * @param stringValue the string value of the district threshold
+     * @param numericValue the numeric value of the district threshold
+     */
+    onDistrictThresholdChange = (stringValue: string, numericValue: number) => {
+        this.props.updateSettings({
+            ...this.props.settingsPayload,
+            districtThreshold: stringValue,
+        });
+        this.props.updateCalculation(
+            {
+                ...this.props.computationPayload,
+                districtThreshold: numericValue,
+            },
+            this.props.settingsPayload.autoCompute,
+            false
+        );
+    };
+
+    /**
+     * Helper function to update the calculation and settings on
+     * user interaction.
+     *
      * @param stringValue the string value of the no. of district seats
      * @param numericValue the numeric value of the no. of district seats
      */
@@ -249,6 +271,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                     algorithm: getAlgorithmType(this.props.settingsPayload.algorithm),
                     firstDivisor: parseFloat(this.props.settingsPayload.firstDivisor),
                     electionThreshold: parseFloat(this.props.settingsPayload.electionThreshold),
+                    districtThreshold: parseFloat(this.props.settingsPayload.districtThreshold),
                     districtSeats: parseInt(this.props.settingsPayload.districtSeats),
                     levelingSeats: parseInt(this.props.settingsPayload.levelingSeats),
                     votes,
@@ -317,6 +340,16 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         min={0}
                         max={15}
                         defaultValue={this.props.computationPayload.election.threshold}
+                        integer={false}
+                    />
+                    <SmartNumericInput
+                        name="districtThreshold"
+                        title="Sperregrense for distriktmandat"
+                        value={this.props.settingsPayload.districtThreshold}
+                        onChange={this.onDistrictThresholdChange}
+                        min={0}
+                        max={15}
+                        defaultValue={0}
                         integer={false}
                     />
                     <SmartNumericInput

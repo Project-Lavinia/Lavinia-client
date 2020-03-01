@@ -106,6 +106,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
         const distributionResult = distributeSeats(
             payload.algorithm,
             payload.firstDivisor,
+            payload.districtThreshold,
             districtSeats[county.name],
             districtResults[county.name].votes,
             county.results

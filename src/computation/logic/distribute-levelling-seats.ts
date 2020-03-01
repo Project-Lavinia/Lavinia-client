@@ -34,6 +34,7 @@ export function distributeLevelingSeats(
     const nationalDistribution = distributeSeats(
         payload.algorithm,
         payload.firstDivisor,
+        Number.MIN_SAFE_INTEGER,
         payload.districtSeats + payload.levelingSeats,
         payload.parameters.totalVotes,
         levelingParties
@@ -55,7 +56,7 @@ export function distributeLevelingSeats(
             partyCode,
             partyName: "",
             votes: partyResults[partyCode].votes,
-            percentage: -1,
+            percentage: partyResults[partyCode].percentVotes,
         };
         levelingParties.push(party);
     }
@@ -64,6 +65,7 @@ export function distributeLevelingSeats(
     const levelingSeatsDistribution = distributeSeats(
         payload.algorithm,
         payload.firstDivisor,
+        Number.MIN_SAFE_INTEGER,
         payload.levelingSeats,
         payload.parameters.totalVotes,
         levelingParties,
