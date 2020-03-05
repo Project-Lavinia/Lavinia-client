@@ -9,6 +9,7 @@ export interface AlgorithmSelectProps {
 
 export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
     render() {
+        const setttingWasChanged = this.props.algorithm !== this.props.defaultAlgorithm;
         return (
             <div className="field">
                 <label className="label" htmlFor="algorithm_select">
@@ -29,9 +30,7 @@ export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
                         </select>
                     </div>
                 </div>
-                {this.props.algorithm !== this.props.defaultAlgorithm && (
-                    <label>Orginalt: {getAlgorithmName(this.props.defaultAlgorithm)}</label>
-                )}
+                {setttingWasChanged && <label>Orginalt: {getAlgorithmName(this.props.defaultAlgorithm)}</label>}
             </div>
         );
     }
