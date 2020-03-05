@@ -272,7 +272,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                     districtThreshold: parseFloat(this.props.settingsPayload.districtThreshold),
                     districtSeats: parseInt(this.props.settingsPayload.districtSeats),
                     levelingSeats: parseInt(this.props.settingsPayload.levelingSeats),
-                    areaFactor: parseInt(this.props.settingsPayload.areaFactor),
+                    areaFactor: parseFloat(this.props.settingsPayload.areaFactor),
                     votes,
                     metrics,
                     parameters,
