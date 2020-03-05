@@ -67,9 +67,13 @@ export class SmartNumericInput extends React.Component<SmartNumericInputProps, {
     };
 
     validateInput(input: string): { stringValue: string; numericValue: number } {
-        const regex = RegExp("(^-$)|(^-?\\d+(\\.\\d*)?$)");
+        const regex = RegExp(/(^-$)|(^-?\d+(\.\d*)?$)/);
         const defaultValue = this.props.defaultValue;
         let value: number;
+
+        if (this.props.hidden) {
+            return { numericValue: defaultValue, stringValue: input };
+        }
 
         if (regex.test(input) === false && input !== "") {
             // Matches any numbers as well as "", "-" and "3."
