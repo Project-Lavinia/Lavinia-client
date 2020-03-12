@@ -230,12 +230,10 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
             ...this.props.settingsPayload,
             areaFactor: stringValue,
         });
-        // Workaround for nested spread being a pain
-        const payload = this.props.computationPayload;
-        payload.parameters.areaFactor = numericValue;
         this.props.updateCalculation(
             {
-                ...payload,
+                ...this.props.computationPayload,
+                areaFactor: numericValue,
             },
             this.props.settingsPayload.autoCompute,
             false
@@ -274,6 +272,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                     districtThreshold: parseFloat(this.props.settingsPayload.districtThreshold),
                     districtSeats: parseInt(this.props.settingsPayload.districtSeats),
                     levelingSeats: parseInt(this.props.settingsPayload.levelingSeats),
+                    areaFactor: parseFloat(this.props.settingsPayload.areaFactor),
                     votes,
                     metrics,
                     parameters,
@@ -300,7 +299,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     };
 
     render() {
-        const currentParameters = this.props.computationPayload.parameters;
         return (
             <div>
                 <h1 className="is-size-6-mobile is-size-4-tablet is-size-2-desktop is-size-1-widescreen">
@@ -319,6 +317,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                     />
                     <AlgorithmSelect
                         algorithm={this.props.settingsPayload.algorithm}
+                        defaultAlgorithm={this.props.settingsPayload.comparison.algorithm}
                         onAlgorithmChange={this.onAlgorithmChange}
                     />
                     <SmartNumericInput
@@ -330,6 +329,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         min={1}
                         max={5}
                         defaultValue={this.props.computationPayload.election.firstDivisor}
+                        originalValue={this.props.settingsPayload.comparison.firstDivisor}
                         integer={false}
                     />
                     <SmartNumericInput
@@ -340,6 +340,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         min={0}
                         max={15}
                         defaultValue={this.props.computationPayload.election.threshold}
+                        originalValue={this.props.settingsPayload.comparison.electionThreshold}
                         integer={false}
                     />
                     <SmartNumericInput
@@ -350,6 +351,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         min={0}
                         max={15}
                         defaultValue={0}
+                        originalValue={this.props.settingsPayload.comparison.districtThreshold}
                         integer={false}
                     />
                     <SmartNumericInput
@@ -360,6 +362,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         min={0}
                         max={100}
                         defaultValue={this.props.computationPayload.election.levelingSeats}
+                        originalValue={this.props.settingsPayload.comparison.levelingSeats}
                         integer={true}
                     />
                     <SmartNumericInput
@@ -370,6 +373,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         min={0}
                         max={500}
                         defaultValue={this.props.computationPayload.election.seats}
+                        originalValue={this.props.settingsPayload.comparison.districtSeats}
                         integer={true}
                         hidden={parseInt(this.props.settingsPayload.year) < 2005}
                     />
@@ -380,7 +384,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         onChange={this.onAreaFactorChange}
                         min={0}
                         max={3}
-                        defaultValue={currentParameters.areaFactor}
+                        defaultValue={this.props.computationPayload.parameters.areaFactor}
+                        originalValue={this.props.settingsPayload.comparison.areaFactor}
                         integer={false}
                         hidden={parseInt(this.props.settingsPayload.year) < 2005}
                     />

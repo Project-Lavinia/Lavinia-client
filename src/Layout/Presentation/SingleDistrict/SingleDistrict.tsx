@@ -4,7 +4,12 @@ import { DistrictResult, PartyResult, SeatResult } from "../../../computation/co
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
-import { getVulnerableSeatByQuotient, getVulnerableSeatByVotes } from "../../../utilities/district";
+import {
+    getVulnerableSeatByQuotient,
+    getVulnerableSeatByVotes,
+    getVotesToVulnerableSeatMap,
+    getQuotientsToVulnerableSeatMap,
+} from "../../../utilities/district";
 import { DistrictSelect } from "./DistrictSelect";
 import { norwegian } from "../../../utilities/rt";
 import { roundNumber } from "../../../utilities/number";
@@ -30,8 +35,11 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         const data = this.getData()!;
         const decimals = this.props.decimals;
         const proportionalities = data.map((value) => value.proportionality);
-        const vulnerable = getVulnerableSeatByQuotient(this.getDistrictResult(this.props.districtSelected)!);
-        const vulnerableVotes = getVulnerableSeatByVotes(this.getDistrictResult(this.props.districtSelected)!);
+        const currentDistrictResult = this.getDistrictResult(this.props.districtSelected);
+        const vulnerableMap = getVotesToVulnerableSeatMap(currentDistrictResult!);
+        const quotientMap = getQuotientsToVulnerableSeatMap(currentDistrictResult!);
+        const vulnerable = getVulnerableSeatByQuotient(currentDistrictResult!);
+        const vulnerableVotes = getVulnerableSeatByVotes(currentDistrictResult!);
         console.log(process.env.DEBUG);
         console.log(`Vulnerable by votes: ${vulnerableVotes.partyCode}: ${vulnerableVotes.moreVotesToWin}`);
         let label: string;
@@ -106,37 +114,41 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             accessor: (d: PartyResult) => roundNumber(d.percentVotes, decimals),
                         },
                         {
-                            Header: "Mandater",
+                            Header: "Distrikt",
+                            accessor: "districtSeats",
+                            Footer: (
+                                <span>
+                                    <strong>{data.map((value) => value.districtSeats).reduce(toSum)}</strong>
+                                </span>
+                            ),
+                        },
+                        {
+                            Header: "Utjevning",
+                            accessor: "levelingSeats",
+                            Footer: (
+                                <span>
+                                    <strong>{data.map((value) => value.levelingSeats).reduce(toSum)}</strong>
+                                </span>
+                            ),
+                        },
+                        {
+                            Header: "Sum Mandater",
                             accessor: "totalSeats",
-                            columns: [
-                                {
-                                    Header: "Distrikt",
-                                    accessor: "districtSeats",
-                                    Footer: (
-                                        <span>
-                                            <strong>{data.map((value) => value.districtSeats).reduce(toSum)}</strong>
-                                        </span>
-                                    ),
-                                },
-                                {
-                                    Header: "Utjevning",
-                                    accessor: "levelingSeats",
-                                    Footer: (
-                                        <span>
-                                            <strong>{data.map((value) => value.levelingSeats).reduce(toSum)}</strong>
-                                        </span>
-                                    ),
-                                },
-                                {
-                                    Header: "Sum Mandater",
-                                    accessor: "totalSeats",
-                                    Footer: (
-                                        <span>
-                                            <strong>{data.map((value) => value.totalSeats).reduce(toSum)}</strong>
-                                        </span>
-                                    ),
-                                },
-                            ],
+                            Footer: (
+                                <span>
+                                    <strong>{data.map((value) => value.totalSeats).reduce(toSum)}</strong>
+                                </span>
+                            ),
+                        },
+                        {
+                            id: "marginInVotes",
+                            Header: "Margin i stemmer",
+                            accessor: (d: PartyResult) => vulnerableMap.get(d.partyCode),
+                        },
+                        {
+                            id: "lastSeatQuotient",
+                            Header: "Siste kvotient",
+                            accessor: (d: PartyResult) => quotientMap.get(d.partyCode)!.toFixed(decimals),
                         },
                         {
                             Header: "Prop.",
