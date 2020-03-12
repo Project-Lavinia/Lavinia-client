@@ -30,8 +30,9 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         const data = this.getData()!;
         const decimals = this.props.decimals;
         const proportionalities = data.map((value) => value.proportionality);
-        const vulnerable = getVulnerableSeatByQuotient(this.getDistrictResult(this.props.districtSelected)!);
-        const vulnerableVotes = getVulnerableSeatByVotes(this.getDistrictResult(this.props.districtSelected)!);
+        const currentDistrictResult = this.getDistrictResult(this.props.districtSelected);
+        const vulnerable = getVulnerableSeatByQuotient(currentDistrictResult!);
+        const vulnerableVotes = getVulnerableSeatByVotes(currentDistrictResult!);
         console.log(process.env.DEBUG);
         console.log(`Vulnerable by votes: ${vulnerableVotes.partyCode}: ${vulnerableVotes.moreVotesToWin}`);
         let label: string;
