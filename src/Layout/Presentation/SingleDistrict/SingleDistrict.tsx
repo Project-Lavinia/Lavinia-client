@@ -4,7 +4,12 @@ import { DistrictResult, PartyResult, SeatResult } from "../../../computation/co
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
-import { getVulnerableSeatByQuotient, getVulnerableSeatByVotes } from "../../../utilities/district";
+import {
+    getVulnerableSeatByQuotient,
+    getVulnerableSeatByVotes,
+    getVotesToVulnerableSeatMap,
+    getQuotientsToVulnerableSeatMap,
+} from "../../../utilities/district";
 import { DistrictSelect } from "./DistrictSelect";
 import { norwegian } from "../../../utilities/rt";
 import { roundNumber } from "../../../utilities/number";
@@ -31,6 +36,8 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         const decimals = this.props.decimals;
         const proportionalities = data.map((value) => value.proportionality);
         const currentDistrictResult = this.getDistrictResult(this.props.districtSelected);
+        const vulnerableMap = getVotesToVulnerableSeatMap(currentDistrictResult!);
+        const quotientMap = getQuotientsToVulnerableSeatMap(currentDistrictResult!);
         const vulnerable = getVulnerableSeatByQuotient(currentDistrictResult!);
         const vulnerableVotes = getVulnerableSeatByVotes(currentDistrictResult!);
         console.log(process.env.DEBUG);
@@ -132,6 +139,16 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                     <strong>{data.map((value) => value.totalSeats).reduce(toSum)}</strong>
                                 </span>
                             ),
+                        },
+                        {
+                            id: "marginInVotes",
+                            Header: "Margin i stemmer",
+                            accessor: (d: PartyResult) => vulnerableMap.get(d.partyCode),
+                        },
+                        {
+                            id: "lastSeatQuotient",
+                            Header: "Siste kvotient",
+                            accessor: (d: PartyResult) => quotientMap.get(d.partyCode)!.toFixed(decimals),
                         },
                         {
                             Header: "Prop.",
