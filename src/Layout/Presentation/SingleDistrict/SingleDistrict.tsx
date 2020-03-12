@@ -106,37 +106,31 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             accessor: (d: PartyResult) => roundNumber(d.percentVotes, decimals),
                         },
                         {
-                            Header: "Mandater",
+                            Header: "Distrikt",
+                            accessor: "districtSeats",
+                            Footer: (
+                                <span>
+                                    <strong>{data.map((value) => value.districtSeats).reduce(toSum)}</strong>
+                                </span>
+                            ),
+                        },
+                        {
+                            Header: "Utjevning",
+                            accessor: "levelingSeats",
+                            Footer: (
+                                <span>
+                                    <strong>{data.map((value) => value.levelingSeats).reduce(toSum)}</strong>
+                                </span>
+                            ),
+                        },
+                        {
+                            Header: "Sum Mandater",
                             accessor: "totalSeats",
-                            columns: [
-                                {
-                                    Header: "Distrikt",
-                                    accessor: "districtSeats",
-                                    Footer: (
-                                        <span>
-                                            <strong>{data.map((value) => value.districtSeats).reduce(toSum)}</strong>
-                                        </span>
-                                    ),
-                                },
-                                {
-                                    Header: "Utjevning",
-                                    accessor: "levelingSeats",
-                                    Footer: (
-                                        <span>
-                                            <strong>{data.map((value) => value.levelingSeats).reduce(toSum)}</strong>
-                                        </span>
-                                    ),
-                                },
-                                {
-                                    Header: "Sum Mandater",
-                                    accessor: "totalSeats",
-                                    Footer: (
-                                        <span>
-                                            <strong>{data.map((value) => value.totalSeats).reduce(toSum)}</strong>
-                                        </span>
-                                    ),
-                                },
-                            ],
+                            Footer: (
+                                <span>
+                                    <strong>{data.map((value) => value.totalSeats).reduce(toSum)}</strong>
+                                </span>
+                            ),
                         },
                         {
                             Header: "Prop.",
