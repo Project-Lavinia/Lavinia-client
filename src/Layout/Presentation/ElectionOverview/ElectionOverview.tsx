@@ -95,8 +95,8 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
         }
         const allTrueFalseOptions = [
             { value: "all", title: "Alle" },
-            { value: "true", title: "Ja" },
-            { value: "false", title: "Nei" },
+            { value: "true", title: "Ja >" },
+            { value: "false", title: "Nei =" },
         ];
 
         const thresholdOptions = [
