@@ -17,7 +17,7 @@ export class ComparisonCheckbox extends React.Component<ComparisonCheckboxProps>
                         checked={this.props.showComparison}
                         onChange={this.props.toggleComparison}
                     />
-                    &nbsp;Detaljert sammenlikning
+                    &nbsp;Mandatendringer
                 </label>
             </div>
         );
