@@ -24,7 +24,7 @@ export const selectionLookup: SelectionItem[] = [
     },
     {
         type: PresentationType.SeatDistribution,
-        displayName: "Fordeling",
+        displayName: "Fylkesfordeling av mandater",
     },
     {
         type: PresentationType.SingleDistrict,
