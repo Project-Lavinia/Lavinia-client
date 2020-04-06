@@ -8,7 +8,7 @@ interface SelectionItem {
 export const selectionLookup: SelectionItem[] = [
     {
         type: PresentationType.DistrictTable,
-        displayName: "Fylker",
+        displayName: "Fylkesoversikt",
     },
     {
         type: PresentationType.ElectionTable,
