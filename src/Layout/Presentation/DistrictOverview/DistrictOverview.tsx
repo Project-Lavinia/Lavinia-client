@@ -20,7 +20,6 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const averageVotingPower = data.map((value) => value.votesPerSeat).reduce(toMean);
         const highestVsAverageInPercentage = (1 / highestVotingPower / (1 / averageVotingPower)) * 100;
         const lowestVsAverageInPercentage = (1 / lowestVotingPower / (1 / averageVotingPower)) * 100;
-        const highestVsLowestInPercentage = (1 / highestVotingPower / (1 / lowestVotingPower)) * 100;
         const mostInfluentialDistrict = (
             <span className="has-text-success">
                 {data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name}
@@ -45,10 +44,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                         {leastInfluentialDistrict}
                         {" hadde minst vekt, og bare telte "}
                         {lowestVsAverageInPercentage.toFixed(decimals) + "%."}
-                        {" En stemme i det mest innflytelsesrike fylket telte altså "}
-                        {highestVsLowestInPercentage.toFixed(decimals) + "%"}
-                        {" mer enn en stemme i det minst innflytelsesrike fylket."}
-                        {" Det mest utsatte sistemandatet relativt til kvotient var i "}
+                        {" Det mest utsatte sistemandatet (relativt til kvotient) var i "}
                         {<span className="has-text-warning">{mostVulnerable.district}</span>}
                         {" og ble vunnet av "}
                         {mostVulnerable.winner.partyCode}
