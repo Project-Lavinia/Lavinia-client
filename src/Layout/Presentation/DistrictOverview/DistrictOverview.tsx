@@ -38,12 +38,12 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                     <p className="card-content">
                         {"En stemme i "}
                         {mostInfluentialDistrict}
-                        {" hadde mest innflytelse, og telte "}
+                        {" hadde mest vekt, og telte "}
                         {highestVsAverageInPercentage.toFixed(decimals) + "%"}
                         {" av en gjennomsnittlig stemme"}
                         {", mens en stemme i "}
                         {leastInfluentialDistrict}
-                        {" hadde minst innflytelse, og bare telte "}
+                        {" hadde minst vekt, og bare telte "}
                         {lowestVsAverageInPercentage.toFixed(decimals) + "%."}
                         {" En stemme i det mest innflytelsesrike fylket telte altså "}
                         {highestVsLowestInPercentage.toFixed(decimals) + "%"}
