@@ -9,6 +9,7 @@ import {
     getVulnerableSeatByVotes,
     getVotesToVulnerableSeatMap,
     getQuotientsToVulnerableSeatMap,
+    getPartyNameByPartyCode,
 } from "../../../utilities/district";
 import { DistrictSelect } from "./DistrictSelect";
 import { norwegian } from "../../../utilities/rt";
@@ -40,6 +41,12 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         const quotientMap = getQuotientsToVulnerableSeatMap(currentDistrictResult!);
         const vulnerable = getVulnerableSeatByQuotient(currentDistrictResult!);
         const vulnerableVotes = getVulnerableSeatByVotes(currentDistrictResult!);
+        const vulnerableWinnerPartyName = getPartyNameByPartyCode(currentDistrictResult!, vulnerable.winner.partyCode);
+        const vulnerableQuotientPartyName = getPartyNameByPartyCode(
+            currentDistrictResult!,
+            vulnerable.runnerUp.partyCode
+        );
+        const vulnerableVotesPartyName = getPartyNameByPartyCode(currentDistrictResult!, vulnerableVotes.partyCode);
         console.log(process.env.DEBUG);
         console.log(`Vulnerable by votes: ${vulnerableVotes.partyCode}: ${vulnerableVotes.moreVotesToWin}`);
         let label: string;
@@ -61,6 +68,22 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                 index = -1;
             }
         }
+        const blackBoxComment =
+            vulnerable.moreVotesToWin > vulnerableVotes.moreVotesToWin
+                ? [
+                      " hadde nærmest kvotient. ",
+                      <span key="99" className="has-text-warning">
+                          {vulnerableVotesPartyName}
+                      </span>,
+                      " hadde derimot minst margin og trengte kun ",
+                      vulnerableVotes.moreVotesToWin,
+                      " flere stemmer for å ta det siste mandatet.",
+                  ]
+                : [
+                      " hadde nærmest kvotient, og trengte ",
+                      vulnerable.moreVotesToWin,
+                      " flere stemmer for å ta mandatet. ",
+                  ];
         return (
             <React.Fragment>
                 <DistrictSelect
@@ -74,12 +97,10 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             {"Sistemandat i "}
                             {this.props.districtSelected}
                             {" gikk til "}
-                            {<span className="has-text-success">{vulnerable.winner.partyCode}</span>}
+                            {<span className="has-text-success">{vulnerableWinnerPartyName}</span>}
                             {". "}&nbsp;
-                            {<span className="has-text-warning">{vulnerable.runnerUp.partyCode}</span>}
-                            {" hadde nærmest kvotient, og trengte "}
-                            {vulnerable.moreVotesToWin}
-                            {" flere stemmer for å ta mandatet."}
+                            {<span className="has-text-warning">{vulnerableQuotientPartyName}</span>}
+                            {blackBoxComment}
                         </p>
                     </div>
                 </div>

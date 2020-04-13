@@ -67,6 +67,11 @@ export function getVulnerableSeatByQuotient(districtResult: DistrictResult): Vul
     };
 }
 
+export function getPartyNameByPartyCode(districtResult: DistrictResult, partyCode: string) {
+    const partyResult = districtResult.partyResults.find((pr) => pr.partyCode === partyCode)!;
+    return partyResult.partyName;
+}
+
 export function getVulnerableSeatByVotes(
     districtResult: DistrictResult
 ): { winner: SeatPartyResult; partyCode: string; moreVotesToWin: number } {
@@ -75,7 +80,7 @@ export function getVulnerableSeatByVotes(
     const winner = previousRound.partyResults.find((pr) => pr.partyCode === lastSeat.winner)!;
     const margins: { partyCode: string; moreVotesToWin: number }[] = [];
     lastSeat.partyResults.forEach((partyResult) => {
-        const moreVotesToWin = Math.floor(winner.quotient * partyResult.denominator - partyResult.votes);
+        const moreVotesToWin = Math.floor(winner.quotient * partyResult.denominator - partyResult.votes + 1);
         margins.push({
             partyCode: partyResult.partyCode,
             moreVotesToWin,
@@ -84,8 +89,8 @@ export function getVulnerableSeatByVotes(
     const sorted = margins.slice().sort((a, b) => (a.moreVotesToWin >= b.moreVotesToWin ? 1 : -1))!;
     return {
         winner,
-        partyCode: sorted[1].partyCode,
-        moreVotesToWin: sorted[1].moreVotesToWin,
+        partyCode: sorted[0].partyCode,
+        moreVotesToWin: sorted[0].moreVotesToWin,
     };
 }
 
