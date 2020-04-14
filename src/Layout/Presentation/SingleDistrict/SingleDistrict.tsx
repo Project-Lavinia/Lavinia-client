@@ -115,7 +115,9 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             Header: "Parti",
                             accessor: "partyCode",
                             Cell: (data) => {
-                                const showFullName = <span title={data.original.partyName}>{data.value}</span>;
+                                const showFullName = (
+                                    <span title={data.original.partyName + " vant siste mandat"}>{data.value}</span>
+                                );
                                 return data.row.partyCode === vulnerable.winner.partyCode ? (
                                     <b>{showFullName}</b>
                                 ) : (
@@ -172,15 +174,29 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             id: "marginInVotes",
                             Header: "Margin i stemmer",
-                            Cell: (data) =>
-                                data.row.partyCode === vulnerableVotes.partyCode ? <b>{data.value}</b> : data.value,
+                            Cell: (data) => {
+                                if (data.row.partyCode === vulnerableVotes.partyCode) {
+                                    const closestMargin = (
+                                        <span title={"Minst margin i antall stemmer for å ta siste mandat"}>
+                                            {data.value}
+                                        </span>
+                                    );
+                                    return <b>{closestMargin}</b>;
+                                }
+                                return data.value;
+                            },
                             accessor: (d: PartyResult) => vulnerableMap.get(d.partyCode),
                         },
                         {
                             id: "lastSeatQuotient",
                             Header: "Siste kvotient",
-                            Cell: (data) =>
-                                data.row.partyCode === vulnerable.runnerUp.partyCode ? <b>{data.value}</b> : data.value,
+                            Cell: (data) => {
+                                if (data.row.partyCode === vulnerable.runnerUp.partyCode) {
+                                    const closestQuotient = <span title={"Nærmeste kvotient"}>{data.value}</span>;
+                                    return <b>{closestQuotient}</b>;
+                                }
+                                return data.value;
+                            },
                             accessor: (d: PartyResult) => quotientMap.get(d.partyCode)!.toFixed(decimals),
                         },
                         {
