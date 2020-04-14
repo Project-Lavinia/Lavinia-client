@@ -114,6 +114,8 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: "Parti",
                             accessor: "partyCode",
+                            Cell: (data: any) =>
+                                data.row.partyCode === vulnerable.winner.partyCode ? <b>{data.value}</b> : data.value,
                             Footer: (
                                 <span>
                                     <strong>Utvalg</strong>
@@ -164,11 +166,15 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             id: "marginInVotes",
                             Header: "Margin i stemmer",
+                            Cell: (data: any) =>
+                                data.row.partyCode === vulnerableVotes.partyCode ? <b>{data.value}</b> : data.value,
                             accessor: (d: PartyResult) => vulnerableMap.get(d.partyCode),
                         },
                         {
                             id: "lastSeatQuotient",
                             Header: "Siste kvotient",
+                            Cell: (data: any) =>
+                                data.row.partyCode === vulnerable.runnerUp.partyCode ? <b>{data.value}</b> : data.value,
                             accessor: (d: PartyResult) => quotientMap.get(d.partyCode)!.toFixed(decimals),
                         },
                         {
