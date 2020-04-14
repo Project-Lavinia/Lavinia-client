@@ -114,8 +114,14 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: "Parti",
                             accessor: "partyCode",
-                            Cell: (data: any) =>
-                                data.row.partyCode === vulnerable.winner.partyCode ? <b>{data.value}</b> : data.value,
+                            Cell: (data) => {
+                                const showFullName = <span title={data.original.partyName}>{data.value}</span>;
+                                return data.row.partyCode === vulnerable.winner.partyCode ? (
+                                    <b>{showFullName}</b>
+                                ) : (
+                                    showFullName
+                                );
+                            },
                             Footer: (
                                 <span>
                                     <strong>Utvalg</strong>
@@ -166,14 +172,14 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             id: "marginInVotes",
                             Header: "Margin i stemmer",
-                            Cell: (data: any) =>
+                            Cell: (data) =>
                                 data.row.partyCode === vulnerableVotes.partyCode ? <b>{data.value}</b> : data.value,
                             accessor: (d: PartyResult) => vulnerableMap.get(d.partyCode),
                         },
                         {
                             id: "lastSeatQuotient",
                             Header: "Siste kvotient",
-                            Cell: (data: any) =>
+                            Cell: (data) =>
                                 data.row.partyCode === vulnerable.runnerUp.partyCode ? <b>{data.value}</b> : data.value,
                             accessor: (d: PartyResult) => quotientMap.get(d.partyCode)!.toFixed(decimals),
                         },
