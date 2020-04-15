@@ -72,7 +72,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
             vulnerable.moreVotesToWin > vulnerableVotes.moreVotesToWin
                 ? [
                       " hadde nærmest kvotient. ",
-                      <span key="99" className="has-text-warning">
+                      <span key="99" style={{ color: "orange" }}>
                           {vulnerableVotesPartyName}
                       </span>,
                       " hadde derimot minst margin og trengte kun ",
@@ -114,15 +114,18 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: "Parti",
                             accessor: "partyCode",
-                            Cell: (data) => {
-                                const showFullName = (
-                                    <span title={data.original.partyName + " vant siste mandat"}>{data.value}</span>
-                                );
-                                return data.row.partyCode === vulnerable.winner.partyCode ? (
-                                    <b>{showFullName}</b>
-                                ) : (
-                                    showFullName
-                                );
+                            Cell: (row) => {
+                                if (row.original.partyCode === vulnerable.winner.partyCode) {
+                                    return (
+                                        <div
+                                            title={row.original.partyName + " vant siste mandat"}
+                                            style={{ backgroundColor: "#28b62c" }}
+                                        >
+                                            {row.value}
+                                        </div>
+                                    );
+                                }
+                                return row.value;
                             },
                             Footer: (
                                 <span>
@@ -174,30 +177,37 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             id: "marginInVotes",
                             Header: "Margin i stemmer",
-                            Cell: (data) => {
-                                if (data.row.partyCode === vulnerableVotes.partyCode) {
-                                    const closestMargin = (
-                                        <span title={"Minst margin i antall stemmer for å ta siste mandat"}>
-                                            {data.value}
-                                        </span>
+                            accessor: (d: PartyResult) => vulnerableMap.get(d.partyCode)!,
+                            Cell: (row) => {
+                                if (row.original.partyCode === vulnerableVotes.partyCode) {
+                                    const cellColor =
+                                        row.original.partyCode === vulnerable.runnerUp.partyCode ? "#ffdd57" : "orange";
+                                    return (
+                                        <div
+                                            title={"Minst margin i antall stemmer for å ta siste mandat"}
+                                            style={{ backgroundColor: cellColor }}
+                                        >
+                                            {row.value}
+                                        </div>
                                     );
-                                    return <b>{closestMargin}</b>;
                                 }
-                                return data.value;
+                                return row.value;
                             },
-                            accessor: (d: PartyResult) => vulnerableMap.get(d.partyCode),
                         },
                         {
                             id: "lastSeatQuotient",
                             Header: "Siste kvotient",
-                            Cell: (data) => {
-                                if (data.row.partyCode === vulnerable.runnerUp.partyCode) {
-                                    const closestQuotient = <span title={"Nærmeste kvotient"}>{data.value}</span>;
-                                    return <b>{closestQuotient}</b>;
-                                }
-                                return data.value;
-                            },
                             accessor: (d: PartyResult) => quotientMap.get(d.partyCode)!.toFixed(decimals),
+                            Cell: (row) => {
+                                if (row.original.partyCode === vulnerable.runnerUp.partyCode) {
+                                    return (
+                                        <div title={"Nærmeste kvotient"} style={{ backgroundColor: "#ffdd57" }}>
+                                            {row.value}
+                                        </div>
+                                    );
+                                }
+                                return row.value;
+                            },
                         },
                         {
                             Header: "Prop.",
