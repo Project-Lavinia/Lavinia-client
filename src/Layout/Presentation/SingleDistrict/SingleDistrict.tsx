@@ -61,6 +61,22 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                 index = -1;
             }
         }
+        const blackBoxComment =
+            vulnerable.moreVotesToWin > vulnerableVotes.moreVotesToWin
+                ? [
+                      " hadde nærmest kvotient. ",
+                      <span key={vulnerableVotes.partyCode} className="has-text-warning">
+                          {vulnerableVotes.partyCode}
+                      </span>,
+                      " hadde derimot minst margin og trengte kun ",
+                      vulnerableVotes.moreVotesToWin,
+                      " flere stemmer for å ta det siste mandatet.",
+                  ]
+                : [
+                      " hadde nærmest kvotient, og trengte ",
+                      vulnerable.moreVotesToWin,
+                      " flere stemmer for å ta mandatet. ",
+                  ];
         return (
             <React.Fragment>
                 <DistrictSelect
@@ -77,9 +93,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             {<span className="has-text-success">{vulnerable.winner.partyCode}</span>}
                             {". "}&nbsp;
                             {<span className="has-text-warning">{vulnerable.runnerUp.partyCode}</span>}
-                            {" hadde nærmest kvotient, og trengte "}
-                            {vulnerable.moreVotesToWin}
-                            {" flere stemmer for å ta mandatet."}
+                            {blackBoxComment}
                         </p>
                     </div>
                 </div>
