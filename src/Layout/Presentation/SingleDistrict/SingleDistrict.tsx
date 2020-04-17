@@ -158,11 +158,23 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             id: "marginInVotes",
                             Header: "Margin i stemmer",
                             accessor: (d: PartyResult) => vulnerableMap.get(d.partyCode),
+                            Cell: (row) => {
+                                if (row.original.partyCode === vulnerableVotes.partyCode) {
+                                    return <div className="has-background-dark has-text-white">{row.value}</div>;
+                                }
+                                return row.value;
+                            },
                         },
                         {
                             id: "lastSeatQuotient",
                             Header: "Siste kvotient",
                             accessor: (d: PartyResult) => quotientMap.get(d.partyCode)!.toFixed(decimals),
+                            Cell: (row) => {
+                                if (row.original.partyCode === vulnerable.runnerUp.partyCode) {
+                                    return <div className="has-background-dark has-text-white">{row.value}</div>;
+                                }
+                                return row.value;
+                            },
                         },
                         {
                             Header: "Prop.",
