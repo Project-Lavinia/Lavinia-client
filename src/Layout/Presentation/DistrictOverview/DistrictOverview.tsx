@@ -59,6 +59,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                 <ReactTable
                     className="-highlight -striped has-text-centered"
                     defaultPageSize={this.props.districtResults.length}
+                    pageSize={this.props.districtResults.length}
                     showPaginationBottom={false}
                     data={data}
                     {...norwegian}

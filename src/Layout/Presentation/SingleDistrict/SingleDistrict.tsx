@@ -23,12 +23,15 @@ export interface SingleDistrictProps {
 }
 
 export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
-    getDistrictResult = (name: string): DistrictResult | undefined => {
-        return this.props.districtResults.find((district) => district.name === name);
+    getDistrictResult = (name: string): DistrictResult => {
+        const selectedDistrict =
+            this.props.districtResults.find((district) => district.name === name) || this.props.districtResults[0];
+        return selectedDistrict;
     };
-    getData = (): PartyResult[] | undefined => {
+
+    getData = (): PartyResult[] => {
         const districtResult = this.getDistrictResult(this.props.districtSelected);
-        return districtResult ? districtResult.partyResults : undefined;
+        return districtResult.partyResults;
     };
 
     render() {
@@ -40,8 +43,6 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         const quotientMap = getQuotientsToVulnerableSeatMap(currentDistrictResult!);
         const vulnerable = getVulnerableSeatByQuotient(currentDistrictResult!);
         const vulnerableVotes = getVulnerableSeatByVotes(currentDistrictResult!);
-        console.log(process.env.DEBUG);
-        console.log(`Vulnerable by votes: ${vulnerableVotes.partyCode}: ${vulnerableVotes.moreVotesToWin}`);
         let label: string;
         let index: number;
         switch (this.props.disproportionalityIndex) {

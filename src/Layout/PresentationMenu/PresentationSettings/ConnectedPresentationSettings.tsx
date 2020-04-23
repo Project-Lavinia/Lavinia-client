@@ -8,8 +8,10 @@ import {
     changeDisproportionalityIndex,
     toggleShowComparison,
     toggleShowFilters,
+    toggleMergeDistricts,
 } from "../presentation-menu-actions";
 import { DisproportionalityIndex } from "../../Presentation/presentation-models";
+import { ComputationPayload, updateComputation } from "../../../computation";
 
 /**
  * Describes which properties we want to pick from the properties of the
@@ -17,16 +19,24 @@ import { DisproportionalityIndex } from "../../Presentation/presentation-models"
  */
 interface StateProps
     extends Pick<
-            PresentationSettingsProps,
-            | "currentPresentation"
-            | "districtSelected"
-            | "decimals"
-            | "showPartiesWithoutSeats"
-            | "results"
-            | "disproportionalityIndex"
-            | "showComparison"
-            | "showFilters"
-        > {}
+        PresentationSettingsProps,
+        | "currentPresentation"
+        | "districtSelected"
+        | "decimals"
+        | "showPartiesWithoutSeats"
+        | "results"
+        | "disproportionalityIndex"
+        | "showComparison"
+        | "showFilters"
+        | "year"
+        | "mergeDistricts"
+        | "electionType"
+        | "votes"
+        | "metrics"
+        | "parameters"
+        | "computationPayload"
+        | "settingsPayload"
+    > {}
 
 function mapStateToProps(state: RootState): StateProps {
     return {
@@ -38,6 +48,39 @@ function mapStateToProps(state: RootState): StateProps {
         disproportionalityIndex: state.presentationMenuState.disproportionalityIndex,
         showComparison: state.presentationMenuState.showComparison,
         showFilters: state.presentationMenuState.showFilters,
+        year: state.computationState.election.year,
+        mergeDistricts: state.presentationMenuState.mergeDistricts,
+        electionType: state.requestedDataState.electionType,
+        votes: state.requestedDataState.votes,
+        metrics: state.requestedDataState.metrics,
+        parameters: state.computationState.parameters,
+        computationPayload: {
+            election: state.computationState.election,
+            algorithm: state.computationState.algorithm,
+            firstDivisor: state.computationState.firstDivisor,
+            electionThreshold: state.computationState.electionThreshold,
+            districtThreshold: state.computationState.districtThreshold,
+            districtSeats: state.computationState.districtSeats,
+            levelingSeats: state.computationState.levelingSeats,
+            areaFactor: state.computationState.areaFactor,
+            votes: state.computationState.votes,
+            metrics: state.computationState.metrics,
+            parameters: state.computationState.parameters,
+        },
+        settingsPayload: {
+            electionYears: state.settingsState.electionYears,
+            year: state.settingsState.year,
+            algorithm: state.settingsState.algorithm,
+            firstDivisor: state.settingsState.firstDivisor,
+            electionThreshold: state.settingsState.electionThreshold,
+            districtThreshold: state.settingsState.districtThreshold,
+            districtSeats: state.settingsState.districtSeats,
+            levelingSeats: state.settingsState.levelingSeats,
+            autoCompute: state.settingsState.autoCompute,
+            forceCompute: false,
+            areaFactor: state.settingsState.areaFactor,
+            comparison: state.settingsState.comparison,
+        },
     };
 }
 
@@ -47,14 +90,16 @@ function mapStateToProps(state: RootState): StateProps {
  */
 interface DispatchProps
     extends Pick<
-            PresentationSettingsProps,
-            | "changeDecimals"
-            | "toggleShowPartiesWithoutSeats"
-            | "selectDistrict"
-            | "changeDisproportionalityIndex"
-            | "toggleShowComparison"
-            | "toggleShowFilters"
-        > {}
+        PresentationSettingsProps,
+        | "changeDecimals"
+        | "toggleShowPartiesWithoutSeats"
+        | "selectDistrict"
+        | "changeDisproportionalityIndex"
+        | "toggleShowComparison"
+        | "toggleShowFilters"
+        | "toggleMergeDistricts"
+        | "updateCalculation"
+    > {}
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => ({
     changeDecimals: (decimals: string, decimalsNumber: number) => {
@@ -80,6 +125,29 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
     toggleShowFilters: (event: React.ChangeEvent<HTMLInputElement>) => {
         const action = toggleShowFilters(event.target.checked);
         dispatch(action);
+    },
+    toggleMergeDistricts: (checked: boolean) => {
+        const action = toggleMergeDistricts(checked);
+        dispatch(action);
+    },
+    updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => {
+        if (autoCompute || forceCompute) {
+            const payload: ComputationPayload = {
+                election: computationPayload.election,
+                algorithm: computationPayload.algorithm,
+                firstDivisor: computationPayload.firstDivisor,
+                electionThreshold: computationPayload.electionThreshold,
+                districtThreshold: computationPayload.districtThreshold,
+                districtSeats: computationPayload.districtSeats,
+                levelingSeats: computationPayload.levelingSeats,
+                areaFactor: computationPayload.areaFactor,
+                votes: computationPayload.votes,
+                metrics: computationPayload.metrics,
+                parameters: computationPayload.parameters,
+            };
+            const updateCalculationAction = updateComputation(payload);
+            dispatch(updateCalculationAction);
+        }
     },
 });
 
