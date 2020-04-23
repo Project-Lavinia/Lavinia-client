@@ -1,11 +1,20 @@
 ﻿import * as React from "react";
-import { LagueDhontResult } from "../../../computation";
+import { LagueDhontResult, ComputationPayload } from "../../../computation";
 import { SmartNumericInput } from "../../../common";
 import { PresentationType, DisproportionalityIndex } from "../../Presentation/presentation-models";
 import { DisproportionalitySelect } from "./DisproportionalitySelect";
 import { NoSeatsCheckbox } from "./NoSeatsCheckbox";
 import { ComparisonCheckbox } from "./ComparisonCheckbox";
 import { FiltersCheckbox } from "./FiltersCheckbox";
+import { MergeDistrictsCheckbox } from "./MergeDistrictsCheckbox";
+import { ElectionType, Votes, Metrics, Parameters } from "../../../requested-data/requested-data-models";
+import {
+    mergeElectionDistricts,
+    districtMap,
+    mergeVoteDistricts,
+    mergeMetricDistricts,
+} from "../../../computation/logic/district-merging";
+import { ComputationMenuPayload } from "../../ComputationMenu/computation-menu-models";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -23,6 +32,16 @@ export interface PresentationSettingsProps {
     showComparison: boolean;
     toggleShowFilters: (event: React.ChangeEvent<HTMLInputElement>) => void;
     showFilters: boolean;
+    year: number;
+    mergeDistricts: boolean;
+    toggleMergeDistricts: (checked: boolean) => void;
+    electionType: ElectionType;
+    votes: Votes[];
+    metrics: Metrics[];
+    parameters: Parameters;
+    computationPayload: ComputationPayload;
+    settingsPayload: ComputationMenuPayload;
+    updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => any;
 }
 export class PresentationSettingsMenu extends React.Component<PresentationSettingsProps> {
     /**
@@ -84,24 +103,72 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         return this.props.currentPresentation === PresentationType.ElectionTable;
     }
 
+    /**
+     * Helper function for evaluating whether the merge districts checkbox should be shown.
+     *
+     * @returns true if merge districts checkbox should be shown, false otherwise
+     */
+    showMergeDistricts(): boolean {
+        return this.props.year >= 2005;
+    }
+
+    onToggleMergeDistricts = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.toggleMergeDistricts(event.target.checked);
+
+        const year = this.props.year;
+        let election = this.props.electionType.elections.find((election) => election.year === year);
+        let votes = this.props.votes.filter((vote) => vote.electionYear === year);
+        let metrics = this.props.metrics.filter((metric) => metric.electionYear === year);
+        const parameters = this.props.parameters;
+
+        if (election !== undefined) {
+            if (year >= 2005 && event.target.checked) {
+                election = mergeElectionDistricts(election, districtMap);
+                votes = mergeVoteDistricts(votes, districtMap);
+                metrics = mergeMetricDistricts(metrics, districtMap);
+            }
+
+            this.props.updateCalculation(
+                {
+                    ...this.props.computationPayload,
+                    election,
+                    metrics,
+                    votes,
+                    parameters,
+                },
+                this.props.settingsPayload.autoCompute,
+                false
+            );
+        }
+    };
+
     render() {
         return (
             <div className="columns">
-                <div className="column">
-                    <NoSeatsCheckbox
-                        showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
-                        toggleShowPartiesWithoutSeats={this.props.toggleShowPartiesWithoutSeats}
-                    />
-                    <FiltersCheckbox
-                        hidden={!this.showFilters()}
-                        showFilters={this.props.showFilters}
-                        toggleShowFilters={this.props.toggleShowFilters}
-                    />
-                    <ComparisonCheckbox
-                        hidden={!this.showComparison()}
-                        showComparison={this.props.showComparison}
-                        toggleComparison={this.props.toggleShowComparison}
-                    />
+                <div className="columns">
+                    <div className="column">
+                        <NoSeatsCheckbox
+                            showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
+                            toggleShowPartiesWithoutSeats={this.props.toggleShowPartiesWithoutSeats}
+                        />
+                        <FiltersCheckbox
+                            hidden={!this.showFilters()}
+                            showFilters={this.props.showFilters}
+                            toggleShowFilters={this.props.toggleShowFilters}
+                        />
+                        <ComparisonCheckbox
+                            hidden={!this.showComparison()}
+                            showComparison={this.props.showComparison}
+                            toggleComparison={this.props.toggleShowComparison}
+                        />
+                    </div>
+                    <div className="column">
+                        <MergeDistrictsCheckbox
+                            hidden={!this.showMergeDistricts()}
+                            mergeDistricts={this.props.mergeDistricts}
+                            toggleMergeDistricts={this.onToggleMergeDistricts}
+                        />
+                    </div>
                 </div>
                 <div className="column">
                     <div className="columns">

@@ -17,7 +17,14 @@ const mapStateToProps = (
     state: RootState
 ): Pick<
     ComputationMenuProps,
-    "computationPayload" | "settingsPayload" | "electionType" | "showComparison" | "parameters" | "metrics" | "votes"
+    | "computationPayload"
+    | "settingsPayload"
+    | "electionType"
+    | "showComparison"
+    | "parameters"
+    | "metrics"
+    | "votes"
+    | "mergeDistricts"
 > => ({
     computationPayload: {
         election: state.computationState.election,
@@ -51,6 +58,7 @@ const mapStateToProps = (
     parameters: state.requestedDataState.parameters,
     metrics: state.requestedDataState.metrics,
     votes: state.requestedDataState.votes,
+    mergeDistricts: state.presentationMenuState.mergeDistricts,
 });
 
 const mapDispatchToProps = (

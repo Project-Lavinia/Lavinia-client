@@ -10,6 +10,12 @@ import { AutoComputeCheckbox } from "./AutoComputeCheckbox";
 import { ResetButton } from "./ResetButton";
 import { ComparisonOptions } from "./ComparisonOptions";
 import { ComputeManuallyButton } from "./ComputeManuallyButton";
+import {
+    mergeElectionDistricts,
+    districtMap,
+    mergeVoteDistricts,
+    mergeMetricDistricts,
+} from "../../computation/logic/district-merging";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -32,6 +38,7 @@ export interface ComputationMenuProps {
     resetComparison: () => void;
     saveComparison: () => void;
     showComparison: boolean;
+    mergeDistricts: boolean;
 }
 
 export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
@@ -53,13 +60,19 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
      */
     onYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const nextYear = parseInt(event.target.value);
-        const election = this.props.electionType.elections.find((election) => election.year === nextYear);
-        const votes = this.props.votes.filter((vote) => vote.electionYear === nextYear);
-        const metrics = this.props.metrics.filter((metric) => metric.electionYear === nextYear);
+        let election = this.props.electionType.elections.find((election) => election.year === nextYear);
+        let votes = this.props.votes.filter((vote) => vote.electionYear === nextYear);
+        let metrics = this.props.metrics.filter((metric) => metric.electionYear === nextYear);
         const parameters =
             this.props.parameters.find((parameter) => parameter.electionYear === nextYear) || unloadedParameters;
 
         if (election !== undefined) {
+            if (nextYear >= 2005 && this.props.mergeDistricts) {
+                election = mergeElectionDistricts(election, districtMap);
+                votes = mergeVoteDistricts(votes, districtMap);
+                metrics = mergeMetricDistricts(metrics, districtMap);
+            }
+
             this.props.updateCalculation(
                 {
                     ...this.props.computationPayload,
