@@ -50,7 +50,7 @@ function groupDistrictsAndResults(
     groupedResults: Map<string, Map<string, Result[]>>;
 } {
     const finishedDistricts: County[] = [];
-    const groupedDistricts = new Map<string, County[]>();
+    let groupedDistricts = new Map<string, County[]>();
     const groupedResults = new Map<string, Map<string, Result[]>>();
 
     for (let i = 0, n = districts.length; i < n; i++) {
@@ -63,12 +63,12 @@ function groupDistrictsAndResults(
             if (!groupedResults.has(newName)) {
                 groupedResults.set(newName, new Map<string, Result[]>());
             }
-            const results = groupedResults.get(newName);
+            let results = groupedResults.get(newName);
             if (results !== undefined) {
-                mapAddFromArray(results, getKeyFromResult, currentDistrict.results);
+                results = mapAddFromArray(results, getKeyFromResult, currentDistrict.results);
                 groupedResults.set(newName, results);
             }
-            mapAdd(groupedDistricts, newName, currentDistrict);
+            groupedDistricts = mapAdd(groupedDistricts, newName, currentDistrict);
         }
     }
 
@@ -145,7 +145,6 @@ export function mergeVoteDistricts(votes: Votes[], districtMap: Map<string, stri
     const { finishedVotes, groupedVotes } = groupVotes(votes, districtMap);
     const mergedVotes = mergeVotes(groupedVotes);
     const result = finishedVotes.concat(mergedVotes);
-    console.log(result);
 
     return result;
 }
@@ -167,9 +166,9 @@ function groupVotes(
             if (!groupedVotes.has(newName)) {
                 groupedVotes.set(newName, new Map<string, Votes[]>());
             }
-            const votes = groupedVotes.get(newName);
+            let votes = groupedVotes.get(newName);
             if (votes !== undefined) {
-                mapAdd(votes, currentVote.party, currentVote);
+                votes = mapAdd(votes, currentVote.party, currentVote);
             }
         }
     }
@@ -217,7 +216,7 @@ function groupMetrics(
     districtMap: Map<string, string>
 ): { finishedMetrics: Metrics[]; groupedMetrics: Map<string, Metrics[]> } {
     const finishedMetrics: Metrics[] = [];
-    const groupedMetrics = new Map<string, Metrics[]>();
+    let groupedMetrics = new Map<string, Metrics[]>();
 
     for (let i = 0, n = metrics.length; i < n; i++) {
         const currentMetric = metrics[i];
@@ -226,7 +225,7 @@ function groupMetrics(
         if (newName === undefined) {
             finishedMetrics.push(currentMetric);
         } else {
-            mapAdd(groupedMetrics, newName, currentMetric);
+            groupedMetrics = mapAdd(groupedMetrics, newName, currentMetric);
         }
     }
 
