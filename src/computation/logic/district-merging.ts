@@ -169,6 +169,7 @@ function groupVotes(
             let votes = groupedVotes.get(newName);
             if (votes !== undefined) {
                 votes = mapAdd(votes, currentVote.party, currentVote);
+                groupedVotes.set(newName, votes!);
             }
         }
     }
