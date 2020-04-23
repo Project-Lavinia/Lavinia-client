@@ -59,7 +59,7 @@ export function distributeSeats(
             partyResults: [],
         };
 
-        let currentWinners = [
+        let tiedSeatWinners = [
             {
                 partyCode: "",
                 quotient: -1,
@@ -89,11 +89,11 @@ export function distributeSeats(
             seatResult.partyResults.push(currentPartyResult);
 
             if (!illegalPartyCodes.has(result.partyCode) && result.percentage > districtThreshold) {
-                currentWinners = updateWinners(currentWinners, currentPartyResult);
+                tiedSeatWinners = updateWinners(tiedSeatWinners, currentPartyResult);
             }
         }
 
-        const winner = _.sample(currentWinners);
+        const winner = _.sample(tiedSeatWinners);
         seatsWon[winner!.partyCode] += 1;
         currentSeatsWon[winner!.partyCode] += 1;
 
