@@ -4,15 +4,16 @@ import { DistrictResult, PartyResult, SeatResult } from "../../../computation/co
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
-import {
-    getVulnerableSeatByQuotient,
-    getVulnerableSeatByVotes,
-    getVotesToVulnerableSeatMap,
-    getQuotientsToVulnerableSeatMap,
-} from "../../../utilities/district";
 import { DistrictSelect } from "./DistrictSelect";
 import { norwegian } from "../../../utilities/rt";
 import { roundNumber } from "../../../utilities/number";
+import { InfoBox } from "./InfoBox";
+import {
+    getVotesToVulnerableSeatMap,
+    getQuotientsToVulnerableSeatMap,
+    getVulnerableSeatByQuotient,
+    getVulnerableSeatByVotes,
+} from "../../../utilities/district";
 
 export interface SingleDistrictProps {
     districtResults: DistrictResult[];
@@ -35,14 +36,14 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
     };
 
     render() {
-        const data = this.getData()!;
-        const decimals = this.props.decimals;
-        const proportionalities = data.map((value) => value.proportionality);
         const currentDistrictResult = this.getDistrictResult(this.props.districtSelected);
         const vulnerableMap = getVotesToVulnerableSeatMap(currentDistrictResult!);
         const quotientMap = getQuotientsToVulnerableSeatMap(currentDistrictResult!);
         const vulnerable = getVulnerableSeatByQuotient(currentDistrictResult!);
         const vulnerableVotes = getVulnerableSeatByVotes(currentDistrictResult!);
+        const data = this.getData()!;
+        const decimals = this.props.decimals;
+        const proportionalities = data.map((value) => value.proportionality);
         let label: string;
         let index: number;
         switch (this.props.disproportionalityIndex) {
@@ -62,22 +63,6 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                 index = -1;
             }
         }
-        const blackBoxComment =
-            vulnerable.moreVotesToWin > vulnerableVotes.moreVotesToWin
-                ? [
-                      " hadde nærmest kvotient. ",
-                      <span key={vulnerableVotes.partyCode} className="has-text-warning">
-                          {vulnerableVotes.partyCode}
-                      </span>,
-                      " hadde derimot minst margin og trengte kun ",
-                      vulnerableVotes.moreVotesToWin,
-                      " flere stemmer for å ta det siste mandatet.",
-                  ]
-                : [
-                      " hadde nærmest kvotient, og trengte ",
-                      vulnerable.moreVotesToWin,
-                      " flere stemmer for å ta mandatet. ",
-                  ];
         return (
             <React.Fragment>
                 <DistrictSelect
@@ -85,20 +70,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                     districtSelected={this.props.districtSelected}
                     districtResults={this.props.districtResults}
                 />
-                <div className="card has-background-dark has-text-light">
-                    <div className="card-content">
-                        <p>
-                            {"Sistemandat i "}
-                            {this.props.districtSelected}
-                            {" gikk til "}
-                            {<span className="has-text-success">{vulnerable.winner.partyCode}</span>}
-                            {". "}&nbsp;
-                            {<span className="has-text-warning">{vulnerable.runnerUp.partyCode}</span>}
-                            {blackBoxComment}
-                        </p>
-                    </div>
-                </div>
-
+                <InfoBox vulnerable={vulnerable} vulnerableVotes={vulnerableVotes} />
                 <ReactTable
                     className="-highlight -striped has-text-centered"
                     data={data}
@@ -158,7 +130,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             id: "marginInVotes",
                             Header: "Margin i stemmer",
-                            accessor: (d: PartyResult) => vulnerableMap.get(d.partyCode),
+                            accessor: (d: PartyResult) => (d.votes > 0 ? vulnerableMap.get(d.partyCode) : null),
                             Cell: (row) => {
                                 if (row.original.partyCode === vulnerableVotes.partyCode) {
                                     return <div className="has-background-dark has-text-white">{row.value}</div>;
@@ -169,7 +141,8 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             id: "lastSeatQuotient",
                             Header: "Siste kvotient",
-                            accessor: (d: PartyResult) => quotientMap.get(d.partyCode)!.toFixed(decimals),
+                            accessor: (d: PartyResult) =>
+                                d.votes > 0 ? quotientMap.get(d.partyCode)!.toFixed(decimals) : null,
                             Cell: (row) => {
                                 if (row.original.partyCode === vulnerable.runnerUp.partyCode) {
                                     return <div className="has-background-dark has-text-white">{row.value}</div>;

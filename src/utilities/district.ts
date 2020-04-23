@@ -10,8 +10,7 @@ import { DistrictResult, SeatPartyResult } from "../computation";
 export function getVotesToVulnerableSeatMap(districtResult: DistrictResult): Map<string, number> {
     const partyCodeToVulnerableSeatsMap: Map<string, number> = new Map<string, number>();
     const lastSeat = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 1];
-    const previousRound = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 2];
-    const winner = previousRound.partyResults.find((pr) => pr.partyCode === lastSeat.winner)!;
+    const winner = lastSeat.partyResults.find((pr) => pr.partyCode === lastSeat.winner)!;
     lastSeat.partyResults.forEach((partyResult) => {
         const currentMarginByVotes = Math.floor(winner.quotient * partyResult.denominator) - partyResult.votes + 1;
         partyCodeToVulnerableSeatsMap.set(partyResult.partyCode, currentMarginByVotes);
@@ -22,8 +21,8 @@ export function getVotesToVulnerableSeatMap(districtResult: DistrictResult): Map
 
 export function getQuotientsToVulnerableSeatMap(districtResult: DistrictResult): Map<string, number> {
     const partyCodeToQuotientMap = new Map<string, number>();
-    const previousRound = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 2];
-    previousRound.partyResults.forEach((pr) => partyCodeToQuotientMap.set(pr.partyCode, pr.quotient));
+    const lastSeat = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 1];
+    lastSeat.partyResults.forEach((pr) => partyCodeToQuotientMap.set(pr.partyCode, pr.quotient));
     return partyCodeToQuotientMap;
 }
 
@@ -53,26 +52,23 @@ export function getMostVulnerableSeatByQuotient(districtResults: DistrictResult[
  *
  * @returns vulnerable seat by quotient
  */
-export function getVulnerableSeatByQuotient(districtResult: DistrictResult): VulnerableSeat {
+export function getVulnerableSeatByQuotient(districtResult: DistrictResult): VulnerableDistrictSeat {
     const lastSeat = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 1];
-    const previousRound = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 2];
-    const winner = previousRound.partyResults.find((pr) => pr.partyCode === lastSeat.winner)!;
-    const lastSeatByQuotient = previousRound!.partyResults.sort((a, b) => (a.quotient <= b.quotient ? 1 : -1));
+    const winner = lastSeat.partyResults.find((pr) => pr.partyCode === lastSeat.winner)!;
+    const lastSeatByQuotient = lastSeat.partyResults.sort((a, b) => (a.quotient <= b.quotient ? 1 : -1));
     const runnerUp = lastSeatByQuotient[1];
     const moreVotesToWin = Math.floor(winner.quotient * runnerUp.denominator) - runnerUp.votes + 1;
     return {
         winner,
         runnerUp,
         moreVotesToWin,
+        district: districtResult.name,
     };
 }
 
-export function getVulnerableSeatByVotes(
-    districtResult: DistrictResult
-): { winner: SeatPartyResult; partyCode: string; moreVotesToWin: number } {
+export function getVulnerableSeatByVotes(districtResult: DistrictResult): VulnerableVotes {
     const lastSeat = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 1];
-    const previousRound = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 2];
-    const winner = previousRound.partyResults.find((pr) => pr.partyCode === lastSeat.winner)!;
+    const winner = lastSeat.partyResults.find((pr) => pr.partyCode === lastSeat.winner)!;
     const margins: { partyCode: string; moreVotesToWin: number }[] = [];
     lastSeat.partyResults.forEach((partyResult) => {
         const moreVotesToWin = Math.floor(winner.quotient * partyResult.denominator - partyResult.votes + 1);
@@ -84,8 +80,8 @@ export function getVulnerableSeatByVotes(
     const sorted = margins.slice().sort((a, b) => (a.moreVotesToWin >= b.moreVotesToWin ? 1 : -1))!;
     return {
         winner,
-        partyCode: sorted[0].partyCode,
-        moreVotesToWin: sorted[0].moreVotesToWin,
+        partyCode: sorted[1].partyCode,
+        moreVotesToWin: sorted[1].moreVotesToWin,
     };
 }
 
@@ -97,4 +93,10 @@ interface VulnerableSeat {
 
 export interface VulnerableDistrictSeat extends VulnerableSeat {
     district: string;
+}
+
+export interface VulnerableVotes {
+    winner: SeatPartyResult;
+    partyCode: string;
+    moreVotesToWin: number;
 }
