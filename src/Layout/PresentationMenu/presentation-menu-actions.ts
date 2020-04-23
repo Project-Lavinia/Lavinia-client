@@ -12,6 +12,7 @@ export enum PresentationMenuActionType {
     CHANGE_DISPROPORTIONALITY_INDEX = "CHANGE_DISPROPORTIONALITY_INDEX",
     TOGGLE_SHOW_COMPARISON = "TOGGLE_SHOW_COMPARISON",
     TOGGLE_SHOW_FILTERS = "TOGGLE_SHOW_FILTERS",
+    TOGGLE_MERGE_DISTRICTS = "TOGGLE_MERGE_DISTRICTS",
 }
 
 /**
@@ -25,7 +26,8 @@ export type PresentationMenuAction =
     | SelectDistrict
     | ChangeDisproportionalityIndex
     | ToggleShowComparison
-    | ToggleShowFilters;
+    | ToggleShowFilters
+    | ToggleMergeDistricts;
 
 /**
  * Action for initializing the presentation.
@@ -198,6 +200,27 @@ export function toggleShowFilters(showFilters: boolean) {
     const action: ToggleShowFilters = {
         type: PresentationMenuActionType.TOGGLE_SHOW_FILTERS,
         showFilters,
+    };
+    return action;
+}
+
+/**
+ * Action for toggling whether or not to merge districts.
+ */
+export interface ToggleMergeDistricts {
+    type: PresentationMenuActionType.TOGGLE_MERGE_DISTRICTS;
+    mergeDistricts: boolean;
+}
+
+/**
+ * Action creator for toggling whether or not to merge districts.
+ *
+ * @param mergeDistricts - true if districts should be merged, else false.
+ */
+export function toggleMergeDistricts(mergeDistricts: boolean) {
+    const action: ToggleMergeDistricts = {
+        type: PresentationMenuActionType.TOGGLE_MERGE_DISTRICTS,
+        mergeDistricts,
     };
     return action;
 }

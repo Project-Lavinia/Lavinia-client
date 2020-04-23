@@ -18,7 +18,7 @@ export interface SmartNumericInputProps {
 export class SmartNumericInput extends React.Component<SmartNumericInputProps, {}> {
     render() {
         const value = this.validateInput(this.props.value);
-        const settingWasChanged = this.props.originalValue !== this.props.value;
+        const settingWasChanged = this.props.originalValue && this.props.originalValue !== this.props.value;
         return (
             <div hidden={this.props.hidden} className="field">
                 <label htmlFor={this.props.name} className="label">

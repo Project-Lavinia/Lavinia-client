@@ -24,7 +24,7 @@ export function getPartyTableData(
             districtSeats: partyResult.districtSeats,
             levelingSeats: partyResult.levelingSeats,
             totalSeats: partyResult.totalSeats,
-            proportionality: roundNumber(partyResult.proportionality, numberOfDecimals)
+            proportionality: roundNumber(partyResult.proportionality, numberOfDecimals),
         });
     }
 
@@ -44,7 +44,7 @@ export function getDistrictTableData(districtResults: DistrictResult[], numberOf
             totalSeats: districtResult.totalSeats,
             votesPerSeat: roundNumber(districtResult.votesPerSeat, numberOfDecimals),
             districtSeatResult: districtResult.districtSeatResult,
-            partyResults: districtResult.partyResults
+            partyResults: districtResult.partyResults,
         });
     }
 
@@ -76,7 +76,31 @@ export function getSeatDistributionData(
                 totalSeats: district.totalSeats,
                 votesPerSeat: district.votesPerSeat,
                 districtSeatResult: district.districtSeatResult,
-                partyResults: district.partyResults.filter((party) => partySeats[party.partyCode] > 0)
+                partyResults: district.partyResults.filter((party) => partySeats[party.partyCode] > 0),
+            });
+        }
+
+        return newDistrictResults;
+    }
+}
+
+export function getLocalSeatDistribution(districtResults: DistrictResult[], showPartiesWithoutSeats: boolean) {
+    if (showPartiesWithoutSeats) {
+        return districtResults;
+    } else {
+        const newDistrictResults: DistrictResult[] = [];
+
+        for (const district of districtResults) {
+            newDistrictResults.push({
+                name: district.name,
+                votes: district.votes,
+                percentVotes: district.percentVotes,
+                districtSeats: district.districtSeats,
+                levelingSeats: district.levelingSeats,
+                totalSeats: district.totalSeats,
+                votesPerSeat: district.votesPerSeat,
+                districtSeatResult: district.districtSeatResult,
+                partyResults: district.partyResults.filter((party) => party.totalSeats > 0),
             });
         }
 
@@ -98,7 +122,7 @@ export function roundPartyResults(partyResults: PartyResult[], numberOfDecimals:
         roundedResults.push({
             ...result,
             percentVotes: roundNumber(result.percentVotes, numberOfDecimals),
-            proportionality: roundNumber(result.proportionality, numberOfDecimals)
+            proportionality: roundNumber(result.proportionality, numberOfDecimals),
         });
     });
     return roundedResults;

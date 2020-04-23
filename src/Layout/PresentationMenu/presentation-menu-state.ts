@@ -3,6 +3,7 @@ import { PresentationType, DisproportionalityIndex } from "../Presentation/prese
 export interface PresentationMenuState {
     showComparison: boolean;
     showFilters: boolean;
+    mergeDistricts: boolean;
     currentPresentation: PresentationType;
     districtSelected: string;
     decimals: string;
@@ -14,6 +15,7 @@ export interface PresentationMenuState {
 export const unloadedState: PresentationMenuState = {
     showComparison: false,
     showFilters: false,
+    mergeDistricts: false,
     currentPresentation: PresentationType.ElectionTable,
     decimals: "2",
     decimalsNumber: 2,

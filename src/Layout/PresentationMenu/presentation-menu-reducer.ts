@@ -59,6 +59,11 @@ export function presentationMenu(
                 ...state,
                 showFilters: action.showFilters,
             };
+        case PresentationMenuActionType.TOGGLE_MERGE_DISTRICTS:
+            return {
+                ...state,
+                mergeDistricts: action.mergeDistricts,
+            };
         default:
             checkExhaustively(action);
             return state;
