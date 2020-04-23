@@ -9,6 +9,8 @@
     DistrictQuotients,
 } from "..";
 import { Dictionary } from "../../utilities/dictionary";
+import { SeatPartyResult } from "./../../computation/computation-models";
+import * as _ from "lodash";
 
 const illegalPartyCodes = new Set(["BLANKE"]);
 
@@ -57,12 +59,14 @@ export function distributeSeats(
             partyResults: [],
         };
 
-        let currentWinner = {
-            partyCode: "",
-            quotient: -1,
-            denominator: -1,
-            votes: -1,
-        };
+        let currentWinners = [
+            {
+                partyCode: "",
+                quotient: -1,
+                denominator: -1,
+                votes: -1,
+            },
+        ];
 
         for (const result of results) {
             const currentDenominator = getDenominator(algorithm, seatsWon[result.partyCode], firstDivisor);
@@ -84,23 +88,16 @@ export function distributeSeats(
             };
             seatResult.partyResults.push(currentPartyResult);
 
-            if (
-                currentQuotient > currentWinner.quotient &&
-                !illegalPartyCodes.has(result.partyCode) &&
-                result.percentage > districtThreshold
-            ) {
-                currentWinner = currentPartyResult;
+            if (!illegalPartyCodes.has(result.partyCode) && result.percentage > districtThreshold) {
+                currentWinners = updateWinners(currentWinners, currentPartyResult);
             }
         }
-        seatsWon[currentWinner.partyCode] += 1;
-        currentSeatsWon[currentWinner.partyCode] += 1;
 
-        const updatedDenominator = getDenominator(algorithm, seatsWon[currentWinner.partyCode], firstDivisor);
-        const updatedQuotient = currentWinner.votes / updatedDenominator;
-        currentWinner.denominator = updatedDenominator;
-        currentWinner.quotient = updatedQuotient;
+        const winner = _.sample(currentWinners);
+        seatsWon[winner!.partyCode] += 1;
+        currentSeatsWon[winner!.partyCode] += 1;
 
-        seatResult.winner = currentWinner.partyCode;
+        seatResult.winner = winner!.partyCode;
         seatResults.push(seatResult);
     }
 
@@ -108,6 +105,19 @@ export function distributeSeats(
         seatsWon: currentSeatsWon,
         seatResults,
     };
+}
+
+function updateWinners(winners: SeatPartyResult[], currentParty: SeatPartyResult): SeatPartyResult[] {
+    if (currentParty.quotient > winners[0].quotient) {
+        return [currentParty];
+    } else if (currentParty.quotient === winners[0].quotient) {
+        if (currentParty.votes > winners[0].votes) {
+            return [currentParty];
+        } else if (currentParty.votes === winners[0].votes) {
+            winners.push(currentParty);
+        }
+    }
+    return winners;
 }
 
 /**
