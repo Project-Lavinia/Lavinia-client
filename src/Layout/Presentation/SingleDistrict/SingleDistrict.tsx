@@ -43,8 +43,6 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         const quotientMap = getQuotientsToVulnerableSeatMap(currentDistrictResult!);
         const vulnerable = getVulnerableSeatByQuotient(currentDistrictResult!);
         const vulnerableVotes = getVulnerableSeatByVotes(currentDistrictResult!);
-        console.log(process.env.DEBUG);
-        console.log(`Vulnerable by votes: ${vulnerableVotes.partyCode}: ${vulnerableVotes.moreVotesToWin}`);
         let label: string;
         let index: number;
         switch (this.props.disproportionalityIndex) {
