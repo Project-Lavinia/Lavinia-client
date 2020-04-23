@@ -53,7 +53,7 @@ export function getMostVulnerableSeatByQuotient(districtResults: DistrictResult[
  *
  * @returns vulnerable seat by quotient
  */
-export function getVulnerableSeatByQuotient(districtResult: DistrictResult): VulnerableSeat {
+export function getVulnerableSeatByQuotient(districtResult: DistrictResult): VulnerableDistrictSeat {
     const lastSeat = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 1];
     const previousRound = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 2];
     const winner = previousRound.partyResults.find((pr) => pr.partyCode === lastSeat.winner)!;
@@ -64,12 +64,11 @@ export function getVulnerableSeatByQuotient(districtResult: DistrictResult): Vul
         winner,
         runnerUp,
         moreVotesToWin,
+        district: districtResult.name,
     };
 }
 
-export function getVulnerableSeatByVotes(
-    districtResult: DistrictResult
-): { winner: SeatPartyResult; partyCode: string; moreVotesToWin: number } {
+export function getVulnerableSeatByVotes(districtResult: DistrictResult): VulnerableVotes {
     const lastSeat = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 1];
     const previousRound = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 2];
     const winner = previousRound.partyResults.find((pr) => pr.partyCode === lastSeat.winner)!;
@@ -97,4 +96,10 @@ interface VulnerableSeat {
 
 export interface VulnerableDistrictSeat extends VulnerableSeat {
     district: string;
+}
+
+export interface VulnerableVotes {
+    winner: SeatPartyResult;
+    partyCode: string;
+    moreVotesToWin: number;
 }

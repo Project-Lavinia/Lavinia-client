@@ -4,11 +4,12 @@ import { DistrictResult, PartyResult, SeatResult } from "../../../computation/co
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
+import { InfoBox } from "./InfoBox";
 import {
-    getVulnerableSeatByQuotient,
-    getVulnerableSeatByVotes,
     getVotesToVulnerableSeatMap,
     getQuotientsToVulnerableSeatMap,
+    getVulnerableSeatByQuotient,
+    getVulnerableSeatByVotes,
 } from "../../../utilities/district";
 import { DistrictSelect } from "./DistrictSelect";
 import { norwegian } from "../../../utilities/rt";
@@ -62,22 +63,6 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                 index = -1;
             }
         }
-        const blackBoxComment =
-            vulnerable.moreVotesToWin > vulnerableVotes.moreVotesToWin
-                ? [
-                      " hadde nærmest kvotient. ",
-                      <span key={vulnerableVotes.partyCode} className="has-text-warning">
-                          {vulnerableVotes.partyCode}
-                      </span>,
-                      " hadde derimot minst margin og trengte kun ",
-                      vulnerableVotes.moreVotesToWin,
-                      " flere stemmer for å ta det siste mandatet.",
-                  ]
-                : [
-                      " hadde nærmest kvotient, og trengte ",
-                      vulnerable.moreVotesToWin,
-                      " flere stemmer for å ta mandatet. ",
-                  ];
         return (
             <React.Fragment>
                 <DistrictSelect
@@ -85,20 +70,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                     districtSelected={this.props.districtSelected}
                     districtResults={this.props.districtResults}
                 />
-                <div className="card has-background-dark has-text-light">
-                    <div className="card-content">
-                        <p>
-                            {"Sistemandat i "}
-                            {this.props.districtSelected}
-                            {" gikk til "}
-                            {<span className="has-text-success">{vulnerable.winner.partyCode}</span>}
-                            {". "}&nbsp;
-                            {<span className="has-text-warning">{vulnerable.runnerUp.partyCode}</span>}
-                            {blackBoxComment}
-                        </p>
-                    </div>
-                </div>
-
+                <InfoBox vulnerable={vulnerable} vulnerableVotes={vulnerableVotes} />
                 <ReactTable
                     className="-highlight -striped has-text-centered"
                     data={data}
