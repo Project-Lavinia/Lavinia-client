@@ -1,7 +1,9 @@
+import { AlgorithmType } from "../../computation";
+
 export interface ComputationMenuPayload {
     electionYears: string[];
     year: string;
-    algorithm: number;
+    algorithm: AlgorithmType;
     firstDivisor: string;
     electionThreshold: string;
     districtThreshold: string;
@@ -14,7 +16,7 @@ export interface ComputationMenuPayload {
 }
 
 export interface ComputationMenuComparison {
-    algorithm: number;
+    algorithm: AlgorithmType;
     firstDivisor: string;
     electionThreshold: string;
     districtThreshold: string;

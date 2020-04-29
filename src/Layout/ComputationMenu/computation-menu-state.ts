@@ -1,9 +1,10 @@
 import { ComputationMenuComparison } from "./computation-menu-models";
+import { AlgorithmType } from "../../computation";
 
 export interface ComputationMenuState {
     electionYears: string[];
     year: string;
-    algorithm: number;
+    algorithm: AlgorithmType;
     firstDivisor: string;
     electionThreshold: string;
     districtThreshold: string;
@@ -17,7 +18,7 @@ export interface ComputationMenuState {
 export const unloadedState: ComputationMenuState = {
     electionYears: [],
     year: "",
-    algorithm: -1,
+    algorithm: AlgorithmType.UNDEFINED,
     firstDivisor: "",
     electionThreshold: "",
     districtThreshold: "",
@@ -26,7 +27,7 @@ export const unloadedState: ComputationMenuState = {
     autoCompute: true,
     areaFactor: "",
     comparison: {
-        algorithm: -1,
+        algorithm: AlgorithmType.UNDEFINED,
         areaFactor: "",
         districtSeats: "",
         electionThreshold: "",

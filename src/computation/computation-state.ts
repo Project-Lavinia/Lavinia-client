@@ -20,8 +20,7 @@ export interface ComputationState {
 
 export const unloadedParameters: Parameters = {
     algorithm: {
-        algorithm: "UNDEFINED",
-        id: -1,
+        algorithm: AlgorithmType.UNDEFINED,
         parameters: {},
     },
     areaFactor: -1,

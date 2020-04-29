@@ -1,10 +1,10 @@
 import { RawAlgorithm, Algorithm, RawParameters, Parameters } from "./requested-data-models";
 import { rawDictionaryToDictionary } from "../utilities/dictionary";
+import { getAlgorithmType } from "../computation/logic";
 
 export function rawAlgorithmToAlgorithmConverter(rawAlgorithm: RawAlgorithm): Algorithm {
     const algorithm: Algorithm = {
-        algorithm: rawAlgorithm.algorithm,
-        id: rawAlgorithm.id,
+        algorithm: getAlgorithmType(rawAlgorithm.id),
         parameters: rawDictionaryToDictionary(rawAlgorithm.parameters),
     };
 
