@@ -154,7 +154,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             },
                         },
                         {
-                            Header: "Prop.",
+                            Header: "Prop. %",
                             accessor: "proportionality",
                             Footer: (
                                 <span>
