@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SmartNumericInput } from "../../common";
+import { SmartNumericInput, SmartNumericInputWithLabel } from "../../common";
 import { ElectionType, Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
 import { ComputationPayload, AlgorithmType, unloadedParameters } from "../../computation";
 import { getAlgorithmType } from "../../computation/logic";
@@ -345,7 +345,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         originalValue={this.props.settingsPayload.comparison.firstDivisor}
                         integer={false}
                     />
-                    <SmartNumericInput
+                    <SmartNumericInputWithLabel
                         name="electionThreshold"
                         title="Sperregrense"
                         value={this.props.settingsPayload.electionThreshold}
@@ -355,6 +355,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.election.threshold}
                         originalValue={this.props.settingsPayload.comparison.electionThreshold}
                         integer={false}
+                        label={"%"}
                     />
                     <SmartNumericInput
                         name="districtThreshold"
