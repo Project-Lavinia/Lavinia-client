@@ -8,6 +8,7 @@ export interface SmartNumericInputProps {
     defaultValue: number;
     min: number;
     max: number;
+    originalValue?: string;
     integer?: boolean;
     slider?: boolean;
     style?: React.CSSProperties;
@@ -17,6 +18,7 @@ export interface SmartNumericInputProps {
 export class SmartNumericInput extends React.Component<SmartNumericInputProps, {}> {
     render() {
         const value = this.validateInput(this.props.value);
+        const settingWasChanged = this.props.originalValue && this.props.originalValue !== this.props.value;
         return (
             <div hidden={this.props.hidden} className="field">
                 <label htmlFor={this.props.name} className="label">
@@ -49,6 +51,7 @@ export class SmartNumericInput extends React.Component<SmartNumericInputProps, {
                         />
                     )}
                 </div>
+                {settingWasChanged && <label>Orginalt: {this.props.originalValue}</label>}
             </div>
         );
     }
@@ -64,9 +67,13 @@ export class SmartNumericInput extends React.Component<SmartNumericInputProps, {
     };
 
     validateInput(input: string): { stringValue: string; numericValue: number } {
-        const regex = RegExp("(^-$)|(^-?\\d+(\\.\\d*)?$)");
+        const regex = RegExp(/(^-$)|(^-?\d+(\.\d*)?$)/);
         const defaultValue = this.props.defaultValue;
         let value: number;
+
+        if (this.props.hidden) {
+            return { numericValue: defaultValue, stringValue: input };
+        }
 
         if (regex.test(input) === false && input !== "") {
             // Matches any numbers as well as "", "-" and "3."

@@ -1,7 +1,7 @@
 ﻿import { RootState } from "../../reducers";
 import { connect } from "react-redux";
 import { ComputationMenuProps, ComputationMenu } from "./ComputationMenu";
-import { updateComputationMenu, toggleAutoCompute } from ".";
+import { updateComputationMenu, toggleAutoCompute, saveSettings, resetSavedSettings } from ".";
 import {
     ComputationPayload,
     updateComputation,
@@ -17,7 +17,14 @@ const mapStateToProps = (
     state: RootState
 ): Pick<
     ComputationMenuProps,
-    "computationPayload" | "settingsPayload" | "electionType" | "showComparison" | "parameters" | "metrics" | "votes"
+    | "computationPayload"
+    | "settingsPayload"
+    | "electionType"
+    | "showComparison"
+    | "parameters"
+    | "metrics"
+    | "votes"
+    | "mergeDistricts"
 > => ({
     computationPayload: {
         election: state.computationState.election,
@@ -27,6 +34,7 @@ const mapStateToProps = (
         districtThreshold: state.computationState.districtThreshold,
         districtSeats: state.computationState.districtSeats,
         levelingSeats: state.computationState.levelingSeats,
+        areaFactor: state.computationState.areaFactor,
         votes: state.computationState.votes,
         metrics: state.computationState.metrics,
         parameters: state.computationState.parameters,
@@ -43,12 +51,14 @@ const mapStateToProps = (
         autoCompute: state.settingsState.autoCompute,
         forceCompute: false,
         areaFactor: state.settingsState.areaFactor,
+        comparison: state.settingsState.comparison,
     },
     electionType: state.requestedDataState.electionType,
     showComparison: state.presentationMenuState.showComparison,
     parameters: state.requestedDataState.parameters,
     metrics: state.requestedDataState.metrics,
     votes: state.requestedDataState.votes,
+    mergeDistricts: state.presentationMenuState.mergeDistricts,
 });
 
 const mapDispatchToProps = (
@@ -73,6 +83,7 @@ const mapDispatchToProps = (
                 districtThreshold: computationPayload.districtThreshold,
                 districtSeats: computationPayload.districtSeats,
                 levelingSeats: computationPayload.levelingSeats,
+                areaFactor: computationPayload.areaFactor,
                 votes: computationPayload.votes,
                 metrics: computationPayload.metrics,
                 parameters: computationPayload.parameters,
@@ -105,6 +116,7 @@ const mapDispatchToProps = (
                 districtThreshold: 0,
                 districtSeats: parameters.districtSeats.SUM,
                 levelingSeats: parameters.levelingSeats,
+                areaFactor: parameters.areaFactor,
                 votes,
                 metrics,
                 parameters,
@@ -123,13 +135,18 @@ const mapDispatchToProps = (
             districtThreshold: "0",
             districtSeats: election.seats.toString(),
             levelingSeats: election.levelingSeats.toString(),
+            areaFactor: parameters.areaFactor.toString(),
         };
         const updateSettingsAction = updateComputationMenu(newSettingsPayload);
         dispatch(updateSettingsAction);
+        const saveSettingsAction = saveSettings();
+        dispatch(saveSettingsAction);
     },
     resetComparison: () => {
         const resetSavedComputationAction = resetSavedComputation();
         dispatch(resetSavedComputationAction);
+        const resetSavedSettingsAction = resetSavedSettings();
+        dispatch(resetSavedSettingsAction);
     },
     resetHistorical: (election: Election, votes: Votes[], metrics: Metrics[], parameters: Parameters) => {
         const updateHistoricalAction = updateHistorical(election, votes, metrics, parameters);
@@ -138,6 +155,8 @@ const mapDispatchToProps = (
     saveComparison: () => {
         const saveComparisonAction = saveComparison();
         dispatch(saveComparisonAction);
+        const saveSettingsAction = saveSettings();
+        dispatch(saveSettingsAction);
     },
 });
 

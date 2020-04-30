@@ -4,10 +4,16 @@ import { DistrictResult, PartyResult, SeatResult } from "../../../computation/co
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
-import { getVulnerableSeatByQuotient, getVulnerableSeatByVotes } from "../../../utilities/district";
 import { DistrictSelect } from "./DistrictSelect";
 import { norwegian } from "../../../utilities/rt";
 import { roundNumber } from "../../../utilities/number";
+import { InfoBox } from "./InfoBox";
+import {
+    getVotesToVulnerableSeatMap,
+    getQuotientsToVulnerableSeatMap,
+    getVulnerableSeatByQuotient,
+    getVulnerableSeatByVotes,
+} from "../../../utilities/district";
 
 export interface SingleDistrictProps {
     districtResults: DistrictResult[];
@@ -18,22 +24,26 @@ export interface SingleDistrictProps {
 }
 
 export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
-    getDistrictResult = (name: string): DistrictResult | undefined => {
-        return this.props.districtResults.find((district) => district.name === name);
+    getDistrictResult = (name: string): DistrictResult => {
+        const selectedDistrict =
+            this.props.districtResults.find((district) => district.name === name) || this.props.districtResults[0];
+        return selectedDistrict;
     };
-    getData = (): PartyResult[] | undefined => {
+
+    getData = (): PartyResult[] => {
         const districtResult = this.getDistrictResult(this.props.districtSelected);
-        return districtResult ? districtResult.partyResults : undefined;
+        return districtResult.partyResults;
     };
 
     render() {
+        const currentDistrictResult = this.getDistrictResult(this.props.districtSelected);
+        const vulnerableMap = getVotesToVulnerableSeatMap(currentDistrictResult!);
+        const quotientMap = getQuotientsToVulnerableSeatMap(currentDistrictResult!);
+        const vulnerable = getVulnerableSeatByQuotient(currentDistrictResult!);
+        const vulnerableVotes = getVulnerableSeatByVotes(currentDistrictResult!);
         const data = this.getData()!;
         const decimals = this.props.decimals;
         const proportionalities = data.map((value) => value.proportionality);
-        const vulnerable = getVulnerableSeatByQuotient(this.getDistrictResult(this.props.districtSelected)!);
-        const vulnerableVotes = getVulnerableSeatByVotes(this.getDistrictResult(this.props.districtSelected)!);
-        console.log(process.env.DEBUG);
-        console.log(`Vulnerable by votes: ${vulnerableVotes.partyCode}: ${vulnerableVotes.moreVotesToWin}`);
         let label: string;
         let index: number;
         switch (this.props.disproportionalityIndex) {
@@ -60,22 +70,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                     districtSelected={this.props.districtSelected}
                     districtResults={this.props.districtResults}
                 />
-                <div className="card has-background-dark has-text-light">
-                    <div className="card-content">
-                        <p>
-                            {"Sistemandat i "}
-                            {this.props.districtSelected}
-                            {" gikk til "}
-                            {<span className="has-text-success">{vulnerable.winner.partyCode}</span>}
-                            {". "}
-                            {<span className="has-text-warning">{vulnerable.runnerUp.partyCode}</span>}
-                            {" hadde nærmest kvotient, og trengte "}
-                            {vulnerable.moreVotesToWin}
-                            {" flere stemmer for å ta mandatet."}
-                        </p>
-                    </div>
-                </div>
-
+                <InfoBox vulnerable={vulnerable} vulnerableVotes={vulnerableVotes} />
                 <ReactTable
                     className="-highlight -striped has-text-centered"
                     data={data}
@@ -106,37 +101,54 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             accessor: (d: PartyResult) => roundNumber(d.percentVotes, decimals),
                         },
                         {
-                            Header: "Mandater",
+                            Header: "Distrikt",
+                            accessor: "districtSeats",
+                            Footer: (
+                                <span>
+                                    <strong>{data.map((value) => value.districtSeats).reduce(toSum)}</strong>
+                                </span>
+                            ),
+                        },
+                        {
+                            Header: "Utjevning",
+                            accessor: "levelingSeats",
+                            Footer: (
+                                <span>
+                                    <strong>{data.map((value) => value.levelingSeats).reduce(toSum)}</strong>
+                                </span>
+                            ),
+                        },
+                        {
+                            Header: "Sum Mandater",
                             accessor: "totalSeats",
-                            columns: [
-                                {
-                                    Header: "Distrikt",
-                                    accessor: "districtSeats",
-                                    Footer: (
-                                        <span>
-                                            <strong>{data.map((value) => value.districtSeats).reduce(toSum)}</strong>
-                                        </span>
-                                    ),
-                                },
-                                {
-                                    Header: "Utjevning",
-                                    accessor: "levelingSeats",
-                                    Footer: (
-                                        <span>
-                                            <strong>{data.map((value) => value.levelingSeats).reduce(toSum)}</strong>
-                                        </span>
-                                    ),
-                                },
-                                {
-                                    Header: "Sum Mandater",
-                                    accessor: "totalSeats",
-                                    Footer: (
-                                        <span>
-                                            <strong>{data.map((value) => value.totalSeats).reduce(toSum)}</strong>
-                                        </span>
-                                    ),
-                                },
-                            ],
+                            Footer: (
+                                <span>
+                                    <strong>{data.map((value) => value.totalSeats).reduce(toSum)}</strong>
+                                </span>
+                            ),
+                        },
+                        {
+                            id: "marginInVotes",
+                            Header: "Margin i stemmer",
+                            accessor: (d: PartyResult) => (d.votes > 0 ? vulnerableMap.get(d.partyCode) : null),
+                            Cell: (row) => {
+                                if (row.original.partyCode === vulnerableVotes.partyCode) {
+                                    return <div className="has-background-dark has-text-white">{row.value}</div>;
+                                }
+                                return row.value;
+                            },
+                        },
+                        {
+                            id: "lastSeatQuotient",
+                            Header: "Siste kvotient",
+                            accessor: (d: PartyResult) =>
+                                d.votes > 0 ? quotientMap.get(d.partyCode)!.toFixed(decimals) : null,
+                            Cell: (row) => {
+                                if (row.original.partyCode === vulnerable.runnerUp.partyCode) {
+                                    return <div className="has-background-dark has-text-white">{row.value}</div>;
+                                }
+                                return row.value;
+                            },
                         },
                         {
                             Header: "Prop.",

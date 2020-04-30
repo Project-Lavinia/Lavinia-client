@@ -20,13 +20,12 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const averageVotingPower = data.map((value) => value.votesPerSeat).reduce(toMean);
         const highestVsAverageInPercentage = (1 / highestVotingPower / (1 / averageVotingPower)) * 100;
         const lowestVsAverageInPercentage = (1 / lowestVotingPower / (1 / averageVotingPower)) * 100;
-        const highestVsLowestInPercentage = (1 / highestVotingPower / (1 / lowestVotingPower)) * 100;
-        const mostInfluentialDistrict = (
+        const mostWeightedDistrict = (
             <span className="has-text-success">
                 {data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name}
             </span>
         );
-        const leastInfluentialDistrict = (
+        const leastWeightedDistrict = (
             <span className="has-text-danger">
                 {data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name}
             </span>
@@ -37,18 +36,15 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                 <div className="card has-background-dark has-text-light">
                     <p className="card-content">
                         {"En stemme i "}
-                        {mostInfluentialDistrict}
-                        {" hadde mest innflytelse, og telte "}
+                        {mostWeightedDistrict}
+                        {" hadde mest vekt, og telte "}
                         {highestVsAverageInPercentage.toFixed(decimals) + "%"}
                         {" av en gjennomsnittlig stemme"}
                         {", mens en stemme i "}
-                        {leastInfluentialDistrict}
-                        {" hadde minst innflytelse, og bare telte "}
+                        {leastWeightedDistrict}
+                        {" hadde minst vekt, og bare telte "}
                         {lowestVsAverageInPercentage.toFixed(decimals) + "%."}
-                        {" En stemme i det mest innflytelsesrike fylket telte altså "}
-                        {highestVsLowestInPercentage.toFixed(decimals) + "%"}
-                        {" mer enn en stemme i det minst innflytelsesrike fylket."}
-                        {" Det mest utsatte sistemandatet relativt til kvotient var i "}
+                        {" Det mest utsatte sistemandatet (relativt til kvotient) var i "}
                         {<span className="has-text-warning">{mostVulnerable.district}</span>}
                         {" og ble vunnet av "}
                         {mostVulnerable.winner.partyCode}
@@ -61,8 +57,9 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                 </div>
 
                 <ReactTable
-                    className="-highlight -striped"
+                    className="-highlight -striped has-text-centered"
                     defaultPageSize={this.props.districtResults.length}
+                    pageSize={this.props.districtResults.length}
                     showPaginationBottom={false}
                     data={data}
                     {...norwegian}

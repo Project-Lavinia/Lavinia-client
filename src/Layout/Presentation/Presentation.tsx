@@ -10,6 +10,7 @@ import {
     removeSeatDuplicates,
     sortSeatsByNumber,
     getRoundsAssignedSeats,
+    getLocalSeatDistribution,
 } from "./presentation-utilities";
 import { RemainderQuotients } from "./RemainderQuotients/RemainderQuotients";
 import { toMax } from "../../utilities/reduce";
@@ -51,12 +52,16 @@ export class Presentation extends React.Component<PresentationProps, {}> {
         );
     }
 
+    getLocalSeatDistribution(): DistrictResult[] {
+        return getLocalSeatDistribution(this.props.results.districtResults, this.props.showPartiesWithoutSeats);
+    }
+
     getSeatsPerPartyData(): PartyResult[] {
         return getSeatsPerPartyData(this.props.results.partyResults, this.props.showPartiesWithoutSeats);
     }
 
     getSingleDistrictData(): DistrictResult[] {
-        const data = getDistrictTableData(this.getSeatDistributionData(), this.props.decimals);
+        const data = getDistrictTableData(this.getLocalSeatDistribution(), this.props.decimals);
         const roundedData: DistrictResult[] = [];
         data.forEach((result) => {
             roundedData.push({

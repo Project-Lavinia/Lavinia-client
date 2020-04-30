@@ -1,12 +1,15 @@
 import * as React from "react";
+import { getAlgorithmName } from "../../computation/logic";
 
 export interface AlgorithmSelectProps {
     algorithm: number;
+    defaultAlgorithm: number;
     onAlgorithmChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
     render() {
+        const setttingWasChanged = this.props.algorithm !== this.props.defaultAlgorithm;
         return (
             <div className="field">
                 <label className="label" htmlFor="algorithm_select">
@@ -29,6 +32,7 @@ export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
                         </select>
                     </div>
                 </div>
+                {setttingWasChanged && <label>Orginalt: {getAlgorithmName(this.props.defaultAlgorithm)}</label>}
             </div>
         );
     }

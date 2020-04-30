@@ -77,7 +77,7 @@ export class ElectionComparison extends React.Component<ElectionComparisonProps>
                 columns={[
                     {
                         id: "partyCode",
-                        Header: <abbr title="Partikode">P</abbr>,
+                        Header: <abbr title="Partikode">Parti</abbr>,
                         accessor: (d: Comparison) => d.partyCode,
                     },
                     {

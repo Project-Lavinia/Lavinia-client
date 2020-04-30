@@ -140,7 +140,7 @@ export function distributeDistrictSeatsOnDistricts(
         });
 
         districtSeats = distributionByQuotient(
-            numDistrictSeats + levelingSeats,
+            numDistrictSeats + metrics.length,
             districtSeats,
             baseValues,
             denominatorFunction
