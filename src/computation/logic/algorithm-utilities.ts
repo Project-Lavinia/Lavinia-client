@@ -280,7 +280,7 @@ export function calculateFinalQuotients(
                           party.districtSeats,
                           district.votes / district.districtSeats,
                           party.votes,
-                          1,
+                          firstDivisor,
                           district.districtSeats,
                           district.votes
                       )
