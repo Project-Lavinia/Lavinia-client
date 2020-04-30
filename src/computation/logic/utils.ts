@@ -245,7 +245,7 @@ export function distributeLevelingSeatsOnDistrictsPre2005(
     while (seatIndex <= payload.levelingSeats) {
         if (levelingSeats.length === 0) {
             levelingSeats = generateLevelingSeatArray(
-                payload.algorithm,
+                AlgorithmType.SAINTE_LAGUE,
                 levelingPartyCodes,
                 partyResults,
                 districtResults,
