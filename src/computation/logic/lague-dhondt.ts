@@ -6,9 +6,6 @@ import { distributeSeats, distributeLevelingSeats, calculateProportionality, fin
 import { distributeDistrictSeatsOnDistricts } from "./utils";
 import { calculateFinalQuotients } from "./algorithm-utilities";
 
-// Constant
-// const DISTRICTSEATS = "SUM";
-
 export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     const partyResults: Dictionary<PartyResult> = {};
     const districtPartyResults: Dictionary<Dictionary<PartyResult>> = {};
@@ -17,7 +14,6 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     let totalVotes = 0;
 
     // Calculate the district seats for each district
-    // NOTE: Only works when levelingSeats % 19 == 0
     const districtSeats = distributeDistrictSeatsOnDistricts(
         payload.parameters.areaFactor,
         19,

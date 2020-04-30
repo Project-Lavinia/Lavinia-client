@@ -139,7 +139,6 @@ export function distributeDistrictSeatsOnDistricts(
             baseValues[metric.district] = metric.population + metric.area * areaFactor;
         });
 
-        // IMPORTANT! Assuming 19 leveling seats! Needs to be fixed
         districtSeats = distributionByQuotient(
             numDistrictSeats + levelingSeats,
             districtSeats,
