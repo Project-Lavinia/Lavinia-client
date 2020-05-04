@@ -167,6 +167,17 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                     ]}
                     showPageSizeOptions={false}
                     {...norwegian}
+                    getTrProps={(state: any, rowInfo: any) => {
+                        if (
+                            rowInfo.original !== undefined &&
+                            rowInfo.original.partyCode === vulnerableVotes.winner.partyCode
+                        ) {
+                            return {
+                                className: "has-background-success",
+                            };
+                        }
+                        return {};
+                    }}
                 />
             </React.Fragment>
         );
