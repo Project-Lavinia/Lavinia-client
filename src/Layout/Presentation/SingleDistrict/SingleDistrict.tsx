@@ -35,6 +35,15 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         return districtResult.partyResults;
     };
 
+    highLightWinnerRow = (winner: string) => {
+        return (state: any, rowInfo: any) => {
+            if (rowInfo.original !== undefined && rowInfo.original.partyCode === winner) {
+                return { className: "has-background-success" };
+            }
+            return {};
+        };
+    };
+
     render() {
         const currentDistrictResult = this.getDistrictResult(this.props.districtSelected);
         const vulnerableMap = getVotesToVulnerableSeatMap(currentDistrictResult!);
@@ -167,17 +176,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                     ]}
                     showPageSizeOptions={false}
                     {...norwegian}
-                    getTrProps={(state: any, rowInfo: any) => {
-                        if (
-                            rowInfo.original !== undefined &&
-                            rowInfo.original.partyCode === vulnerableVotes.winner.partyCode
-                        ) {
-                            return {
-                                className: "has-background-success",
-                            };
-                        }
-                        return {};
-                    }}
+                    getTrProps={this.highLightWinnerRow(vulnerableVotes.winner.partyCode)}
                 />
             </React.Fragment>
         );
