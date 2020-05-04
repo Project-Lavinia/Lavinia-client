@@ -356,7 +356,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         integer={false}
                         label={"%"}
                     />
-                    <SmartNumericInput
+                    <SmartNumericInputWithLabel
                         name="districtThreshold"
                         title="Sperregrense for distriktmandat"
                         value={this.props.settingsPayload.districtThreshold}
@@ -366,6 +366,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={0}
                         originalValue={this.props.settingsPayload.comparison.districtThreshold}
                         integer={false}
+                        label={"%"}
                     />
                     <SmartNumericInput
                         name="levelingSeats"
