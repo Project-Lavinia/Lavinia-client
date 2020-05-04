@@ -135,7 +135,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                 if (row.original.partyCode === vulnerableVotes.partyCode) {
                                     return <div className="has-background-dark has-text-white">{row.value}</div>;
                                 }
-                                if (row.value === 1) {
+                                if (row.original.partyCode === vulnerableVotes.winner.partyCode) {
                                     return "null";
                                 }
                                 return row.value;
