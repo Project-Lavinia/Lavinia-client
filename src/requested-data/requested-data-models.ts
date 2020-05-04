@@ -1,4 +1,5 @@
 import { Dictionary, RawDictionaryEntry } from "../utilities/dictionary";
+import { AlgorithmType } from "../computation";
 
 export interface County {
     countyId: number;
@@ -64,8 +65,7 @@ export interface RawAlgorithm {
 }
 
 export interface Algorithm {
-    id: number;
-    algorithm: string;
+    algorithm: AlgorithmType;
     parameters: Dictionary<number>;
 }
 

@@ -1,4 +1,6 @@
 # Lavinia-client
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3ab572caf1584cd6b6f9c98140404fd8)](https://www.codacy.com/manual/Project-Lavinia/Lavinia-client?utm_source=github.com&utm_medium=referral&utm_content=Project-Lavinia/Lavinia-client&utm_campaign=Badge_Grade) [![Total alerts](https://img.shields.io/lgtm/alerts/g/Project-Lavinia/Lavinia-client.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Project-Lavinia/Lavinia-client/alerts/)
+
 Denne guiden på andre språk:
 * [English](README.md)
 

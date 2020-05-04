@@ -1,5 +1,6 @@
 ﻿import { ElectionType, Parameters } from "../../requested-data/requested-data-models";
 import { ComputationMenuPayload } from "./computation-menu-models";
+import { AlgorithmType } from "../../computation";
 
 /**
  * Enum containing all possible ComputationMenuAction types.
@@ -29,7 +30,7 @@ export interface InitializeComputationMenu {
     type: ComputationMenuActionType.INITIALIZE_COMPUTATION_MENU;
     electionYears: string[];
     year: string;
-    algorithm: number;
+    algorithm: AlgorithmType;
     firstDivisor: string;
     electionThreshold: string;
     districtThreshold: string;
@@ -54,7 +55,7 @@ export function initializeComputationMenu(electionType: ElectionType, parameters
         type: ComputationMenuActionType.INITIALIZE_COMPUTATION_MENU,
         electionYears,
         year: parameters.electionYear.toString(),
-        algorithm: parameters.algorithm.id,
+        algorithm: parameters.algorithm.algorithm,
         firstDivisor: parameters.algorithm.parameters["First Divisor"].toString(),
         electionThreshold: parameters.threshold.toString(),
         districtThreshold: "0",
@@ -72,7 +73,7 @@ export function initializeComputationMenu(electionType: ElectionType, parameters
 export interface UpdateComputationMenu {
     type: ComputationMenuActionType.UPDATE_COMPUTATION_MENU;
     year: string;
-    algorithm: number;
+    algorithm: AlgorithmType;
     firstDivisor: string;
     electionThreshold: string;
     districtThreshold: string;
