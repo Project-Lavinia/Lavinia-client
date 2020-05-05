@@ -18,7 +18,7 @@ export class MergeDistrictsCheckbox extends React.Component<MergeDistrictsCheckb
                         checked={this.props.mergeDistricts}
                         onChange={this.props.toggleMergeDistricts}
                     />
-                    &nbsp;Slå sammen 19 fylker (før 2020) til 11 fylker (etter 2020)
+                    &nbsp;Slå sammen 19 fylker til 11 fylker
                 </label>
             </div>
         );

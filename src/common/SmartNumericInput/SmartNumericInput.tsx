@@ -15,7 +15,7 @@ export interface SmartNumericInputProps {
     hidden?: boolean;
 }
 
-export class SmartNumericInput extends React.Component<SmartNumericInputProps, {}> {
+export class SmartNumericInput<T extends SmartNumericInputProps> extends React.Component<T, {}> {
     render() {
         const value = this.validateInput(this.props.value);
         const settingWasChanged = this.props.originalValue && this.props.originalValue !== this.props.value;

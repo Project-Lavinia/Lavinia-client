@@ -171,7 +171,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             show: this.shouldShowDifference(data),
                         },
                         {
-                            Header: "Prop.",
+                            Header: "Prop. %",
                             id: "proportionality",
                             accessor: (d: ElectionOverviewDatum) => roundNumber(d.proportionality, decimals),
                             Filter: selectFilterWithOptions(thresholdIsZeroOptions),
