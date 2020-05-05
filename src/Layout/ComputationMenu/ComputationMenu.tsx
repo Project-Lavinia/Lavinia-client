@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SmartNumericInput } from "../../common";
+import { SmartNumericInput, SmartNumericInputWithLabel } from "../../common";
 import { ElectionType, Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
 import { ComputationPayload, AlgorithmType, unloadedParameters } from "../../computation";
 import { ComputationMenuPayload } from "./computation-menu-models";
@@ -344,7 +344,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         originalValue={this.props.settingsPayload.comparison.firstDivisor}
                         integer={false}
                     />
-                    <SmartNumericInput
+                    <SmartNumericInputWithLabel
                         name="electionThreshold"
                         title="Sperregrense"
                         value={this.props.settingsPayload.electionThreshold}
@@ -354,8 +354,9 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.election.threshold}
                         originalValue={this.props.settingsPayload.comparison.electionThreshold}
                         integer={false}
+                        label={"%"}
                     />
-                    <SmartNumericInput
+                    <SmartNumericInputWithLabel
                         name="districtThreshold"
                         title="Sperregrense for distriktmandat"
                         value={this.props.settingsPayload.districtThreshold}
@@ -365,6 +366,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={0}
                         originalValue={this.props.settingsPayload.comparison.districtThreshold}
                         integer={false}
+                        label={"%"}
                     />
                     <SmartNumericInput
                         name="levelingSeats"
