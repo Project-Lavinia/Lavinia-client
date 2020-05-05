@@ -19,7 +19,7 @@ export const unloadedState: PresentationMenuState = {
     currentPresentation: PresentationType.ElectionTable,
     decimals: "2",
     decimalsNumber: 2,
-    showPartiesWithoutSeats: false,
+    showPartiesWithoutSeats: true,
     districtSelected: "Østfold",
     disproportionalityIndex: DisproportionalityIndex.LOOSEMORE_HANBY,
 };
