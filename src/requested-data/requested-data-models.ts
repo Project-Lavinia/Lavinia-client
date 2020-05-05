@@ -75,7 +75,7 @@ export interface RawParameters {
     algorithm: RawAlgorithm;
     threshold: number;
     areaFactor: number;
-    districtSeats: Array<RawDictionaryEntry>;
+    districtSeats: number;
     levelingSeats: number;
     totalVotes: number;
 }
@@ -86,7 +86,7 @@ export interface Parameters {
     algorithm: Algorithm;
     threshold: number;
     areaFactor: number;
-    districtSeats: Dictionary<number>;
+    districtSeats: number;
     levelingSeats: number;
     totalVotes: number;
 }

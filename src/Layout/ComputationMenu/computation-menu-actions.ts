@@ -59,7 +59,7 @@ export function initializeComputationMenu(electionType: ElectionType, parameters
         firstDivisor: parameters.algorithm.parameters["First Divisor"].toString(),
         electionThreshold: parameters.threshold.toString(),
         districtThreshold: "0",
-        districtSeats: parameters.districtSeats.SUM.toString(),
+        districtSeats: parameters.districtSeats.toString(),
         levelingSeats: parameters.levelingSeats.toString(),
         areaFactor: parameters.areaFactor.toString(),
         autoCompute: true,

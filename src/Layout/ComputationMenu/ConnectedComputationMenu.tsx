@@ -114,7 +114,7 @@ const mapDispatchToProps = (
                 firstDivisor: parameters.algorithm.parameters["First Divisor"],
                 electionThreshold: parameters.threshold,
                 districtThreshold: 0,
-                districtSeats: parameters.districtSeats.SUM,
+                districtSeats: parameters.districtSeats,
                 levelingSeats: parameters.levelingSeats,
                 areaFactor: parameters.areaFactor,
                 votes,

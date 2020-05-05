@@ -28,9 +28,9 @@ const mapDispatchToProps = (dispatch: any): LayoutProps => ({
 
         defaultUri = process.env.API_V1 + electionTypePath;
 
-        votesUri = process.env.API_V2 + votesPath;
-        metricsUri = process.env.API_V2 + metricsPath;
-        parametersUri = process.env.API_V2 + parametersPath;
+        votesUri = process.env.API_V3 + votesPath;
+        metricsUri = process.env.API_V3 + metricsPath;
+        parametersUri = process.env.API_V3 + parametersPath;
 
         const failover: ElectionType = {
             internationalName: "UNDEFINED",
