@@ -24,7 +24,7 @@ export const unloadedParameters: Parameters = {
         parameters: {},
     },
     areaFactor: -1,
-    districtSeats: {},
+    districtSeats: -1,
     electionType: "UNDEFINED",
     electionYear: -1,
     levelingSeats: -1,
