@@ -153,6 +153,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         decimals={this.props.decimals}
                         disproportionalityIndex={this.props.disproportionalityIndex}
                         selectDistrict={this.props.selectDistrict}
+                        algorithm={this.props.algorithm}
                     />
                 );
             case PresentationType.RemainderQuotients:
