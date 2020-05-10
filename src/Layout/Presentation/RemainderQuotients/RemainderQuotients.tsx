@@ -2,6 +2,7 @@ import * as React from "react";
 import ReactTable, { Column } from "react-table";
 import { LevelingSeat, DistrictResult, DistrictQuotients, AlgorithmType } from "../../../computation";
 import { norwegian } from "../../../utilities/rt";
+import { isQuotientAlgorithm } from "../../../computation/logic";
 
 export interface RemainderQuotientsProps {
     districtResults: DistrictResult[];
@@ -64,17 +65,9 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                 Cell: (row) => {
                     if (row.value !== undefined) {
                         let quotient = row.value.quotient;
-                        if (
-                            this.props.year < 2005 &&
-                            this.props.algorithm !== AlgorithmType.LARGEST_FRACTION_DROOP &&
-                            this.props.algorithm !== AlgorithmType.LARGEST_FRACTION_HARE
-                        ) {
+                        if (this.props.year < 2005 && isQuotientAlgorithm(this.props.algorithm)) {
                             quotient = quotient / 10000;
-                        } else if (
-                            this.props.year >= 2005 &&
-                            (this.props.algorithm === AlgorithmType.LARGEST_FRACTION_DROOP ||
-                                this.props.algorithm === AlgorithmType.LARGEST_FRACTION_HARE)
-                        ) {
+                        } else if (this.props.year >= 2005 && isQuotientAlgorithm(this.props.algorithm)) {
                             quotient = quotient * 10000;
                         }
                         return (
@@ -122,20 +115,15 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
     }
 
     getAdjustment(year: number, algorithm: AlgorithmType) {
-        if (
-            year < 2005 &&
-            algorithm !== AlgorithmType.LARGEST_FRACTION_DROOP &&
-            algorithm !== AlgorithmType.LARGEST_FRACTION_HARE
-        ) {
-            return " er delt på 10 000 og ";
-        } else if (
-            year >= 2005 &&
-            (algorithm === AlgorithmType.LARGEST_FRACTION_DROOP || algorithm === AlgorithmType.LARGEST_FRACTION_HARE)
-        ) {
-            return " er ganget med 10 000 og ";
+        const ending =
+            "og representerer verdien ved utdeling av siste distriktsmandat i fylket for det respektive partiet.";
+        if (year < 2005 && isQuotientAlgorithm(algorithm)) {
+            return " er delt på 10 000 " + ending;
+        } else if (year >= 2005 && isQuotientAlgorithm(algorithm)) {
+            return " er ganget med 10 000 " + ending;
         }
 
-        return " ";
+        return " er fordelingstallet som tilsier hvor mange distriktsmandater partiet skal vinne i det respektive fylket.";
     }
 
     render() {
@@ -148,7 +136,6 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                         Markerte celler indikerer at partiet har vunnet et utjevningsmandat i det korresponderende
                         fylket. Kvotientene
                         {this.getAdjustment(this.props.year, this.props.algorithm)}
-                        representerer verdien ved utdeling av siste distriktsmandat i fylket for det respektive partiet.
                     </p>
                 </div>
 
