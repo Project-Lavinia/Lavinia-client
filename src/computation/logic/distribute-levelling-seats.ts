@@ -9,14 +9,8 @@ export function distributeLevelingSeats(
     districtPartyResults: Dictionary<Dictionary<PartyResult>>,
     districtResults: Dictionary<DistrictResult>
 ): PartyRestQuotients[] {
-    // Filter out parties with less than the threshold
-    let levelingPartyCodes = Object.keys(partyResults).filter(
-        (partyCode) => partyResults[partyCode].percentVotes >= payload.electionThreshold
-    );
-
-    let levelingParties: Result[] = [];
-    for (const partyCode of levelingPartyCodes) {
-        const party: Result = {
+    let levelingParties: Result[] = Object.keys(partyResults).map((partyCode) => {
+        return {
             countyId: -1,
             electionId: -1,
             partyId: -1,
@@ -27,38 +21,33 @@ export function distributeLevelingSeats(
             votes: partyResults[partyCode].votes,
             percentage: -1,
         };
-        levelingParties.push(party);
-    }
+    });
+
+    // Filter out parties with less votes than the threshold or who did not gain any seats from the national distribution
+    levelingParties = levelingParties.filter(
+        (party) => partyResults[party.partyCode].percentVotes >= payload.electionThreshold
+    );
+
+    let seatsToDistribute = payload.levelingSeats;
+    levelingParties.forEach((party) => {
+        seatsToDistribute += partyResults[party.partyCode].districtSeats;
+    });
 
     // Compute the distribution of the total number of seats on the whole country
     const nationalDistribution = distributeSeats(
         payload.algorithm,
         payload.firstDivisor,
         Number.MIN_SAFE_INTEGER,
-        payload.districtSeats + payload.levelingSeats,
+        seatsToDistribute,
         levelingParties
     );
 
-    // Filter out parties that did not gain any seats in the new distribution
-    levelingPartyCodes = levelingPartyCodes.filter(
-        (p) => nationalDistribution.seatsWon[p] > partyResults[p].districtSeats
+    // Filter out parties who did not gain any seats from the national distribution
+    levelingParties = levelingParties.filter(
+        (party) => nationalDistribution.seatsWon[party.partyCode] >= partyResults[party.partyCode].districtSeats
     );
 
-    levelingParties = [];
-    for (const partyCode of levelingPartyCodes) {
-        const party: Result = {
-            countyId: -1,
-            electionId: -1,
-            partyId: -1,
-            resultId: -1,
-            countyName: "",
-            partyCode,
-            partyName: "",
-            votes: partyResults[partyCode].votes,
-            percentage: partyResults[partyCode].percentVotes,
-        };
-        levelingParties.push(party);
-    }
+    let levelingPartyCodes = levelingParties.map((party) => party.partyCode);
 
     // Distribute the leveling seats, taking the district seats into account
     const levelingSeatsDistribution = distributeSeats(
