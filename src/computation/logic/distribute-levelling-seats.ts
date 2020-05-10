@@ -23,20 +23,28 @@ export function distributeLevelingSeats(
         };
     });
 
+    // Filter out parties with less votes than the threshold or who did not gain any seats from the national distribution
+    levelingParties = levelingParties.filter(
+        (party) => partyResults[party.partyCode].percentVotes >= payload.electionThreshold
+    );
+
+    let seatsToDistribute = payload.levelingSeats;
+    levelingParties.forEach((party) => {
+        seatsToDistribute += partyResults[party.partyCode].districtSeats;
+    });
+
     // Compute the distribution of the total number of seats on the whole country
     const nationalDistribution = distributeSeats(
         payload.algorithm,
         payload.firstDivisor,
         Number.MIN_SAFE_INTEGER,
-        payload.districtSeats + payload.levelingSeats,
+        seatsToDistribute,
         levelingParties
     );
 
-    // Filter out parties with less votes than the threshold or who did not gain any seats from the national distribution
+    // Filter out parties who did not gain any seats from the national distribution
     levelingParties = levelingParties.filter(
-        (party) =>
-            nationalDistribution.seatsWon[party.partyCode] >= partyResults[party.partyCode].districtSeats &&
-            partyResults[party.partyCode].percentVotes >= payload.electionThreshold
+        (party) => nationalDistribution.seatsWon[party.partyCode] >= partyResults[party.partyCode].districtSeats
     );
 
     let levelingPartyCodes = levelingParties.map((party) => party.partyCode);
