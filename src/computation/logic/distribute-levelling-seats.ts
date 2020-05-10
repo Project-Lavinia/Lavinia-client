@@ -204,7 +204,7 @@ function finalQuotientLevelingSeatDistribution(
 }
 
 /**
- * Distributes the leveling seats on each party using one of the largest fraction algorithms.
+ * Distributes the leveling seats on each party using the largest fraction algorithm.
  *
  * @param levelingPartyCodes The party codes for the parties that may win a leveling seat
  * @param partyResults The party results for each party
