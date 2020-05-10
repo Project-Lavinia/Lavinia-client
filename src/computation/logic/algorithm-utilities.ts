@@ -455,6 +455,28 @@ export function getAlgorithmName(type: number) {
 }
 
 /**
+ * Converts AlgorithmTypes into their matching algorithm name
+ *
+ * @param type The AlgorithmType of the algorithm
+ */
+export function getAlgorithmNameFromType(type: AlgorithmType) {
+    switch (type) {
+        case AlgorithmType.SAINTE_LAGUE:
+            return "Sainte-Lagüe";
+        case AlgorithmType.D_HONDT:
+            return "d'Hondt";
+        case AlgorithmType.LARGEST_FRACTION_HARE:
+            return "Største brøk (Hare)";
+        case AlgorithmType.LARGEST_FRACTION_DROOP:
+            return "Største brøk (Droop)";
+        case AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF:
+            return "Største brøk (Hagenbach-Bischoff)";
+        default:
+            return "Udefinert";
+    }
+}
+
+/**
  * Converts string IDs into their matching algorithm types
  *
  * @param type The string ID of the algorithm

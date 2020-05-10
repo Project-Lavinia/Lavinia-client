@@ -1,8 +1,7 @@
 import * as React from "react";
-import { SmartNumericInput } from "../../common";
+import { SmartNumericInput, SmartNumericInputWithLabel } from "../../common";
 import { ElectionType, Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
 import { ComputationPayload, AlgorithmType, unloadedParameters } from "../../computation";
-import { getAlgorithmType } from "../../computation/logic";
 import { ComputationMenuPayload } from "./computation-menu-models";
 import { YearSelect } from "./YearSelect";
 import { AlgorithmSelect } from "./AlgorithmSelect";
@@ -106,18 +105,18 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
      * @param event a ChangeEvent whose target carries the numerified algorithm
      */
     onAlgorithmChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const algorithm = parseInt(event.target.value);
+        const algorithmType = event.target.value as AlgorithmType;
         this.props.updateCalculation(
             {
                 ...this.props.computationPayload,
-                algorithm: getAlgorithmType(algorithm),
+                algorithm: algorithmType,
             },
             this.props.settingsPayload.autoCompute,
             false
         );
         this.props.updateSettings({
             ...this.props.settingsPayload,
-            algorithm,
+            algorithm: algorithmType,
         });
     };
 
@@ -279,7 +278,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
             this.props.updateCalculation(
                 {
                     election,
-                    algorithm: getAlgorithmType(this.props.settingsPayload.algorithm),
+                    algorithm: this.props.settingsPayload.algorithm,
                     firstDivisor: parseFloat(this.props.settingsPayload.firstDivisor),
                     electionThreshold: parseFloat(this.props.settingsPayload.electionThreshold),
                     districtThreshold: parseFloat(this.props.settingsPayload.districtThreshold),
@@ -345,7 +344,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         originalValue={this.props.settingsPayload.comparison.firstDivisor}
                         integer={false}
                     />
-                    <SmartNumericInput
+                    <SmartNumericInputWithLabel
                         name="electionThreshold"
                         title="Sperregrense"
                         value={this.props.settingsPayload.electionThreshold}
@@ -355,8 +354,9 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.election.threshold}
                         originalValue={this.props.settingsPayload.comparison.electionThreshold}
                         integer={false}
+                        label={"%"}
                     />
-                    <SmartNumericInput
+                    <SmartNumericInputWithLabel
                         name="districtThreshold"
                         title="Sperregrense for distriktmandat"
                         value={this.props.settingsPayload.districtThreshold}
@@ -366,6 +366,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={0}
                         originalValue={this.props.settingsPayload.comparison.districtThreshold}
                         integer={false}
+                        label={"%"}
                     />
                     <SmartNumericInput
                         name="levelingSeats"

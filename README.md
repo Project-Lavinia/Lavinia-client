@@ -1,6 +1,6 @@
 # Lavinia-client
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3ab572caf1584cd6b6f9c98140404fd8)](https://www.codacy.com/manual/Project-Lavinia/Lavinia-client?utm_source=github.com&utm_medium=referral&utm_content=Project-Lavinia/Lavinia-client&utm_campaign=Badge_Grade) [![Total alerts](https://img.shields.io/lgtm/alerts/g/Project-Lavinia/Lavinia-client.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Project-Lavinia/Lavinia-client/alerts/)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/64b563a2c5e349e2a13fcfe3c1bc1008)](https://www.codacy.com/gh/Project-Lavinia/Lavinia-client?utm_source=github.com&utm_medium=referral&utm_content=Project-Lavinia/Lavinia-client&utm_campaign=Badge_Grade) [![Total alerts](https://img.shields.io/lgtm/alerts/g/Project-Lavinia/Lavinia-client.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Project-Lavinia/Lavinia-client/alerts/)
 
 This guide in other languages:
 
