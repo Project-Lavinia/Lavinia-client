@@ -11,6 +11,7 @@
 import { Dictionary } from "../../utilities/dictionary";
 import { SeatPartyResult } from "./../../computation/computation-models";
 import * as _ from "lodash";
+import { largestFraction } from "./distribution";
 
 const illegalPartyCodes = new Set(["BLANKE"]);
 
@@ -34,6 +35,12 @@ export function distributeSeats(
     averageVotesPerSeat?: number,
     partyResults?: Dictionary<PartyResult>
 ): DistributionResult {
+    if (algorithm === AlgorithmType.LARGEST_FRACTION_HARE || algorithm === AlgorithmType.LARGEST_FRACTION_DROOP) {
+        const electionNumber = getElectionNumber(algorithm, totalVotes, numSeats);
+        const partyVotes = resultArrayToDictionary(results);
+        return largestFraction(numSeats, partyVotes, electionNumber);
+    }
+
     const seatsWon: Dictionary<number> = {};
     const currentSeatsWon: Dictionary<number> = {};
     const seatResults: SeatResult[] = [];
@@ -161,13 +168,26 @@ export function getDenominator(
         case AlgorithmType.D_HONDT:
             return numberOfSeatsAssigned + 1;
         case AlgorithmType.LARGEST_FRACTION_HARE:
-            const averageVotesPerSeatH = totalVotes / totalSeats;
-            return (numberOfSeatsAssigned + 1) * averageVotesPerSeatH;
         case AlgorithmType.LARGEST_FRACTION_DROOP:
-            const averageVotesPerSeatD = totalVotes / (totalSeats + 1) + 1;
-            return (numberOfSeatsAssigned + 1) * averageVotesPerSeatD;
+        case AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF:
+            const electionNumber = getElectionNumber(algorithm, totalVotes, totalSeats);
+            return (numberOfSeatsAssigned + 1) * electionNumber;
         default:
             console.error(`ERROR! ${algorithm.toString()} does not have an associated denominator function!`);
+            return Number.MIN_SAFE_INTEGER;
+    }
+}
+
+function getElectionNumber(algorithm: AlgorithmType, totalVotes: number, totalSeats: number): number {
+    switch (algorithm) {
+        case AlgorithmType.LARGEST_FRACTION_HARE:
+            return totalVotes / totalSeats;
+        case AlgorithmType.LARGEST_FRACTION_DROOP:
+            return totalVotes / (totalSeats + 1) + 1;
+        case AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF:
+            return totalVotes / (totalSeats + 1);
+        default:
+            console.error(`ERROR! ${algorithm.toString()} does not have an associated election number algorithm!`);
             return Number.MIN_SAFE_INTEGER;
     }
 }
@@ -262,7 +282,7 @@ export function calculateFinalQuotients(
     firstDivisor: number,
     adjusted: boolean,
     districtResults: Dictionary<DistrictResult>
-) {
+): DistrictQuotients[] {
     const finalQuotients: DistrictQuotients[] = [];
     for (const districtName in districtResults) {
         if (districtResults.hasOwnProperty(districtName)) {
@@ -374,6 +394,20 @@ export function generateLevelingSeatArray(
     }
     levelingSeats = sortLevelingSeats(levelingSeats, partyResults);
     return levelingSeats;
+}
+
+/**
+ * Converts an array of results to a dictionary from Party Code to Votes.
+ *
+ * @param results An array of results
+ */
+function resultArrayToDictionary(results: Result[]): Dictionary<number> {
+    const resultDict: Dictionary<number> = {};
+    results.forEach((result) => {
+        resultDict[result.partyCode] = result.votes;
+    });
+
+    return resultDict;
 }
 
 /**

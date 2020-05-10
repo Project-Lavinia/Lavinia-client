@@ -16,7 +16,7 @@ export class SortedReverseDict {
         const start = this.reverseDict[0].value;
         let num = 0;
 
-        while (this.reverseDict[num].value === start) {
+        while (num < this.reverseDict.length && this.reverseDict[num].value === start) {
             num++;
         }
 
