@@ -475,3 +475,25 @@ export function getAlgorithmTypeString(type: string) {
             return AlgorithmType.UNDEFINED;
     }
 }
+
+/**
+ * Checks whether an algorithm is a quotient type algorithm. (eg. Sainte Laguës or d'Hondt)
+ *
+ * @param algorithm The algorithm to check
+ */
+export function isQuotientAlgorithm(algorithm: AlgorithmType): boolean {
+    return algorithm === AlgorithmType.SAINTE_LAGUE || algorithm === AlgorithmType.D_HONDT;
+}
+
+/**
+ * Checks whether an algorithm is a largest fraction type algorithm (eg. Hare, Droop or Hagenbach-Bischoff)
+ *
+ * @param algorithm The algorithm to check
+ */
+export function isLargestFractionAlgorithm(algorithm: AlgorithmType): boolean {
+    return (
+        algorithm === AlgorithmType.LARGEST_FRACTION_DROOP ||
+        algorithm === AlgorithmType.LARGEST_FRACTION_HARE ||
+        algorithm === AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF
+    );
+}

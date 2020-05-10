@@ -2,7 +2,8 @@ import { ComputationPayload, PartyResult, DistrictResult, PartyRestQuotients, Re
 import { Dictionary, dictionaryToArray } from "../../utilities/dictionary";
 import { distributeSeats } from ".";
 import { distributeLevelingSeatsOnDistricts, distributeLevelingSeatsOnDistrictsPre2005 } from "./utils";
-import { AlgorithmType, DistributionResult } from "../../computation/computation-models";
+import { DistributionResult } from "../../computation/computation-models";
+import { isLargestFractionAlgorithm, isQuotientAlgorithm } from "./algorithm-utilities";
 
 export function distributeLevelingSeats(
     payload: ComputationPayload,
@@ -122,13 +123,9 @@ function finalLevelingSeatDistribution(
     payload: ComputationPayload,
     nationalDistribution: DistributionResult
 ): DistributionResult {
-    if (payload.algorithm === AlgorithmType.SAINTE_LAGUE || payload.algorithm === AlgorithmType.D_HONDT) {
+    if (isQuotientAlgorithm(payload.algorithm)) {
         return finalQuotientLevelingSeatDistribution(levelingPartyCodes, partyResults, payload);
-    } else if (
-        payload.algorithm === AlgorithmType.LARGEST_FRACTION_DROOP ||
-        payload.algorithm === AlgorithmType.LARGEST_FRACTION_HARE ||
-        payload.algorithm === AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF
-    ) {
+    } else if (isLargestFractionAlgorithm(payload.algorithm)) {
         return finalLargestFractionLevelingSeatDistribution(levelingPartyCodes, partyResults, nationalDistribution);
     } else {
         console.error(payload.algorithm + " is not a known quotient or largest fraction algorithm!");
