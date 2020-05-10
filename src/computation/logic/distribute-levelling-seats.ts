@@ -126,7 +126,8 @@ function finalLevelingSeatDistribution(
         return finalQuotientLevelingSeatDistribution(levelingPartyCodes, partyResults, payload);
     } else if (
         payload.algorithm === AlgorithmType.LARGEST_FRACTION_DROOP ||
-        payload.algorithm === AlgorithmType.LARGEST_FRACTION_HARE
+        payload.algorithm === AlgorithmType.LARGEST_FRACTION_HARE ||
+        payload.algorithm === AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF
     ) {
         return finalLargestFractionLevelingSeatDistribution(levelingPartyCodes, partyResults, nationalDistribution);
     } else {

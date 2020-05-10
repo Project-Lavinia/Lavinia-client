@@ -425,6 +425,8 @@ export function getAlgorithmType(type: number) {
             return AlgorithmType.LARGEST_FRACTION_HARE;
         case 4:
             return AlgorithmType.LARGEST_FRACTION_DROOP;
+        case 5:
+            return AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF;
         default:
             return AlgorithmType.UNDEFINED;
     }
@@ -441,6 +443,12 @@ export function getAlgorithmName(type: number) {
             return "Sainte-Lagüe";
         case 2:
             return "d'Hondt";
+        case 3:
+            return "Største brøk (Hare)";
+        case 4:
+            return "Største brøk (Droop)";
+        case 5:
+            return "Største brøk (Hagenbach-Bischoff)";
         default:
             return "Udefinert";
     }
@@ -461,6 +469,8 @@ export function getAlgorithmTypeString(type: string) {
             return AlgorithmType.LARGEST_FRACTION_HARE;
         case "Largest fraction (Droop)":
             return AlgorithmType.LARGEST_FRACTION_DROOP;
+        case "Largest fraction (Hagenbach-Bischoff)":
+            return AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF;
         default:
             return AlgorithmType.UNDEFINED;
     }
