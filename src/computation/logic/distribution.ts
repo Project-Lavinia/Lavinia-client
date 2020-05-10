@@ -79,8 +79,6 @@ export function largestFraction(
     const { ratedParties, seatsWon, seatsDistributed } = distributeWholeSeats(partyVotes, electionNumber);
     const remainingSeats = numberToDistribute - seatsDistributed;
 
-    console.log(remainingSeats);
-    console.log(ratedParties.length());
     for (let seatSurplus = 0; seatSurplus < remainingSeats; seatSurplus++) {
         const winner = tieBreaker(ratedParties.popTop(), partyVotes);
         const updatedSeats = seatsWon[winner.key] ? seatsWon[winner.key] + 1 : 1;
