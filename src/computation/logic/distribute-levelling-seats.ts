@@ -5,6 +5,14 @@ import { distributeLevelingSeatsOnDistricts, distributeLevelingSeatsOnDistrictsP
 import { DistributionResult } from "../../computation/computation-models";
 import { isLargestFractionAlgorithm, isQuotientAlgorithm } from "./algorithm-utilities";
 
+/**
+ * Distributes the leveling seats on the parties and on each district.
+ *
+ * @param payload The computation payload
+ * @param partyResults The party results for each party
+ * @param districtPartyResults The party results for each district
+ * @param districtResults The district results
+ */
 export function distributeLevelingSeats(
     payload: ComputationPayload,
     partyResults: Dictionary<PartyResult>,
@@ -61,6 +69,14 @@ export function distributeLevelingSeats(
     return levelingSeatDistributionArray;
 }
 
+/**
+ * Filters out parties that do not receive more seats in the national distribution than the district distribution.
+ * It returns the remaining party codes and the final national distribution of seats.
+ *
+ * @param levelingPartyCodes The party codes to filter
+ * @param payload The computation payload
+ * @param partyResults The party results for each party
+ */
 function nationalDistributionFilter(
     levelingPartyCodes: string[],
     payload: ComputationPayload,
@@ -117,6 +133,14 @@ function nationalDistributionFilter(
     };
 }
 
+/**
+ * Distributes the leveling seats on each party.
+ *
+ * @param levelingPartyCodes The party codes for the parties that may win a leveling seat
+ * @param partyResults The party results for each party
+ * @param payload The computation payload
+ * @param nationalDistribution The final national distribution of seats
+ */
 function finalLevelingSeatDistribution(
     levelingPartyCodes: string[],
     partyResults: Dictionary<PartyResult>,
@@ -136,6 +160,13 @@ function finalLevelingSeatDistribution(
     }
 }
 
+/**
+ * Distributes leveling seats on each party using one of the quotient algorithms.
+ *
+ * @param levelingPartyCodes The party codes for the parties that may win a leveling seat
+ * @param partyResults The party results for each party
+ * @param payload The computation payload
+ */
 function finalQuotientLevelingSeatDistribution(
     levelingPartyCodes: string[],
     partyResults: Dictionary<PartyResult>,
@@ -172,6 +203,13 @@ function finalQuotientLevelingSeatDistribution(
     );
 }
 
+/**
+ * Distributes the leveling seats on each party using one of the largest fraction algorithms.
+ *
+ * @param levelingPartyCodes The party codes for the parties that may win a leveling seat
+ * @param partyResults The party results for each party
+ * @param nationalDistribution The final national distribution of seats
+ */
 function finalLargestFractionLevelingSeatDistribution(
     levelingPartyCodes: string[],
     partyResults: Dictionary<PartyResult>,
