@@ -35,7 +35,7 @@ export function distributeSeats(
     averageVotesPerSeat?: number,
     partyResults?: Dictionary<PartyResult>
 ): DistributionResult {
-    if (algorithm === AlgorithmType.LARGEST_FRACTION_HARE || algorithm === AlgorithmType.LARGEST_FRACTION_DROOP) {
+    if (isLargestFractionAlgorithm(algorithm)) {
         const electionNumber = getElectionNumber(algorithm, totalVotes, numSeats);
         const partyVotes = resultArrayToDictionary(results);
         return largestFraction(numSeats, partyVotes, electionNumber);
@@ -170,8 +170,7 @@ export function getDenominator(
         case AlgorithmType.LARGEST_FRACTION_HARE:
         case AlgorithmType.LARGEST_FRACTION_DROOP:
         case AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF:
-            const electionNumber = getElectionNumber(algorithm, totalVotes, totalSeats);
-            return (numberOfSeatsAssigned + 1) * electionNumber;
+            return getElectionNumber(algorithm, totalVotes, totalSeats);
         default:
             console.error(`ERROR! ${algorithm.toString()} does not have an associated denominator function!`);
             return Number.MIN_SAFE_INTEGER;
