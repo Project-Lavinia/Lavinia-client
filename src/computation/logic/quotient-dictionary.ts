@@ -1,6 +1,6 @@
 import { SortedReverseDict, KeyValuePair } from "./sorted-reverse-dict";
 import { Dictionary } from "../../utilities/dictionary";
-import { tieBreaker } from "./utils";
+import { breakTies } from "./utils";
 
 export class QuotientDictionary extends SortedReverseDict {
     denominatorFunction: (timesWon: number) => number;
@@ -35,7 +35,7 @@ export class QuotientDictionary extends SortedReverseDict {
         // If more than 1 districts share the lead
         if (winners.length > 1) {
             // Select a winner
-            winner = tieBreaker(winners, baseValue);
+            winner = breakTies(winners, baseValue);
 
             // Return the losers back into the distribution
             winners.forEach((entry) => {

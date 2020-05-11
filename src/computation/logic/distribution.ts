@@ -1,7 +1,7 @@
 import { copyDictionary, Dictionary } from "../../utilities/dictionary";
 import { QuotientDictionary } from "./quotient-dictionary";
 import { SortedReverseDict } from "./sorted-reverse-dict";
-import { tieBreaker } from "./utils";
+import { breakTies } from "./utils";
 import { DistributionResult } from "../computation-models";
 
 /**
@@ -80,7 +80,7 @@ export function largestFraction(
     const remainingSeats = numberToDistribute - seatsDistributed;
 
     for (let seatSurplus = 0; seatSurplus < remainingSeats; seatSurplus++) {
-        const winner = tieBreaker(ratedParties.popTop(), partyVotes);
+        const winner = breakTies(ratedParties.popTop(), partyVotes);
         const updatedSeats = seatsWon[winner.key] ? seatsWon[winner.key] + 1 : 1;
         seatsWon[winner.key] = updatedSeats;
     }

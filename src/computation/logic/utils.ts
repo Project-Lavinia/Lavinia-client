@@ -289,7 +289,7 @@ export function distributeLevelingSeatsOnDistrictsPre2005(
  * @param winners The list of multiple winners from the distribution stage
  * @param baseValue The dictionary from winners to their respective numerators
  */
-export function tieBreaker(winners: KeyValuePair[], baseValue: Dictionary<number>): KeyValuePair {
+export function breakTies(winners: KeyValuePair[], baseValue: Dictionary<number>): KeyValuePair {
     const winnersCopy = [...winners];
 
     // Find the highest numerator of the winners
