@@ -44,10 +44,10 @@ export function initializeComputation(
     parameters: Parameters[]
 ) {
     const election: Election = electionType.elections[0]; // Most recent election
-    const filterVotes: Votes[] = votes.filter((vote) => vote.electionYear === 2017);
-    const filterMetrics: Metrics[] = metrics.filter((metric) => metric.electionYear === 2017);
+    const filterVotes: Votes[] = votes.filter((vote) => vote.electionYear === election.year);
+    const filterMetrics: Metrics[] = metrics.filter((metric) => metric.electionYear === election.year);
     const filterParameters: Parameters =
-        parameters.find((parameter) => parameter.electionYear === 2017) || unloadedParameters;
+        parameters.find((parameter) => parameter.electionYear === election.year) || unloadedParameters;
 
     const payload: ComputationPayload = {
         election,

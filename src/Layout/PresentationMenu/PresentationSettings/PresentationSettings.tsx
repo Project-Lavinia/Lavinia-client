@@ -15,6 +15,7 @@ import {
     mergeMetricDistricts,
 } from "../../../computation/logic/district-merging";
 import { ComputationMenuPayload } from "../../ComputationMenu/computation-menu-models";
+import { Use2021DistributionCheckbox } from "./Use2021DistributionCheckbox";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -35,6 +36,8 @@ export interface PresentationSettingsProps {
     year: number;
     mergeDistricts: boolean;
     toggleMergeDistricts: (checked: boolean) => void;
+    use2021Distribution: boolean;
+    toggleUse2021Distribution: (checked: boolean) => void;
     electionType: ElectionType;
     votes: Votes[];
     metrics: Metrics[];
@@ -118,7 +121,8 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         const year = this.props.year;
         let election = this.props.electionType.elections.find((election) => election.year === year);
         let votes = this.props.votes.filter((vote) => vote.electionYear === year);
-        let metrics = this.props.metrics.filter((metric) => metric.electionYear === year);
+        const distributionYear = this.props.use2021Distribution && year >= 2005 ? 2021 : year;
+        let metrics = this.props.metrics.filter((metric) => metric.electionYear === distributionYear);
         const parameters = this.props.parameters;
 
         if (election !== undefined) {
@@ -128,6 +132,35 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                 metrics = mergeMetricDistricts(metrics, districtMap);
             }
 
+            this.props.updateCalculation(
+                {
+                    ...this.props.computationPayload,
+                    election,
+                    metrics,
+                    votes,
+                    parameters,
+                },
+                this.props.settingsPayload.autoCompute,
+                false
+            );
+        }
+    };
+
+    showUse2021Distribution(): boolean {
+        return this.props.year >= 2005;
+    }
+
+    onToggleUse2021Distribution = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.toggleUse2021Distribution(event.target.checked);
+
+        const year = this.props.year;
+        const election = this.props.electionType.elections.find((election) => election.year === year);
+        const votes = this.props.votes.filter((vote) => vote.electionYear === year);
+        const metricsYear = event.target.checked && year >= 2005 ? 2021 : year;
+        const metrics = this.props.metrics.filter((metric) => metric.electionYear === metricsYear);
+        const parameters = this.props.parameters;
+
+        if (election !== undefined) {
             this.props.updateCalculation(
                 {
                     ...this.props.computationPayload,
@@ -167,6 +200,11 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                             hidden={!this.showMergeDistricts()}
                             mergeDistricts={this.props.mergeDistricts}
                             toggleMergeDistricts={this.onToggleMergeDistricts}
+                        />
+                        <Use2021DistributionCheckbox
+                            hidden={!this.showUse2021Distribution()}
+                            use2021Distribution={this.props.use2021Distribution}
+                            toggleUse2021Distribution={this.onToggleUse2021Distribution}
                         />
                     </div>
                 </div>

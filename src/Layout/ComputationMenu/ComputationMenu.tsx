@@ -38,6 +38,7 @@ export interface ComputationMenuProps {
     saveComparison: () => void;
     showComparison: boolean;
     mergeDistricts: boolean;
+    use2021Distribution: boolean;
 }
 
 export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
@@ -61,7 +62,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
         const nextYear = parseInt(event.target.value);
         let election = this.props.electionType.elections.find((election) => election.year === nextYear);
         let votes = this.props.votes.filter((vote) => vote.electionYear === nextYear);
-        let metrics = this.props.metrics.filter((metric) => metric.electionYear === nextYear);
+        const distributionYear = this.props.use2021Distribution && nextYear >= 2005 ? 2021 : nextYear;
+        let metrics = this.props.metrics.filter((metric) => metric.electionYear === distributionYear);
         const parameters =
             this.props.parameters.find((parameter) => parameter.electionYear === nextYear) || unloadedParameters;
 
@@ -271,7 +273,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
         const year = parseInt(this.props.settingsPayload.year);
         const election = this.props.electionType.elections.find((e) => e.year === year);
         const votes = this.props.votes.filter((vote) => vote.electionYear === year);
-        const metrics = this.props.metrics.filter((metric) => metric.electionYear === year);
+        const distributionYear = this.props.use2021Distribution && year >= 2005 ? 2021 : year;
+        const metrics = this.props.metrics.filter((metric) => metric.electionYear === distributionYear);
         const parameters =
             this.props.parameters.find((parameter) => parameter.electionYear === year) || unloadedParameters;
         if (election !== undefined && election !== null) {
