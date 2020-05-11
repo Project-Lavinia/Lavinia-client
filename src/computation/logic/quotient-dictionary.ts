@@ -26,16 +26,16 @@ export class QuotientDictionary extends SortedReverseDict {
      * Returns the party with the highest quotient.
      * Breaks ties according to the Norwegian laws.
      *
-     * @param baseValue Number of votes received by each party
+     * @param partyVotes Number of votes received by each party
      */
-    getWinner(baseValue: Dictionary<number>): KeyValuePair {
+    getWinner(partyVotes: Dictionary<number>): KeyValuePair {
         const winners = this.popTop();
         let winner: KeyValuePair;
 
         // If more than 1 districts share the lead
         if (winners.length > 1) {
             // Select a winner
-            winner = breakTies(winners, baseValue);
+            winner = breakTies(winners, partyVotes);
 
             // Return the losers back into the distribution
             winners.forEach((entry) => {
@@ -54,12 +54,12 @@ export class QuotientDictionary extends SortedReverseDict {
      * Calculates the quotients of every party and sorts them into the party quotient dictionary.
      *
      * @param distribution Number of seats won by each party
-     * @param baseValue Number of votes received by each party
+     * @param partyVotes Number of votes received by each party
      */
-    populateQuotients(distribution: Dictionary<number>, baseValue: Dictionary<number>) {
+    populateQuotients(distribution: Dictionary<number>, partyVotes: Dictionary<number>) {
         for (const entry in distribution) {
             if (distribution.hasOwnProperty(entry)) {
-                this.insertParty(entry, baseValue[entry], distribution[entry]);
+                this.insertParty(entry, partyVotes[entry], distribution[entry]);
             }
         }
     }
