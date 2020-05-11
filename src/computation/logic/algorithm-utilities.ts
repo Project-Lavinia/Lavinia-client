@@ -12,6 +12,7 @@ import { Dictionary } from "../../utilities/dictionary";
 import { SeatPartyResult } from "./../../computation/computation-models";
 import * as _ from "lodash";
 import { largestFraction } from "./distribution";
+import { checkExhaustively } from "../../utilities";
 
 const illegalPartyCodes = new Set(["BLANKE"]);
 
@@ -470,8 +471,11 @@ export function getAlgorithmNameFromType(type: AlgorithmType) {
             return "Største brøk (Droop)";
         case AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF:
             return "Største brøk (Hagenbach-Bischoff)";
-        default:
+        case AlgorithmType.UNDEFINED:
             return "Udefinert";
+        default:
+            checkExhaustively(type);
+            return "";
     }
 }
 
