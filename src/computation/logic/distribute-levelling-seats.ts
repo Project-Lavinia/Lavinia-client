@@ -19,14 +19,15 @@ export function distributeLevelingSeats(
     districtPartyResults: Dictionary<Dictionary<PartyResult>>,
     districtResults: Dictionary<DistrictResult>
 ): PartyRestQuotients[] {
+    const allPartyCodes = [...Object.keys(partyResults)];
     // Filter out parties with less than the threshold
-    let levelingPartyCodes = Object.keys(partyResults).filter(
+    const thresholdPartyCodes = allPartyCodes.filter(
         (partyCode) => partyResults[partyCode].percentVotes >= payload.electionThreshold
     );
 
-    const resultNationalFilter = nationalDistributionFilter(levelingPartyCodes, payload, partyResults);
+    const resultNationalFilter = nationalDistributionFilter(thresholdPartyCodes, payload, partyResults);
 
-    levelingPartyCodes = resultNationalFilter.levelingPartyCodes;
+    const levelingPartyCodes = resultNationalFilter.levelingPartyCodes;
 
     const levelingSeatDistribution = finalLevelingSeatDistribution(
         levelingPartyCodes,
@@ -43,14 +44,14 @@ export function distributeLevelingSeats(
         }
     }
 
-    levelingPartyCodes = levelingPartyCodes.filter((partyCode) => partyResults[partyCode].levelingSeats > 0);
+    const wonLevelingPartyCodes = levelingPartyCodes.filter((partyCode) => partyResults[partyCode].levelingSeats > 0);
 
     let partyRestQuotients: Dictionary<PartyRestQuotients> = {};
 
     if (payload.election.year < 2005) {
         partyRestQuotients = distributeLevelingSeatsOnDistrictsPre2005(
             payload,
-            levelingPartyCodes,
+            wonLevelingPartyCodes,
             partyResults,
             districtPartyResults,
             districtResults
@@ -58,7 +59,7 @@ export function distributeLevelingSeats(
     } else {
         partyRestQuotients = distributeLevelingSeatsOnDistricts(
             payload,
-            levelingPartyCodes,
+            wonLevelingPartyCodes,
             partyResults,
             districtPartyResults,
             districtResults
