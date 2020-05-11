@@ -88,6 +88,13 @@ export interface DistributionResult {
     seatResults: SeatResult[];
 }
 
+export interface NationalDistributionResult {
+    /** A DistributionResult with information about how many seats each party won and what the results were of each round of the distribution */
+    nationalDistribution: DistributionResult;
+    /** Array of strings listing the party codes of all the parties that gained more seats in the national distribution than the district distribution */
+    levelingPartyCodes: string[];
+}
+
 export interface LagueDhontResult {
     /** A list of party results, with information about national results */
     partyResults: PartyResult[];

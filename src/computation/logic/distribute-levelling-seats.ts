@@ -2,7 +2,7 @@ import { ComputationPayload, PartyResult, DistrictResult, PartyRestQuotients, Re
 import { Dictionary, dictionaryToArray } from "../../utilities/dictionary";
 import { distributeSeats } from ".";
 import { distributeLevelingSeatsOnDistricts, distributeLevelingSeatsOnDistrictsPre2005 } from "./utils";
-import { DistributionResult } from "../../computation/computation-models";
+import { DistributionResult, NationalDistributionResult } from "../../computation/computation-models";
 import { isLargestFractionAlgorithm, isQuotientAlgorithm } from "./algorithm-utilities";
 
 /**
@@ -82,7 +82,7 @@ function nationalDistributionFilter(
     levelingPartyCodes: string[],
     payload: ComputationPayload,
     partyResults: Dictionary<PartyResult>
-): { nationalDistribution: DistributionResult; levelingPartyCodes: string[] } {
+): NationalDistributionResult {
     let localLevelingPartyCodes = [...levelingPartyCodes];
     let nationalDistribution: DistributionResult;
 
