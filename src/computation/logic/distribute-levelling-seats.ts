@@ -83,54 +83,48 @@ function nationalDistributionFilter(
     payload: ComputationPayload,
     partyResults: Dictionary<PartyResult>
 ): NationalDistributionResult {
-    let localLevelingPartyCodes = [...levelingPartyCodes];
-    let nationalDistribution: DistributionResult;
+    let totalVotes = 0;
+    let seatsToDistribute = payload.levelingSeats;
+    const levelingParties: Result[] = [];
+    for (const partyCode of levelingPartyCodes) {
+        totalVotes += partyResults[partyCode].votes;
+        seatsToDistribute += partyResults[partyCode].districtSeats;
+        const party: Result = {
+            countyId: -1,
+            electionId: -1,
+            partyId: -1,
+            resultId: -1,
+            countyName: "",
+            partyCode,
+            partyName: "",
+            votes: partyResults[partyCode].votes,
+            percentage: -1,
+        };
+        levelingParties.push(party);
+    }
 
-    let unfilteredPartiesLength;
-    let filteredPartiesLength = localLevelingPartyCodes.length;
-    do {
-        unfilteredPartiesLength = filteredPartiesLength;
+    // Compute the distribution of the total number of seats on the whole country
+    const nationalDistribution = distributeSeats(
+        payload.algorithm,
+        payload.firstDivisor,
+        Number.MIN_SAFE_INTEGER,
+        seatsToDistribute,
+        totalVotes,
+        levelingParties
+    );
 
-        let totalVotes = 0;
-        let seatsToDistribute = payload.levelingSeats;
-        const levelingParties: Result[] = [];
-        for (const partyCode of localLevelingPartyCodes) {
-            totalVotes += partyResults[partyCode].votes;
-            seatsToDistribute += partyResults[partyCode].districtSeats;
-            const party: Result = {
-                countyId: -1,
-                electionId: -1,
-                partyId: -1,
-                resultId: -1,
-                countyName: "",
-                partyCode,
-                partyName: "",
-                votes: partyResults[partyCode].votes,
-                percentage: -1,
-            };
-            levelingParties.push(party);
-        }
+    // Filter out parties that did not gain any seats in the new distribution
+    const filteredLevelingPartyCodes = levelingPartyCodes.filter(
+        (p) => nationalDistribution.seatsWon[p] > partyResults[p].districtSeats
+    );
 
-        // Compute the distribution of the total number of seats on the whole country
-        nationalDistribution = distributeSeats(
-            payload.algorithm,
-            payload.firstDivisor,
-            Number.MIN_SAFE_INTEGER,
-            seatsToDistribute,
-            totalVotes,
-            levelingParties
-        );
-
-        // Filter out parties that did not gain any seats in the new distribution
-        localLevelingPartyCodes = localLevelingPartyCodes.filter(
-            (p) => nationalDistribution.seatsWon[p] > partyResults[p].districtSeats
-        );
-        filteredPartiesLength = localLevelingPartyCodes.length;
-    } while (filteredPartiesLength !== unfilteredPartiesLength);
+    if (filteredLevelingPartyCodes.length !== levelingPartyCodes.length) {
+        return nationalDistributionFilter(filteredLevelingPartyCodes, payload, partyResults);
+    }
 
     return {
         nationalDistribution,
-        levelingPartyCodes: localLevelingPartyCodes,
+        levelingPartyCodes: filteredLevelingPartyCodes,
     };
 }
 
