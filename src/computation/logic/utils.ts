@@ -147,7 +147,7 @@ export function distributeDistrictSeatsOnDistricts(
 
         districtSeats = subtractLevelingSeats(districtSeats);
 
-        if (findNegativeSeats(districtSeats)) {
+        if (anyNegativeSeats(districtSeats)) {
             districtSeats = distributionByQuotient(numDistrictSeats, districtSeats, baseValues, denominatorFunction);
         }
     }
@@ -286,7 +286,7 @@ export function distributeLevelingSeatsOnDistrictsPre2005(
     return partyRestQuotients;
 }
 
-function findNegativeSeats(districtSeats: Dictionary<number>): boolean {
+function anyNegativeSeats(districtSeats: Dictionary<number>): boolean {
     for (const districtName in districtSeats) {
         if (districtSeats.hasOwnProperty(districtName)) {
             if (districtSeats[districtName] < 0) {
