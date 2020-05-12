@@ -9,6 +9,7 @@ import {
     toggleShowComparison,
     toggleShowFilters,
     toggleMergeDistricts,
+    toggleUse2021Distribution,
 } from "../presentation-menu-actions";
 import { DisproportionalityIndex } from "../../Presentation/presentation-models";
 import { ComputationPayload, updateComputation } from "../../../computation";
@@ -30,6 +31,7 @@ interface StateProps
         | "showFilters"
         | "year"
         | "mergeDistricts"
+        | "use2021Distribution"
         | "electionType"
         | "votes"
         | "metrics"
@@ -50,6 +52,7 @@ function mapStateToProps(state: RootState): StateProps {
         showFilters: state.presentationMenuState.showFilters,
         year: state.computationState.election.year,
         mergeDistricts: state.presentationMenuState.mergeDistricts,
+        use2021Distribution: state.presentationMenuState.use2021Distribution,
         electionType: state.requestedDataState.electionType,
         votes: state.requestedDataState.votes,
         metrics: state.requestedDataState.metrics,
@@ -98,6 +101,7 @@ interface DispatchProps
         | "toggleShowComparison"
         | "toggleShowFilters"
         | "toggleMergeDistricts"
+        | "toggleUse2021Distribution"
         | "updateCalculation"
     > {}
 
@@ -128,6 +132,10 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
     },
     toggleMergeDistricts: (checked: boolean) => {
         const action = toggleMergeDistricts(checked);
+        dispatch(action);
+    },
+    toggleUse2021Distribution: (checked: boolean) => {
+        const action = toggleUse2021Distribution(checked);
         dispatch(action);
     },
     updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => {

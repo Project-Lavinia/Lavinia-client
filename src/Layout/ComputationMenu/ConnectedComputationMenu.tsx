@@ -25,6 +25,7 @@ const mapStateToProps = (
     | "metrics"
     | "votes"
     | "mergeDistricts"
+    | "use2021Distribution"
 > => ({
     computationPayload: {
         election: state.computationState.election,
@@ -59,6 +60,7 @@ const mapStateToProps = (
     metrics: state.requestedDataState.metrics,
     votes: state.requestedDataState.votes,
     mergeDistricts: state.presentationMenuState.mergeDistricts,
+    use2021Distribution: state.presentationMenuState.use2021Distribution,
 });
 
 const mapDispatchToProps = (
