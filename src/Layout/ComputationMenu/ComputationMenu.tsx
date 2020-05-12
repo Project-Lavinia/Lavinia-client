@@ -15,6 +15,8 @@ import {
     mergeVoteDistricts,
     mergeMetricDistricts,
 } from "../../computation/logic/district-merging";
+import { shouldDistributeDistrictSeats } from "../../utilities/conditionals";
+import { isLargestFractionAlgorithm } from "../../computation/logic";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -49,7 +51,10 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
      * @returns true if it should be hidden, false if it should not
      */
     shouldHideFirstDivisor(): boolean {
-        return this.props.computationPayload.algorithm === AlgorithmType.D_HONDT;
+        return (
+            this.props.computationPayload.algorithm === AlgorithmType.D_HONDT ||
+            isLargestFractionAlgorithm(this.props.computationPayload.algorithm)
+        );
     }
 
     /**
@@ -68,7 +73,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
             this.props.parameters.find((parameter) => parameter.electionYear === nextYear) || unloadedParameters;
 
         if (election !== undefined) {
-            if (nextYear >= 2005 && this.props.mergeDistricts) {
+            if (shouldDistributeDistrictSeats(nextYear) && this.props.mergeDistricts) {
                 election = mergeElectionDistricts(election, districtMap);
                 votes = mergeVoteDistricts(votes, districtMap);
                 metrics = mergeMetricDistricts(metrics, districtMap);
@@ -314,6 +319,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     };
 
     render() {
+        const year = parseInt(this.props.settingsPayload.year);
         return (
             <div>
                 <h1 className="is-size-6-mobile is-size-4-tablet is-size-2-desktop is-size-1-widescreen">
@@ -392,7 +398,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.election.seats}
                         originalValue={this.props.settingsPayload.comparison.districtSeats}
                         integer={true}
-                        hidden={parseInt(this.props.settingsPayload.year) < 2005}
+                        hidden={!shouldDistributeDistrictSeats(year)}
                     />
                     <SmartNumericInput
                         name="areaFactor"
@@ -404,7 +410,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.parameters.areaFactor}
                         originalValue={this.props.settingsPayload.comparison.areaFactor}
                         integer={false}
-                        hidden={parseInt(this.props.settingsPayload.year) < 2005}
+                        hidden={!shouldDistributeDistrictSeats(year)}
                     />
                     <ComputeManuallyButton
                         autoCompute={this.props.settingsPayload.autoCompute}
