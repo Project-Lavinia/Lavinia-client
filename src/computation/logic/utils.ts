@@ -139,17 +139,19 @@ export function distributeDistrictSeatsOnDistricts(
             baseValues[metric.district] = metric.population + metric.area * areaFactor;
         });
 
-        districtSeats = distributionByQuotient(
+        const distributedDistrictSeatsAndLevelingSeats = distributionByQuotient(
             numDistrictSeats + metrics.length,
             districtSeats,
             baseValues,
             denominatorFunction
         );
 
-        districtSeats = subtractLevelingSeats(districtSeats);
+        const districtSeatsNoLevelingSeats = subtractLevelingSeats(distributedDistrictSeatsAndLevelingSeats);
 
-        if (anyNegativeSeats(districtSeats)) {
+        if (anyNegativeSeats(districtSeatsNoLevelingSeats)) {
             districtSeats = distributionByQuotient(numDistrictSeats, districtSeats, baseValues, denominatorFunction);
+        } else {
+            districtSeats = districtSeatsNoLevelingSeats;
         }
     }
     return districtSeats;
@@ -287,6 +289,11 @@ export function distributeLevelingSeatsOnDistrictsPre2005(
     return partyRestQuotients;
 }
 
+/**
+ * Checks whether any districts ended up with a negative number of district seats.
+ *
+ * @param districtSeats The distribution of district seats to check
+ */
 function anyNegativeSeats(districtSeats: Dictionary<number>): boolean {
     for (const districtName in districtSeats) {
         if (districtSeats.hasOwnProperty(districtName)) {
