@@ -15,7 +15,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
 
     // Calculate the district seats for each district
     const districtSeats = distributeDistrictSeatsOnDistricts(
-        payload.parameters.areaFactor,
+        payload.areaFactor,
         19,
         payload.districtSeats,
         payload.metrics
