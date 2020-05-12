@@ -65,10 +65,11 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                 Cell: (row) => {
                     if (row.value !== undefined) {
                         let quotient = row.value.quotient;
-                        if (this.props.year < 2005 && isQuotientAlgorithm(this.props.algorithm)) {
-                            quotient = quotient / 10000;
-                        } else if (this.props.year >= 2005 && isQuotientAlgorithm(this.props.algorithm)) {
+                        const useAdjustedQuotient = this.props.year >= 2005;
+                        if (useAdjustedQuotient && isQuotientAlgorithm(this.props.algorithm)) {
                             quotient = quotient * 10000;
+                        } else if (isQuotientAlgorithm(this.props.algorithm)) {
+                            quotient = quotient / 10000;
                         }
                         return (
                             <div
@@ -117,10 +118,11 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
     getAdjustment(year: number, algorithm: AlgorithmType) {
         const ending =
             "og representerer verdien ved utdeling av siste distriktsmandat i fylket for det respektive partiet.";
-        if (year < 2005 && isQuotientAlgorithm(algorithm)) {
-            return " er delt på 10 000 " + ending;
-        } else if (year >= 2005 && isQuotientAlgorithm(algorithm)) {
+        const useAdjustedQuotient = year >= 2005;
+        if (useAdjustedQuotient && isQuotientAlgorithm(algorithm)) {
             return " er ganget med 10 000 " + ending;
+        } else if (isQuotientAlgorithm(algorithm)) {
+            return " er delt på 10 000 " + ending;
         }
 
         return " er fordelingstallet som tilsier hvor mange distriktsmandater partiet skal vinne i det respektive fylket.";

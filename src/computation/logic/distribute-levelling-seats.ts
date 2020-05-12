@@ -47,8 +47,8 @@ export function distributeLevelingSeats(
     const wonLevelingPartyCodes = levelingPartyCodes.filter((partyCode) => partyResults[partyCode].levelingSeats > 0);
 
     let partyRestQuotients: Dictionary<PartyRestQuotients> = {};
-
-    if (payload.election.year < 2005) {
+    const preOneLevelingSeatPerDistrict = payload.election.year < 2005;
+    if (preOneLevelingSeatPerDistrict) {
         partyRestQuotients = distributeLevelingSeatsOnDistrictsPre2005(
             payload,
             wonLevelingPartyCodes,

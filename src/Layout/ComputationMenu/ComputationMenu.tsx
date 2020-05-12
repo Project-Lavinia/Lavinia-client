@@ -15,6 +15,7 @@ import {
     mergeVoteDistricts,
     mergeMetricDistricts,
 } from "../../computation/logic/district-merging";
+import { distributeDistrictSeats } from "../../utilities/conditionals";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -66,7 +67,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
             this.props.parameters.find((parameter) => parameter.electionYear === nextYear) || unloadedParameters;
 
         if (election !== undefined) {
-            if (nextYear >= 2005 && this.props.mergeDistricts) {
+            if (distributeDistrictSeats(nextYear) && this.props.mergeDistricts) {
                 election = mergeElectionDistricts(election, districtMap);
                 votes = mergeVoteDistricts(votes, districtMap);
                 metrics = mergeMetricDistricts(metrics, districtMap);
@@ -311,6 +312,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     };
 
     render() {
+        const year = parseInt(this.props.settingsPayload.year);
         return (
             <div>
                 <h1 className="is-size-6-mobile is-size-4-tablet is-size-2-desktop is-size-1-widescreen">
@@ -389,7 +391,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.election.seats}
                         originalValue={this.props.settingsPayload.comparison.districtSeats}
                         integer={true}
-                        hidden={parseInt(this.props.settingsPayload.year) < 2005}
+                        hidden={!distributeDistrictSeats(year)}
                     />
                     <SmartNumericInput
                         name="areaFactor"
@@ -401,7 +403,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.parameters.areaFactor}
                         originalValue={this.props.settingsPayload.comparison.areaFactor}
                         integer={false}
-                        hidden={parseInt(this.props.settingsPayload.year) < 2005}
+                        hidden={!distributeDistrictSeats(year)}
                     />
                     <ComputeManuallyButton
                         autoCompute={this.props.settingsPayload.autoCompute}

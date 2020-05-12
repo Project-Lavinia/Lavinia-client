@@ -15,6 +15,7 @@ import {
     mergeMetricDistricts,
 } from "../../../computation/logic/district-merging";
 import { ComputationMenuPayload } from "../../ComputationMenu/computation-menu-models";
+import { distributeDistrictSeats } from "../../../utilities/conditionals";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -103,15 +104,6 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         return this.props.currentPresentation === PresentationType.ElectionTable;
     }
 
-    /**
-     * Helper function for evaluating whether the merge districts checkbox should be shown.
-     *
-     * @returns true if merge districts checkbox should be shown, false otherwise
-     */
-    showMergeDistricts(): boolean {
-        return this.props.year >= 2005;
-    }
-
     onToggleMergeDistricts = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.props.toggleMergeDistricts(event.target.checked);
 
@@ -122,7 +114,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         const parameters = this.props.parameters;
 
         if (election !== undefined) {
-            if (year >= 2005 && event.target.checked) {
+            if (distributeDistrictSeats(year) && event.target.checked) {
                 election = mergeElectionDistricts(election, districtMap);
                 votes = mergeVoteDistricts(votes, districtMap);
                 metrics = mergeMetricDistricts(metrics, districtMap);
@@ -164,7 +156,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                     </div>
                     <div className="column">
                         <MergeDistrictsCheckbox
-                            hidden={!this.showMergeDistricts()}
+                            hidden={!distributeDistrictSeats(this.props.year)}
                             mergeDistricts={this.props.mergeDistricts}
                             toggleMergeDistricts={this.onToggleMergeDistricts}
                         />
