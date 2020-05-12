@@ -1,5 +1,5 @@
 import * as React from "react";
-import ReactTable, { RowInfo, ComponentPropsGetter0, ComponentPropsGetterR } from "react-table";
+import ReactTable, { RowInfo, ComponentPropsGetter0 } from "react-table";
 import { DistrictResult, PartyResult, SeatResult } from "../../../computation/computation-models";
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
@@ -35,10 +35,10 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         return districtResult.partyResults;
     };
 
-    highLightWinnerRow = (winner: string): ComponentPropsGetter0 | ComponentPropsGetterR | undefined => {
+    highLightWinnerRow = (winner: string): ComponentPropsGetter0 | undefined => {
         return (state: undefined, rowInfo: RowInfo | undefined) => {
             if (rowInfo && rowInfo.original.partyCode === winner) {
-                return { className: "has-background-success" };
+                return { className: "input is-success" };
             }
             return {};
         };
