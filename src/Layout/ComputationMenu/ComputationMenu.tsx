@@ -16,6 +16,7 @@ import {
     mergeMetricDistricts,
 } from "../../computation/logic/district-merging";
 import { distributeDistrictSeats } from "../../utilities/conditionals";
+import { isLargestFractionAlgorithm } from "../../computation/logic";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -49,7 +50,10 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
      * @returns true if it should be hidden, false if it should not
      */
     shouldHideFirstDivisor(): boolean {
-        return this.props.computationPayload.algorithm === AlgorithmType.D_HONDT;
+        return (
+            this.props.computationPayload.algorithm === AlgorithmType.D_HONDT ||
+            isLargestFractionAlgorithm(this.props.computationPayload.algorithm)
+        );
     }
 
     /**
