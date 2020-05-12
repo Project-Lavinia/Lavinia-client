@@ -64,6 +64,11 @@ export function presentationMenu(
                 ...state,
                 mergeDistricts: action.mergeDistricts,
             };
+        case PresentationMenuActionType.TOGGLE_USE_2021_DISTRIBUTION:
+            return {
+                ...state,
+                use2021Distribution: action.use2021Distribution,
+            };
         default:
             checkExhaustively(action);
             return state;

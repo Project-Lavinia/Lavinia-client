@@ -13,6 +13,7 @@ export enum PresentationMenuActionType {
     TOGGLE_SHOW_COMPARISON = "TOGGLE_SHOW_COMPARISON",
     TOGGLE_SHOW_FILTERS = "TOGGLE_SHOW_FILTERS",
     TOGGLE_MERGE_DISTRICTS = "TOGGLE_MERGE_DISTRICTS",
+    TOGGLE_USE_2021_DISTRIBUTION = "TOGGLE_USE_2021_DISTRIBUTION",
 }
 
 /**
@@ -27,7 +28,8 @@ export type PresentationMenuAction =
     | ChangeDisproportionalityIndex
     | ToggleShowComparison
     | ToggleShowFilters
-    | ToggleMergeDistricts;
+    | ToggleMergeDistricts
+    | ToggleUse2021Distribution;
 
 /**
  * Action for initializing the presentation.
@@ -221,6 +223,27 @@ export function toggleMergeDistricts(mergeDistricts: boolean) {
     const action: ToggleMergeDistricts = {
         type: PresentationMenuActionType.TOGGLE_MERGE_DISTRICTS,
         mergeDistricts,
+    };
+    return action;
+}
+
+/**
+ * Action for toggling whether or not to merge districts.
+ */
+export interface ToggleUse2021Distribution {
+    type: PresentationMenuActionType.TOGGLE_USE_2021_DISTRIBUTION;
+    use2021Distribution: boolean;
+}
+
+/**
+ * Action creator for toggling whether or not to merge districts.
+ *
+ * @param mergeDistricts - true if districts should be merged, else false.
+ */
+export function toggleUse2021Distribution(use2021Distribution: boolean) {
+    const action: ToggleUse2021Distribution = {
+        type: PresentationMenuActionType.TOGGLE_USE_2021_DISTRIBUTION,
+        use2021Distribution,
     };
     return action;
 }
