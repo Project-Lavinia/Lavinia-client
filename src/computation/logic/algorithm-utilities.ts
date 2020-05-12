@@ -172,8 +172,11 @@ export function getDenominator(
         case AlgorithmType.LARGEST_FRACTION_DROOP:
         case AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF:
             return getElectionNumber(algorithm, totalVotes, totalSeats);
+        case AlgorithmType.UNDEFINED:
+            console.error(`ERROR! Algorithm type should not be undefined!`);
+            return Number.MIN_SAFE_INTEGER;
         default:
-            console.error(`ERROR! ${algorithm.toString()} does not have an associated denominator function!`);
+            checkExhaustively(algorithm);
             return Number.MIN_SAFE_INTEGER;
     }
 }
