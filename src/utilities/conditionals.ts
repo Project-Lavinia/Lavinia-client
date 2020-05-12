@@ -3,6 +3,6 @@
  *
  * @param year The year to check
  */
-export function distributeDistrictSeats(year: number): boolean {
+export function shouldDistributeDistrictSeats(year: number): boolean {
     return year >= 2005;
 }

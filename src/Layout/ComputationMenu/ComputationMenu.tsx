@@ -15,7 +15,7 @@ import {
     mergeVoteDistricts,
     mergeMetricDistricts,
 } from "../../computation/logic/district-merging";
-import { distributeDistrictSeats } from "../../utilities/conditionals";
+import { shouldDistributeDistrictSeats } from "../../utilities/conditionals";
 import { isLargestFractionAlgorithm } from "../../computation/logic";
 
 export interface ComputationMenuProps {
@@ -71,7 +71,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
             this.props.parameters.find((parameter) => parameter.electionYear === nextYear) || unloadedParameters;
 
         if (election !== undefined) {
-            if (distributeDistrictSeats(nextYear) && this.props.mergeDistricts) {
+            if (shouldDistributeDistrictSeats(nextYear) && this.props.mergeDistricts) {
                 election = mergeElectionDistricts(election, districtMap);
                 votes = mergeVoteDistricts(votes, districtMap);
                 metrics = mergeMetricDistricts(metrics, districtMap);
@@ -395,7 +395,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.election.seats}
                         originalValue={this.props.settingsPayload.comparison.districtSeats}
                         integer={true}
-                        hidden={!distributeDistrictSeats(year)}
+                        hidden={!shouldDistributeDistrictSeats(year)}
                     />
                     <SmartNumericInput
                         name="areaFactor"
@@ -407,7 +407,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.parameters.areaFactor}
                         originalValue={this.props.settingsPayload.comparison.areaFactor}
                         integer={false}
-                        hidden={!distributeDistrictSeats(year)}
+                        hidden={!shouldDistributeDistrictSeats(year)}
                     />
                     <ComputeManuallyButton
                         autoCompute={this.props.settingsPayload.autoCompute}

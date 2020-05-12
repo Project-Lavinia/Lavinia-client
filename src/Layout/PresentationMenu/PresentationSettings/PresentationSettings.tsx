@@ -15,7 +15,7 @@ import {
     mergeMetricDistricts,
 } from "../../../computation/logic/district-merging";
 import { ComputationMenuPayload } from "../../ComputationMenu/computation-menu-models";
-import { distributeDistrictSeats } from "../../../utilities/conditionals";
+import { shouldDistributeDistrictSeats } from "../../../utilities/conditionals";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -114,7 +114,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         const parameters = this.props.parameters;
 
         if (election !== undefined) {
-            if (distributeDistrictSeats(year) && event.target.checked) {
+            if (shouldDistributeDistrictSeats(year) && event.target.checked) {
                 election = mergeElectionDistricts(election, districtMap);
                 votes = mergeVoteDistricts(votes, districtMap);
                 metrics = mergeMetricDistricts(metrics, districtMap);
@@ -156,7 +156,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                     </div>
                     <div className="column">
                         <MergeDistrictsCheckbox
-                            hidden={!distributeDistrictSeats(this.props.year)}
+                            hidden={!shouldDistributeDistrictSeats(this.props.year)}
                             mergeDistricts={this.props.mergeDistricts}
                             toggleMergeDistricts={this.onToggleMergeDistricts}
                         />
