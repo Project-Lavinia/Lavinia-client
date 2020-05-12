@@ -38,8 +38,9 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
     };
 
     render() {
-        const calculateVulnerable = isQuotientAlgorithm(this.props.algorithm);
         const currentDistrictResult = this.getDistrictResult(this.props.districtSelected);
+        const calculateVulnerable =
+            isQuotientAlgorithm(this.props.algorithm) && currentDistrictResult.districtSeats > 0;
         const vulnerableMap = calculateVulnerable ? getVotesToVulnerableSeatMap(currentDistrictResult!) : undefined;
         const quotientMap = calculateVulnerable ? getQuotientsToVulnerableSeatMap(currentDistrictResult!) : undefined;
         const vulnerable = calculateVulnerable ? getVulnerableSeatByQuotient(currentDistrictResult!) : undefined;

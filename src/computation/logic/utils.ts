@@ -120,7 +120,6 @@ export function distributeDistrictSeatsOnDistricts(
     numDistrictSeats: number,
     metrics: Metrics[]
 ): Dictionary<number> {
-    let districtSeats: Dictionary<number> = {};
     const baseValues: Dictionary<number> = {};
 
     // Wrap Sainte Lagues so it only takes one argument
@@ -130,8 +129,11 @@ export function distributeDistrictSeatsOnDistricts(
 
     if (areaFactor === -1) {
         // If we don't have an area factor, just return the predetermined values
+        const districtSeats: Dictionary<number> = {};
         metrics.forEach((metric) => (districtSeats[metric.district] = metric.seats));
+        return districtSeats;
     } else {
+        const districtSeats: Dictionary<number> = {};
         metrics.forEach((metric) => {
             // Fill districtSeats with all the districts, with no wins yet
             districtSeats[metric.district] = 0;
@@ -139,16 +141,19 @@ export function distributeDistrictSeatsOnDistricts(
             baseValues[metric.district] = metric.population + metric.area * areaFactor;
         });
 
-        districtSeats = distributionByQuotient(
+        const distributedDistrictSeatsAndLevelingSeats = distributionByQuotient(
             numDistrictSeats + metrics.length,
             districtSeats,
             baseValues,
             denominatorFunction
         );
 
-        districtSeats = subtractLevelingSeats(districtSeats);
+        const districtSeatsNoLevelingSeats = subtractLevelingSeats(distributedDistrictSeatsAndLevelingSeats);
+
+        return anyNegativeSeats(districtSeatsNoLevelingSeats)
+            ? distributionByQuotient(numDistrictSeats, districtSeats, baseValues, denominatorFunction)
+            : districtSeatsNoLevelingSeats;
     }
-    return districtSeats;
 }
 
 /**
@@ -281,6 +286,22 @@ export function distributeLevelingSeatsOnDistrictsPre2005(
         levelingSeats.shift();
     }
     return partyRestQuotients;
+}
+
+/**
+ * Checks whether any districts ended up with a negative number of district seats.
+ *
+ * @param districtSeats The distribution of district seats to check
+ */
+function anyNegativeSeats(districtSeats: Dictionary<number>): boolean {
+    for (const districtName in districtSeats) {
+        if (districtSeats.hasOwnProperty(districtName)) {
+            if (districtSeats[districtName] < 0) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 /**
