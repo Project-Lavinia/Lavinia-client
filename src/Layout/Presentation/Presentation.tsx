@@ -14,7 +14,7 @@ import {
 } from "./presentation-utilities";
 import { RemainderQuotients } from "./RemainderQuotients/RemainderQuotients";
 import { toMax } from "../../utilities/reduce";
-import { LagueDhontResult, PartyResult, DistrictResult } from "../../computation";
+import { LagueDhontResult, PartyResult, DistrictResult, AlgorithmType } from "../../computation";
 import { PresentationType, DisproportionalityIndex } from "./presentation-models";
 import { ElectionComparison } from "./ElectionOverview/ElectionComparison";
 import { checkExhaustively } from "../../utilities";
@@ -30,6 +30,7 @@ export interface PresentationProps {
     showComparison: boolean;
     threshold: number;
     year: number;
+    algorithm: AlgorithmType;
     showFilters: boolean;
     selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -135,6 +136,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         districtResults={this.getDistrictTableData()}
                         districtWidth={this.getWidestStringWidth(this.getDistricts())}
                         decimals={this.props.decimals}
+                        algorithm={this.props.algorithm}
                     />
                 );
             case PresentationType.SeatDistribution:
@@ -152,6 +154,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         decimals={this.props.decimals}
                         disproportionalityIndex={this.props.disproportionalityIndex}
                         selectDistrict={this.props.selectDistrict}
+                        algorithm={this.props.algorithm}
                     />
                 );
             case PresentationType.RemainderQuotients:
@@ -163,6 +166,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         year={this.props.year}
                         decimals={this.props.decimals}
                         showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
+                        algorithm={this.props.algorithm}
                     />
                 );
             case PresentationType.LevellingSeats:

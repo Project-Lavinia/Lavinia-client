@@ -32,6 +32,15 @@ export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
                             <option value={AlgorithmType.D_HONDT}>
                                 {getAlgorithmNameFromType(AlgorithmType.D_HONDT)}
                             </option>
+                            <option value={AlgorithmType.LARGEST_FRACTION_HARE}>
+                                {getAlgorithmNameFromType(AlgorithmType.LARGEST_FRACTION_HARE)}
+                            </option>
+                            <option value={AlgorithmType.LARGEST_FRACTION_DROOP}>
+                                {getAlgorithmNameFromType(AlgorithmType.LARGEST_FRACTION_DROOP)}
+                            </option>
+                            <option value={AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF}>
+                                {getAlgorithmNameFromType(AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF)}
+                            </option>
                         </select>
                     </div>
                 </div>

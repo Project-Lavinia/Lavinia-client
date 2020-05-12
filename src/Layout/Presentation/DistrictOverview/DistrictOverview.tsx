@@ -1,14 +1,17 @@
 ﻿import * as React from "react";
 import ReactTable from "react-table";
-import { DistrictResult } from "../../../computation";
+import { DistrictResult, AlgorithmType } from "../../../computation";
 import { toMin, toMax, toMean, toSum } from "../../../utilities/reduce";
 import { getMostVulnerableSeatByQuotient } from "../../../utilities/district";
 import { norwegian } from "../../../utilities/rt";
+import { isQuotientAlgorithm } from "../../../computation/logic";
+import { VulnerableDistrictSeatText } from "./VulnerableDistrictSeatText";
 
 export interface DistrictOverviewProps {
     districtResults: DistrictResult[];
     districtWidth: number;
     decimals: number;
+    algorithm: AlgorithmType;
 }
 
 export class DistrictOverview extends React.Component<DistrictOverviewProps, {}> {
@@ -30,7 +33,8 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                 {data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name}
             </span>
         );
-        const mostVulnerable = getMostVulnerableSeatByQuotient(data);
+        const calculateVulnerable = isQuotientAlgorithm(this.props.algorithm);
+        const mostVulnerable = calculateVulnerable ? getMostVulnerableSeatByQuotient(data) : undefined;
         return (
             <React.Fragment>
                 <div className="card has-background-dark has-text-light">
@@ -44,15 +48,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                         {leastWeightedDistrict}
                         {" hadde minst vekt, og bare telte "}
                         {lowestVsAverageInPercentage.toFixed(decimals) + "%."}
-                        {" Det mest utsatte sistemandatet (relativt til kvotient) var i "}
-                        {<span className="has-text-warning">{mostVulnerable.district}</span>}
-                        {" og ble vunnet av "}
-                        {mostVulnerable.winner.partyCode}
-                        {". "}
-                        {mostVulnerable.runnerUp.partyCode}
-                        {" ville trengt "}
-                        {mostVulnerable.moreVotesToWin.toFixed(0)}
-                        {" flere stemmer for å vinne det."}
+                        <VulnerableDistrictSeatText mostVulnerable={mostVulnerable} />
                     </p>
                 </div>
 
