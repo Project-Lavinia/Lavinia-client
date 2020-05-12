@@ -12,6 +12,8 @@ import {
 import { Metrics } from "../../requested-data/requested-data-models";
 import { sainteLagues, distributionByQuotient } from "./distribution";
 import { generateLevelingSeatArray } from ".";
+import { KeyValuePair } from "./sorted-reverse-dict";
+import { AlgorithmType } from "../computation-models";
 
 export function buildDistrictResults(metrics: Metrics[]): Dictionary<DistrictResultv2> {
     const districtResults: Dictionary<DistrictResultv2> = {};
@@ -137,7 +139,6 @@ export function distributeDistrictSeatsOnDistricts(
             baseValues[metric.district] = metric.population + metric.area * areaFactor;
         });
 
-        // IMPORTANT! Assuming 19 leveling seats! Needs to be fixed
         districtSeats = distributionByQuotient(
             numDistrictSeats + metrics.length,
             districtSeats,
@@ -189,7 +190,7 @@ export function distributeLevelingSeatsOnDistricts(
         if (levelingSeats.length === 0) {
             finishedDistricts = [];
             levelingSeats = generateLevelingSeatArray(
-                payload.algorithm,
+                AlgorithmType.SAINTE_LAGUE,
                 levelingPartyCodes,
                 partyResults,
                 districtResults,
@@ -247,7 +248,7 @@ export function distributeLevelingSeatsOnDistrictsPre2005(
     while (seatIndex <= payload.levelingSeats) {
         if (levelingSeats.length === 0) {
             levelingSeats = generateLevelingSeatArray(
-                payload.algorithm,
+                AlgorithmType.SAINTE_LAGUE,
                 levelingPartyCodes,
                 partyResults,
                 districtResults,
@@ -295,4 +296,25 @@ function anyNegativeSeats(districtSeats: Dictionary<number>): boolean {
         }
     }
     return false;
+}
+
+/**
+ * Breaks ties in the distribution of items on names
+ *
+ * @param winners The list of multiple winners from the distribution stage
+ * @param baseValue The dictionary from winners to their respective numerators
+ */
+export function breakTies(winners: KeyValuePair[], baseValue: Dictionary<number>): KeyValuePair {
+    const winnersCopy = [...winners];
+
+    // Find the highest numerator of the winners
+    const numerators = winners.map((entry) => baseValue[entry.key]);
+    const maxNumerator = Math.max(...numerators);
+
+    // Filter out all winners that did not have the highest numerator
+    winnersCopy.filter((item) => baseValue[item.key] === maxNumerator);
+
+    // We will always do the coin flip, because if there is only 1 item there is 100% chance of it being selected.
+    // And the coinflip should be performed if there are more than 1 item remaining at this stage
+    return winnersCopy[Math.floor(Math.random() * winnersCopy.length)];
 }

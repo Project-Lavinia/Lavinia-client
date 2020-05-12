@@ -4,6 +4,9 @@ import { Dictionary } from "../utilities/dictionary";
 export enum AlgorithmType {
     SAINTE_LAGUE = "SAINTE_LAGUE",
     D_HONDT = "D_HONDT",
+    LARGEST_FRACTION_HARE = "LARGEST_FRACTION_HARE",
+    LARGEST_FRACTION_DROOP = "LARGEST_FRACTION_DROOP",
+    LARGEST_FRACTION_HAGENBACH_BISCHOFF = "LARGEST_FRACTION_HAGENBACH_BISCHOFF",
     UNDEFINED = "UNDEFINED",
 }
 
@@ -83,6 +86,13 @@ export interface DistributionResult {
     seatsWon: Dictionary<number>;
     /** List of information regarding the distribution of the individual seats */
     seatResults: SeatResult[];
+}
+
+export interface NationalDistributionResult {
+    /** A DistributionResult with information about how many seats each party won and what the results were of each round of the distribution */
+    nationalDistribution: DistributionResult;
+    /** Array of strings listing the party codes of all the parties that gained more seats in the national distribution than the district distribution */
+    levelingPartyCodes: string[];
 }
 
 export interface LagueDhontResult {

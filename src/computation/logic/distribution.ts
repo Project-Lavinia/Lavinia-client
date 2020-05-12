@@ -1,5 +1,8 @@
 import { copyDictionary, Dictionary } from "../../utilities/dictionary";
 import { QuotientDictionary } from "./quotient-dictionary";
+import { SortedReverseDict } from "./sorted-reverse-dict";
+import { breakTies } from "./utils";
+import { DistributionResult } from "../computation-models";
 
 /**
  * A general function for distributing a number of items on a number of names based on updated quotients.
@@ -53,4 +56,60 @@ export function sainteLagues(numberOfSeatsAssigned: number, firstDivisor: number
  */
 export function dHondt(numberOfSeatsAssigned: number): number {
     return numberOfSeatsAssigned + 1;
+}
+
+/**
+ * A general function for distributing a number of items on a number of names based on fractions.
+ *
+ * Distributes by first giving seats to all parties that earned full seats, and then
+ * gives the remaining seats to the parties with the highest remaining fraction.
+ *
+ * Note: the DistributionResults.seatResults are empty, as there are no rounds of distribution.
+ *
+ *
+ * @param numberToDistribute Number of items to distribute
+ * @param partyVotes The number of votes each party received
+ * @param electionNumber The number of votes necessary to win 1 seat
+ */
+export function largestFraction(
+    numberToDistribute: number,
+    partyVotes: Dictionary<number>,
+    electionNumber: number
+): DistributionResult {
+    const { ratedParties, seatsWon, seatsDistributed } = distributeWholeSeats(partyVotes, electionNumber);
+    const remainingSeats = numberToDistribute - seatsDistributed;
+
+    for (let seatSurplus = 0; seatSurplus < remainingSeats; seatSurplus++) {
+        const winner = breakTies(ratedParties.popTop(), partyVotes);
+        const updatedSeats = seatsWon[winner.key] ? seatsWon[winner.key] + 1 : 1;
+        seatsWon[winner.key] = updatedSeats;
+    }
+
+    return {
+        seatResults: [],
+        seatsWon,
+    };
+}
+
+function distributeWholeSeats(
+    partyVotes: Dictionary<number>,
+    electionNumber: number
+): { ratedParties: SortedReverseDict; seatsWon: Dictionary<number>; seatsDistributed: number } {
+    const ratedParties = new SortedReverseDict();
+    const seatsWon: Dictionary<number> = {};
+    let seatsDistributed = 0;
+    for (const partyCode in partyVotes) {
+        if (partyVotes.hasOwnProperty(partyCode)) {
+            const currentPartyVotes = partyVotes[partyCode];
+            const distributionValue = currentPartyVotes / electionNumber;
+            const partySeats = Math.floor(distributionValue);
+            const remainder = distributionValue - partySeats;
+
+            seatsWon[partyCode] = partySeats;
+            seatsDistributed += partySeats;
+            ratedParties.insert({ key: partyCode, value: remainder });
+        }
+    }
+
+    return { ratedParties, seatsWon, seatsDistributed };
 }

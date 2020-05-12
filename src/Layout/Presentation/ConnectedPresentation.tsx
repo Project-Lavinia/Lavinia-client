@@ -15,6 +15,7 @@ const mapStateToProps = (state: RootState): Partial<PresentationProps> => {
         disproportionalityIndex: state.presentationMenuState.disproportionalityIndex,
         showComparison: state.presentationMenuState.showComparison,
         year,
+        algorithm: state.computationState.algorithm,
         threshold: state.computationState.electionThreshold,
         showFilters: state.presentationMenuState.showFilters,
     } as PresentationProps;
