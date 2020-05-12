@@ -2,9 +2,10 @@
 import ReactTable from "react-table";
 import { DistrictResult, AlgorithmType } from "../../../computation";
 import { toMin, toMax, toMean, toSum } from "../../../utilities/reduce";
-import { getMostVulnerableSeatByQuotient, VulnerableDistrictSeat } from "../../../utilities/district";
+import { getMostVulnerableSeatByQuotient } from "../../../utilities/district";
 import { norwegian } from "../../../utilities/rt";
 import { isQuotientAlgorithm } from "../../../computation/logic";
+import { VulnerableDistrictSeatText } from "./VulnerableDistrictSeatText";
 
 export interface DistrictOverviewProps {
     districtResults: DistrictResult[];
@@ -47,7 +48,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                         {leastWeightedDistrict}
                         {" hadde minst vekt, og bare telte "}
                         {lowestVsAverageInPercentage.toFixed(decimals) + "%."}
-                        {this.getVulnerableText(mostVulnerable)}
+                        <VulnerableDistrictSeatText mostVulnerable={mostVulnerable} />
                     </p>
                 </div>
 
@@ -120,23 +121,4 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
             </React.Fragment>
         );
     }
-
-    getVulnerableText = (mostVulnerable: VulnerableDistrictSeat | undefined) => {
-        if (mostVulnerable) {
-            return (
-                <React.Fragment>
-                    {" Det mest utsatte sistemandatet (relativt til kvotient) var i "}
-                    {<span className="has-text-warning">{mostVulnerable.district}</span>}
-                    {" og ble vunnet av "}
-                    {mostVulnerable.winner.partyCode}
-                    {". "}
-                    {mostVulnerable.runnerUp.partyCode}
-                    {" ville trengt "}
-                    {mostVulnerable.moreVotesToWin.toFixed(0)}
-                    {" flere stemmer for å vinne det."}
-                </React.Fragment>
-            );
-        }
-        return;
-    };
 }
