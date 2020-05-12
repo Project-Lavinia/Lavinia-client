@@ -118,7 +118,8 @@ function nationalDistributionFilter(
         (p) => nationalDistribution.seatsWon[p] > partyResults[p].districtSeats
     );
 
-    if (filteredLevelingPartyCodes.length !== levelingPartyCodes.length) {
+    const existsUnfilteredParty = filteredLevelingPartyCodes.length !== levelingPartyCodes.length;
+    if (existsUnfilteredParty) {
         return nationalDistributionFilter(filteredLevelingPartyCodes, payload, partyResults);
     }
 
