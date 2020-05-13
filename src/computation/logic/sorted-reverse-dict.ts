@@ -13,15 +13,18 @@ export class SortedReverseDict {
     }
 
     popTop(): KeyValuePair[] {
-        const start = this.reverseDict[0].value;
-        let num = 0;
+        const maxValue = this.reverseDict[0].value;
+        let entriesTiedToMaxValue = 0;
 
-        while (this.reverseDict[num].value === start) {
-            num++;
+        while (
+            entriesTiedToMaxValue < this.reverseDict.length &&
+            this.reverseDict[entriesTiedToMaxValue].value === maxValue
+        ) {
+            entriesTiedToMaxValue++;
         }
 
-        const top = this.reverseDict.slice(0, num);
-        this.reverseDict = this.reverseDict.slice(num, this.reverseDict.length);
+        const top = this.reverseDict.slice(0, entriesTiedToMaxValue);
+        this.reverseDict = this.reverseDict.slice(entriesTiedToMaxValue, this.reverseDict.length);
         return top;
     }
 
