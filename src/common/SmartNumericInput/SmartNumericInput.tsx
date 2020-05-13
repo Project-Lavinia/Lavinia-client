@@ -13,16 +13,26 @@ export interface SmartNumericInputProps {
     slider?: boolean;
     style?: React.CSSProperties;
     hidden?: boolean;
+    tooltip?: string;
 }
 
 export class SmartNumericInput<T extends SmartNumericInputProps> extends React.Component<T, {}> {
     render() {
         const value = this.validateInput(this.props.value);
         const settingWasChanged = this.props.originalValue && this.props.originalValue !== this.props.value;
+        const tooltip = this.props.tooltip ? (
+            <span
+                className="icon has-text-info has-tooltip-multiline has-tooltip-arrow"
+                data-tooltip={this.props.tooltip}
+            >
+                {" "}
+                <i className="fas fa-info-circle" />
+            </span>
+        ) : null;
         return (
             <div hidden={this.props.hidden} className="field">
                 <label htmlFor={this.props.name} className="label">
-                    {this.props.title}
+                    {this.props.title}&nbsp;{tooltip}
                 </label>
                 <div className="control">
                     <input
