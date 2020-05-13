@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as LaviniaLogo from "../../assets/lavinia_logo.png";
+import LaviniaLogo from "../../assets/lavinia_logo.png";
 
 export interface NavigationProps {
     hamburgerExpanded?: boolean;
