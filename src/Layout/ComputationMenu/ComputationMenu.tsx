@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SmartNumericInput, SmartNumericInputWithLabel } from "../../common";
+import { SmartNumericInput, SmartNumericInputWithLabel, TooltipInfo } from "../../common";
 import { ElectionType, Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
 import { ComputationPayload, AlgorithmType, unloadedParameters } from "../../computation";
 import { ComputationMenuPayload } from "./computation-menu-models";
@@ -343,6 +343,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.election.firstDivisor}
                         originalValue={this.props.settingsPayload.comparison.firstDivisor}
                         integer={false}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "Her kan du forandre det første delingstallet i Sainte-Laguës metode. Dette er det tallet som hvert partis stemmetall deles på før tildelingen av mandater begynner."
+                                }
+                            />
+                        }
                     />
                     <SmartNumericInputWithLabel
                         name="electionThreshold"
@@ -355,6 +362,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         originalValue={this.props.settingsPayload.comparison.electionThreshold}
                         integer={false}
                         label={"%"}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "Denne sperregrensen skal gjelde i det enkelte valgdistrikt, dvs. ved beregningen av distriktsmandater. I den gjeldende valgordning er det ingen slik formell sperregrense på distriktsnivå."
+                                }
+                            />
+                        }
                     />
                     <SmartNumericInputWithLabel
                         name="districtThreshold"
@@ -367,6 +381,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         originalValue={this.props.settingsPayload.comparison.districtThreshold}
                         integer={false}
                         label={"%"}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "Denne sperregrensen gjelder i det enkelte valgdistrikt, dvs. ved beregningen av distriktsmandater. "
+                                }
+                            />
+                        }
                     />
                     <SmartNumericInput
                         name="levelingSeats"
@@ -378,6 +399,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.election.levelingSeats}
                         originalValue={this.props.settingsPayload.comparison.levelingSeats}
                         integer={true}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "Utjevningsmandatene går til de partiene som har kommet dårligere ut av distriktsfordelingen enn deres stemmeandel skulle tilsi. Dette bidrar til å øke proporsjonaliteten i systemet."
+                                }
+                            />
+                        }
                     />
                     <SmartNumericInput
                         name="districtSeats"
@@ -390,6 +418,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         originalValue={this.props.settingsPayload.comparison.districtSeats}
                         integer={true}
                         hidden={parseInt(this.props.settingsPayload.year) < 2005}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "Stortinget består av i alt 169 representanter der 150 mandater fordeles distriktsvis. I dag brukes Sainte Laguës modifiserte metode (første delingstall 1.8) til å fordele distriktsmandatene etter partienes stemmetall i de enkelte valgdistrikter."
+                                }
+                            />
+                        }
                     />
                     <SmartNumericInput
                         name="areaFactor"
@@ -402,6 +437,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         originalValue={this.props.settingsPayload.comparison.areaFactor}
                         integer={false}
                         hidden={parseInt(this.props.settingsPayload.year) < 2005}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "Arealfaktor er tallet som multipliseres med antall kvadratkilometer i fylke før det legges til summen av antall innbyggere i fylket."
+                                }
+                            />
+                        }
                     />
                     <ComputeManuallyButton
                         autoCompute={this.props.settingsPayload.autoCompute}
