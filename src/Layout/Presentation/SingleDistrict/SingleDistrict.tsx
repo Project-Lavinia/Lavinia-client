@@ -35,7 +35,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         return districtResult.partyResults;
     };
 
-    highLightWinnerRow = (winner: string): ComponentPropsGetter0 | undefined => {
+    highlightWinnerRow = (winner: string): ComponentPropsGetter0 | undefined => {
         return (state: undefined, rowInfo: RowInfo | undefined) => {
             if (rowInfo && rowInfo.original.partyCode === winner) {
                 return { className: "input is-success" };
@@ -176,7 +176,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                     ]}
                     showPageSizeOptions={false}
                     {...norwegian}
-                    getTrProps={this.highLightWinnerRow(vulnerableVotes.winner.partyCode)}
+                    getTrProps={this.highlightWinnerRow(vulnerableVotes.winner.partyCode)}
                 />
             </React.Fragment>
         );
