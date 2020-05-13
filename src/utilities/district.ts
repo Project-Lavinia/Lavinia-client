@@ -37,10 +37,12 @@ export function getQuotientsToVulnerableSeatMap(districtResult: DistrictResult):
 export function getMostVulnerableSeatByQuotient(districtResults: DistrictResult[]) {
     const vulnerableDistrictSeats: VulnerableDistrictSeat[] = [];
     districtResults.forEach((districtResult) => {
-        vulnerableDistrictSeats.push({
-            ...getVulnerableSeatByQuotient(districtResult),
-            district: districtResult.name,
-        });
+        if (districtResult.districtSeats > 0) {
+            vulnerableDistrictSeats.push({
+                ...getVulnerableSeatByQuotient(districtResult),
+                district: districtResult.name,
+            });
+        }
     });
     return vulnerableDistrictSeats.sort((a, b) => (a.moreVotesToWin >= b.moreVotesToWin ? 1 : -1))[0];
 }
