@@ -51,7 +51,7 @@ export function initializePresentation(): InitializePresentation {
         initialPresentation: PresentationType.ElectionTable,
         decimals: "2",
         decimalsNumber: 2,
-        showPartiesWithoutSeats: false,
+        showPartiesWithoutSeats: true,
     };
     return action;
 }
