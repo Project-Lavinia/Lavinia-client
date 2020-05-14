@@ -313,7 +313,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     render() {
         return (
             <div>
-                <h1 className="is-size-6-mobile is-size-4-tablet is-size-2-desktop is-size-1-widescreen.">
+                <h1 className="is-size-6-mobile is-size-4-tablet is-size-2-desktop is-size-1-widescreen">
                     Stortingsvalg
                 </h1>
                 <form>
