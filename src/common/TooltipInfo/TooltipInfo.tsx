@@ -7,7 +7,7 @@ export interface TooltipInfoProps {
 export class TooltipInfo extends React.Component<TooltipInfoProps, {}> {
     render() {
         return (
-            <span className="icon has-text-info has-tooltip-multiline has-tooltip-arrow" data-tooltip={this.props.text}>
+            <span className="icon has-tooltip-multiline has-tooltip-arrow" data-tooltip={this.props.text}>
                 {" "}
                 <i className="fas fa-info-circle" />
             </span>

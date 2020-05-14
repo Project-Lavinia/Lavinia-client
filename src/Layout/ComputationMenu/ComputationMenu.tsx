@@ -313,7 +313,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     render() {
         return (
             <div>
-                <h1 className="is-size-6-mobile is-size-4-tablet is-size-2-desktop is-size-1-widescreen">
+                <h1 className="is-size-6-mobile is-size-4-tablet is-size-2-desktop is-size-1-widescreen.">
                     Stortingsvalg
                 </h1>
                 <form>
@@ -345,9 +345,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         integer={false}
                         tooltip={
                             <TooltipInfo
-                                text={
-                                    "Her kan du forandre det første delingstallet i Sainte-Laguës metode. Dette er det tallet som hvert partis stemmetall deles på før tildelingen av mandater begynner."
-                                }
+                                text={"Her kan du forandre det første delingstallet i Sainte-Laguës metode."}
                             />
                         }
                     />
@@ -365,7 +363,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={
-                                    "Denne sperregrensen skal gjelde i det enkelte valgdistrikt, dvs. ved beregningen av distriktsmandater. I den gjeldende valgordning er det ingen slik formell sperregrense på distriktsnivå."
+                                    "For å være med i konkurransen om utjevningsmandater må partiene komme over sperregrensen (prosent av stemmene på landsbasis)."
                                 }
                             />
                         }
@@ -384,7 +382,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={
-                                    "Denne sperregrensen gjelder i det enkelte valgdistrikt, dvs. ved beregningen av distriktsmandater. "
+                                    "Denne sperregrensen gjelder i det enkelte valgdistrikt, dvs. ved beregningen av distriktsmandater."
                                 }
                             />
                         }
@@ -402,7 +400,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={
-                                    "Utjevningsmandatene går til de partiene som har kommet dårligere ut av distriktsfordelingen enn deres stemmeandel skulle tilsi. Dette bidrar til å øke proporsjonaliteten i systemet."
+                                    "Utjevningsmandatene går til de partiene som har kommet dårligere ut av distriktsfordelingen enn deres stemmeandel skulle tilsi."
                                 }
                             />
                         }
@@ -421,7 +419,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={
-                                    "Stortinget består av i alt 169 representanter der 150 mandater fordeles distriktsvis. I dag brukes Sainte Laguës modifiserte metode (første delingstall 1.8) til å fordele distriktsmandatene etter partienes stemmetall i de enkelte valgdistrikter."
+                                    "Stortinget består av i alt 169 representanter der 150 mandater fordeles distriktsvis."
                                 }
                             />
                         }
@@ -440,7 +438,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={
-                                    "Arealfaktor er tallet som multipliseres med antall kvadratkilometer i fylke før det legges til summen av antall innbyggere i fylket."
+                                    "Jo høyere arealfaktor, jo større vekt tillegges fylkets geografiske utstrekning."
                                 }
                             />
                         }

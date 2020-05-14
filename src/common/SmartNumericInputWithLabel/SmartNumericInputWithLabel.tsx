@@ -41,7 +41,7 @@ export class SmartNumericInputWithLabel extends SmartNumericInput<SmartNumericIn
                             max={this.props.max}
                         />
                     )}
-                    <span className="icon is-medium is-right">
+                    <span className="icon has-text-dark is-medium is-right">
                         <p>{label}</p>
                     </span>
                 </div>
