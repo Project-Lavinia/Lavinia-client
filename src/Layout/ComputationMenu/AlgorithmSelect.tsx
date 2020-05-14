@@ -1,9 +1,10 @@
 import * as React from "react";
-import { getAlgorithmName } from "../../computation/logic";
+import { AlgorithmType } from "../../computation";
+import { getAlgorithmNameFromType } from "../../computation/logic";
 
 export interface AlgorithmSelectProps {
-    algorithm: number;
-    defaultAlgorithm: number;
+    algorithm: AlgorithmType;
+    defaultAlgorithm: AlgorithmType;
     onAlgorithmChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
@@ -22,15 +23,28 @@ export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
                             className="form-control"
                             id="algorithm_select"
                             name="calcMethod"
-                            value={this.props.algorithm.toString()}
+                            value={this.props.algorithm}
                             onChange={this.props.onAlgorithmChange}
                         >
-                            <option value="1">Sainte-Lagüe</option>
-                            <option value="2">d'Hondt</option>>
+                            <option value={AlgorithmType.SAINTE_LAGUE}>
+                                {getAlgorithmNameFromType(AlgorithmType.SAINTE_LAGUE)}
+                            </option>
+                            <option value={AlgorithmType.D_HONDT}>
+                                {getAlgorithmNameFromType(AlgorithmType.D_HONDT)}
+                            </option>
+                            <option value={AlgorithmType.LARGEST_FRACTION_HARE}>
+                                {getAlgorithmNameFromType(AlgorithmType.LARGEST_FRACTION_HARE)}
+                            </option>
+                            <option value={AlgorithmType.LARGEST_FRACTION_DROOP}>
+                                {getAlgorithmNameFromType(AlgorithmType.LARGEST_FRACTION_DROOP)}
+                            </option>
+                            <option value={AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF}>
+                                {getAlgorithmNameFromType(AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF)}
+                            </option>
                         </select>
                     </div>
                 </div>
-                {setttingWasChanged && <label>Orginalt: {getAlgorithmName(this.props.defaultAlgorithm)}</label>}
+                {setttingWasChanged && <label>Orginalt: {getAlgorithmNameFromType(this.props.defaultAlgorithm)}</label>}
             </div>
         );
     }

@@ -1,4 +1,5 @@
 import { Dictionary, RawDictionaryEntry } from "../utilities/dictionary";
+import { AlgorithmType } from "../computation";
 
 export interface County {
     countyId: number;
@@ -64,8 +65,7 @@ export interface RawAlgorithm {
 }
 
 export interface Algorithm {
-    id: number;
-    algorithm: string;
+    algorithm: AlgorithmType;
     parameters: Dictionary<number>;
 }
 
@@ -75,7 +75,7 @@ export interface RawParameters {
     algorithm: RawAlgorithm;
     threshold: number;
     areaFactor: number;
-    districtSeats: Array<RawDictionaryEntry>;
+    districtSeats: number;
     levelingSeats: number;
     totalVotes: number;
 }
@@ -86,7 +86,7 @@ export interface Parameters {
     algorithm: Algorithm;
     threshold: number;
     areaFactor: number;
-    districtSeats: Dictionary<number>;
+    districtSeats: number;
     levelingSeats: number;
     totalVotes: number;
 }

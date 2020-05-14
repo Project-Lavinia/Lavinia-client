@@ -7,12 +7,12 @@ interface SelectionItem {
 
 export const selectionLookup: SelectionItem[] = [
     {
-        type: PresentationType.DistrictTable,
-        displayName: "Fylkesoversikt",
-    },
-    {
         type: PresentationType.ElectionTable,
         displayName: "Landsoversikt",
+    },
+    {
+        type: PresentationType.DistrictTable,
+        displayName: "Fylkesoversikt",
     },
     {
         type: PresentationType.LevellingSeats,

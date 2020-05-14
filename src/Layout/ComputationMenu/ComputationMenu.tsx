@@ -1,8 +1,7 @@
 import * as React from "react";
-import { SmartNumericInput } from "../../common";
+import { SmartNumericInput, SmartNumericInputWithLabel, TooltipInfo } from "../../common";
 import { ElectionType, Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
 import { ComputationPayload, AlgorithmType, unloadedParameters } from "../../computation";
-import { getAlgorithmType } from "../../computation/logic";
 import { ComputationMenuPayload } from "./computation-menu-models";
 import { YearSelect } from "./YearSelect";
 import { AlgorithmSelect } from "./AlgorithmSelect";
@@ -16,6 +15,8 @@ import {
     mergeVoteDistricts,
     mergeMetricDistricts,
 } from "../../computation/logic/district-merging";
+import { shouldDistributeDistrictSeats } from "../../utilities/conditionals";
+import { isLargestFractionAlgorithm } from "../../computation/logic";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -39,6 +40,7 @@ export interface ComputationMenuProps {
     saveComparison: () => void;
     showComparison: boolean;
     mergeDistricts: boolean;
+    use2021Distribution: boolean;
 }
 
 export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
@@ -49,7 +51,10 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
      * @returns true if it should be hidden, false if it should not
      */
     shouldHideFirstDivisor(): boolean {
-        return this.props.computationPayload.algorithm === AlgorithmType.D_HONDT;
+        return (
+            this.props.computationPayload.algorithm === AlgorithmType.D_HONDT ||
+            isLargestFractionAlgorithm(this.props.computationPayload.algorithm)
+        );
     }
 
     /**
@@ -62,12 +67,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
         const nextYear = parseInt(event.target.value);
         let election = this.props.electionType.elections.find((election) => election.year === nextYear);
         let votes = this.props.votes.filter((vote) => vote.electionYear === nextYear);
-        let metrics = this.props.metrics.filter((metric) => metric.electionYear === nextYear);
+        const distributionYear = this.props.use2021Distribution && nextYear >= 2005 ? 2021 : nextYear;
+        let metrics = this.props.metrics.filter((metric) => metric.electionYear === distributionYear);
         const parameters =
             this.props.parameters.find((parameter) => parameter.electionYear === nextYear) || unloadedParameters;
 
         if (election !== undefined) {
-            if (nextYear >= 2005 && this.props.mergeDistricts) {
+            if (shouldDistributeDistrictSeats(nextYear) && this.props.mergeDistricts) {
                 election = mergeElectionDistricts(election, districtMap);
                 votes = mergeVoteDistricts(votes, districtMap);
                 metrics = mergeMetricDistricts(metrics, districtMap);
@@ -106,18 +112,18 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
      * @param event a ChangeEvent whose target carries the numerified algorithm
      */
     onAlgorithmChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const algorithm = parseInt(event.target.value);
+        const algorithmType = event.target.value as AlgorithmType;
         this.props.updateCalculation(
             {
                 ...this.props.computationPayload,
-                algorithm: getAlgorithmType(algorithm),
+                algorithm: algorithmType,
             },
             this.props.settingsPayload.autoCompute,
             false
         );
         this.props.updateSettings({
             ...this.props.settingsPayload,
-            algorithm,
+            algorithm: algorithmType,
         });
     };
 
@@ -272,14 +278,15 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
         const year = parseInt(this.props.settingsPayload.year);
         const election = this.props.electionType.elections.find((e) => e.year === year);
         const votes = this.props.votes.filter((vote) => vote.electionYear === year);
-        const metrics = this.props.metrics.filter((metric) => metric.electionYear === year);
+        const distributionYear = this.props.use2021Distribution && year >= 2005 ? 2021 : year;
+        const metrics = this.props.metrics.filter((metric) => metric.electionYear === distributionYear);
         const parameters =
             this.props.parameters.find((parameter) => parameter.electionYear === year) || unloadedParameters;
         if (election !== undefined && election !== null) {
             this.props.updateCalculation(
                 {
                     election,
-                    algorithm: getAlgorithmType(this.props.settingsPayload.algorithm),
+                    algorithm: this.props.settingsPayload.algorithm,
                     firstDivisor: parseFloat(this.props.settingsPayload.firstDivisor),
                     electionThreshold: parseFloat(this.props.settingsPayload.electionThreshold),
                     districtThreshold: parseFloat(this.props.settingsPayload.districtThreshold),
@@ -312,6 +319,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     };
 
     render() {
+        const year = parseInt(this.props.settingsPayload.year);
         return (
             <div>
                 <h1 className="is-size-6-mobile is-size-4-tablet is-size-2-desktop is-size-1-widescreen">
@@ -344,8 +352,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.election.firstDivisor}
                         originalValue={this.props.settingsPayload.comparison.firstDivisor}
                         integer={false}
+                        tooltip={
+                            <TooltipInfo
+                                text={"Her kan du forandre det første delingstallet i Sainte-Laguës metode."}
+                            />
+                        }
                     />
-                    <SmartNumericInput
+                    <SmartNumericInputWithLabel
                         name="electionThreshold"
                         title="Sperregrense"
                         value={this.props.settingsPayload.electionThreshold}
@@ -355,8 +368,16 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.election.threshold}
                         originalValue={this.props.settingsPayload.comparison.electionThreshold}
                         integer={false}
+                        label={"%"}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "For å være med i konkurransen om utjevningsmandater må partiene komme over sperregrensen (prosent av stemmene på landsbasis)."
+                                }
+                            />
+                        }
                     />
-                    <SmartNumericInput
+                    <SmartNumericInputWithLabel
                         name="districtThreshold"
                         title="Sperregrense for distriktmandat"
                         value={this.props.settingsPayload.districtThreshold}
@@ -366,6 +387,15 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={0}
                         originalValue={this.props.settingsPayload.comparison.districtThreshold}
                         integer={false}
+                        label={"%"}
+                        isHiddenTouch={true}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "Denne sperregrensen gjelder i det enkelte valgdistrikt, dvs. ved beregningen av distriktsmandater."
+                                }
+                            />
+                        }
                     />
                     <SmartNumericInput
                         name="levelingSeats"
@@ -377,6 +407,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.election.levelingSeats}
                         originalValue={this.props.settingsPayload.comparison.levelingSeats}
                         integer={true}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "Utjevningsmandatene går til de partiene som har kommet dårligere ut av distriktsfordelingen enn deres stemmeandel skulle tilsi."
+                                }
+                            />
+                        }
                     />
                     <SmartNumericInput
                         name="districtSeats"
@@ -388,7 +425,14 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.election.seats}
                         originalValue={this.props.settingsPayload.comparison.districtSeats}
                         integer={true}
-                        hidden={parseInt(this.props.settingsPayload.year) < 2005}
+                        hidden={!shouldDistributeDistrictSeats(year)}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "Stortinget består av i alt 169 representanter der 150 mandater fordeles distriktsvis."
+                                }
+                            />
+                        }
                     />
                     <SmartNumericInput
                         name="areaFactor"
@@ -400,7 +444,14 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.parameters.areaFactor}
                         originalValue={this.props.settingsPayload.comparison.areaFactor}
                         integer={false}
-                        hidden={parseInt(this.props.settingsPayload.year) < 2005}
+                        hidden={!shouldDistributeDistrictSeats(year)}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "Jo høyere arealfaktor, jo større vekt tillegges fylkets geografiske utstrekning."
+                                }
+                            />
+                        }
                     />
                     <ComputeManuallyButton
                         autoCompute={this.props.settingsPayload.autoCompute}

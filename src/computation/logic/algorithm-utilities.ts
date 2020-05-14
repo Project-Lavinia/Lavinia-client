@@ -11,6 +11,8 @@
 import { Dictionary } from "../../utilities/dictionary";
 import { SeatPartyResult } from "./../../computation/computation-models";
 import * as _ from "lodash";
+import { largestFraction } from "./distribution";
+import { checkExhaustively } from "../../utilities";
 
 const illegalPartyCodes = new Set(["BLANKE"]);
 
@@ -29,10 +31,17 @@ export function distributeSeats(
     firstDivisor: number,
     districtThreshold: number,
     numSeats: number,
+    totalVotes: number,
     results: Result[],
     averageVotesPerSeat?: number,
     partyResults?: Dictionary<PartyResult>
 ): DistributionResult {
+    if (isLargestFractionAlgorithm(algorithm)) {
+        const electionNumber = getElectionNumber(algorithm, totalVotes, numSeats);
+        const partyVotes = resultArrayToDictionary(results);
+        return largestFraction(numSeats, partyVotes, electionNumber);
+    }
+
     const seatsWon: Dictionary<number> = {};
     const currentSeatsWon: Dictionary<number> = {};
     const seatResults: SeatResult[] = [];
@@ -69,7 +78,13 @@ export function distributeSeats(
         ];
 
         for (const result of results) {
-            const currentDenominator = getDenominator(algorithm, seatsWon[result.partyCode], firstDivisor);
+            const currentDenominator = getDenominator(
+                algorithm,
+                seatsWon[result.partyCode],
+                firstDivisor,
+                numSeats,
+                totalVotes
+            );
             const currentQuotient =
                 averageVotesPerSeat != null
                     ? calculateAdjustedQuotient(
@@ -77,9 +92,18 @@ export function distributeSeats(
                           seatsWon[result.partyCode],
                           averageVotesPerSeat,
                           result.votes,
-                          firstDivisor
+                          firstDivisor,
+                          numSeats,
+                          totalVotes
                       )
-                    : calculateQuotient(algorithm, seatsWon[result.partyCode], result.votes, firstDivisor);
+                    : calculateQuotient(
+                          algorithm,
+                          seatsWon[result.partyCode],
+                          result.votes,
+                          firstDivisor,
+                          numSeats,
+                          totalVotes
+                      );
             const currentPartyResult = {
                 partyCode: result.partyCode,
                 quotient: currentQuotient,
@@ -128,7 +152,13 @@ function updateWinners(winners: SeatPartyResult[], currentParty: SeatPartyResult
  * @param numberOfSeatsAssigned The number of partyResults assigned to the party in question
  * @param firstDivisor The first divisor to use if the party has 0 partyResults
  */
-export function getDenominator(algorithm: AlgorithmType, numberOfSeatsAssigned: number, firstDivisor: number) {
+export function getDenominator(
+    algorithm: AlgorithmType,
+    numberOfSeatsAssigned: number,
+    firstDivisor: number,
+    totalSeats: number,
+    totalVotes: number
+) {
     switch (algorithm) {
         case AlgorithmType.SAINTE_LAGUE:
             if (numberOfSeatsAssigned === 0) {
@@ -138,8 +168,29 @@ export function getDenominator(algorithm: AlgorithmType, numberOfSeatsAssigned: 
             }
         case AlgorithmType.D_HONDT:
             return numberOfSeatsAssigned + 1;
+        case AlgorithmType.LARGEST_FRACTION_HARE:
+        case AlgorithmType.LARGEST_FRACTION_DROOP:
+        case AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF:
+            return getElectionNumber(algorithm, totalVotes, totalSeats);
+        case AlgorithmType.UNDEFINED:
+            console.error(`ERROR! Algorithm type should not be undefined!`);
+            return Number.MIN_SAFE_INTEGER;
         default:
-            console.error(`ERROR! ${algorithm.toString()} does not have an associated denominator function!`);
+            checkExhaustively(algorithm);
+            return Number.MIN_SAFE_INTEGER;
+    }
+}
+
+function getElectionNumber(algorithm: AlgorithmType, totalVotes: number, totalSeats: number): number {
+    switch (algorithm) {
+        case AlgorithmType.LARGEST_FRACTION_HARE:
+            return totalVotes / totalSeats;
+        case AlgorithmType.LARGEST_FRACTION_DROOP:
+            return totalVotes / (totalSeats + 1) + 1;
+        case AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF:
+            return totalVotes / (totalSeats + 1);
+        default:
+            console.error(`ERROR! ${algorithm.toString()} does not have an associated election number algorithm!`);
             return Number.MIN_SAFE_INTEGER;
     }
 }
@@ -186,9 +237,11 @@ export function calculateAdjustedQuotient(
     seatsWon: number,
     averageVotesPerSeat: number,
     votes: number,
-    firstDivisor: number
+    firstDivisor: number,
+    totalSeats: number,
+    totalVotes: number
 ): number {
-    const quotient = calculateQuotient(algorithm, seatsWon, votes, firstDivisor);
+    const quotient = calculateQuotient(algorithm, seatsWon, votes, firstDivisor, totalSeats, totalVotes);
 
     return quotient / averageVotesPerSeat;
 }
@@ -197,12 +250,16 @@ export function calculateQuotient(
     algorithm: AlgorithmType,
     seatsWon: number,
     votes: number,
-    firstDivisor: number
+    firstDivisor: number,
+    totalSeats: number,
+    totalVotes: number
 ): number {
     const denominator = getDenominator(
         algorithm,
         seatsWon,
-        firstDivisor // When computing the leveling seats, use the unmodified Sainte Lagües
+        firstDivisor, // When computing the leveling seats, use the unmodified Sainte Lagües
+        totalSeats,
+        totalVotes
     );
 
     return votes / denominator;
@@ -228,7 +285,7 @@ export function calculateFinalQuotients(
     firstDivisor: number,
     adjusted: boolean,
     districtResults: Dictionary<DistrictResult>
-) {
+): DistrictQuotients[] {
     const finalQuotients: DistrictQuotients[] = [];
     for (const districtName in districtResults) {
         if (districtResults.hasOwnProperty(districtName)) {
@@ -246,9 +303,18 @@ export function calculateFinalQuotients(
                           party.districtSeats,
                           district.votes / district.districtSeats,
                           party.votes,
-                          1
+                          firstDivisor,
+                          district.districtSeats,
+                          district.votes
                       )
-                    : calculateQuotient(algorithm, party.districtSeats, party.votes, firstDivisor);
+                    : calculateQuotient(
+                          algorithm,
+                          party.districtSeats,
+                          party.votes,
+                          firstDivisor,
+                          district.districtSeats,
+                          district.votes
+                      );
 
                 districtQuotient.levellingSeatRounds.push({
                     partyCode: party.partyCode,
@@ -305,9 +371,18 @@ export function generateLevelingSeatArray(
                               partyResult.districtSeats,
                               averageVotesPerSeat,
                               partyResult.votes,
-                              1
+                              1,
+                              districtResults[countyName].levelingSeats,
+                              districtResults[countyName].votes
                           )
-                        : calculateQuotient(algorithm, partyResult.districtSeats, partyResult.votes, 1.4);
+                        : calculateQuotient(
+                              algorithm,
+                              partyResult.districtSeats,
+                              partyResult.votes,
+                              1.4,
+                              districtResults[countyName].levelingSeats,
+                              districtResults[countyName].votes
+                          );
                     const seat: LevelingSeat = {
                         district: countyName,
                         partyCode,
@@ -325,6 +400,20 @@ export function generateLevelingSeatArray(
 }
 
 /**
+ * Converts an array of results to a dictionary from Party Code to Votes.
+ *
+ * @param results An array of results
+ */
+function resultArrayToDictionary(results: Result[]): Dictionary<number> {
+    const resultDict: Dictionary<number> = {};
+    results.forEach((result) => {
+        resultDict[result.partyCode] = result.votes;
+    });
+
+    return resultDict;
+}
+
+/**
  * Converts numerical IDs into their matching algorithm types
  *
  * @param type The numerical ID of the algorithm
@@ -335,6 +424,12 @@ export function getAlgorithmType(type: number) {
             return AlgorithmType.SAINTE_LAGUE;
         case 2:
             return AlgorithmType.D_HONDT;
+        case 3:
+            return AlgorithmType.LARGEST_FRACTION_HARE;
+        case 4:
+            return AlgorithmType.LARGEST_FRACTION_DROOP;
+        case 5:
+            return AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF;
         default:
             return AlgorithmType.UNDEFINED;
     }
@@ -351,8 +446,39 @@ export function getAlgorithmName(type: number) {
             return "Sainte-Lagüe";
         case 2:
             return "d'Hondt";
+        case 3:
+            return "Største brøk (Hare)";
+        case 4:
+            return "Største brøk (Droop)";
+        case 5:
+            return "Største brøk (Hagenbach-Bischoff)";
         default:
             return "Udefinert";
+    }
+}
+
+/**
+ * Converts AlgorithmTypes into their matching algorithm name
+ *
+ * @param type The AlgorithmType of the algorithm
+ */
+export function getAlgorithmNameFromType(type: AlgorithmType) {
+    switch (type) {
+        case AlgorithmType.SAINTE_LAGUE:
+            return "Sainte-Lagüe";
+        case AlgorithmType.D_HONDT:
+            return "d'Hondt";
+        case AlgorithmType.LARGEST_FRACTION_HARE:
+            return "Største brøk (Hare)";
+        case AlgorithmType.LARGEST_FRACTION_DROOP:
+            return "Største brøk (Droop)";
+        case AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF:
+            return "Største brøk (Hagenbach-Bischoff)";
+        case AlgorithmType.UNDEFINED:
+            return "Udefinert";
+        default:
+            checkExhaustively(type);
+            return "";
     }
 }
 
@@ -367,7 +493,35 @@ export function getAlgorithmTypeString(type: string) {
             return AlgorithmType.SAINTE_LAGUE;
         case "d'Hondt":
             return AlgorithmType.D_HONDT;
+        case "Largest fraction (Hare)":
+            return AlgorithmType.LARGEST_FRACTION_HARE;
+        case "Largest fraction (Droop)":
+            return AlgorithmType.LARGEST_FRACTION_DROOP;
+        case "Largest fraction (Hagenbach-Bischoff)":
+            return AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF;
         default:
             return AlgorithmType.UNDEFINED;
     }
+}
+
+/**
+ * Checks whether an algorithm is a quotient type algorithm. (eg. Sainte Laguës or d'Hondt)
+ *
+ * @param algorithm The algorithm to check
+ */
+export function isQuotientAlgorithm(algorithm: AlgorithmType): boolean {
+    return algorithm === AlgorithmType.SAINTE_LAGUE || algorithm === AlgorithmType.D_HONDT;
+}
+
+/**
+ * Checks whether an algorithm is a largest fraction type algorithm (eg. Hare, Droop or Hagenbach-Bischoff)
+ *
+ * @param algorithm The algorithm to check
+ */
+export function isLargestFractionAlgorithm(algorithm: AlgorithmType): boolean {
+    return (
+        algorithm === AlgorithmType.LARGEST_FRACTION_DROOP ||
+        algorithm === AlgorithmType.LARGEST_FRACTION_HARE ||
+        algorithm === AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF
+    );
 }

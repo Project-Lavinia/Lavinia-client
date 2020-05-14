@@ -10,7 +10,7 @@ import {
     saveComparison,
 } from "../../computation";
 import { Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
-import { getAlgorithmTypeString } from "../../computation/logic";
+import { getAlgorithmType } from "../../computation/logic";
 import { ComputationMenuPayload } from "./computation-menu-models";
 
 const mapStateToProps = (
@@ -25,6 +25,7 @@ const mapStateToProps = (
     | "metrics"
     | "votes"
     | "mergeDistricts"
+    | "use2021Distribution"
 > => ({
     computationPayload: {
         election: state.computationState.election,
@@ -59,6 +60,7 @@ const mapStateToProps = (
     metrics: state.requestedDataState.metrics,
     votes: state.requestedDataState.votes,
     mergeDistricts: state.presentationMenuState.mergeDistricts,
+    use2021Distribution: state.presentationMenuState.use2021Distribution,
 });
 
 const mapDispatchToProps = (
@@ -110,11 +112,11 @@ const mapDispatchToProps = (
         if (settingsPayload.autoCompute) {
             const payload: ComputationPayload = {
                 election,
-                algorithm: getAlgorithmTypeString(parameters.algorithm.algorithm),
+                algorithm: parameters.algorithm.algorithm,
                 firstDivisor: parameters.algorithm.parameters["First Divisor"],
                 electionThreshold: parameters.threshold,
                 districtThreshold: 0,
-                districtSeats: parameters.districtSeats.SUM,
+                districtSeats: parameters.districtSeats,
                 levelingSeats: parameters.levelingSeats,
                 areaFactor: parameters.areaFactor,
                 votes,
@@ -129,7 +131,7 @@ const mapDispatchToProps = (
 
         const newSettingsPayload: ComputationMenuPayload = {
             ...settingsPayload,
-            algorithm: election.algorithm,
+            algorithm: getAlgorithmType(election.algorithm),
             firstDivisor: election.firstDivisor.toString(),
             electionThreshold: election.threshold.toString(),
             districtThreshold: "0",
