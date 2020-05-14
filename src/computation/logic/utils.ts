@@ -12,6 +12,8 @@ import {
 import { Metrics } from "../../requested-data/requested-data-models";
 import { sainteLagues, distributionByQuotient } from "./distribution";
 import { generateLevelingSeatArray } from ".";
+import { KeyValuePair } from "./sorted-reverse-dict";
+import { AlgorithmType } from "../computation-models";
 
 export function buildDistrictResults(metrics: Metrics[]): Dictionary<DistrictResultv2> {
     const districtResults: Dictionary<DistrictResultv2> = {};
@@ -118,7 +120,6 @@ export function distributeDistrictSeatsOnDistricts(
     numDistrictSeats: number,
     metrics: Metrics[]
 ): Dictionary<number> {
-    let districtSeats: Dictionary<number> = {};
     const baseValues: Dictionary<number> = {};
 
     // Wrap Sainte Lagues so it only takes one argument
@@ -128,8 +129,11 @@ export function distributeDistrictSeatsOnDistricts(
 
     if (areaFactor === -1) {
         // If we don't have an area factor, just return the predetermined values
+        const districtSeats: Dictionary<number> = {};
         metrics.forEach((metric) => (districtSeats[metric.district] = metric.seats));
+        return districtSeats;
     } else {
+        const districtSeats: Dictionary<number> = {};
         metrics.forEach((metric) => {
             // Fill districtSeats with all the districts, with no wins yet
             districtSeats[metric.district] = 0;
@@ -137,17 +141,19 @@ export function distributeDistrictSeatsOnDistricts(
             baseValues[metric.district] = metric.population + metric.area * areaFactor;
         });
 
-        // IMPORTANT! Assuming 19 leveling seats! Needs to be fixed
-        districtSeats = distributionByQuotient(
+        const distributedDistrictSeatsAndLevelingSeats = distributionByQuotient(
             numDistrictSeats + metrics.length,
             districtSeats,
             baseValues,
             denominatorFunction
         );
 
-        districtSeats = subtractLevelingSeats(districtSeats);
+        const districtSeatsNoLevelingSeats = subtractLevelingSeats(distributedDistrictSeatsAndLevelingSeats);
+
+        return anyNegativeSeats(districtSeatsNoLevelingSeats)
+            ? distributionByQuotient(numDistrictSeats, districtSeats, baseValues, denominatorFunction)
+            : districtSeatsNoLevelingSeats;
     }
-    return districtSeats;
 }
 
 /**
@@ -185,7 +191,7 @@ export function distributeLevelingSeatsOnDistricts(
         if (levelingSeats.length === 0) {
             finishedDistricts = [];
             levelingSeats = generateLevelingSeatArray(
-                payload.algorithm,
+                AlgorithmType.SAINTE_LAGUE,
                 levelingPartyCodes,
                 partyResults,
                 districtResults,
@@ -243,7 +249,7 @@ export function distributeLevelingSeatsOnDistrictsPre2005(
     while (seatIndex <= payload.levelingSeats) {
         if (levelingSeats.length === 0) {
             levelingSeats = generateLevelingSeatArray(
-                payload.algorithm,
+                AlgorithmType.SAINTE_LAGUE,
                 levelingPartyCodes,
                 partyResults,
                 districtResults,
@@ -280,4 +286,41 @@ export function distributeLevelingSeatsOnDistrictsPre2005(
         levelingSeats.shift();
     }
     return partyRestQuotients;
+}
+
+/**
+ * Checks whether any districts ended up with a negative number of district seats.
+ *
+ * @param districtSeats The distribution of district seats to check
+ */
+function anyNegativeSeats(districtSeats: Dictionary<number>): boolean {
+    for (const districtName in districtSeats) {
+        if (districtSeats.hasOwnProperty(districtName)) {
+            if (districtSeats[districtName] < 0) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+/**
+ * Breaks ties in the distribution of items on names
+ *
+ * @param winners The list of multiple winners from the distribution stage
+ * @param baseValue The dictionary from winners to their respective numerators
+ */
+export function breakTies(winners: KeyValuePair[], baseValue: Dictionary<number>): KeyValuePair {
+    const winnersCopy = [...winners];
+
+    // Find the highest numerator of the winners
+    const numerators = winners.map((entry) => baseValue[entry.key]);
+    const maxNumerator = Math.max(...numerators);
+
+    // Filter out all winners that did not have the highest numerator
+    winnersCopy.filter((item) => baseValue[item.key] === maxNumerator);
+
+    // We will always do the coin flip, because if there is only 1 item there is 100% chance of it being selected.
+    // And the coinflip should be performed if there are more than 1 item remaining at this stage
+    return winnersCopy[Math.floor(Math.random() * winnersCopy.length)];
 }

@@ -4,10 +4,7 @@ import { Dictionary, dictionaryToArray } from "../../utilities/dictionary";
 
 import { distributeSeats, distributeLevelingSeats, calculateProportionality, finalizeDistrictCalculations } from ".";
 import { distributeDistrictSeatsOnDistricts } from "./utils";
-import { calculateFinalQuotients } from "./algorithm-utilities";
-
-// Constant
-// const DISTRICTSEATS = "SUM";
+import { calculateFinalQuotients, isQuotientAlgorithm } from "./algorithm-utilities";
 
 export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     const partyResults: Dictionary<PartyResult> = {};
@@ -17,9 +14,8 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     let totalVotes = 0;
 
     // Calculate the district seats for each district
-    // NOTE: Only works when levelingSeats % 19 == 0
     const districtSeats = distributeDistrictSeatsOnDistricts(
-        payload.parameters.areaFactor,
+        payload.areaFactor,
         19,
         payload.districtSeats,
         payload.metrics
@@ -108,6 +104,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
             payload.firstDivisor,
             payload.districtThreshold,
             districtSeats[county.name],
+            districtResults[county.name].votes,
             county.results
         );
 
@@ -139,7 +136,8 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     const districtResultArray = dictionaryToArray(districtResults);
     const partyResultArray = dictionaryToArray(partyResults);
 
-    const useAdjustedQuotients = payload.parameters.electionYear >= 2005;
+    const didElectionUseAdjustedQuotients = payload.parameters.electionYear >= 2005;
+    const useAdjustedQuotients = didElectionUseAdjustedQuotients && isQuotientAlgorithm(payload.algorithm);
     const finalQuotients = calculateFinalQuotients(
         payload.algorithm,
         payload.firstDivisor,
