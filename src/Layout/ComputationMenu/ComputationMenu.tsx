@@ -376,6 +376,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         originalValue={this.props.settingsPayload.comparison.districtThreshold}
                         integer={false}
                         label={"%"}
+                        isHiddenTouch={true}
                     />
                     <SmartNumericInput
                         name="levelingSeats"
