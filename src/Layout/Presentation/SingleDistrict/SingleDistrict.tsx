@@ -1,5 +1,5 @@
 import * as React from "react";
-import ReactTable, { RowInfo, ComponentPropsGetter0 } from "react-table";
+import ReactTable from "react-table";
 import { DistrictResult, PartyResult, SeatResult } from "../../../computation/computation-models";
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
@@ -33,15 +33,6 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
     getData = (): PartyResult[] => {
         const districtResult = this.getDistrictResult(this.props.districtSelected);
         return districtResult.partyResults;
-    };
-
-    highlightWinnerRow = (winner: string): ComponentPropsGetter0 | undefined => {
-        return (state: undefined, rowInfo: RowInfo | undefined) => {
-            if (rowInfo && rowInfo.original.partyCode === winner) {
-                return { className: "input is-success" };
-            }
-            return {};
-        };
     };
 
     render() {
@@ -145,7 +136,12 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                     return <div className="has-background-dark has-text-white">{row.value}</div>;
                                 }
                                 if (row.original.partyCode === vulnerableVotes.winner.partyCode) {
-                                    return null;
+                                    return (
+                                        <span className="icon">
+                                            {" "}
+                                            <i className="fas fa-trophy" />
+                                        </span>
+                                    );
                                 }
                                 return row.value;
                             },
@@ -176,7 +172,6 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                     ]}
                     showPageSizeOptions={false}
                     {...norwegian}
-                    getTrProps={this.highlightWinnerRow(vulnerableVotes.winner.partyCode)}
                 />
             </React.Fragment>
         );
