@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SmartNumericInput, SmartNumericInputWithLabel } from "../../common";
+import { SmartNumericInput, SmartNumericInputWithLabel, TooltipInfo } from "../../common";
 import { ElectionType, Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
 import { ComputationPayload, AlgorithmType, unloadedParameters } from "../../computation";
 import { ComputationMenuPayload } from "./computation-menu-models";
@@ -352,6 +352,11 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.election.firstDivisor}
                         originalValue={this.props.settingsPayload.comparison.firstDivisor}
                         integer={false}
+                        tooltip={
+                            <TooltipInfo
+                                text={"Her kan du forandre det første delingstallet i Sainte-Laguës metode."}
+                            />
+                        }
                     />
                     <SmartNumericInputWithLabel
                         name="electionThreshold"
@@ -364,6 +369,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         originalValue={this.props.settingsPayload.comparison.electionThreshold}
                         integer={false}
                         label={"%"}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "For å være med i konkurransen om utjevningsmandater må partiene komme over sperregrensen (prosent av stemmene på landsbasis)."
+                                }
+                            />
+                        }
                     />
                     <SmartNumericInputWithLabel
                         name="districtThreshold"
@@ -377,6 +389,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         integer={false}
                         label={"%"}
                         isHiddenTouch={true}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "Denne sperregrensen gjelder i det enkelte valgdistrikt, dvs. ved beregningen av distriktsmandater."
+                                }
+                            />
+                        }
                     />
                     <SmartNumericInput
                         name="levelingSeats"
@@ -388,6 +407,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.election.levelingSeats}
                         originalValue={this.props.settingsPayload.comparison.levelingSeats}
                         integer={true}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "Utjevningsmandatene går til de partiene som har kommet dårligere ut av distriktsfordelingen enn deres stemmeandel skulle tilsi."
+                                }
+                            />
+                        }
                     />
                     <SmartNumericInput
                         name="districtSeats"
@@ -400,6 +426,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         originalValue={this.props.settingsPayload.comparison.districtSeats}
                         integer={true}
                         hidden={!shouldDistributeDistrictSeats(year)}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "Stortinget består av i alt 169 representanter der 150 mandater fordeles distriktsvis."
+                                }
+                            />
+                        }
                     />
                     <SmartNumericInput
                         name="areaFactor"
@@ -412,6 +445,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         originalValue={this.props.settingsPayload.comparison.areaFactor}
                         integer={false}
                         hidden={!shouldDistributeDistrictSeats(year)}
+                        tooltip={
+                            <TooltipInfo
+                                text={
+                                    "Jo høyere arealfaktor, jo større vekt tillegges fylkets geografiske utstrekning."
+                                }
+                            />
+                        }
                     />
                     <ComputeManuallyButton
                         autoCompute={this.props.settingsPayload.autoCompute}
