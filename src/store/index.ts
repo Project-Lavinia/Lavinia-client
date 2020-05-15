@@ -1,6 +1,4 @@
 import { Store, createStore, applyMiddleware } from "redux";
-// tslint:disable-next-line:no-implicit-dependencies
-import { composeWithDevTools } from "redux-devtools-extension";
 import { logger } from "../middleware";
 import { RootState, rootReducer } from "../reducers";
 
@@ -8,7 +6,6 @@ export function configureStore(history: History, initialState?: RootState): Stor
     let middleware = applyMiddleware();
 
     if (process.env.NODE_ENV !== "production") {
-        middleware = composeWithDevTools(middleware);
         middleware = applyMiddleware(logger);
     }
 

@@ -43,7 +43,7 @@ export class Navigation extends React.Component<NavigationProps> {
                     <div className="navbar-start">
                         <a className="navbar-item">Home</a>
 
-                        <a target="_blank" href="https://project-lavinia.github.io/" className="navbar-item">
+                        <a target="_blank" href="https://project-lavinia.github.io/" rel="noopener noreferrer" className="navbar-item">
                             Hjelp
                         </a>
 
@@ -54,17 +54,19 @@ export class Navigation extends React.Component<NavigationProps> {
                                 <a
                                     target="_blank"
                                     href="https://www.github.com/Project-Lavinia/"
+                                    rel="noopener noreferrer"
                                     className="navbar-item"
                                 >
                                     Om Lavinia
                                 </a>
-                                <a target="_blank" href={process.env.SWAGGERUI} className="navbar-item">
+                                <a target="_blank" href={process.env.SWAGGERUI} rel="noopener noreferrer" className="navbar-item">
                                     API
                                 </a>
                                 <hr className="navbar-divider" />
                                 <a
                                     target="_blank"
                                     href="https://www.github.com/Project-Lavinia/Lavinia-Client/issues"
+                                    rel="noopener noreferrer"
                                     className="navbar-item"
                                 >
                                     Gi en tilbakemelding
