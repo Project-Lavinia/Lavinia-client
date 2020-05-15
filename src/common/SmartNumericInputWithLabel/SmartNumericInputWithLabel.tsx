@@ -10,10 +10,11 @@ export class SmartNumericInputWithLabel extends SmartNumericInput<SmartNumericIn
         const value = this.validateInput(this.props.value);
         const settingWasChanged = this.props.originalValue && this.props.originalValue !== this.props.value;
         const label = this.props.label;
+        const isHiddenTouch = this.props.isHiddenTouch === true ? "is-hidden-touch" : "";
         return (
-            <div hidden={this.props.hidden} className="field">
+            <div hidden={this.props.hidden} className={"field " + isHiddenTouch}>
                 <label htmlFor={this.props.name} className="label">
-                    {this.props.title}
+                    {this.props.title}&nbsp;{this.props.tooltip}
                 </label>
                 <div className="control has-icons-right">
                     <input
@@ -41,7 +42,7 @@ export class SmartNumericInputWithLabel extends SmartNumericInput<SmartNumericIn
                             max={this.props.max}
                         />
                     )}
-                    <span className="icon is-medium is-right">
+                    <span className="icon has-text-dark is-medium is-right">
                         <p>{label}</p>
                     </span>
                 </div>

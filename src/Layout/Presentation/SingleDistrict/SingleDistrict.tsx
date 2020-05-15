@@ -141,7 +141,12 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                     return <div className="has-background-dark has-text-white">{row.value}</div>;
                                 }
                                 if (vulnerableVotes && row.original.partyCode === vulnerableVotes.winner.partyCode) {
-                                    return null;
+                                    return (
+                                        <span className="icon">
+                                            {" "}
+                                            <i className="fas fa-trophy" />
+                                        </span>
+                                    );
                                 }
                                 return row.value;
                             },
