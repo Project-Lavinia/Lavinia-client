@@ -9,7 +9,7 @@ var outPath = path.join(__dirname, "./dist");
 // plugins
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
-var WebpackCleanupPlugin = require("webpack-cleanup-plugin");
+var { CleanWebpackPlugin } = require("clean-webpack-plugin");
 var HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 var DotenvWebpackPlugin = require("dotenv-webpack");
 
@@ -94,10 +94,10 @@ module.exports = (env) => {
         },
         plugins: [
             new DotenvWebpackPlugin({
-                path: "./",
+                path: "./.env.defaults",
                 defaults: true,
             }),
-            new WebpackCleanupPlugin(),
+            new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({
                 filename: "[name].[contenthash].css",
                 disable: !isProduction,
