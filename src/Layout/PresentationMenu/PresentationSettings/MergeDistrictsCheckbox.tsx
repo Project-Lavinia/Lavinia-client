@@ -10,9 +10,8 @@ export class MergeDistrictsCheckbox extends React.Component<MergeDistrictsCheckb
     render() {
         return (
             <div className="field" hidden={this.props.hidden}>
-                <label className="label" htmlFor="merge-setting">
+                <label className="checkbox" htmlFor="merge-setting">
                     <input
-                        className="checkbox"
                         type="checkbox"
                         name="merge-setting"
                         checked={this.props.mergeDistricts}

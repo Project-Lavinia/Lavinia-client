@@ -10,9 +10,8 @@ export class FiltersCheckbox extends React.Component<FiltersCheckboxProps> {
     render() {
         return (
             <div className="field" hidden={this.props.hidden}>
-                <label className="label" htmlFor="filters-setting">
+                <label className="checkbox" htmlFor="filters-setting">
                     <input
-                        className="checkbox"
                         type="checkbox"
                         name="filters-setting"
                         checked={this.props.showFilters}

@@ -10,9 +10,8 @@ export class Use2021DistributionCheckbox extends React.Component<Use2021Distribu
     render() {
         return (
             <div className="field" hidden={this.props.hidden}>
-                <label className="label" htmlFor="2021-distribution-setting">
+                <label className="checkbox" htmlFor="2021-distribution-setting">
                     <input
-                        className="checkbox"
                         type="checkbox"
                         name="2021-distribution-setting"
                         checked={this.props.use2021Distribution}
