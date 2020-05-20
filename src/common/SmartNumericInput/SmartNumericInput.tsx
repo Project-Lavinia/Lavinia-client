@@ -13,7 +13,7 @@ export interface SmartNumericInputProps {
     slider?: boolean;
     style?: React.CSSProperties;
     hidden?: boolean;
-    tooltip?: any;
+    tooltip?: React.ReactNode;
     isHiddenTouch?: boolean;
 }
 

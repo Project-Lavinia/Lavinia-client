@@ -18,6 +18,8 @@ import {
 import { shouldDistributeDistrictSeats } from "../../utilities/conditionals";
 import { isLargestFractionAlgorithm } from "../../computation/logic";
 
+const WIKIURL = "https://oysor.github.io/testTiddly.github.io/";
+
 export interface ComputationMenuProps {
     electionType: ElectionType;
     votes: Votes[];
@@ -340,6 +342,12 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         algorithm={this.props.settingsPayload.algorithm}
                         defaultAlgorithm={this.props.settingsPayload.comparison.algorithm}
                         onAlgorithmChange={this.onAlgorithmChange}
+                        tooltip={
+                            <TooltipInfo
+                                text={"Velg beregningsmetode for fordeling av mandater."}
+                                url={WIKIURL+"#Valgt%20metode"}
+                            />
+                        }
                     />
                     <SmartNumericInput
                         hidden={this.shouldHideFirstDivisor()}
@@ -354,7 +362,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         integer={false}
                         tooltip={
                             <TooltipInfo
-                                text={"Her kan du forandre det første delingstallet i Sainte-Laguës metode."}
+                                text={"Første delingstall i Sainte-Laguës metode."}
+                                url={WIKIURL+"#F%C3%B8rste%20delingstall"}
                             />
                         }
                     />
@@ -371,9 +380,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         label={"%"}
                         tooltip={
                             <TooltipInfo
-                                text={
-                                    "For å være med i konkurransen om utjevningsmandater må partiene komme over sperregrensen (prosent av stemmene på landsbasis)."
-                                }
+                                text={"Sperregrensen i konkurransen om utjevningsmandater."}
+                                url={WIKIURL+"#Sperregrense"}
                             />
                         }
                     />
@@ -391,9 +399,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         isHiddenTouch={true}
                         tooltip={
                             <TooltipInfo
-                                text={
-                                    "Denne sperregrensen gjelder i det enkelte valgdistrikt, dvs. ved beregningen av distriktsmandater."
-                                }
+                                text={"Legg til sperregrense ved beregning av distriktsmandater."}
+                                url={WIKIURL+"#Sperregrense%20for%20distriktmandat"}
                             />
                         }
                     />
@@ -409,9 +416,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         integer={true}
                         tooltip={
                             <TooltipInfo
-                                text={
-                                    "Utjevningsmandatene går til de partiene som har kommet dårligere ut av distriktsfordelingen enn deres stemmeandel skulle tilsi."
-                                }
+                                text={"Endre antall utjevningsmandater."}
+                                url={WIKIURL+"#Utjevningsmandater"}
                             />
                         }
                     />
@@ -428,9 +434,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         hidden={!shouldDistributeDistrictSeats(year)}
                         tooltip={
                             <TooltipInfo
-                                text={
-                                    "Stortinget består av i alt 169 representanter der 150 mandater fordeles distriktsvis."
-                                }
+                                text={"Endre antall distriktsmandater."}
+                                url={WIKIURL+"#Distriktsmandater"}
                             />
                         }
                     />
@@ -447,9 +452,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         hidden={!shouldDistributeDistrictSeats(year)}
                         tooltip={
                             <TooltipInfo
-                                text={
-                                    "Jo høyere arealfaktor, jo større vekt tillegges fylkets geografiske utstrekning."
-                                }
+                                text={"Tallet påvirker den geografiske fordelingen av mandater til fylkene."}
+                                url={WIKIURL+"#Arealfaktor"}
                             />
                         }
                     />
