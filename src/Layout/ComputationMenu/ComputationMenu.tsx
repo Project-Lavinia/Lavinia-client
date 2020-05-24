@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SmartNumericInput, SmartNumericInputWithLabel, TooltipInfo } from "../../common";
+import { SmartNumericInput, SmartNumericInputWithLabel, TooltipInfo, TooltipInfoRight } from "../../common";
 import { ElectionType, Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
 import { ComputationPayload, AlgorithmType, unloadedParameters } from "../../computation";
 import { ComputationMenuPayload } from "./computation-menu-models";
@@ -18,7 +18,7 @@ import {
 import { shouldDistributeDistrictSeats } from "../../utilities/conditionals";
 import { isLargestFractionAlgorithm } from "../../computation/logic";
 
-const WIKIURL = "https://oysor.github.io/testTiddly.github.io/";
+const WIKIURL = "https://project-lavinia.github.io";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -337,6 +337,12 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         electionYears={this.props.settingsPayload.electionYears}
                         onYearChange={this.onYearChange}
                         year={this.props.settingsPayload.year}
+                        tooltip={
+                            <TooltipInfoRight
+                                text={"Her kan du velge året stortingsvalget ble holdt."}
+                                url={WIKIURL+"/#Valgt%20%C3%A5r"}
+                            />
+                        }
                     />
                     <AlgorithmSelect
                         algorithm={this.props.settingsPayload.algorithm}
@@ -344,8 +350,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         onAlgorithmChange={this.onAlgorithmChange}
                         tooltip={
                             <TooltipInfo
-                                text={"Velg beregningsmetode for fordeling av mandater."}
-                                url={WIKIURL+"#Valgt%20metode"}
+                                text={"Her kan du velge beregningsmetode for fordeling av mandater."}
+                                url={WIKIURL+"/#Valgt%20metode"}
                             />
                         }
                     />
@@ -362,14 +368,14 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         integer={false}
                         tooltip={
                             <TooltipInfo
-                                text={"Første delingstall i Sainte-Laguës metode."}
-                                url={WIKIURL+"#F%C3%B8rste%20delingstall"}
+                                text={"Her kan du forandre det første delingstallet i Sainte-Laguës metode."}
+                                url={WIKIURL+"/#F%C3%B8rste%20delingstall"}
                             />
                         }
                     />
                     <SmartNumericInputWithLabel
                         name="electionThreshold"
-                        title="Sperregrense"
+                        title="Sperregrense for utjevningsmandater"
                         value={this.props.settingsPayload.electionThreshold}
                         onChange={this.onThresholdChange}
                         min={0}
@@ -380,8 +386,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         label={"%"}
                         tooltip={
                             <TooltipInfo
-                                text={"Sperregrensen i konkurransen om utjevningsmandater."}
-                                url={WIKIURL+"#Sperregrense"}
+                                text={"Her kan du forandre sperregrensen for å få tildelt utjevningsmandat."}
+                                url={WIKIURL+"/#Sperregrense%20for%20utjevningsmandat"}
                             />
                         }
                     />
@@ -399,8 +405,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         isHiddenTouch={true}
                         tooltip={
                             <TooltipInfo
-                                text={"Legg til sperregrense ved beregning av distriktsmandater."}
-                                url={WIKIURL+"#Sperregrense%20for%20distriktmandat"}
+                                text={"Her kan du sette inn en sperregrense også for distriktsmandatene."}
+                                url={WIKIURL+"/#Sperregrense%20for%20distriktmandat"}
                             />
                         }
                     />
@@ -416,8 +422,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         integer={true}
                         tooltip={
                             <TooltipInfo
-                                text={"Endre antall utjevningsmandater."}
-                                url={WIKIURL+"#Utjevningsmandater"}
+                                text={"Her kan du endre antall utjevningsmandater."}
+                                url={WIKIURL+"/#Utjevningsmandater"}
                             />
                         }
                     />
@@ -434,8 +440,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         hidden={!shouldDistributeDistrictSeats(year)}
                         tooltip={
                             <TooltipInfo
-                                text={"Endre antall distriktsmandater."}
-                                url={WIKIURL+"#Distriktsmandater"}
+                                text={"Her kan du endre antall distriktsmandater."}
+                                url={WIKIURL+"/#Distriktsmandater"}
                             />
                         }
                     />
@@ -452,8 +458,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         hidden={!shouldDistributeDistrictSeats(year)}
                         tooltip={
                             <TooltipInfo
-                                text={"Tallet påvirker den geografiske fordelingen av mandater til fylkene."}
-                                url={WIKIURL+"#Arealfaktor"}
+                                text={"Her kan du endre balansen mellom folketall og fylkets areal."}
+                                url={WIKIURL+"/#Arealfaktor"}
                             />
                         }
                     />
