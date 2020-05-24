@@ -1,5 +1,9 @@
 @charset "utf-8";
+
+// Set brand colors
 $democracy-blue: #2e4272;
+
+// Update Bulma's global variables
 $primary: $democracy-blue;
 $tooltip-background-color: $democracy-blue;
 
@@ -8,8 +12,8 @@ $tooltip-background-color: $democracy-blue;
 
 [class*=" lavinia-logo"],
 [class^="lavinia-logo"] {
-    stroke: findColorInvert($democracy-blue);
-    fill: findColorInvert($democracy-blue);
+    stroke: findColorInvert($primary);
+    fill: findColorInvert($primary);
     width: 90px;
     height: 28px;
 }
