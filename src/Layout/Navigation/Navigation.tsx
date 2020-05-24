@@ -1,5 +1,5 @@
 import * as React from "react";
-import LaviniaLogo from "../../assets/lavinia_logo.png";
+import { LaviniaSVGLogo } from "../../common";
 
 export interface NavigationProps {
     hamburgerExpanded?: boolean;
@@ -23,7 +23,7 @@ export class Navigation extends React.Component<NavigationProps> {
             <nav className="navbar is-primary" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
                     <a className="navbar-item" href="./">
-                        <img src={LaviniaLogo} width="112" height="28" />
+                        <LaviniaSVGLogo title={"LAVINIA"} />
                     </a>
 
                     <a

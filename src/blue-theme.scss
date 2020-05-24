@@ -5,3 +5,11 @@ $tooltip-background-color: $democracy-blue;
 
 @import "~bulma/bulma";
 @import "~bulma-tooltip";
+
+[class*=" lavinia-logo"],
+[class^="lavinia-logo"] {
+    stroke: findColorInvert($democracy-blue);
+    fill: findColorInvert($democracy-blue);
+    width: 90px;
+    height: 28px;
+}
