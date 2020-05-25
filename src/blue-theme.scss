@@ -12,8 +12,8 @@ $tooltip-background-color: $democracy-blue;
 
 [class*=" lavinia-logo"],
 [class^="lavinia-logo"] {
-    stroke: findColorInvert($primary);
-    fill: findColorInvert($primary);
-    width: 90px;
-    height: 28px;
+  stroke: findColorInvert($primary);
+  fill: findColorInvert($primary);
+  width: 100px;
+  height: 28px;
 }

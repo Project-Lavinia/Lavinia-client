@@ -12,11 +12,11 @@ export class LaviniaSVGLogo extends React.Component<LaviniaSVGLogoProps, {}> {
         <svg
           width="100%"
           height="100%"
-          viewBox="0 1 160 43"
+          viewBox="0 0 164 48"
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <text font-size="26" x="54" y="34" >{title}</text>
+          <text font-size="26" letter-spacing="2px"  x="54" y="34" >{title}</text>
           <g transform="translate(-32.831 -75.101)">
             <g>
               <g  stroke-width=".26458px">
