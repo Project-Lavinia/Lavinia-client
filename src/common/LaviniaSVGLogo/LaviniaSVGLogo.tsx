@@ -16,10 +16,10 @@ export class LaviniaSVGLogo extends React.Component<LaviniaSVGLogoProps, {}> {
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <text font-size="26" letter-spacing="2px"  x="54" y="34" >{title}</text>
+          <text fontSize="26" x="54" y="34" >{title}</text>
           <g transform="translate(-32.831 -75.101)">
             <g>
-              <g  stroke-width=".26458px">
+              <g >
                 <path d="m35.364 81.039h42.095l-20.904-5.6012z" />
                 <path d="m35.364 84.179h41.961l0.93305 0.5387v2.4013l-0.7672 0.7672h-42.06l-0.7845-0.78451v-2.2545z" />
                 <path d="m38.638 88.99h-3.4745v1.0691l1.0622 0.61327h1.5437l0.96713-0.55838z" />

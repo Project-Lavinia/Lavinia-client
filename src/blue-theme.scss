@@ -12,6 +12,8 @@ $tooltip-background-color: $democracy-blue;
 
 [class*=" lavinia-logo"],
 [class^="lavinia-logo"] {
+  letter-spacing:2px;
+  stroke-width:.26458px;
   stroke: findColorInvert($primary);
   fill: findColorInvert($primary);
   width: 100px;
