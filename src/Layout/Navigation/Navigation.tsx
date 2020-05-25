@@ -48,17 +48,12 @@ export class Navigation extends React.Component<NavigationProps> {
                         </a>
 
                         <div className="navbar-item has-dropdown is-hoverable">
-                            <a className="navbar-link">Mer</a>
-
+                            <a className="navbar-link"
+                                target="_blank"
+                                href="https://www.github.com/Project-Lavinia/"
+                                rel="noopener noreferrer"
+                            >Om Lavinia</a>
                             <div className="navbar-dropdown">
-                                <a
-                                    target="_blank"
-                                    href="https://www.github.com/Project-Lavinia/"
-                                    rel="noopener noreferrer"
-                                    className="navbar-item"
-                                >
-                                    Om Lavinia
-                                </a>
                                 <a target="_blank" href={process.env.SWAGGERUI} rel="noopener noreferrer" className="navbar-item">
                                     API
                                 </a>
