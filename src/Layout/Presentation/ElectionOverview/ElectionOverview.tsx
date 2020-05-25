@@ -128,6 +128,11 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             accessor: "partyCode",
                             filterMethod: caseInsensitiveFilterMethod,
                             Footer: <strong>Utvalg</strong>,
+                            Cell: (row) => {
+                                return row.original.partyName
+                                    ? <abbr title={row.original.partyName}>{row.value}</abbr>
+                                    : row.value;
+                            },
                         },
                         {
                             Header: "Stemmer",
