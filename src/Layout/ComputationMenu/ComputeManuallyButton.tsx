@@ -11,7 +11,7 @@ export class ComputeManuallyButton extends React.Component<ComputeManuallyButton
             <div hidden={this.props.autoCompute}>
                 <button
                     id="compute_manually"
-                    className="button is-primary is-outlined is-fullwidth"
+                    className="button is-primary is-outlined is-fullwidth has-text-weight-bold"
                     title={"Beregn manuelt"}
                     onClick={this.props.computeManually}
                     type="button"
