@@ -1,6 +1,7 @@
 ﻿import * as React from "react";
 import { PresentationType } from "../../Presentation/presentation-models";
 import { selectionLookup } from "./presentation-selection-utilities";
+import { TooltipInfoRight } from "../../../common";
 
 export interface PresentationSelectionProps {
     changeSelection?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -28,6 +29,12 @@ export class PresentationSelection extends React.Component<PresentationSelection
     render() {
         return (
             <div className="field">
+                 <label className="label">
+                <TooltipInfoRight
+                    text={"Trykk på dette ikonet for å lese om oversikten."}
+                    url={"https://project-lavinia.github.io/#Visning"}
+                />
+                </label>
                 <div className="control">
                     <div className="select is-primary is-fullwidth is-medium">
                         <select onChange={this.props.changeSelection} value={this.props.currentSelection}>

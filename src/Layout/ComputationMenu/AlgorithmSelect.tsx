@@ -6,6 +6,7 @@ export interface AlgorithmSelectProps {
     algorithm: AlgorithmType;
     defaultAlgorithm: AlgorithmType;
     onAlgorithmChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    tooltip?: React.ReactNode;
 }
 
 export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
@@ -14,7 +15,7 @@ export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
         return (
             <div className="field">
                 <label className="label" htmlFor="algorithm_select">
-                    Valgt metode
+                    Valgt metode {this.props.tooltip}
                 </label>
                 <div className="control">
                     <div className="select is-primary is-fullwidth">

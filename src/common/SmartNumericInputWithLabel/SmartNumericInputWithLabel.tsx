@@ -14,7 +14,7 @@ export class SmartNumericInputWithLabel extends SmartNumericInput<SmartNumericIn
         return (
             <div hidden={this.props.hidden} className={"field " + isHiddenTouch}>
                 <label htmlFor={this.props.name} className="label">
-                    {this.props.title}&nbsp;{this.props.tooltip}
+                    {this.props.title} {this.props.tooltip}
                 </label>
                 <div className="control has-icons-right">
                     <input

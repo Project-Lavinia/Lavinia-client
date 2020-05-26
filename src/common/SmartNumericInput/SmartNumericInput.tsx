@@ -13,7 +13,7 @@ export interface SmartNumericInputProps {
     slider?: boolean;
     style?: React.CSSProperties;
     hidden?: boolean;
-    tooltip?: any;
+    tooltip?: React.ReactNode;
     isHiddenTouch?: boolean;
 }
 
@@ -25,7 +25,7 @@ export class SmartNumericInput<T extends SmartNumericInputProps> extends React.C
         return (
             <div hidden={this.props.hidden} className={"field " + isHiddenTouch}>
                 <label htmlFor={this.props.name} className="label">
-                    {this.props.title}&nbsp;{this.props.tooltip}
+                    {this.props.title} {this.props.tooltip}
                 </label>
                 <div className="control">
                     <input
