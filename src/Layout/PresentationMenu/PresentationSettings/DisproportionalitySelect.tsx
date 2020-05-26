@@ -16,11 +16,10 @@ export class DisproportionalitySelect extends React.Component<Disproportionality
                     Disproporsjonalitetsindeks {this.props.tooltip}
                 </label>
                 <div className="control">
-                    <div className="select is-dark is-fullwidth">
+                    <div className="select is-primary is-fullwidth">
                         <select
                             id="disproportionality"
                             onChange={this.props.changeDisproportionalityIndex}
-                            className="form-control"
                             value={this.props.disproportionalityIndex}
                         >
                             <option

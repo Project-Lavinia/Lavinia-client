@@ -9,7 +9,7 @@ export class NoSeatsCheckbox extends React.Component<NoSeatsCheckboxProps> {
     render() {
         return (
             <div className="field">
-                <label className="label" htmlFor="no-seats-setting">
+                <label className="checkbox" htmlFor="no-seats-setting">
                     <input
                         type="checkbox"
                         name="no-seats-setting"

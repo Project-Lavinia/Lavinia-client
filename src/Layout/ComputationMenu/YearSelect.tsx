@@ -15,7 +15,7 @@ export class YearSelect extends React.Component<YearSelectProps> {
                     Valgt år {this.props.tooltip}
                 </label>
                 <div className="control">
-                    <div className="select is-dark is-fullwidth">
+                    <div className="select is-primary is-fullwidth">
                         <select
                             title="Velg år"
                             id="year_select"

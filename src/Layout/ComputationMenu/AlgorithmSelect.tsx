@@ -18,10 +18,9 @@ export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
                     Valgt metode {this.props.tooltip}
                 </label>
                 <div className="control">
-                    <div className="select is-dark is-fullwidth">
+                    <div className="select is-primary is-fullwidth">
                         <select
                             title="Beregningsmetode"
-                            className="form-control"
                             id="algorithm_select"
                             name="calcMethod"
                             value={this.props.algorithm}

@@ -36,7 +36,7 @@ export class PresentationSelection extends React.Component<PresentationSelection
                 />
                 </label>
                 <div className="control">
-                    <div className="select is-dark is-fullwidth is-medium">
+                    <div className="select is-primary is-fullwidth is-medium">
                         <select onChange={this.props.changeSelection} value={this.props.currentSelection}>
                             {this.getSelectionOptions()}
                         </select>

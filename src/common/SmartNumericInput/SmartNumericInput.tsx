@@ -29,9 +29,8 @@ export class SmartNumericInput<T extends SmartNumericInputProps> extends React.C
                 </label>
                 <div className="control">
                     <input
-                        className="input is-dark"
+                        className="input is-primary is-fullwidth"
                         type={"number"}
-                        style={this.props.slider ? { width: "100%" } : {}}
                         name={this.props.name}
                         onChange={this.updateNumeric}
                         placeholder={value.numericValue.toString()}
@@ -43,9 +42,8 @@ export class SmartNumericInput<T extends SmartNumericInputProps> extends React.C
 
                     {this.props.slider && (
                         <input
-                            className="form-control"
+                            className="is-primary is-fullwidth"
                             type={"range"}
-                            style={{ width: "100%" }}
                             onChange={this.updateSlider}
                             value={value.numericValue}
                             min={this.props.min}
@@ -54,7 +52,7 @@ export class SmartNumericInput<T extends SmartNumericInputProps> extends React.C
                         />
                     )}
                 </div>
-                {settingWasChanged && <label>Orginalt: {this.props.originalValue}</label>}
+                {settingWasChanged && <p className="help">Originalt: {this.props.originalValue}</p>}
             </div>
         );
     }
