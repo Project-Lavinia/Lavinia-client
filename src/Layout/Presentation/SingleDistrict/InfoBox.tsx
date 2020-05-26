@@ -13,18 +13,16 @@ export class InfoBox extends React.Component<InfoBoxProps> {
         const extendedInfo =
             vulnerable.moreVotesToWin > vulnerableVotes.moreVotesToWin
                 ? [
-                      " hadde nærmest kvotient og trengte ",
+                      " hadde nærmeste kvotient og trengte ",
                       vulnerable.moreVotesToWin,
                       " flere stemmer for å vinne mandatet. ",
-                      <span key={vulnerableVotes.partyCode} className="is-size-4">
-                          {vulnerableVotes.partyCode}
-                      </span>,
+                          vulnerableVotes.partyCode,
                       " hadde derimot minst margin i stemmer og trengte bare ",
                       vulnerableVotes.moreVotesToWin,
                       " flere stemmer.",
                   ]
                 : [
-                      " hadde nærmest kvotient, og trengte ",
+                      " hadde nærmeste kvotient og trengte ",
                       vulnerable.moreVotesToWin,
                       " flere stemmer for å ta mandatet. ",
                   ];
@@ -36,9 +34,9 @@ export class InfoBox extends React.Component<InfoBoxProps> {
                         {"Sistemandat i "}
                         {vulnerable.district}
                         {" gikk til "}
-                        {<span className="is-size-4">{vulnerable.winner.partyCode}</span>}
+                        {vulnerable.winner.partyCode}
                         {". "}&nbsp;
-                        {<span className="is-size-4">{vulnerable.runnerUp.partyCode}</span>}
+                        {vulnerable.runnerUp.partyCode}
                         {extendedInfo}
                     </p>
                 </div>

@@ -11,7 +11,7 @@ export class VulnerableDistrictSeatText extends React.Component<VulnerableDistri
             return (
                 <React.Fragment>
                     {" Det mest utsatte sistemandatet (relativt til kvotient) var i "}
-                    {<span className="is-size-4">{this.props.mostVulnerable.district}</span>}
+                    {this.props.mostVulnerable.district}
                     {" og ble vunnet av "}
                     {this.props.mostVulnerable.winner.partyCode}
                     {". "}

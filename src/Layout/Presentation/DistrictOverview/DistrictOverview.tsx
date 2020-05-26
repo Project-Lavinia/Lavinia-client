@@ -23,16 +23,8 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const averageVotingPower = data.map((value) => value.votesPerSeat).reduce(toMean);
         const highestVsAverageInPercentage = (1 / highestVotingPower / (1 / averageVotingPower)) * 100;
         const lowestVsAverageInPercentage = (1 / lowestVotingPower / (1 / averageVotingPower)) * 100;
-        const mostWeightedDistrict = (
-            <span className="is-size-4">
-                {data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name}
-            </span>
-        );
-        const leastWeightedDistrict = (
-            <span className="is-size-4">
-                {data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name}
-            </span>
-        );
+        const mostWeightedDistrict = data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name;
+        const leastWeightedDistrict = data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name;
         const calculateVulnerable = isQuotientAlgorithm(this.props.algorithm);
         const mostVulnerable = calculateVulnerable ? getMostVulnerableSeatByQuotient(data) : undefined;
         return (
