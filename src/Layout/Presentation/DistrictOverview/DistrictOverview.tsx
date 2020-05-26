@@ -23,21 +23,13 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const averageVotingPower = data.map((value) => value.votesPerSeat).reduce(toMean);
         const highestVsAverageInPercentage = (1 / highestVotingPower / (1 / averageVotingPower)) * 100;
         const lowestVsAverageInPercentage = (1 / lowestVotingPower / (1 / averageVotingPower)) * 100;
-        const mostWeightedDistrict = (
-            <span className="has-text-success">
-                {data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name}
-            </span>
-        );
-        const leastWeightedDistrict = (
-            <span className="has-text-danger">
-                {data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name}
-            </span>
-        );
+        const mostWeightedDistrict = data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name;
+        const leastWeightedDistrict = data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name;
         const calculateVulnerable = isQuotientAlgorithm(this.props.algorithm);
         const mostVulnerable = calculateVulnerable ? getMostVulnerableSeatByQuotient(data) : undefined;
         return (
             <React.Fragment>
-                <div className="card has-background-dark has-text-light">
+                <div className="card has-background-primary has-text-light is-size-5">
                     <p className="card-content">
                         {"En stemme i "}
                         {mostWeightedDistrict}

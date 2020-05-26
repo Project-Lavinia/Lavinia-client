@@ -8,10 +8,12 @@ export class ResetButton extends React.Component<ResetButtonProps> {
     render() {
         return (
             <div>
-                <button className="button is-dark is-fullwidth" onClick={this.props.restoreToDefault} type="button">
+                <button className="button is-primary is-outlined is-fullwidth has-text-weight-bold " onClick={this.props.restoreToDefault} type="button">
                     Tilbakestill Innstillinger
                 </button>
             </div>
         );
     }
 }
+
+// button is-primary has-background-grey-lighter is-outlined is-fullwidth 

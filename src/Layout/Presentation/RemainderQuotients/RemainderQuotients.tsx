@@ -133,7 +133,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
 
         return (
             <React.Fragment>
-                <div className="card has-background-dark has-text-light">
+                <div className="card has-background-primary has-text-light is-size-5">
                     <p className="card-content">
                         Markerte celler indikerer at partiet har vunnet et utjevningsmandat i det korresponderende
                         fylket. Kvotientene

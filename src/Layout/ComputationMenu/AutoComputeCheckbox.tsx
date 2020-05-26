@@ -9,15 +9,17 @@ export interface AutoComputeCheckboxProps {
 export class AutoComputeCheckbox extends React.Component<AutoComputeCheckboxProps> {
     render() {
         return (
-            <label htmlFor="autoCompute" className="label is-normal">
-                <input
-                    type="checkbox"
-                    name="autoCompute"
-                    checked={this.props.autoCompute}
-                    onChange={this.props.toggleAutoCompute}
-                />
-                &nbsp;Oppdater automatisk
-            </label>
+            <div className="field">
+                <label htmlFor="autoCompute" className="checkbox">
+                    <input
+                        type="checkbox"
+                        name="autoCompute"
+                        checked={this.props.autoCompute}
+                        onChange={this.props.toggleAutoCompute}
+                    />
+                    &nbsp;Oppdater automatisk
+                </label>
+            </div>
         );
     }
 }
