@@ -21,10 +21,10 @@ module.exports = (env) => {
         entry: {
             app: "./main.tsx",
         },
+        mode: "production",
         output: {
             path: outPath,
-            filename: "bundle.js",
-            chunkFilename: "[name].[chunkhash].js",
+            filename: "js/[name].[hash].bundle.js",
             publicPath: "/",
         },
         target: "web",
@@ -52,16 +52,16 @@ module.exports = (env) => {
                 },
                 // css
                 {
-                    test: /\.css$/,
+                    test: /\.(scss|sass)$/,
                     use: [
-                        isProduction ? MiniCssExtractPlugin.loader : "style-loader",
+                        MiniCssExtractPlugin.loader,
                         {
                             loader: "css-loader",
-                            query: {
-                                modules: true,
-                                sourceMap: !isProduction,
-                                importLoaders: 1,
-                                localIdentName: isProduction ? "[hash:base64:5]" : "[local]__[hash:base64:5]",
+                        },
+                        {
+                            loader: "sass-loader",
+                            options: {
+                                sourceMap: true,
                             },
                         },
                     ],
@@ -74,32 +74,26 @@ module.exports = (env) => {
         },
         optimization: {
             splitChunks: {
-                name: true,
-                chunks: "all",
                 cacheGroups: {
-                    commons: {
-                        minChunks: 6,
-                    },
                     vendors: {
                         test: /[\\/]node_modules[\\/]/,
-                        name(module) {
-                            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-                            return `${packageName.replace("@", "")}`;
-                        },
+                        name: "vendors",
+                        chunks: "all",
                     },
                 },
+
             },
-            runtimeChunk: true,
         },
         plugins: [
             new DotenvWebpackPlugin({
                 path: "./.env.defaults",
                 defaults: true,
             }),
-            new CleanWebpackPlugin(),
+            new CleanWebpackPlugin({
+                verbose: true,
+            }),
             new MiniCssExtractPlugin({
-                filename: "[name].[contenthash].css",
-                disable: !isProduction,
+                filename: "css/[name].[contenthash].css",
             }),
             new HtmlWebpackPlugin({
                 template: "assets/index.html",
