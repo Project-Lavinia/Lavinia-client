@@ -350,7 +350,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         min={1}
                         max={5}
                         defaultValue={this.props.computationPayload.election.firstDivisor}
-                        originalValue={this.props.settingsPayload.comparison.firstDivisor}
                         integer={false}
                         tooltip={
                             <TooltipInfo
@@ -366,7 +365,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         min={0}
                         max={15}
                         defaultValue={this.props.computationPayload.election.threshold}
-                        originalValue={this.props.settingsPayload.comparison.electionThreshold}
                         integer={false}
                         label={"%"}
                         tooltip={
@@ -385,7 +383,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         min={0}
                         max={15}
                         defaultValue={0}
-                        originalValue={this.props.settingsPayload.comparison.districtThreshold}
                         integer={false}
                         label={"%"}
                         isHiddenTouch={true}
@@ -405,7 +402,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         min={0}
                         max={100}
                         defaultValue={this.props.computationPayload.election.levelingSeats}
-                        originalValue={this.props.settingsPayload.comparison.levelingSeats}
                         integer={true}
                         tooltip={
                             <TooltipInfo
@@ -423,7 +419,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         min={0}
                         max={500}
                         defaultValue={this.props.computationPayload.election.seats}
-                        originalValue={this.props.settingsPayload.comparison.districtSeats}
                         integer={true}
                         hidden={!shouldDistributeDistrictSeats(year)}
                         tooltip={
@@ -442,7 +437,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         min={0}
                         max={3}
                         defaultValue={this.props.computationPayload.parameters.areaFactor}
-                        originalValue={this.props.settingsPayload.comparison.areaFactor}
                         integer={false}
                         hidden={!shouldDistributeDistrictSeats(year)}
                         tooltip={

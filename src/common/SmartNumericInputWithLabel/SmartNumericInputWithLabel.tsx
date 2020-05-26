@@ -8,7 +8,6 @@ export interface SmartNumericInputWithLabelProps extends SmartNumericInputProps 
 export class SmartNumericInputWithLabel extends SmartNumericInput<SmartNumericInputWithLabelProps> {
     render() {
         const value = this.validateInput(this.props.value);
-        const settingWasChanged = this.props.originalValue && this.props.originalValue !== this.props.value;
         const label = this.props.label;
         const isHiddenTouch = this.props.isHiddenTouch === true ? "is-hidden-touch" : "";
         return (
@@ -46,7 +45,6 @@ export class SmartNumericInputWithLabel extends SmartNumericInput<SmartNumericIn
                         <p>{label}</p>
                     </span>
                 </div>
-                {settingWasChanged && <label>Orginalt: {this.props.originalValue}</label>}
             </div>
         );
     }

@@ -20,7 +20,6 @@ export interface SmartNumericInputProps {
 export class SmartNumericInput<T extends SmartNumericInputProps> extends React.Component<T, {}> {
     render() {
         const value = this.validateInput(this.props.value);
-        const settingWasChanged = this.props.originalValue && this.props.originalValue !== this.props.value;
         const isHiddenTouch = this.props.isHiddenTouch === true ? "is-hidden-touch" : "";
         return (
             <div hidden={this.props.hidden} className={"field " + isHiddenTouch}>
@@ -54,7 +53,6 @@ export class SmartNumericInput<T extends SmartNumericInputProps> extends React.C
                         />
                     )}
                 </div>
-                {settingWasChanged && <label>Orginalt: {this.props.originalValue}</label>}
             </div>
         );
     }
