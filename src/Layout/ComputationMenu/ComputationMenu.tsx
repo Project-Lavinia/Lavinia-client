@@ -338,7 +338,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                     />
                     <AlgorithmSelect
                         algorithm={this.props.settingsPayload.algorithm}
-                        defaultAlgorithm={this.props.settingsPayload.comparison.algorithm}
                         onAlgorithmChange={this.onAlgorithmChange}
                     />
                     <SmartNumericInput
