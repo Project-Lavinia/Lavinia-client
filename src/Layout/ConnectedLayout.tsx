@@ -13,8 +13,13 @@ import { initializeComputationMenu } from "./ComputationMenu";
 import { initializePresentation } from "./PresentationMenu";
 import { stateIsInvalid } from "../store/version";
 import { rawParametersToParametersConverter } from "../requested-data/requested-data-utilities";
+import { RootState } from "../reducers";
 
-const mapDispatchToProps = (dispatch: any): LayoutProps => ({
+const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded"> => ({
+    dataLoaded: state.requestedDataState.dataLoaded,
+});
+
+const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState"> => ({
     initializeState: async () => {
         const electionTypePath = "no/pe?deep=true";
         let defaultUri: string;
@@ -66,7 +71,4 @@ const mapDispatchToProps = (dispatch: any): LayoutProps => ({
     },
 });
 
-export const ConnectedLayout = connect(
-    null,
-    mapDispatchToProps
-)(Layout as any);
+export const ConnectedLayout = connect(mapStateToProps, mapDispatchToProps)(Layout as any);

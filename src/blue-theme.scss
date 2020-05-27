@@ -9,13 +9,14 @@ $tooltip-background-color: $democracy-blue;
 
 @import "~bulma/bulma";
 @import "~bulma-tooltip";
+@import "~bulma-pageloader";
 
 [class*=" lavinia-logo"],
 [class^="lavinia-logo"] {
-  letter-spacing: 2px;
-  stroke-width: 0.26458px;
-  stroke: findColorInvert($primary);
-  fill: findColorInvert($primary);
-  width: 100px;
-  height: 28px;
+    letter-spacing: 2px;
+    stroke-width: 0.26458px;
+    stroke: findColorInvert($primary);
+    fill: findColorInvert($primary);
+    width: 100px;
+    height: 28px;
 }
