@@ -184,11 +184,11 @@ export function getDenominator(
 function getElectionNumber(algorithm: AlgorithmType, totalVotes: number, totalSeats: number): number {
     switch (algorithm) {
         case AlgorithmType.LARGEST_FRACTION_HARE:
-            return totalVotes / totalSeats;
+            return Math.floor(totalVotes / totalSeats);
         case AlgorithmType.LARGEST_FRACTION_DROOP:
-            return totalVotes / (totalSeats + 1) + 1;
+            return Math.floor(totalVotes / (totalSeats + 1)) + 1;
         case AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF:
-            return totalVotes / (totalSeats + 1);
+            return Math.floor(totalVotes / (totalSeats + 1));
         default:
             console.error(`ERROR! ${algorithm.toString()} does not have an associated election number algorithm!`);
             return Number.MIN_SAFE_INTEGER;
