@@ -154,3 +154,16 @@ export const norwegian: ReactTableTranslation = {
     ofText: "av",
     rowsText: "rader",
 };
+
+/**
+ * Norwegian implementation of ReactTableTranslation for the Levelingseat overview
+ */
+export const norwegianLeveling: ReactTableTranslation = {
+    pageText: "Side",
+    loadingText: "Laster inn...",
+    nextText: "Neste",
+    previousText: "Forrige",
+    noDataText: "Ingen utjevningsmandater",
+    ofText: "av",
+    rowsText: "rader",
+};
