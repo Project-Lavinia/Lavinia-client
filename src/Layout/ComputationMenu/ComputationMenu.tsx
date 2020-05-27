@@ -340,7 +340,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfoRight
                                 text={"Her kan du velge året stortingsvalget ble holdt."}
-                                url={WIKIURL+"/#Valgt%20%C3%A5r"}
+                                url={WIKIURL + "/#Valgt%20%C3%A5r"}
                             />
                         }
                     />
@@ -351,7 +351,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du velge beregningsmetode for fordeling av mandater."}
-                                url={WIKIURL+"/#Valgt%20metode"}
+                                url={WIKIURL + "/#Valgt%20metode"}
                             />
                         }
                     />
@@ -369,7 +369,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du forandre det første delingstallet i Sainte-Laguës metode."}
-                                url={WIKIURL+"/#F%C3%B8rste%20delingstall"}
+                                url={WIKIURL + "/#F%C3%B8rste%20delingstall"}
                             />
                         }
                     />
@@ -387,13 +387,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du forandre sperregrensen for å få tildelt utjevningsmandat."}
-                                url={WIKIURL+"/#Sperregrense%20for%20utjevningsmandat"}
+                                url={WIKIURL + "/#Sperregrense%20for%20utjevningsmandat"}
                             />
                         }
                     />
                     <SmartNumericInputWithLabel
                         name="districtThreshold"
-                        title="Sperregrense for distriktmandat"
+                        title="Sperregrense for distriktmandater"
                         value={this.props.settingsPayload.districtThreshold}
                         onChange={this.onDistrictThresholdChange}
                         min={0}
@@ -406,7 +406,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du sette inn en sperregrense også for distriktsmandatene."}
-                                url={WIKIURL+"/#Sperregrense%20for%20distriktmandat"}
+                                url={WIKIURL + "/#Sperregrense%20for%20distriktmandat"}
                             />
                         }
                     />
@@ -423,7 +423,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du endre antall utjevningsmandater."}
-                                url={WIKIURL+"/#Utjevningsmandater"}
+                                url={WIKIURL + "/#Utjevningsmandater"}
                             />
                         }
                     />
@@ -441,7 +441,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du endre antall distriktsmandater."}
-                                url={WIKIURL+"/#Distriktsmandater"}
+                                url={WIKIURL + "/#Distriktsmandater"}
                             />
                         }
                     />
@@ -459,7 +459,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du endre balansen mellom folketall og fylkets areal."}
-                                url={WIKIURL+"/#Arealfaktor"}
+                                url={WIKIURL + "/#Arealfaktor"}
                             />
                         }
                     />
