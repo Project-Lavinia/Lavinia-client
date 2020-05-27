@@ -17,13 +17,13 @@ export class Layout extends React.Component<LayoutProps, {}> {
 
     public render() {
         const showLoading = this.props.dataLoaded ? "" : " is-active";
-        const pageLoaderClass = "pageloader" + showLoading;
+        const pageLoaderClass = "pageloader is-size-1" + showLoading;
 
         return (
             <React.Fragment>
                 <ConnectedNavigation />
                 <div className={pageLoaderClass}>
-                    <span className="title">Laster inn Lavinia...</span>
+                    <span className="title is-size-2">Laster inn Lavinia...</span>
                 </div>
                 <div className="columns is-desktop section">
                     <div className="column is-narrow">
