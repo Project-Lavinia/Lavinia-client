@@ -1,7 +1,7 @@
 import * as React from "react";
 import ReactTable, { Column } from "react-table";
 import { PartyRestQuotients } from "../../../computation";
-import { norwegian } from "../../../utilities/rt";
+import { norwegianLeveling } from "../../../utilities/rt";
 
 interface LevellingSeatOverviewProps {
     levellingSeatQuotients: PartyRestQuotients[];
@@ -35,21 +35,23 @@ export class LevellingSeatOverview extends React.Component<LevellingSeatOverview
     getColumns() {
         const columns: Column[] = [];
         const data = this.makeData();
-        const mostSeatsIndex = this.findMostSeatsWon(data);
-        for (let i = 0; i < data[mostSeatsIndex].seatsWon.length; i++) {
-            // const current = data[i];
-            columns.push({
-                Header: `${i + 1}.`,
-                accessor: `seatsWon[${i}]`,
-                minWidth: 150,
+        if (data.length > 0) {
+            const mostSeatsIndex = this.findMostSeatsWon(data);
+            for (let i = 0; i < data[mostSeatsIndex].seatsWon.length; i++) {
+                // const current = data[i];
+                columns.push({
+                    Header: `${i + 1}.`,
+                    accessor: `seatsWon[${i}]`,
+                    minWidth: 150,
+                });
+            }
+
+            // Set the first column
+            columns.unshift({
+                Header: "Parti",
+                accessor: "partyCode",
             });
         }
-
-        // Set the first column
-        columns.unshift({
-            Header: "Parti",
-            accessor: "partyCode",
-        });
         return columns;
     }
     render() {
@@ -59,13 +61,14 @@ export class LevellingSeatOverview extends React.Component<LevellingSeatOverview
             <React.Fragment>
                 <ReactTable
                     className="-highlight -striped has-text-centered"
+                    style={{ minHeight: 100 }}
                     data={data}
                     columns={columns}
                     defaultPageSize={data.length > 10 ? 10 : data.length}
                     pageSize={data.length > 10 ? 10 : data.length}
                     showPageSizeOptions={false}
                     showPagination={data.length > 10 ? true : false}
-                    {...norwegian}
+                    {...norwegianLeveling}
                 />
             </React.Fragment>
         );
