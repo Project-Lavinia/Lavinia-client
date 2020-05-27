@@ -1,7 +1,7 @@
 import * as React from "react";
 import ReactTable, { Column } from "react-table";
 import { PartyRestQuotients } from "../../../computation";
-import { norwegian } from "../../../utilities/rt";
+import { norwegianLeveling } from "../../../utilities/rt";
 
 interface LevellingSeatOverviewProps {
     levellingSeatQuotients: PartyRestQuotients[];
@@ -68,7 +68,7 @@ export class LevellingSeatOverview extends React.Component<LevellingSeatOverview
                     pageSize={data.length > 10 ? 10 : data.length}
                     showPageSizeOptions={false}
                     showPagination={data.length > 10 ? true : false}
-                    {...norwegian}
+                    {...norwegianLeveling}
                 />
             </React.Fragment>
         );
