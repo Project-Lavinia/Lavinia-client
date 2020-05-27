@@ -321,8 +321,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     };
 
     /**
-    * Helper function to check if settings have changed.
-    */
+     * Helper function to check if settings have changed.
+     */
     settingsChanged = () => {
         const { settingsPayload } = this.props;
         const { comparison } = settingsPayload;
