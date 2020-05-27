@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { configureStore, loadState, saveState } from "./store";
 import { App } from ".";
 import { debounce } from "lodash";
+import "./blue-theme.scss";
 
 const persistedState = loadState();
 
