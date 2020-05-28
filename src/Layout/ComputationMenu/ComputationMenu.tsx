@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SmartNumericInput, SmartNumericInputWithLabel, TooltipInfo } from "../../common";
+import { SmartNumericInput, SmartNumericInputWithLabel, TooltipInfo, TooltipInfoRight } from "../../common";
 import { ElectionType, Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
 import { ComputationPayload, AlgorithmType, unloadedParameters } from "../../computation";
 import { ComputationMenuPayload } from "./computation-menu-models";
@@ -17,6 +17,8 @@ import {
 } from "../../computation/logic/district-merging";
 import { shouldDistributeDistrictSeats } from "../../utilities/conditionals";
 import { isLargestFractionAlgorithm } from "../../computation/logic";
+
+const WIKIURL = "https://project-lavinia.github.io";
 
 export interface ComputationMenuProps {
     electionType: ElectionType;
@@ -318,6 +320,34 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
         );
     };
 
+    /**
+     * Helper function to check if settings have changed.
+     */
+    settingsChanged = () => {
+        const { settingsPayload } = this.props;
+        const { comparison } = settingsPayload;
+        return (settingsPayload.algorithm !==
+            comparison.algorithm)
+            ||
+            (comparison.firstDivisor !==
+                settingsPayload.firstDivisor)
+            ||
+            (settingsPayload.electionThreshold !==
+                comparison.electionThreshold)
+            ||
+            (comparison.districtThreshold !==
+                settingsPayload.districtThreshold)
+            ||
+            (settingsPayload.levelingSeats !==
+                comparison.levelingSeats)
+            ||
+            (settingsPayload.districtSeats !==
+                comparison.districtSeats)
+            ||
+            (comparison.areaFactor !==
+                settingsPayload.areaFactor);
+    }
+
     render() {
         const year = parseInt(this.props.settingsPayload.year);
         return (
@@ -335,10 +365,22 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         electionYears={this.props.settingsPayload.electionYears}
                         onYearChange={this.onYearChange}
                         year={this.props.settingsPayload.year}
+                        tooltip={
+                            <TooltipInfoRight
+                                text={"Her kan du velge året stortingsvalget ble holdt."}
+                                url={WIKIURL + "/#Valgt%20%C3%A5r"}
+                            />
+                        }
                     />
                     <AlgorithmSelect
                         algorithm={this.props.settingsPayload.algorithm}
                         onAlgorithmChange={this.onAlgorithmChange}
+                        tooltip={
+                            <TooltipInfo
+                                text={"Her kan du velge beregningsmetode for fordeling av mandater."}
+                                url={WIKIURL + "/#Valgt%20metode"}
+                            />
+                        }
                     />
                     <SmartNumericInput
                         hidden={this.shouldHideFirstDivisor()}
@@ -353,12 +395,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du forandre det første delingstallet i Sainte-Laguës metode."}
+                                url={WIKIURL + "/#F%C3%B8rste%20delingstall"}
                             />
                         }
                     />
                     <SmartNumericInputWithLabel
                         name="electionThreshold"
-                        title="Sperregrense"
+                        title="Sperregrense for utjevningsmandater"
                         value={this.props.settingsPayload.electionThreshold}
                         onChange={this.onThresholdChange}
                         min={0}
@@ -368,15 +411,14 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         label={"%"}
                         tooltip={
                             <TooltipInfo
-                                text={
-                                    "For å være med i konkurransen om utjevningsmandater må partiene komme over sperregrensen (prosent av stemmene på landsbasis)."
-                                }
+                                text={"Her kan du forandre sperregrensen for å få tildelt utjevningsmandat."}
+                                url={WIKIURL + "/#Sperregrense%20for%20utjevningsmandat"}
                             />
                         }
                     />
                     <SmartNumericInputWithLabel
                         name="districtThreshold"
-                        title="Sperregrense for distriktmandat"
+                        title="Sperregrense for distriktmandater"
                         value={this.props.settingsPayload.districtThreshold}
                         onChange={this.onDistrictThresholdChange}
                         min={0}
@@ -387,9 +429,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         isHiddenTouch={true}
                         tooltip={
                             <TooltipInfo
-                                text={
-                                    "Denne sperregrensen gjelder i det enkelte valgdistrikt, dvs. ved beregningen av distriktsmandater."
-                                }
+                                text={"Her kan du sette inn en sperregrense også for distriktsmandatene."}
+                                url={WIKIURL + "/#Sperregrense%20for%20distriktmandat"}
                             />
                         }
                     />
@@ -404,9 +445,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         integer={true}
                         tooltip={
                             <TooltipInfo
-                                text={
-                                    "Utjevningsmandatene går til de partiene som har kommet dårligere ut av distriktsfordelingen enn deres stemmeandel skulle tilsi."
-                                }
+                                text={"Her kan du endre antall utjevningsmandater."}
+                                url={WIKIURL + "/#Utjevningsmandater"}
                             />
                         }
                     />
@@ -422,9 +462,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         hidden={!shouldDistributeDistrictSeats(year)}
                         tooltip={
                             <TooltipInfo
-                                text={
-                                    "Stortinget består av i alt 169 representanter der 150 mandater fordeles distriktsvis."
-                                }
+                                text={"Her kan du endre antall distriktsmandater."}
+                                url={WIKIURL + "/#Distriktsmandater"}
                             />
                         }
                     />
@@ -440,9 +479,8 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         hidden={!shouldDistributeDistrictSeats(year)}
                         tooltip={
                             <TooltipInfo
-                                text={
-                                    "Jo høyere arealfaktor, jo større vekt tillegges fylkets geografiske utstrekning."
-                                }
+                                text={"Her kan du endre balansen mellom folketall og fylkets areal."}
+                                url={WIKIURL + "/#Arealfaktor"}
                             />
                         }
                     />
@@ -451,7 +489,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         computeManually={this.computeManually}
                     />
 
-                    <ResetButton restoreToDefault={this.restoreToDefault} />
+                    <ResetButton restoreToDefault={this.restoreToDefault} highlight={this.settingsChanged()}/>
                     <ComparisonOptions
                         showComparison={this.props.showComparison}
                         resetComparison={this.props.resetComparison}

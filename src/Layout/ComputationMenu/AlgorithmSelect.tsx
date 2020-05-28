@@ -5,6 +5,7 @@ import { getAlgorithmNameFromType } from "../../computation/logic";
 export interface AlgorithmSelectProps {
     algorithm: AlgorithmType;
     onAlgorithmChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    tooltip?: React.ReactNode;
 }
 
 export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
@@ -12,13 +13,12 @@ export class AlgorithmSelect extends React.Component<AlgorithmSelectProps> {
         return (
             <div className="field">
                 <label className="label" htmlFor="algorithm_select">
-                    Valgt metode
+                    Valgt metode {this.props.tooltip}
                 </label>
                 <div className="control">
-                    <div className="select is-dark is-fullwidth">
+                    <div className="select is-primary is-fullwidth">
                         <select
                             title="Beregningsmetode"
-                            className="form-control"
                             id="algorithm_select"
                             name="calcMethod"
                             value={this.props.algorithm}

@@ -89,6 +89,11 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                     <strong>Utvalg</strong>
                                 </span>
                             ),
+                            Cell: (row) => {
+                                return row.original.partyName
+                                    ? <abbr title={row.original.partyName}>{row.value}</abbr>
+                                    : row.value;
+                            },
                         },
                         {
                             Header: "Stemmer",
@@ -143,7 +148,6 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                 if (vulnerableVotes && row.original.partyCode === vulnerableVotes.winner.partyCode) {
                                     return (
                                         <span className="icon">
-                                            {" "}
                                             <i className="fas fa-trophy" />
                                         </span>
                                     );

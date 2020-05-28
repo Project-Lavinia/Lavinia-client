@@ -18,23 +18,36 @@ export function requestedData(
                 ...state,
                 electionType: action.electionType,
                 enableAutoSave: true,
+                dataLoaded: checkStateLoaded(state, action),
             };
         case RequestedDataActionType.INTIIALIZE_REQUESTED_VOTES:
             return {
                 ...state,
                 votes: action.votes,
+                dataLoaded: checkStateLoaded(state, action),
             };
         case RequestedDataActionType.INITIALIZE_REQUESTED_METRICS:
             return {
                 ...state,
                 metrics: action.metrics,
+                dataLoaded: checkStateLoaded(state, action),
             };
         case RequestedDataActionType.INIITALIZE_REQUESTED_PARAMETERS:
             return {
                 ...state,
                 parameters: action.parameters,
+                dataLoaded: checkStateLoaded(state, action),
             };
         default:
             return state;
     }
+}
+
+function checkStateLoaded(state: RequestedDataState, action: RequestedDataAction): boolean {
+    return (
+        (state.electionType.countryId !== -1 || action.type === RequestedDataActionType.INITIALIZE_REQUESTED_DATA) &&
+        (state.metrics.length > 0 || action.type === RequestedDataActionType.INITIALIZE_REQUESTED_METRICS) &&
+        (state.parameters.length > 0 || action.type === RequestedDataActionType.INIITALIZE_REQUESTED_PARAMETERS) &&
+        (state.votes.length > 0 || action.type === RequestedDataActionType.INTIIALIZE_REQUESTED_VOTES)
+    );
 }

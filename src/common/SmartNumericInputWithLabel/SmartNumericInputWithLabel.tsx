@@ -13,13 +13,12 @@ export class SmartNumericInputWithLabel extends SmartNumericInput<SmartNumericIn
         return (
             <div hidden={this.props.hidden} className={"field " + isHiddenTouch}>
                 <label htmlFor={this.props.name} className="label">
-                    {this.props.title}&nbsp;{this.props.tooltip}
+                    {this.props.title} {this.props.tooltip}
                 </label>
                 <div className="control has-icons-right">
                     <input
-                        className="input is-dark"
+                        className="input is-primary is-fullwidth"
                         type={"number"}
-                        style={this.props.slider ? { width: "100%" } : {}}
                         name={this.props.name}
                         onChange={this.updateNumeric}
                         placeholder={value.numericValue.toString()}
@@ -31,9 +30,8 @@ export class SmartNumericInputWithLabel extends SmartNumericInput<SmartNumericIn
 
                     {this.props.slider && (
                         <input
-                            className="form-control"
+                            className="is-primary is-fullwidth"
                             type={"range"}
-                            style={{ width: "100%" }}
                             onChange={this.updateSlider}
                             value={value.numericValue}
                             min={this.props.min}
