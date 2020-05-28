@@ -320,6 +320,34 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
         );
     };
 
+    /**
+     * Helper function to check if settings have changed.
+     */
+    settingsChanged = () => {
+        const { settingsPayload } = this.props;
+        const { comparison } = settingsPayload;
+        return (settingsPayload.algorithm !==
+            comparison.algorithm)
+            ||
+            (comparison.firstDivisor !==
+                settingsPayload.firstDivisor)
+            ||
+            (settingsPayload.electionThreshold !==
+                comparison.electionThreshold)
+            ||
+            (comparison.districtThreshold !==
+                settingsPayload.districtThreshold)
+            ||
+            (settingsPayload.levelingSeats !==
+                comparison.levelingSeats)
+            ||
+            (settingsPayload.districtSeats !==
+                comparison.districtSeats)
+            ||
+            (comparison.areaFactor !==
+                settingsPayload.areaFactor);
+    }
+
     render() {
         const year = parseInt(this.props.settingsPayload.year);
         return (
@@ -468,7 +496,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         computeManually={this.computeManually}
                     />
 
-                    <ResetButton restoreToDefault={this.restoreToDefault} />
+                    <ResetButton restoreToDefault={this.restoreToDefault} highlight={this.settingsChanged()}/>
                     <ComparisonOptions
                         showComparison={this.props.showComparison}
                         resetComparison={this.props.resetComparison}
