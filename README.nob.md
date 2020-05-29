@@ -14,7 +14,7 @@ En applikasjon som simulerer mandatdistribusjon i valg. Nåværende funksjonalit
 -   Fordelingsmetodene Sainte-Lagüe (modifisert), d'Hondt, største brøks metode (Hare, Droop & Hagenbach-Bischoff)
 -   Detaljerte tabeller som beskriver simulasjonsresultatene
 -   Parametere for å justere hvordan mandatene fordeles
--   Sammenslåing av fylker for å simulere effekten av de nye fylkene i 2020
+-   Sammenslåing av fylker for å simulere effekten av de nye regionene i 2020
 -   Se hvordan fylkesdataene for 2021 ville forandret resultatene av tidligere valg
 -   Lagre resultatene fra en fordeling og sammenlign de med justerte parametre
 
