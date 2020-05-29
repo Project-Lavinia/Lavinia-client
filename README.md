@@ -14,7 +14,7 @@ An application that simulates seat distribution in elections. Current features i
 -   Sainte-Lagüe (modified), d'Hondt and largest fraction (Hare, Droop, Hagenbach-Bischoff) distribution methods
 -   Detailed tables describing the simulation results
 -   Parameters for adjusting how the seats are distributed
--   Merging of counties to simulate the effect of the new Norwegian counties of 2020
+-   Merging of counties to simulate the effect of the new Norwegian regions of 2020
 -   See how the county data for 2021 would have changed the results of previous elections
 -   Save the results from a distribution and compare them to the results with adjusted parameters
 
