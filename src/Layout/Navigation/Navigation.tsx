@@ -11,6 +11,8 @@ export class Navigation extends React.Component<NavigationProps> {
         this.props.toggleHamburger!(this.props.hamburgerExpanded!);
     };
     public render() {
+        const wikiUrl = process.env.WIKI;
+        const swaggerUiUrl = process.env.SWAGGERUI;
         const style = {
             menuButton: "navbar-burger burger",
             menu: "navbar-menu",
@@ -41,12 +43,7 @@ export class Navigation extends React.Component<NavigationProps> {
 
                 <div id="toggleable-menu" className={style.menu}>
                     <div className="navbar-start">
-                        <a
-                            target="_blank"
-                            href="https://project-lavinia.github.io/"
-                            rel="noopener noreferrer"
-                            className="navbar-item"
-                        >
+                        <a target="_blank" href={wikiUrl} rel="noopener noreferrer" className="navbar-item">
                             Hjelp
                         </a>
 
@@ -54,7 +51,7 @@ export class Navigation extends React.Component<NavigationProps> {
                             <a
                                 className="navbar-link"
                                 target="_blank"
-                                href="https://project-lavinia.github.io/#Lavinia"
+                                href={wikiUrl?.concat("#Lavinia")}
                                 rel="noopener noreferrer"
                             >
                                 Om Lavinia
@@ -62,7 +59,7 @@ export class Navigation extends React.Component<NavigationProps> {
                             <div className="navbar-dropdown">
                                 <a
                                     target="_blank"
-                                    href={process.env.SWAGGERUI}
+                                    href={swaggerUiUrl}
                                     rel="noopener noreferrer"
                                     className="navbar-item"
                                 >
