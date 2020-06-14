@@ -7,3 +7,5 @@ build
 dist
 app.yaml
 .gcloudignore
+cypress/videos
+cypress/screenshots

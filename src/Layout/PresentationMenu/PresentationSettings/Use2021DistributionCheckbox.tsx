@@ -13,6 +13,7 @@ export class Use2021DistributionCheckbox extends React.Component<Use2021Distribu
                 <label className="checkbox" htmlFor="2021-distribution-setting">
                     <input
                         type="checkbox"
+                        id="2021_distribution_checkbox"
                         name="2021-distribution-setting"
                         checked={this.props.use2021Distribution}
                         onChange={this.props.toggleUse2021Distribution}
