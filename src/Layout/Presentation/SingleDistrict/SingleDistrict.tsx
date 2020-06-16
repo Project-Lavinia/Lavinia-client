@@ -117,7 +117,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             },
                         },
                         {
-                            Header: <span className="is-pulled-right" >{"%"}</span>,
+                            Header: <span className="is-pulled-right" >{"Oppslutning %"}</span>,
                             id: "%",
                             accessor: (d: PartyResult) => roundNumber(d.percentVotes, decimals),
                             Cell: (row) => {
