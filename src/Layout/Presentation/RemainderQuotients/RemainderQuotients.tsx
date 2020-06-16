@@ -55,7 +55,6 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
     getColumns(): Column[] {
         const data = this.makeData();
         const columns: Column[] = [];
-
         for (let i = 0; i < data[0].levellingSeatRounds.length; i++) {
             const element = data[0].levellingSeatRounds[i];
             columns.push({
@@ -75,7 +74,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                             <div
                                 className={row.value.wonLevellingSeat ? "has-background-dark has-text-white" : ""}
                             >
-                                {Number(quotient).toFixed(this.props.decimals)}
+                                {Number(quotient).toFixed(this.props.decimals).replace(".", ",")}
                             </div>
                         );
                     } else {

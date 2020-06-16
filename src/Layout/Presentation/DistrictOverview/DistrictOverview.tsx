@@ -15,6 +15,15 @@ export interface DistrictOverviewProps {
 }
 
 export class DistrictOverview extends React.Component<DistrictOverviewProps, {}> {
+
+    /**
+     * 
+     * @param value to format with ',' instead of '.' and add space between thousands.
+     */
+    numberFormat(value:number){
+        return new Intl.NumberFormat('nb-NO').format(value);
+    };
+
     render() {
         const data = this.props.districtResults;
         const decimals = this.props.decimals;
@@ -45,7 +54,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                 </div>
 
                 <ReactTable
-                    className="-highlight -striped has-text-centered"
+                    className="-highlight -striped has-text-right"
                     defaultPageSize={this.props.districtResults.length}
                     pageSize={this.props.districtResults.length}
                     showPaginationBottom={false}
@@ -53,26 +62,32 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                     {...norwegian}
                     columns={[
                         {
-                            Header: "Fylke",
+                            Header: <span className="is-pulled-left"> {"Fylke"}</span> ,
                             accessor: "name",
                             minWidth: this.props.districtWidth * 10,
+                            Cell: (row) => {
+                                return <span className="is-pulled-left" >{row.value}</span>
+                            },
                             Footer: (
                                 <span>
-                                    <strong>Alle fylker</strong>
+                                    <strong className="is-pulled-left">Alle fylker</strong>
                                 </span>
                             ),
                         },
                         {
-                            Header: "Stemmer",
+                            Header: <span className="is-pulled-right"> {"Stemmer"}</span> ,
                             accessor: "votes",
                             Footer: (
                                 <span>
-                                    <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>
+                                    <strong>{this.numberFormat(data.map((value) => value.votes).reduce(toSum, 0))}</strong>
                                 </span>
                             ),
+                            Cell: (row) => {
+                                return row.value ? this.numberFormat(row.value) : row.value
+                            },
                         },
                         {
-                            Header: "Distrikt",
+                            Header: <span className="is-pulled-right"> {"Distrikt"}</span>,
                             accessor: "districtSeats",
                             Footer: (
                                 <span>
@@ -81,7 +96,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             ),
                         },
                         {
-                            Header: "Utjevning",
+                            Header: <span className="is-pulled-right"> {"Utjevning"}</span>,
                             accessor: "levelingSeats",
                             Footer: (
                                 <span>
@@ -90,7 +105,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             ),
                         },
                         {
-                            Header: "Sum",
+                            Header: <span className="is-pulled-right"> {"Sum"}</span>,
                             accessor: "totalSeats",
                             Footer: (
                                 <span>
@@ -100,11 +115,14 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             ),
                         },
                         {
-                            Header: "Stemmer/mandat",
+                            Header: <span className="is-pulled-right"> {"Stemmer/mandat"}</span>,
                             accessor: "votesPerSeat",
+                            Cell: (row) => {
+                                return row.value ?  row.value.toString().replace(".", ",")  : row.value
+                            },
                             Footer: (
                                 <span>
-                                    <strong>{averageVotingPower.toFixed(decimals)}</strong>
+                                    <strong>{averageVotingPower.toFixed(decimals).replace(".", ",")}</strong>
                                 </span>
                             ),
                         },

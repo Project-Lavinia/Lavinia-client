@@ -138,11 +138,8 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             filterMethod: caseInsensitiveFilterMethod,
                             Footer: <strong className="is-pulled-left">Utvalg</strong>,
                             Cell: (row) => {
-                                return row.original.partyName ? (
-                                    <span className="is-pulled-left" >{row.original.partyName}</span>
-                                ) : (
-                                    row.value
-                                );
+                                const party = row.original.partyName ? row.original.partyName : row.value;
+                                return <span className="is-pulled-left">{party}</span>
                             },
                         },
                         {
@@ -150,7 +147,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             accessor: "votes",
                             filterable: false,
                             Cell: (row) => {
-                                return row.value !== null ? this.numberFormat(row.value) : row.value
+                                return row.value ? this.numberFormat(row.value) : row.value
                             },
                             Footer: <strong>{this.numberFormat(data.map((value) => value.votes).reduce(toSum, 0))}</strong>,
                         },
@@ -161,7 +158,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             filterMethod: thresholdFilterMethod(this.props.threshold),
                             accessor: (d: ElectionOverviewDatum) => roundNumber(d.percentVotes, decimals),
                             Cell: (row) => {
-                                return row.value !== null ? this.numberFormat(row.value) : row.value
+                                return row.value ? this.numberFormat(row.value) : row.value
                             },
                         },
                         {
@@ -194,16 +191,15 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                         },
                         {
                             Header: <span className="is-pulled-right"> {"Prop. %"}</span>, 
-                            id: "proportionality",
-                            accessor: (d: ElectionOverviewDatum) => roundNumber(d.proportionality, decimals),
+                            accessor: "proportionality",
                             Filter: selectFilterWithOptions(thresholdIsZeroOptions),
                             filterMethod: positiveOrNegativeFilterMethod(),
                             Cell: (row) => {
-                                return row.value !== null ? this.numberFormat(row.value) : row.value
+                                return row.value ? this.numberFormat(roundNumber(row.value, decimals)) : row.value
                             },
                             Footer: (
                                 <strong>
-                                    {label}: {this.numberFormat(roundNumber(index, decimals))}
+                                    {label}: {index.toFixed(decimals).replace(".", ",")}
                                 </strong>
                             ),
                         },
