@@ -11,7 +11,9 @@
         "build": "webpack --env.NODE_ENV \"production\" -p --progress --colors",
         "build:dev": "webpack --env.NODE_ENV \"development\"",
         "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
-        "precommit": "pretty-quick --staged && tslint -p ."
+        "precommit": "pretty-quick --staged && tslint -p .",
+        "cy:verify": "cypress verify",
+        "cy:run": "cypress run"
     },
     "license": "MIT",
     "devDependencies": {
