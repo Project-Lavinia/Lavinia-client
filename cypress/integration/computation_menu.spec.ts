@@ -24,7 +24,16 @@ const years = [
 const yearsWithModernElectionSystem = [2017, 2013, 2009, 2005];
 const yearsWithStLagues = years.slice(0, years.length - 2);
 
-const arbitraryNumberOfMilliseconds = 10000;
+function waitForLoad() {
+    cy.wait(1000).then(() => {
+        cy.get("#page_loader").then((loader) => {
+            if (loader.is(":visible")) {
+                waitForLoad();
+            }
+        });
+    });
+}
+
 describe("ComputationMenu", () => {
     beforeEach(() => {
         cy.clearLocalStorage();
@@ -33,7 +42,7 @@ describe("ComputationMenu", () => {
 
     context("Default settings", () => {
         it("Works for all years", () => {
-            cy.visit("").wait(arbitraryNumberOfMilliseconds);
+            cy.visit("").then(waitForLoad);
 
             years.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
@@ -44,7 +53,7 @@ describe("ComputationMenu", () => {
 
     context("Merge to 11 districts checkbox", () => {
         it("Works for relevant years", () => {
-            cy.visit("").wait(1000);
+            cy.visit("").then(waitForLoad);
 
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
@@ -57,7 +66,7 @@ describe("ComputationMenu", () => {
 
     context("Use 2021 seat distribution checkbox", () => {
         it("Works for relevant years", () => {
-            cy.visit("").wait(1000);
+            cy.visit("").then(waitForLoad);
 
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
@@ -70,7 +79,7 @@ describe("ComputationMenu", () => {
 
     context("Merge checkbox, then 2021 distribution checkbox", () => {
         it("Works for relevant years", () => {
-            cy.visit("").wait(1000);
+            cy.visit("").then(waitForLoad);
 
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
@@ -85,7 +94,7 @@ describe("ComputationMenu", () => {
 
     context("2021 distribution checkbox, then merge checkbox", () => {
         it("Works for relevant years", () => {
-            cy.visit("").wait(1000);
+            cy.visit("").then(waitForLoad);
 
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
@@ -101,7 +110,7 @@ describe("ComputationMenu", () => {
     context("Algorithms", () => {
         years.forEach((year) => {
             it(`Works for ${year}`, () => {
-                cy.visit("").wait(1000);
+                cy.visit("").then(waitForLoad);
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
                 const algorithms = [
@@ -122,7 +131,7 @@ describe("ComputationMenu", () => {
     context("First divisor", () => {
         yearsWithStLagues.forEach((year) => {
             it(`Works for ${year}`, () => {
-                cy.visit("").wait(1000);
+                cy.visit("").then(waitForLoad);
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
                 const divisorValues = ["1", "2", "3", "4", "5"];
@@ -138,7 +147,7 @@ describe("ComputationMenu", () => {
     context("Leveling seat threshold", () => {
         years.forEach((year) => {
             it(`Works for ${year}`, () => {
-                cy.visit("").wait(1000);
+                cy.visit("").then(waitForLoad);
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
                 const electionThresholdValues = ["0", "5", "7.5", "10", "15"];
@@ -154,7 +163,7 @@ describe("ComputationMenu", () => {
     context("District seat threshold", () => {
         years.forEach((year) => {
             it(`Works for ${year}`, () => {
-                cy.visit("").wait(1000);
+                cy.visit("").then(waitForLoad);
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
                 const districtThresholdValues = ["0", "5", "7.5", "10", "15"];
@@ -170,7 +179,7 @@ describe("ComputationMenu", () => {
     context("Leveling seats", () => {
         years.forEach((year) => {
             it(`Works for ${year}`, () => {
-                cy.visit("").wait(1000);
+                cy.visit("").then(waitForLoad);
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
                 const levelingSeatValues = ["0", "25", "50", "75", "100"];
@@ -186,7 +195,7 @@ describe("ComputationMenu", () => {
     context("District seats", () => {
         yearsWithModernElectionSystem.forEach((year) => {
             it(`Works for ${year}`, () => {
-                cy.visit("").wait(1000);
+                cy.visit("").then(waitForLoad);
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
                 const districtSeatValues = ["0", "125", "250", "325", "500"];
@@ -202,7 +211,7 @@ describe("ComputationMenu", () => {
     context("Area factor", () => {
         yearsWithModernElectionSystem.forEach((year) => {
             it(`Works for ${year}`, () => {
-                cy.visit("").wait(1000);
+                cy.visit("").then(waitForLoad);
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
                 const areaFactorValues = ["0", "0.75", "1.5", "2.25", "3"];
@@ -210,116 +219,6 @@ describe("ComputationMenu", () => {
                     cy.get("#areaFactor").clear();
                     cy.get("#areaFactor").type(areaFactor);
                     cy.get("#areaFactor").should("have.value", areaFactor);
-                });
-            });
-        });
-    });
-
-    context("Modern combinations", () => {
-        const presentations = [
-            "Landsoversikt",
-            "Fylkesoversikt",
-            "Utjevningsmandater",
-            "Restkvotienter",
-            "Fylkesfordeling av mandater",
-            "Enkeltfylke",
-        ];
-        const algorithms = ["SAINTE_LAGUE", "D_HONDT", "LARGEST_FRACTION_HARE"];
-        const year = 2017;
-        const areaFactorValues = ["0", "3"];
-        const districtSeatValues = ["0", "500"];
-        const levelingSeatValues = ["0", "100"];
-        const districtThresholdValues = ["0", "15"];
-        const electionThresholdValues = ["0", "15"];
-        const firstDivisorValues = ["1", "5"];
-
-        presentations.forEach((presentation) => {
-            algorithms.forEach((algorithm) => {
-                areaFactorValues.forEach((areaFactor) => {
-                    districtSeatValues.forEach((districtSeats) => {
-                        levelingSeatValues.forEach((levelingSeats) => {
-                            districtThresholdValues.forEach((districtThreshold) => {
-                                electionThresholdValues.forEach((electionThreshold) => {
-                                    it(`Presentation ${presentation}, Year ${year}, Algorithm ${algorithm}, Area factor ${areaFactor}, District seats ${districtSeats}, Leveling seats ${levelingSeats}, District threshold ${districtThreshold}, Election threshold ${electionThreshold}`, () => {
-                                        cy.visit("").wait(2000);
-                                        cy.get("#presentation_select").select(presentation);
-                                        cy.get("#year_select").select(`${year}`);
-                                        cy.get("#algorithm_select").select(algorithm);
-                                        cy.get("#areaFactor").clear();
-                                        cy.get("#areaFactor").type(areaFactor);
-                                        cy.get("#districtSeats").clear();
-                                        cy.get("#districtSeats").type(districtSeats);
-                                        cy.get("#levelingSeats").clear();
-                                        cy.get("#levelingSeats").type(levelingSeats);
-                                        cy.get("#districtThreshold").clear();
-                                        cy.get("#districtThreshold").type(districtThreshold);
-                                        cy.get("#electionThreshold").clear();
-                                        cy.get("#electionThreshold").type(electionThreshold);
-                                        if (algorithm === "SAINTE_LAGUE") {
-                                            firstDivisorValues.forEach((firstDivisor) => {
-                                                cy.log(`First divisor: ${firstDivisor}`);
-                                                cy.get("#firstDivisor").clear();
-                                                cy.get("#firstDivisor").type(firstDivisor);
-                                                cy.get("#firstDivisor").should("have.value", firstDivisor);
-                                            });
-                                        } else {
-                                            cy.get("#firstDivisor").should("not.be.visible");
-                                        }
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
-        });
-    });
-
-    context("Old combinations", () => {
-        const presentations = [
-            "Landsoversikt",
-            "Fylkesoversikt",
-            "Utjevningsmandater",
-            "Restkvotienter",
-            "Fylkesfordeling av mandater",
-            "Enkeltfylke",
-        ];
-        const algorithms = ["SAINTE_LAGUE", "D_HONDT", "LARGEST_FRACTION_HARE"];
-        const year = 1953;
-        const levelingSeatValues = ["0", "100"];
-        const districtThresholdValues = ["0", "15"];
-        const electionThresholdValues = ["0", "15"];
-        const firstDivisorValues = ["1", "5"];
-
-        presentations.forEach((presentation) => {
-            algorithms.forEach((algorithm) => {
-                levelingSeatValues.forEach((levelingSeats) => {
-                    districtThresholdValues.forEach((districtThreshold) => {
-                        electionThresholdValues.forEach((electionThreshold) => {
-                            it(`Presentation ${presentation}, Year ${year}, Algorithm ${algorithm}, Leveling seats ${levelingSeats}, District threshold ${districtThreshold}, Election threshold ${electionThreshold}`, () => {
-                                cy.visit("").wait(2000);
-                                cy.get("#presentation_select").select(presentation);
-                                cy.get("#year_select").select(`${year}`);
-                                cy.get("#algorithm_select").select(algorithm);
-                                cy.get("#levelingSeats").clear();
-                                cy.get("#levelingSeats").type(levelingSeats);
-                                cy.get("#districtThreshold").clear();
-                                cy.get("#districtThreshold").type(districtThreshold);
-                                cy.get("#electionThreshold").clear();
-                                cy.get("#electionThreshold").type(electionThreshold);
-                                if (algorithm === "SAINTE_LAGUE") {
-                                    firstDivisorValues.forEach((firstDivisor) => {
-                                        cy.log(`First divisor: ${firstDivisor}`);
-                                        cy.get("#firstDivisor").clear();
-                                        cy.get("#firstDivisor").type(firstDivisor);
-                                        cy.get("#firstDivisor").should("have.value", firstDivisor);
-                                    });
-                                } else {
-                                    cy.get("#firstDivisor").should("not.be.visible");
-                                }
-                            });
-                        });
-                    });
                 });
             });
         });
