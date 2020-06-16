@@ -95,7 +95,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             accessor: "partyCode",
                             Footer: (
                                 <span>
-                                    <strong>Utvalg</strong>
+                                    <strong className="is-pulled-left">Utvalg</strong>
                                 </span>
                             ),
                             Cell: (row) => {
@@ -109,7 +109,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             accessor: "votes",
                             Footer: (
                                 <span>
-                                    <strong>{data.map((value) => value.votes).reduce(toSum)}</strong>
+                                    <strong>{this.numberFormat(data.map((value) => value.votes).reduce(toSum))}</strong>
                                 </span>
                             ),
                             Cell: (row) => {
