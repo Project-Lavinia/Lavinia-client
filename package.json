@@ -13,7 +13,8 @@
         "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
         "precommit": "pretty-quick --staged && tslint -p .",
         "cy:verify": "cypress verify",
-        "cy:run": "cypress run"
+        "cy:run": "cypress run --record --parallel",
+        "cy:start": "start-server-and-test dev 3030 \"yarn cy:run\""
     },
     "license": "MIT",
     "devDependencies": {
