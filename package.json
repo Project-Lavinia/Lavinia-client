@@ -13,8 +13,10 @@
         "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
         "precommit": "pretty-quick --staged && tslint -p .",
         "cy:verify": "cypress verify",
-        "cy:run": "cypress run --record --parallel",
-        "cy:start": "start-server-and-test dev 3000 \"yarn cy:run\""
+        "cy:run": "cypress run",
+        "cy:test": "start-server-and-test start 3000 cy:run",
+        "cy:ci:run": "cypress run --record --parallel",
+        "cy:ci:test": "start-server-and-test start 3000 cy:ci:run"
     },
     "license": "MIT",
     "devDependencies": {
@@ -65,6 +67,7 @@
         "react-redux": "^7.2.0",
         "react-table": "6.10.0",
         "redux": "^4.0.5",
-        "redux-thunk": "^2.3.0"
+        "redux-thunk": "^2.3.0",
+        "start-server-and-test": "^1.11.0"
     }
 }
