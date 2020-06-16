@@ -27,7 +27,7 @@ const yearsWithStLagues = years.slice(0, years.length - 2);
 function waitForLoad(iteration: number = 0) {
     cy.wait(1000).then(() => {
         cy.get("#page_loader").then((loader) => {
-            if (loader.is(":visible") && iteration < 300) {
+            if (loader.is(":visible") && iteration < 30) {
                 waitForLoad(iteration++);
             }
         });
