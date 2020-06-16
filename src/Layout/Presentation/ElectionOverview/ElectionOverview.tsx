@@ -67,6 +67,14 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
         return data.some((datum) => datum.totalSeatDifference !== 0);
     };
 
+    /**
+     * 
+     * @param value the value to be formatted with ',' instead of '.' and space between thousands.
+     */
+    numberFormat(value:number){
+        return new Intl.NumberFormat('nb-NO').format(value);
+    };
+
     render() {
         const data = this.makeData();
         const proportionalities = this.props.showPartiesWithoutSeats
@@ -115,7 +123,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
         return (
             <React.Fragment>
                 <ReactTable
-                    className="-highlight -striped has-text-centered"
+                    className="-highlight -striped has-text-right"
                     multiSort={false}
                     data={data}
                     filterable={this.props.showFilters}
@@ -125,33 +133,39 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                     {...norwegian}
                     columns={[
                         {
-                            Header: "Parti",
+                            Header: <span className="is-pulled-left"> {"Parti"}</span> ,
                             accessor: "partyCode",
                             filterMethod: caseInsensitiveFilterMethod,
-                            Footer: <strong>Utvalg</strong>,
+                            Footer: <strong className="is-pulled-left">Utvalg</strong>,
                             Cell: (row) => {
                                 return row.original.partyName ? (
-                                    <abbr title={row.original.partyName}>{row.value}</abbr>
+                                    <span className="is-pulled-left" >{row.original.partyName}</span>
                                 ) : (
                                     row.value
                                 );
                             },
                         },
                         {
-                            Header: "Stemmer",
+                            Header: <span className="is-pulled-right"> {"Stemmer"}</span> ,
                             accessor: "votes",
                             filterable: false,
-                            Footer: <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>,
+                            Cell: (row) => {
+                                return row.value !== null ? this.numberFormat(row.value) : row.value
+                            },
+                            Footer: <strong>{this.numberFormat(data.map((value) => value.votes).reduce(toSum, 0))}</strong>,
                         },
                         {
-                            Header: "%",
+                            Header: <span className="is-pulled-right"> {"Oppsluting %"}</span> ,
                             id: "%",
                             Filter: selectFilterWithOptions(thresholdOptions),
                             filterMethod: thresholdFilterMethod(this.props.threshold),
                             accessor: (d: ElectionOverviewDatum) => roundNumber(d.percentVotes, decimals),
+                            Cell: (row) => {
+                                return row.value !== null ? this.numberFormat(row.value) : row.value
+                            },
                         },
                         {
-                            Header: "Distrikt",
+                            Header: <span className="is-pulled-right"> {"Distrikt"}</span> ,
                             accessor: "districtSeats",
                             Filter: selectFilterWithOptions(allTrueFalseOptions),
                             filterMethod: allGreaterThanEqualsMethod,
@@ -159,34 +173,37 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                         },
 
                         {
-                            Header: "Utjevning",
+                            Header: <span className="is-pulled-right"> {"Utjevning"}</span> ,
                             accessor: "levelingSeats",
                             Filter: selectFilterWithOptions(allTrueFalseOptions),
                             filterMethod: allGreaterThanEqualsMethod,
                             Footer: <strong>{data.map((value) => value.levelingSeats).reduce(toSum, 0)}</strong>,
                         },
                         {
-                            Header: "Sum",
+                            Header: <span className="is-pulled-right"> {"Sum"}</span> ,
                             accessor: "totalSeats",
                             filterable: false,
                             Footer: <strong>{data.map((value) => value.totalSeats).reduce(toSum, 0)}</strong>,
                         },
                         {
-                            Header: "Differanse",
+                            Header: <span className="is-pulled-right"> {"Differanse"}</span> ,
                             accessor: "totalSeatDifference",
                             Filter: selectFilterWithOptions(allTrueFalseOptions),
                             filterMethod: zeroNotZeroFilterMethod,
                             show: this.shouldShowDifference(data),
                         },
                         {
-                            Header: "Prop. %",
+                            Header: <span className="is-pulled-right"> {"Prop. %"}</span>, 
                             id: "proportionality",
                             accessor: (d: ElectionOverviewDatum) => roundNumber(d.proportionality, decimals),
                             Filter: selectFilterWithOptions(thresholdIsZeroOptions),
                             filterMethod: positiveOrNegativeFilterMethod(),
+                            Cell: (row) => {
+                                return row.value !== null ? this.numberFormat(row.value) : row.value
+                            },
                             Footer: (
                                 <strong>
-                                    {label}: {index.toFixed(this.props.decimals)}
+                                    {label}: {this.numberFormat(roundNumber(index, decimals))}
                                 </strong>
                             ),
                         },
