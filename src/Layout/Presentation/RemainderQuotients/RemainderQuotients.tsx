@@ -100,8 +100,11 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
             }
         });
         columns.unshift({
-            Header: "Fylker",
+            Header: <span className="is-pulled-left"> {"Fylker"}</span> ,
             accessor: "district",
+            Cell: (row) => {
+                return <span className="is-pulled-left">{row.value}</span>
+            },
         });
 
         return columns;
