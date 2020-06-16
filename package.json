@@ -14,7 +14,7 @@
         "precommit": "pretty-quick --staged && tslint -p .",
         "cy:verify": "cypress verify",
         "cy:run": "cypress run --record --parallel",
-        "cy:start": "start-server-and-test dev 3030 \"yarn cy:run\""
+        "cy:start": "start-server-and-test dev 3000 \"yarn cy:run\""
     },
     "license": "MIT",
     "devDependencies": {
