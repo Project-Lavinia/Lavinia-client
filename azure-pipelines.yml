@@ -13,7 +13,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-16.04'
   strategy:
-    parallel: 3
+    parallel: 1
   steps:
     - task: NodeTool@0
       inputs:
@@ -33,5 +33,5 @@ jobs:
     # The test artifacts (video, screenshots, test output) will be uploaded to Cypress dashboard
     # To record on Cypress dashboard we need to set CYPRESS_RECORD_KEY environment variable
     # environment variable BUILD_BUILDNUMBER is a good candidate
-    - script: yarn cy:ci:test
+    - script: yarn cy:test
       displayName: 'Run Cypress tests'
