@@ -10,6 +10,7 @@ trigger:
 # https://docs.microsoft.com/en-us/azure/devops/pipelines/build/triggers?view=azure-devops&tabs=yaml#tags
 jobs:
 - job: Cypress
+  timeoutInMinutes: 0
   pool:
     vmImage: 'ubuntu-16.04'
   strategy:
