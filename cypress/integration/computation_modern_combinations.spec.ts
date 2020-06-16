@@ -6,11 +6,11 @@ describe("ComputationMenu", () => {
         cy.viewport(1080, 720);
     });
 
-    function waitForLoad() {
+    function waitForLoad(iteration: number = 0) {
         cy.wait(1000).then(() => {
             cy.get("#page_loader").then((loader) => {
-                if (loader.is(":visible")) {
-                    waitForLoad();
+                if (loader.is(":visible") && iteration < 30) {
+                    waitForLoad(iteration++);
                 }
             });
         });
@@ -42,7 +42,7 @@ describe("ComputationMenu", () => {
                             districtThresholdValues.forEach((districtThreshold) => {
                                 electionThresholdValues.forEach((electionThreshold) => {
                                     it(`Presentation ${presentation}, Year ${year}, Algorithm ${algorithm}, Area factor ${areaFactor}, District seats ${districtSeats}, Leveling seats ${levelingSeats}, District threshold ${districtThreshold}, Election threshold ${electionThreshold}`, () => {
-                                        cy.visit("").then(waitForLoad);
+                                        cy.visit("").then(() => waitForLoad);
                                         cy.get("#presentation_select").select(presentation);
                                         cy.get("#year_select").select(`${year}`);
                                         cy.get("#algorithm_select").select(algorithm);

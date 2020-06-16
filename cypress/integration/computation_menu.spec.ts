@@ -24,11 +24,11 @@ const years = [
 const yearsWithModernElectionSystem = [2017, 2013, 2009, 2005];
 const yearsWithStLagues = years.slice(0, years.length - 2);
 
-function waitForLoad() {
+function waitForLoad(iteration: number = 0) {
     cy.wait(1000).then(() => {
         cy.get("#page_loader").then((loader) => {
-            if (loader.is(":visible")) {
-                waitForLoad();
+            if (loader.is(":visible") && iteration < 30) {
+                waitForLoad(iteration++);
             }
         });
     });
@@ -42,7 +42,7 @@ describe("ComputationMenu", () => {
 
     context("Default settings", () => {
         it("Works for all years", () => {
-            cy.visit("").then(waitForLoad);
+            cy.visit("").then(() => waitForLoad);
 
             years.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
@@ -53,7 +53,7 @@ describe("ComputationMenu", () => {
 
     context("Merge to 11 districts checkbox", () => {
         it("Works for relevant years", () => {
-            cy.visit("").then(waitForLoad);
+            cy.visit("").then(() => waitForLoad);
 
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
@@ -66,7 +66,7 @@ describe("ComputationMenu", () => {
 
     context("Use 2021 seat distribution checkbox", () => {
         it("Works for relevant years", () => {
-            cy.visit("").then(waitForLoad);
+            cy.visit("").then(() => waitForLoad);
 
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
@@ -79,7 +79,7 @@ describe("ComputationMenu", () => {
 
     context("Merge checkbox, then 2021 distribution checkbox", () => {
         it("Works for relevant years", () => {
-            cy.visit("").then(waitForLoad);
+            cy.visit("").then(() => waitForLoad);
 
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
@@ -94,7 +94,7 @@ describe("ComputationMenu", () => {
 
     context("2021 distribution checkbox, then merge checkbox", () => {
         it("Works for relevant years", () => {
-            cy.visit("").then(waitForLoad);
+            cy.visit("").then(() => waitForLoad);
 
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
@@ -110,7 +110,7 @@ describe("ComputationMenu", () => {
     context("Algorithms", () => {
         years.forEach((year) => {
             it(`Works for ${year}`, () => {
-                cy.visit("").then(waitForLoad);
+                cy.visit("").then(() => waitForLoad);
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
                 const algorithms = [
@@ -131,7 +131,7 @@ describe("ComputationMenu", () => {
     context("First divisor", () => {
         yearsWithStLagues.forEach((year) => {
             it(`Works for ${year}`, () => {
-                cy.visit("").then(waitForLoad);
+                cy.visit("").then(() => waitForLoad);
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
                 const divisorValues = ["1", "2", "3", "4", "5"];
@@ -147,7 +147,7 @@ describe("ComputationMenu", () => {
     context("Leveling seat threshold", () => {
         years.forEach((year) => {
             it(`Works for ${year}`, () => {
-                cy.visit("").then(waitForLoad);
+                cy.visit("").then(() => waitForLoad);
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
                 const electionThresholdValues = ["0", "5", "7.5", "10", "15"];
@@ -163,7 +163,7 @@ describe("ComputationMenu", () => {
     context("District seat threshold", () => {
         years.forEach((year) => {
             it(`Works for ${year}`, () => {
-                cy.visit("").then(waitForLoad);
+                cy.visit("").then(() => waitForLoad);
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
                 const districtThresholdValues = ["0", "5", "7.5", "10", "15"];
@@ -179,7 +179,7 @@ describe("ComputationMenu", () => {
     context("Leveling seats", () => {
         years.forEach((year) => {
             it(`Works for ${year}`, () => {
-                cy.visit("").then(waitForLoad);
+                cy.visit("").then(() => waitForLoad);
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
                 const levelingSeatValues = ["0", "25", "50", "75", "100"];
@@ -195,7 +195,7 @@ describe("ComputationMenu", () => {
     context("District seats", () => {
         yearsWithModernElectionSystem.forEach((year) => {
             it(`Works for ${year}`, () => {
-                cy.visit("").then(waitForLoad);
+                cy.visit("").then(() => waitForLoad);
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
                 const districtSeatValues = ["0", "125", "250", "325", "500"];
@@ -211,7 +211,7 @@ describe("ComputationMenu", () => {
     context("Area factor", () => {
         yearsWithModernElectionSystem.forEach((year) => {
             it(`Works for ${year}`, () => {
-                cy.visit("").then(waitForLoad);
+                cy.visit("").then(() => waitForLoad);
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
                 const areaFactorValues = ["0", "0.75", "1.5", "2.25", "3"];
