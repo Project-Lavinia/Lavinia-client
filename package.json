@@ -15,7 +15,7 @@
         "cy:verify": "cypress verify",
         "cy:run": "cypress run",
         "cy:test": "start-server-and-test start 3000 cy:run",
-        "cy:ci:run": "cypress run --record --parallel",
+        "cy:ci:run": "cypress run --parallel",
         "cy:ci:test": "start-server-and-test start 3000 cy:ci:run"
     },
     "license": "MIT",
