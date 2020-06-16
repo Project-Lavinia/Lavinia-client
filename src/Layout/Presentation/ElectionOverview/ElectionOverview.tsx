@@ -68,8 +68,9 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
     };
 
     /**
-     * 
-     * @param value the value to be formatted with ',' instead of '.' and space between thousands.
+     *  Replace '.'  with ','  
+     *  Add space between thousands.
+     * @param value the value to be formatted. 
      */
     numberFormat(value:number){
         return new Intl.NumberFormat('nb-NO').format(value);

@@ -17,8 +17,9 @@ export interface DistrictOverviewProps {
 export class DistrictOverview extends React.Component<DistrictOverviewProps, {}> {
 
     /**
-     * 
-     * @param value to format with ',' instead of '.' and add space between thousands.
+     *  Replace '.'  with ','  
+     *  Add space between thousands.
+     * @param value the value to be formatted. 
      */
     numberFormat(value:number){
         return new Intl.NumberFormat('nb-NO').format(value);

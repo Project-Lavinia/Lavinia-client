@@ -38,10 +38,9 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
     };
 
     /**
-     * 
-     * @param value the value to be formatted. 
      *  Replace '.'  with ','  
      *  Add space between thousands.
+     * @param value the value to be formatted. 
      */
     numberFormat(value:number){
         return new Intl.NumberFormat('nb-NO').format(value);
