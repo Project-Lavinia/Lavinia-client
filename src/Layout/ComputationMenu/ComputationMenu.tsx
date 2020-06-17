@@ -81,6 +81,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                 metrics = mergeMetricDistricts(metrics, districtMap);
             }
 
+            this.props.resetHistorical(election, votes, metrics, parameters);
             this.props.updateCalculation(
                 {
                     ...this.props.computationPayload,
@@ -92,7 +93,6 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                 this.props.settingsPayload.autoCompute,
                 false
             );
-            this.props.resetHistorical(election, votes, metrics, parameters);
             this.props.resetComparison();
             this.props.resetToHistoricalSettings(
                 {
