@@ -17,14 +17,7 @@ describe("ComputationMenu", () => {
     }
 
     context("Modern combinations", () => {
-        const presentations = [
-            "Landsoversikt",
-            "Fylkesoversikt",
-            "Utjevningsmandater",
-            "Restkvotienter",
-            "Fylkesfordeling av mandater",
-            "Enkeltfylke",
-        ];
+        const presentations = ["Landsoversikt", "Fylkesoversikt", "Utjevningsmandater"];
         const algorithms = ["SAINTE_LAGUE", "D_HONDT", "LARGEST_FRACTION_HARE"];
         const year = 2017;
         const areaFactorValues = ["0", "3"];
