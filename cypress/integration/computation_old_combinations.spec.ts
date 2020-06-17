@@ -36,7 +36,7 @@ describe("ComputationMenu", () => {
                     districtThresholdValues.forEach((districtThreshold) => {
                         electionThresholdValues.forEach((electionThreshold) => {
                             it(`Presentation ${presentation}, Year ${year}, Algorithm ${algorithm}, Leveling seats ${levelingSeats}, District threshold ${districtThreshold}, Election threshold ${electionThreshold}`, () => {
-                                cy.visit("").then(() => waitForLoad);
+                                cy.visit("").then(() => waitForLoad());
                                 cy.get("#presentation_select").select(presentation);
                                 cy.get("#year_select").select(`${year}`);
                                 cy.get("#algorithm_select").select(algorithm);
