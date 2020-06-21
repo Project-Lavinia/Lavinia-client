@@ -12,9 +12,12 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
     generateColumns(): Column[] {
         const columns: Column[] = [
             {
-                Header: "Fylke",
+                Header: <span className="is-pulled-left"> {"Fylker"}</span> ,
                 accessor: "name",
                 width: this.props.districtWidth * 10,
+                Cell: (row) => {
+                    return <span className="is-pulled-left" >{row.value}</span>
+                },            
             },
         ];
 

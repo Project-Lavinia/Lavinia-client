@@ -5,6 +5,7 @@ import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
 import { roundNumber } from "../../../utilities/number";
+import { numberFormat, replaceComma } from "../../../utilities/customNumberFormat";
 import {
     selectFilterWithOptions,
     thresholdFilterMethod,
@@ -65,15 +66,6 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
      */
     shouldShowDifference = (data: ElectionOverviewDatum[]) => {
         return data.some((datum) => datum.totalSeatDifference !== 0);
-    };
-
-    /**
-     *  Replace '.'  with ','  
-     *  Add space between thousands.
-     * @param value the value to be formatted. 
-     */
-    numberFormat(value:number){
-        return new Intl.NumberFormat('nb-NO').format(value);
     };
 
     render() {
@@ -148,9 +140,9 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             accessor: "votes",
                             filterable: false,
                             Cell: (row) => {
-                                return row.value ? this.numberFormat(row.value) : row.value
+                                return numberFormat(row.value)
                             },
-                            Footer: <strong>{this.numberFormat(data.map((value) => value.votes).reduce(toSum, 0))}</strong>,
+                            Footer: <strong>{numberFormat(data.map((value) => value.votes).reduce(toSum, 0))}</strong>,
                         },
                         {
                             Header: <span className="is-pulled-right"> {"Oppsluting %"}</span> ,
@@ -159,7 +151,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             filterMethod: thresholdFilterMethod(this.props.threshold),
                             accessor: (d: ElectionOverviewDatum) => roundNumber(d.percentVotes, decimals),
                             Cell: (row) => {
-                                return row.value ? this.numberFormat(row.value) : row.value
+                                return numberFormat(row.value)
                             },
                         },
                         {
@@ -196,11 +188,11 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             Filter: selectFilterWithOptions(thresholdIsZeroOptions),
                             filterMethod: positiveOrNegativeFilterMethod(),
                             Cell: (row) => {
-                                return row.value ? this.numberFormat(roundNumber(row.value, decimals)) : row.value
+                                return numberFormat(roundNumber(row.value, decimals)) 
                             },
                             Footer: (
                                 <strong>
-                                    {label}: {index.toFixed(decimals).replace(".", ",")}
+                                    {label}: {replaceComma(index.toFixed(decimals))}
                                 </strong>
                             ),
                         },

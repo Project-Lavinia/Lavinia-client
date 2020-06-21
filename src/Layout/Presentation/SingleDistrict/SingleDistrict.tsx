@@ -7,6 +7,7 @@ import { checkExhaustively } from "../../../utilities";
 import { DistrictSelect } from "./DistrictSelect";
 import { norwegian } from "../../../utilities/rt";
 import { roundNumber } from "../../../utilities/number";
+import { numberFormat,replaceComma } from "../../../utilities/customNumberFormat";
 import { InfoBox } from "./InfoBox";
 import {
     getVotesToVulnerableSeatMap,
@@ -35,15 +36,6 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
     getData = (): PartyResult[] => {
         const districtResult = this.getDistrictResult(this.props.districtSelected);
         return districtResult.partyResults;
-    };
-
-    /**
-     *  Replace '.'  with ','  
-     *  Add space between thousands.
-     * @param value the value to be formatted. 
-     */
-    numberFormat(value:number){
-        return new Intl.NumberFormat('nb-NO').format(value);
     };
 
     render() {
@@ -109,11 +101,11 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             accessor: "votes",
                             Footer: (
                                 <span>
-                                    <strong>{this.numberFormat(data.map((value) => value.votes).reduce(toSum))}</strong>
+                                    <strong>{numberFormat(data.map((value) => value.votes).reduce(toSum))}</strong>
                                 </span>
                             ),
                             Cell: (row) => {
-                                return row.value ? this.numberFormat(row.value) : row.value
+                                return numberFormat(row.value)
                             },
                         },
                         {
@@ -121,7 +113,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             id: "%",
                             accessor: (d: PartyResult) => roundNumber(d.percentVotes, decimals),
                             Cell: (row) => {
-                                return row.value ? this.numberFormat(row.value) : row.value
+                                return numberFormat(row.value)
                             },
                         },
                         {
@@ -157,8 +149,9 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             accessor: (d: PartyResult) =>
                                 d.votes > 0 && vulnerableMap ? vulnerableMap.get(d.partyCode) : null,
                             Cell: (row) => {
+                                const value = numberFormat(row.value)  
                                 if (vulnerableVotes && row.original.partyCode === vulnerableVotes.partyCode) {
-                                    return <div className="has-background-dark has-text-white">{row.value}</div>;
+                                    return <div className="has-background-dark has-text-white">{value}</div>;
                                 }
                                 if (vulnerableVotes && row.original.partyCode === vulnerableVotes.winner.partyCode) {
                                     return (
@@ -167,7 +160,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                         </span>
                                     );
                                 }
-                                return row.value;
+                                return value;
                             },
                             show: calculateVulnerable,
                         },
@@ -189,12 +182,12 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             Header: <span className="is-pulled-right" >{"Prop. %"}</span>,
                             accessor: "proportionality",
                             Cell: (row) => {
-                                return row.value ? this.numberFormat(row.value) : row.value
+                                return numberFormat(row.value)
                             },
                             Footer: (
                                 <span>
                                     <strong>
-                                        {label}: {index.toFixed(decimals).replace(".", ",")}
+                                        {label}: {replaceComma(index.toFixed(decimals))}
                                     </strong>
                                 </span>
                             ),

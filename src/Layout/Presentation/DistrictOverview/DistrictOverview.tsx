@@ -6,6 +6,7 @@ import { getMostVulnerableSeatByQuotient } from "../../../utilities/district";
 import { norwegian } from "../../../utilities/rt";
 import { isQuotientAlgorithm } from "../../../computation/logic";
 import { VulnerableDistrictSeatText } from "./VulnerableDistrictSeatText";
+import { replaceComma, numberFormat } from "../../../utilities/customNumberFormat";
 
 export interface DistrictOverviewProps {
     districtResults: DistrictResult[];
@@ -15,15 +16,6 @@ export interface DistrictOverviewProps {
 }
 
 export class DistrictOverview extends React.Component<DistrictOverviewProps, {}> {
-
-    /**
-     *  Replace '.'  with ','  
-     *  Add space between thousands.
-     * @param value the value to be formatted. 
-     */
-    numberFormat(value:number){
-        return new Intl.NumberFormat('nb-NO').format(value);
-    };
 
     render() {
         const data = this.props.districtResults;
@@ -65,6 +57,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                         {
                             Header: <span className="is-pulled-left"> {"Fylke"}</span> ,
                             accessor: "name",
+                            minWidth: this.props.districtWidth * 10,
                             Cell: (row) => {
                                 return <span className="is-pulled-left" >{row.value}</span>
                             },
@@ -79,11 +72,11 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             accessor: "votes",
                             Footer: (
                                 <span>
-                                    <strong>{this.numberFormat(data.map((value) => value.votes).reduce(toSum, 0))}</strong>
+                                    <strong>{numberFormat(data.map((value) => value.votes).reduce(toSum, 0))}</strong>
                                 </span>
                             ),
                             Cell: (row) => {
-                                return row.value ? this.numberFormat(row.value) : row.value
+                                return numberFormat(row.value)
                             },
                         },
                         {
@@ -118,11 +111,11 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             Header: <span className="is-pulled-right"> {"Stemmer/mandat"}</span>,
                             accessor: "votesPerSeat",
                             Cell: (row) => {
-                                return row.value ?  row.value.toString().replace(".", ",")  : row.value
+                                return replaceComma(row.value.toString()) 
                             },
                             Footer: (
                                 <span>
-                                    <strong>{averageVotingPower.toFixed(decimals).replace(".", ",")}</strong>
+                                    <strong>{replaceComma(averageVotingPower.toFixed(decimals))}</strong>
                                 </span>
                             ),
                         },
