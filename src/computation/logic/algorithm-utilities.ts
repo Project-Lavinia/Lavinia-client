@@ -318,6 +318,7 @@ export function calculateFinalQuotients(
 
                 districtQuotient.levellingSeatRounds.push({
                     partyCode: party.partyCode,
+                    partyName: party.partyName,
                     quotient,
                     wonLevellingSeat: party.levelingSeats > 0,
                 });
