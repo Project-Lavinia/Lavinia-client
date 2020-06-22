@@ -9,18 +9,16 @@ interface LevellingSeatOverviewProps {
 
 interface LevellingSeatData {
     partyCode: string;
+    partyName: string,
     seatsWon: string[];
 }
 
 export class LevellingSeatOverview extends React.Component<LevellingSeatOverviewProps> {
     makeData(): LevellingSeatData[] {
         const quotientsArray = this.props.levellingSeatQuotients;
-        const parties = quotientsArray.map((quotients) => {
-            return quotients.partyCode;
-        });
         const seatData: LevellingSeatData[] = [];
-        parties.forEach((party) => {
-            seatData.push({ partyCode: party, seatsWon: [] });
+        quotientsArray.forEach((party) => {
+            seatData.push({ partyCode: party.partyCode, partyName: party.partyName, seatsWon: [] });
         });
         quotientsArray.forEach((party) => {
             const currentIndex = seatData.findIndex((data) => data.partyCode === party.partyCode);
@@ -50,6 +48,9 @@ export class LevellingSeatOverview extends React.Component<LevellingSeatOverview
             columns.unshift({
                 Header: "Parti",
                 accessor: "partyCode",
+                Cell: (row) => {
+                    return <abbr title={row.original.partyName}>{row.value}</abbr>
+                },
             });
         }
         return columns;
