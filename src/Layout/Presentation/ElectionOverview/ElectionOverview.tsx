@@ -131,8 +131,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             filterMethod: caseInsensitiveFilterMethod,
                             Footer: <strong className="is-pulled-left">Utvalg</strong>,
                             Cell: (row) => {
-                                const party = row.original.partyName ? row.original.partyName : row.value;
-                                return <span className="is-pulled-left">{party}</span>
+                                return <span className="is-pulled-left">{row.original.partyName}</span>
                             },
                         },
                         {

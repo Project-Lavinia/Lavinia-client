@@ -91,9 +91,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                 </span>
                             ),
                             Cell: (row) => {
-                                return row.original.partyName
-                                    ? <span className="is-pulled-left">{row.original.partyName}</span>
-                                    : row.value;
+                                return <span className="is-pulled-left">{row.original.partyName}</span>
                             },
                         },
                         {
