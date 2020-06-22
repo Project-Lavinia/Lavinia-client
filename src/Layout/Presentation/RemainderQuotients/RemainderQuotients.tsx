@@ -138,7 +138,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                 </div>
 
                 <ReactTable
-                    className="has-text-centered"
+                    className="-highlight -striped has-text-centered"
                     data={data}
                     columns={this.getColumns()}
                     defaultPageSize={10}
