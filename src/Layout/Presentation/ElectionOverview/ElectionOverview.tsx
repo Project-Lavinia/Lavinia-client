@@ -150,7 +150,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             filterMethod: thresholdFilterMethod(this.props.threshold),
                             accessor: (d: ElectionOverviewDatum) => roundNumber(d.percentVotes, decimals),
                             Cell: (row) => {
-                                return numberFormat(row.value)
+                                return replaceComma(row.value.toFixed(decimals))
                             },
                         },
                         {
@@ -187,7 +187,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             Filter: selectFilterWithOptions(thresholdIsZeroOptions),
                             filterMethod: positiveOrNegativeFilterMethod(),
                             Cell: (row) => {
-                                return numberFormat(roundNumber(row.value, decimals)) 
+                                return replaceComma(row.value.toFixed(decimals))
                             },
                             Footer: (
                                 <strong>

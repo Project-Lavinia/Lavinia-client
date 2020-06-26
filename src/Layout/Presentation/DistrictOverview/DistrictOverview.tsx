@@ -111,7 +111,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             Header: <span className="is-pulled-right"> {"Stemmer/mandat"}</span>,
                             accessor: "votesPerSeat",
                             Cell: (row) => {
-                                return replaceComma(row.value.toString()) 
+                                return replaceComma(row.value.toFixed(decimals))
                             },
                             Footer: (
                                 <span>

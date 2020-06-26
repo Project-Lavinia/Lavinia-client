@@ -111,7 +111,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             id: "%",
                             accessor: (d: PartyResult) => roundNumber(d.percentVotes, decimals),
                             Cell: (row) => {
-                                return numberFormat(row.value)
+                                return replaceComma(row.value.toFixed(decimals))
                             },
                         },
                         {
@@ -180,7 +180,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             Header: <span className="is-pulled-right" >{"Prop. %"}</span>,
                             accessor: "proportionality",
                             Cell: (row) => {
-                                return numberFormat(row.value)
+                                return replaceComma(row.value.toFixed(decimals))
                             },
                             Footer: (
                                 <span>
