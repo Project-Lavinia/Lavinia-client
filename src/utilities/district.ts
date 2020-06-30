@@ -71,11 +71,12 @@ export function getVulnerableSeatByQuotient(districtResult: DistrictResult): Vul
 export function getVulnerableSeatByVotes(districtResult: DistrictResult): VulnerableVotes {
     const lastSeat = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 1];
     const winner = lastSeat.partyResults.find((pr) => pr.partyCode === lastSeat.winner)!;
-    const margins: { partyCode: string; moreVotesToWin: number }[] = [];
+    const margins: { partyCode: string; partyName: string; moreVotesToWin: number }[] = [];
     lastSeat.partyResults.forEach((partyResult) => {
         const moreVotesToWin = Math.floor(winner.quotient * partyResult.denominator - partyResult.votes + 1);
         margins.push({
             partyCode: partyResult.partyCode,
+            partyName: partyResult.partyName,
             moreVotesToWin,
         });
     });
@@ -83,6 +84,7 @@ export function getVulnerableSeatByVotes(districtResult: DistrictResult): Vulner
     return {
         winner,
         partyCode: sorted[1].partyCode,
+        partyName: sorted[1].partyName,
         moreVotesToWin: sorted[1].moreVotesToWin,
     };
 }
@@ -100,5 +102,6 @@ export interface VulnerableDistrictSeat extends VulnerableSeat {
 export interface VulnerableVotes {
     winner: SeatPartyResult;
     partyCode: string;
+    partyName: string;
     moreVotesToWin: number;
 }

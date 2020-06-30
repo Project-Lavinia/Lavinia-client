@@ -185,6 +185,8 @@ export interface Result {
 export interface SeatPartyResult {
     /** The partyCode of the participating party */
     partyCode: string;
+    /** The partyName of the participating party */
+    partyName: string;
     /** The quotient the party got in the distribution */
     quotient: number;
     /** The denominator used to calculate the result */
@@ -198,6 +200,8 @@ export interface SeatResult {
     seatIndex: number;
     /** The partyCode of the party that won the seat */
     winner: string;
+    /** The partyName of the party that won the seat */
+    winnerName: string;
     /** A list with information regarding the parties compeating for the seat */
     partyResults: SeatPartyResult[];
 }
