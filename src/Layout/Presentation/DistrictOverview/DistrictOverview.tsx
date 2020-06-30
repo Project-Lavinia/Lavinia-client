@@ -57,7 +57,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                         {
                             Header: <span className="is-pulled-left"> {"Fylke"}</span> ,
                             accessor: "name",
-                            minWidth: this.props.districtWidth * 10,
+                            width: this.props.districtWidth * 10,
                             Cell: (row) => {
                                 return <span className="is-pulled-left" >{row.value}</span>
                             },
