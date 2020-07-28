@@ -1,5 +1,5 @@
 import * as React from "react";
-import LaviniaLogo from "../../assets/lavinia_logo.png";
+import { LaviniaSVGLogo } from "../../common";
 
 export interface NavigationProps {
     hamburgerExpanded?: boolean;
@@ -11,6 +11,8 @@ export class Navigation extends React.Component<NavigationProps> {
         this.props.toggleHamburger!(this.props.hamburgerExpanded!);
     };
     public render() {
+        const wikiUrl = process.env.WIKI;
+        const swaggerUiUrl = process.env.SWAGGERUI;
         const style = {
             menuButton: "navbar-burger burger",
             menu: "navbar-menu",
@@ -20,10 +22,10 @@ export class Navigation extends React.Component<NavigationProps> {
             style.menu += " is-active";
         }
         return (
-            <nav className="navbar" role="navigation" aria-label="main navigation">
+            <nav className="navbar is-primary" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
                     <a className="navbar-item" href="./">
-                        <img src={LaviniaLogo} width="112" height="28" />
+                        <LaviniaSVGLogo title={"LAVINIA"} />
                     </a>
 
                     <a
@@ -41,25 +43,26 @@ export class Navigation extends React.Component<NavigationProps> {
 
                 <div id="toggleable-menu" className={style.menu}>
                     <div className="navbar-start">
-                        <a className="navbar-item">Home</a>
-
-                        <a target="_blank" href="https://project-lavinia.github.io/" rel="noopener noreferrer" className="navbar-item">
+                        <a target="_blank" href={wikiUrl} rel="noopener noreferrer" className="navbar-item">
                             Hjelp
                         </a>
 
                         <div className="navbar-item has-dropdown is-hoverable">
-                            <a className="navbar-link">Mer</a>
-
+                            <a
+                                className="navbar-link"
+                                target="_blank"
+                                href={wikiUrl?.concat("#Lavinia")}
+                                rel="noopener noreferrer"
+                            >
+                                Om Lavinia
+                            </a>
                             <div className="navbar-dropdown">
                                 <a
                                     target="_blank"
-                                    href="https://www.github.com/Project-Lavinia/"
+                                    href={swaggerUiUrl}
                                     rel="noopener noreferrer"
                                     className="navbar-item"
                                 >
-                                    Om Lavinia
-                                </a>
-                                <a target="_blank" href={process.env.SWAGGERUI} rel="noopener noreferrer" className="navbar-item">
                                     API
                                 </a>
                                 <hr className="navbar-divider" />
@@ -70,6 +73,14 @@ export class Navigation extends React.Component<NavigationProps> {
                                     className="navbar-item"
                                 >
                                     Gi en tilbakemelding
+                                </a>
+                                <a
+                                    target="_blank"
+                                    href="https://www.github.com/Project-Lavinia"
+                                    rel="noopener noreferrer"
+                                    className="navbar-item"
+                                >
+                                    GitHub
                                 </a>
                             </div>
                         </div>

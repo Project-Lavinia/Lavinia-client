@@ -22,17 +22,19 @@ function handleSelectChange(onChange: (value: any) => void) {
 export function selectFilterWithOptions(options: { value: string; title: string }[]) {
     return ({ filter, onChange }: { filter: any; onChange: (value?: any) => void }) => {
         return (
-            <select
-                style={{ width: "100%" }}
-                value={filter ? filter.value : options[0].value}
-                onChange={handleSelectChange(onChange)}
-            >
-                {options.map((option) => (
-                    <option key={option.value} value={option.value}>
-                        {option.title}
-                    </option>
-                ))}
-            </select>
+            <div className="select is-fullwidth">
+                <select
+                    className="is-primary"
+                    value={filter ? filter.value : options[0].value}
+                    onChange={handleSelectChange(onChange)}
+                >
+                    {options.map((option) => (
+                        <option key={option.value} value={option.value}>
+                            {option.title}
+                        </option>
+                    ))}
+                </select>
+            </div>
         );
     };
 }
@@ -124,11 +126,7 @@ export function caseInsensitiveFilterMethod(filter: Filter, rows: any) {
     const id = filter.pivotId || filter.id;
     const value: string = filter.value;
     const lowerCaseInput = value.toLowerCase();
-    return rows[id] !== undefined
-        ? String(rows[id])
-              .toLowerCase()
-              .startsWith(lowerCaseInput)
-        : true;
+    return typeof rows[id] === "undefined" ? String(rows[id]).toLowerCase().startsWith(lowerCaseInput) : true;
 }
 
 /**
@@ -153,6 +151,19 @@ export const norwegian: ReactTableTranslation = {
     nextText: "Neste",
     previousText: "Forrige",
     noDataText: "Ingen data",
+    ofText: "av",
+    rowsText: "rader",
+};
+
+/**
+ * Norwegian implementation of ReactTableTranslation for the Levelingseat overview
+ */
+export const norwegianLeveling: ReactTableTranslation = {
+    pageText: "Side",
+    loadingText: "Laster inn...",
+    nextText: "Neste",
+    previousText: "Forrige",
+    noDataText: "Ingen utjevningsmandater",
     ofText: "av",
     rowsText: "rader",
 };

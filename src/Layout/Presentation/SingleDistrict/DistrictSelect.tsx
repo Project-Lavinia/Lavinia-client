@@ -12,11 +12,10 @@ export class DistrictSelect extends React.Component<DistrictSelectProps> {
         return (
             <div className="field">
                 <div className="control">
-                    <div className="select is-fullwidth is-dark is-medium">
+                    <div className="select is-fullwidth is-primary is-medium">
                         <select
                             id="district"
                             onChange={this.props.selectDistrict}
-                            className="form-control"
                             value={this.props.districtSelected}
                         >
                             {this.props.districtResults.map((item, index) => {

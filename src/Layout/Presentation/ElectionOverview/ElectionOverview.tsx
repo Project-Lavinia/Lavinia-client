@@ -39,8 +39,9 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
         const data: ElectionOverviewDatum[] = [];
         const currents = this.props.partyResults;
         const comparisons = this.props.comparisonPartyResults;
+        const shouldCalculateDifference = currents.length === comparisons.length;
         for (let i = 0; i < currents.length; i++) {
-            const difference = currents[i].totalSeats - comparisons[i].totalSeats;
+            const difference = shouldCalculateDifference ? currents[i].totalSeats - comparisons[i].totalSeats : 0;
             const datum: ElectionOverviewDatum = {
                 ...this.props.partyResults[i],
                 totalSeatDifference: difference,
@@ -128,6 +129,13 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             accessor: "partyCode",
                             filterMethod: caseInsensitiveFilterMethod,
                             Footer: <strong>Utvalg</strong>,
+                            Cell: (row) => {
+                                return row.original.partyName ? (
+                                    <abbr title={row.original.partyName}>{row.value}</abbr>
+                                ) : (
+                                    row.value
+                                );
+                            },
                         },
                         {
                             Header: "Stemmer",

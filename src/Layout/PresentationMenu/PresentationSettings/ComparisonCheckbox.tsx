@@ -10,7 +10,7 @@ export class ComparisonCheckbox extends React.Component<ComparisonCheckboxProps>
     render() {
         return (
             <div hidden={this.props.hidden} className="field">
-                <label className="label" htmlFor="comparison-checkbox">
+                <label className="checkbox" htmlFor="comparison-checkbox">
                     <input
                         type="checkbox"
                         name="comparison-checkbox"

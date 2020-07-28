@@ -1,6 +1,7 @@
 import { ElectionType, Votes, Metrics, Parameters } from "./requested-data-models";
 
 export interface RequestedDataState {
+    dataLoaded: boolean;
     enableAutoSave: boolean;
     electionType: ElectionType;
     votes: Votes[];
@@ -9,6 +10,7 @@ export interface RequestedDataState {
 }
 
 export const unloadedState: RequestedDataState = {
+    dataLoaded: false,
     enableAutoSave: false,
     electionType: {
         countryId: -1,

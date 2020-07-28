@@ -1,0 +1,38 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+#trigger:
+#    - master
+    
+# if you want to configure triggers for Azure CI see
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/build/triggers?view=azure-devops&tabs=yaml#tags
+jobs:
+- job: Cypress
+  timeoutInMinutes: 0
+  pool:
+    vmImage: 'ubuntu-16.04'
+  strategy:
+    parallel: 3
+  steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '10.x'
+      displayName: 'Install Node.js'
+
+    # Install Node dependencies
+    # TODO How to cache ~/.npm and ~/.cache folders?
+    # https://github.com/cypress-io/cypress-example-kitchensink/issues/132
+    - script: yarn
+      displayName: 'Install dependencies'
+
+    - script: npm run cy:verify
+      displayName: 'Cypress verify'
+
+    # The next command starts the server and runs Cypress end-to-end tests against it.
+    # The test artifacts (video, screenshots, test output) will be uploaded to Cypress dashboard
+    # To record on Cypress dashboard we need to set CYPRESS_RECORD_KEY environment variable
+    # environment variable BUILD_BUILDNUMBER is a good candidate
+    - script: npx start-server-and-test start 3000 "npx cypress run --record --key $(CYPRESS_RECORD_KEY) --parallel --ci-build-id $(Build.BuildNumber)"
+      displayName: 'Run Cypress tests'

@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 import { LagueDhontResult, ComputationPayload } from "../../../computation";
-import { SmartNumericInput } from "../../../common";
+import { SmartNumericInput, TooltipInfo } from "../../../common";
 import { PresentationType, DisproportionalityIndex } from "../../Presentation/presentation-models";
 import { DisproportionalitySelect } from "./DisproportionalitySelect";
 import { NoSeatsCheckbox } from "./NoSeatsCheckbox";
@@ -107,6 +107,18 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         return this.props.currentPresentation === PresentationType.ElectionTable;
     }
 
+    /**
+     * Helper function for evaluating whether filters checkbox should be shown.
+     *
+     * @returns true if filters checkbox should be shown, false otherwise
+     */
+    showNoSeatsCheckbox(): boolean {
+        return (
+            this.props.currentPresentation !== PresentationType.DistrictTable &&
+            this.props.currentPresentation !== PresentationType.LevellingSeats
+        );
+    }
+
     onToggleMergeDistricts = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.props.toggleMergeDistricts(event.target.checked);
 
@@ -173,6 +185,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                 <div className="columns">
                     <div className="column">
                         <NoSeatsCheckbox
+                            hidden={!this.showNoSeatsCheckbox()}
                             showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
                             toggleShowPartiesWithoutSeats={this.props.toggleShowPartiesWithoutSeats}
                         />
@@ -221,6 +234,12 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                                 hidden={!this.showDisproportionalitySelect()}
                                 changeDisproportionalityIndex={this.props.changeDisproportionalityIndex}
                                 disproportionalityIndex={this.props.disproportionalityIndex}
+                                tooltip={
+                                    <TooltipInfo
+                                        text={"Her kan du velge mellom Loosemore-Hanbys (L-H) og Gallaghers (LSq)."}
+                                        url={"https://project-lavinia.github.io/#Disproporsjonalitetsindeks"}
+                                    />
+                                }
                             />
                         </div>
                     </div>

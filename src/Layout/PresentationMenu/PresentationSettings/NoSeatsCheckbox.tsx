@@ -1,6 +1,7 @@
 import * as React from "react";
 
 export interface NoSeatsCheckboxProps {
+    hidden: boolean;
     showPartiesWithoutSeats: boolean;
     toggleShowPartiesWithoutSeats: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -8,8 +9,8 @@ export interface NoSeatsCheckboxProps {
 export class NoSeatsCheckbox extends React.Component<NoSeatsCheckboxProps> {
     render() {
         return (
-            <div className="field">
-                <label className="label" htmlFor="no-seats-setting">
+            <div hidden={this.props.hidden} className="field">
+                <label className="checkbox" htmlFor="no-seats-setting">
                     <input
                         type="checkbox"
                         name="no-seats-setting"
