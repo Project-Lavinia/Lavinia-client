@@ -180,7 +180,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             Header: <span className="is-pulled-right" >{"Prop. %"}</span>,
                             accessor: "proportionality",
                             Cell: (row) => {
-                                return replaceComma(row.value.toFixed(decimals))
+                                return replaceComma(row.value.toFixed(decimals));
                             },
                             Footer: (
                                 <span>

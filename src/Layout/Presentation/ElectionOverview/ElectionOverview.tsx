@@ -187,7 +187,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             Filter: selectFilterWithOptions(thresholdIsZeroOptions),
                             filterMethod: positiveOrNegativeFilterMethod(),
                             Cell: (row) => {
-                                return replaceComma(row.value.toFixed(decimals))
+                                return replaceComma(row.value.toFixed(decimals));
                             },
                             Footer: (
                                 <strong>
