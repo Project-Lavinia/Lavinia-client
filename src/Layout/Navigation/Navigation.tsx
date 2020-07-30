@@ -41,8 +41,6 @@ export class Navigation extends React.Component<NavigationProps> {
 
                 <div id="toggleable-menu" className={style.menu}>
                     <div className="navbar-start">
-                        <a className="navbar-item">Home</a>
-
                         <a target="_blank" href="https://project-lavinia.github.io/" rel="noopener noreferrer" className="navbar-item">
                             Hjelp
                         </a>
