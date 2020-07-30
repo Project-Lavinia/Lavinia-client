@@ -59,7 +59,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             accessor: "name",
                             width: this.props.districtWidth * 10,
                             Cell: (row) => {
-                                return <span className="is-pulled-left" >{row.value}</span>
+                                return <span className="is-pulled-left" >{row.value}</span>;
                             },
                             Footer: (
                                 <span>
@@ -76,7 +76,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                                 </span>
                             ),
                             Cell: (row) => {
-                                return numberFormat(row.value)
+                                return numberFormat(row.value);
                             },
                         },
                         {
@@ -111,7 +111,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             Header: <span className="is-pulled-right"> {"Stemmer/mandat"}</span>,
                             accessor: "votesPerSeat",
                             Cell: (row) => {
-                                return replaceComma(row.value.toFixed(decimals))
+                                return replaceComma(row.value.toFixed(decimals));
                             },
                             Footer: (
                                 <span>

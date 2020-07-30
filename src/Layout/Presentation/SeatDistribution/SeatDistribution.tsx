@@ -16,7 +16,7 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
                 accessor: "name",
                 width: this.props.districtWidth * 10,
                 Cell: (row) => {
-                    return <span className="is-pulled-left" >{row.value}</span>
+                    return <span className="is-pulled-left" >{row.value}</span>;
                 },            
             },
         ];

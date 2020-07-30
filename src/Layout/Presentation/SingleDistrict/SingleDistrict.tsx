@@ -91,7 +91,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                 </span>
                             ),
                             Cell: (row) => {
-                                return <span className="is-pulled-left">{row.original.partyName}</span>
+                                return <span className="is-pulled-left">{row.original.partyName}</span>;
                             },
                         },
                         {
@@ -103,7 +103,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                 </span>
                             ),
                             Cell: (row) => {
-                                return numberFormat(row.value)
+                                return numberFormat(row.value);
                             },
                         },
                         {
@@ -111,7 +111,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             id: "%",
                             accessor: (d: PartyResult) => roundNumber(d.percentVotes, decimals),
                             Cell: (row) => {
-                                return replaceComma(row.value.toFixed(decimals))
+                                return replaceComma(row.value.toFixed(decimals));
                             },
                         },
                         {
@@ -147,7 +147,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             accessor: (d: PartyResult) =>
                                 d.votes > 0 && vulnerableMap ? vulnerableMap.get(d.partyCode) : null,
                             Cell: (row) => {
-                                const value = numberFormat(row.value)  
+                                const value = numberFormat(row.value);  
                                 if (vulnerableVotes && row.original.partyCode === vulnerableVotes.partyCode) {
                                     return <div className="has-background-dark has-text-white">{value}</div>;
                                 }
@@ -168,7 +168,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             accessor: (d: PartyResult) =>
                                 d.votes > 0 && quotientMap ? quotientMap.get(d.partyCode): null,
                             Cell: (row) => {
-                                const value = row.value ? replaceComma(row.value.toFixed(decimals)) : row.value 
+                                const value = row.value ? replaceComma(row.value.toFixed(decimals)) : row.value;
                                 if (vulnerable && row.original.partyCode === vulnerable.runnerUp.partyCode) {
                                     return <div className="has-background-dark has-text-white">{value}</div>;
                                 }
