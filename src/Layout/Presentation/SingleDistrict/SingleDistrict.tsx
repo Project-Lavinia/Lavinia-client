@@ -7,7 +7,7 @@ import { checkExhaustively } from "../../../utilities";
 import { DistrictSelect } from "./DistrictSelect";
 import { norwegian } from "../../../utilities/rt";
 import { roundNumber } from "../../../utilities/number";
-import { numberFormat,replaceComma } from "../../../utilities/customNumberFormat";
+import { numberFormat,replaceComma, numberFormatFraction } from "../../../utilities/customNumberFormat";
 import { InfoBox } from "./InfoBox";
 import {
     getVotesToVulnerableSeatMap,
@@ -111,7 +111,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             id: "%",
                             accessor: (d: PartyResult) => roundNumber(d.percentVotes, decimals),
                             Cell: (row) => {
-                                return replaceComma(row.value.toFixed(decimals))
+                                return numberFormatFraction(row.value, decimals)
                             },
                         },
                         {
@@ -180,12 +180,12 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             Header: <span className="is-pulled-right" >{"Prop. %"}</span>,
                             accessor: "proportionality",
                             Cell: (row) => {
-                                return replaceComma(row.value.toFixed(decimals))
+                               return numberFormatFraction(row.value, decimals)
                             },
                             Footer: (
                                 <span>
                                     <strong>
-                                        {label}: {replaceComma(index.toFixed(decimals))}
+                                        {label}: {numberFormatFraction(index, decimals)}
                                     </strong>
                                 </span>
                             ),

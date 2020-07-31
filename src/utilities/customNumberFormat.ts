@@ -8,6 +8,15 @@
         return new Intl.NumberFormat("nb-NO").format(value);
     }
 
+    /**
+     *  Replace '.'  with ','  
+     *  Add space between thousands.
+     * @param value the value to be formatted. 
+     * @param decimals exact number of decimals to be presented
+     */
+   export function numberFormatFraction(value:number, decimals:number){
+        return new Intl.NumberFormat("nb-NO", {minimumFractionDigits: decimals, maximumFractionDigits: decimals}).format(value);
+    }
 
     /**
      * 

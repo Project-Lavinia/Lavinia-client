@@ -5,7 +5,7 @@ import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
 import { roundNumber } from "../../../utilities/number";
-import { numberFormat, replaceComma } from "../../../utilities/customNumberFormat";
+import { numberFormat, numberFormatFraction } from "../../../utilities/customNumberFormat";
 import {
     selectFilterWithOptions,
     thresholdFilterMethod,
@@ -150,7 +150,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             filterMethod: thresholdFilterMethod(this.props.threshold),
                             accessor: (d: ElectionOverviewDatum) => roundNumber(d.percentVotes, decimals),
                             Cell: (row) => {
-                                return replaceComma(row.value.toFixed(decimals))
+                                return numberFormatFraction(row.value,decimals)
                             },
                         },
                         {
@@ -187,11 +187,11 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             Filter: selectFilterWithOptions(thresholdIsZeroOptions),
                             filterMethod: positiveOrNegativeFilterMethod(),
                             Cell: (row) => {
-                                return replaceComma(row.value.toFixed(decimals))
+                                return numberFormatFraction(row.value,decimals)
                             },
                             Footer: (
                                 <strong>
-                                    {label}: {replaceComma(index.toFixed(decimals))}
+                                    {label}: {numberFormatFraction(index,decimals)}
                                 </strong>
                             ),
                         },
