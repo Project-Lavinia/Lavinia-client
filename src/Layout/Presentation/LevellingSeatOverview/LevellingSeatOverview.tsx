@@ -49,7 +49,7 @@ export class LevellingSeatOverview extends React.Component<LevellingSeatOverview
                 Header: "Parti",
                 accessor: "partyCode",
                 Cell: (row) => {
-                    return <abbr title={row.original.partyName}>{row.value}</abbr>
+                    return <abbr title={row.original.partyName}>{row.value}</abbr>;
                 },
             });
         }

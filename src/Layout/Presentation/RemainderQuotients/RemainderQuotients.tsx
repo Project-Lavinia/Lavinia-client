@@ -104,7 +104,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
             Header: <span className="is-pulled-left"> {"Fylker"}</span> ,
             accessor: "district",
             Cell: (row) => {
-                return <span className="is-pulled-left">{row.value}</span>
+                return <span className="is-pulled-left">{row.value}</span>;
             },
         });
 

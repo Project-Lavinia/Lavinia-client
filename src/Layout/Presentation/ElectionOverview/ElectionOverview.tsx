@@ -131,7 +131,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             filterMethod: caseInsensitiveFilterMethod,
                             Footer: <strong className="is-pulled-left">Utvalg</strong>,
                             Cell: (row) => {
-                                return <span className="is-pulled-left">{row.original.partyName}</span>
+                                return <span className="is-pulled-left">{row.original.partyName}</span>;
                             },
                         },
                         {
@@ -139,7 +139,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             accessor: "votes",
                             filterable: false,
                             Cell: (row) => {
-                                return numberFormat(row.value)
+                                return numberFormat(row.value);
                             },
                             Footer: <strong>{numberFormat(data.map((value) => value.votes).reduce(toSum, 0))}</strong>,
                         },
