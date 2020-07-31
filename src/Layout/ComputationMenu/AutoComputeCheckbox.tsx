@@ -10,14 +10,16 @@ export class AutoComputeCheckbox extends React.Component<AutoComputeCheckboxProp
     render() {
         return (
             <div className="field">
+                <input
+                    type="checkbox"
+                    className="switch"
+                    name="autoCompute"
+                    id="autoCompute"
+                    checked={this.props.autoCompute}
+                    onChange={this.props.toggleAutoCompute}
+                />
                 <label htmlFor="autoCompute" className="checkbox">
-                    <input
-                        type="checkbox"
-                        name="autoCompute"
-                        checked={this.props.autoCompute}
-                        onChange={this.props.toggleAutoCompute}
-                    />
-                    &nbsp;Oppdater automatisk
+                    Oppdater automatisk
                 </label>
             </div>
         );
