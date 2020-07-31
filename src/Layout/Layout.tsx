@@ -4,6 +4,7 @@ import { ConnectedComputationMenu } from "./ComputationMenu";
 import { ConnectedPresentationSettings } from "./PresentationMenu";
 import { ConnectedNavigation } from "./Navigation/ConnectedNavigation";
 import { ConnectedPresentationSelection } from "./PresentationMenu/PresentationSelection/ConnectedPresentationSelection";
+import { ConnectedTutorial } from "./Tutorial";
 
 export interface LayoutProps {
     dataLoaded: boolean;
@@ -21,6 +22,7 @@ export class Layout extends React.Component<LayoutProps, {}> {
 
         return (
             <React.Fragment>
+                <ConnectedTutorial />
                 <ConnectedNavigation />
                 <div className={pageLoaderClass}>
                     <span className="title is-size-2">Laster inn Lavinia...</span>
