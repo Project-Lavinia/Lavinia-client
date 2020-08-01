@@ -6,12 +6,14 @@ import { getMostVulnerableSeatByQuotient } from "../../../utilities/district";
 import { norwegian } from "../../../utilities/rt";
 import { isQuotientAlgorithm } from "../../../computation/logic";
 import { VulnerableDistrictSeatText } from "./VulnerableDistrictSeatText";
+import { Dictionary } from "lodash";
 
 export interface DistrictOverviewProps {
     districtResults: DistrictResult[];
     districtWidth: number;
     decimals: number;
     algorithm: AlgorithmType;
+    partyMap: Dictionary<string>;
 }
 
 export class DistrictOverview extends React.Component<DistrictOverviewProps, {}> {
@@ -40,7 +42,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                         {leastWeightedDistrict}
                         {" hadde minst vekt, og bare telte "}
                         {lowestVsAverageInPercentage.toFixed(decimals) + "%."}
-                        <VulnerableDistrictSeatText mostVulnerable={mostVulnerable} />
+                        <VulnerableDistrictSeatText mostVulnerable={mostVulnerable} partyMap={this.props.partyMap}/>
                     </p>
                 </div>
 

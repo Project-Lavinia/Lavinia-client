@@ -139,6 +139,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         districtWidth={this.getWidestStringWidth(this.getDistricts())}
                         decimals={this.props.decimals}
                         algorithm={this.props.algorithm}
+                        partyMap={this.props.partyMap}
                     />
                 );
             case PresentationType.SeatDistribution:
