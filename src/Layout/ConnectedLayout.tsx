@@ -16,12 +16,14 @@ import { stateIsInvalid } from "../store/version";
 import { rawParametersToParametersConverter } from "../requested-data/requested-data-utilities";
 import { RootState } from "../reducers";
 import { Dictionary } from "utilities/dictionary";
+import { toggleHamburger } from "./ui-reducer";
 
-const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded"> => ({
+const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded" | "hamburgerExpanded"> => ({
     dataLoaded: state.requestedDataState.dataLoaded,
+    hamburgerExpanded: state.uiState.hamburgerExpanded,
 });
 
-const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState"> => ({
+const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState" | "toggleHamburger"> => ({
     initializeState: async () => {
         const defaultUri = process.env.API_V1 + "no/pe?deep=true";
 
@@ -67,6 +69,9 @@ const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState">
             const initializeComputationAction = initializeComputation(electionType, votes, metrics, parameters);
             dispatch(initializeComputationAction);
         }
+    },
+    toggleHamburger: (hamburgerExpanded: boolean) => {
+        dispatch(toggleHamburger(hamburgerExpanded));
     },
 });
 
