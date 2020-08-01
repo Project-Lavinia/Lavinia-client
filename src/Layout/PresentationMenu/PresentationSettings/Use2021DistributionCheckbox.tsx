@@ -10,14 +10,16 @@ export class Use2021DistributionCheckbox extends React.Component<Use2021Distribu
     render() {
         return (
             <div className="field" hidden={this.props.hidden}>
-                <label className="checkbox" htmlFor="2021-distribution-setting">
-                    <input
+                <input
                         type="checkbox"
+                        className="switch"
+                        id="2021-distribution-setting"
                         name="2021-distribution-setting"
                         checked={this.props.use2021Distribution}
                         onChange={this.props.toggleUse2021Distribution}
                     />
-                    &nbsp;Bruk fylkesdata fra 2021
+                <label className="checkbox" htmlFor="2021-distribution-setting">
+                    Bruk fylkesdata fra 2021
                 </label>
             </div>
         );
