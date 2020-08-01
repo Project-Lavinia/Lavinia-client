@@ -32,7 +32,7 @@ export class Layout extends React.Component<LayoutProps, {}> {
             <React.Fragment>
                 <ConnectedTutorial />
                 <ConnectedNavigation />
-                <div className={pageLoaderClass}>
+                <div className={pageLoaderClass} id={"page_loader"}>
                     <span className="title is-size-2">Laster inn Lavinia...</span>
                 </div>
                 <div className="columns is-desktop section" onClick={this.closeHamburger}>

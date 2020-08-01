@@ -8,6 +8,7 @@ import {
     resetSavedComputation,
     updateHistorical,
     saveComparison,
+    computationDefaults,
 } from "../../computation";
 import { Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
 import { getAlgorithmType } from "../../computation/logic";
@@ -109,11 +110,15 @@ const mapDispatchToProps = (
         metrics: Metrics[],
         parameters: Parameters
     ) => {
+        const firstDivisor = parameters.algorithm.parameters["First Divisor"]
+            ? parameters.algorithm.parameters["First Divisor"]
+            : computationDefaults.firstDivisor;
+
         if (settingsPayload.autoCompute) {
             const payload: ComputationPayload = {
                 election,
                 algorithm: parameters.algorithm.algorithm,
-                firstDivisor: parameters.algorithm.parameters["First Divisor"],
+                firstDivisor,
                 electionThreshold: parameters.threshold,
                 districtThreshold: 0,
                 districtSeats: parameters.districtSeats,
@@ -132,7 +137,7 @@ const mapDispatchToProps = (
         const newSettingsPayload: ComputationMenuPayload = {
             ...settingsPayload,
             algorithm: getAlgorithmType(election.algorithm),
-            firstDivisor: election.firstDivisor.toString(),
+            firstDivisor: firstDivisor.toString(),
             electionThreshold: election.threshold.toString(),
             districtThreshold: "0",
             districtSeats: election.seats.toString(),
@@ -162,7 +167,4 @@ const mapDispatchToProps = (
     },
 });
 
-export const ConnectedComputationMenu = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ComputationMenu as any);
+export const ConnectedComputationMenu = connect(mapStateToProps, mapDispatchToProps)(ComputationMenu as any);
