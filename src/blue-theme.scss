@@ -11,6 +11,10 @@ $tooltip-background-color: $democracy-blue;
 @import "~bulma-tooltip";
 @import "~bulma-pageloader";
 
+html {
+    overflow-y: auto;
+}
+
 [class*=" lavinia-logo"],
 [class^="lavinia-logo"] {
     letter-spacing: 2px;
