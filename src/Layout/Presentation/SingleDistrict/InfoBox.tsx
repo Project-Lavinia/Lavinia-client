@@ -1,13 +1,16 @@
 import * as React from "react";
 import { VulnerableDistrictSeat, VulnerableVotes } from "../../../utilities/district";
+import { Dictionary } from "utilities/dictionary";
 
 interface InfoBoxProps {
     vulnerable: VulnerableDistrictSeat;
     vulnerableVotes: VulnerableVotes;
+    partyMap: Dictionary<string>;
 }
 
 export class InfoBox extends React.Component<InfoBoxProps> {
     render() {
+        const partyMap = this.props.partyMap;
         const vulnerable = this.props.vulnerable;
         const vulnerableVotes = this.props.vulnerableVotes;
         const extendedInfo =
@@ -16,7 +19,7 @@ export class InfoBox extends React.Component<InfoBoxProps> {
                       " hadde nærmeste kvotient og trengte ",
                       vulnerable.moreVotesToWin,
                       " flere stemmer for å vinne mandatet. ",
-                          vulnerableVotes.partyCode,
+                          <abbr title={partyMap[vulnerableVotes.partyCode]}><b>{vulnerableVotes.partyCode}</b></abbr>,
                       " hadde derimot minst margin i stemmer og trengte bare ",
                       vulnerableVotes.moreVotesToWin,
                       " flere stemmer.",
@@ -34,9 +37,9 @@ export class InfoBox extends React.Component<InfoBoxProps> {
                         {"Sistemandat i "}
                         {vulnerable.district}
                         {" gikk til "}
-                        {vulnerable.winner.partyCode}
+                        <abbr title={partyMap[vulnerable.winner.partyCode]}><b>{vulnerable.winner.partyCode}</b></abbr>
                         {". "}&nbsp;
-                        {vulnerable.runnerUp.partyCode}
+                        <abbr title={partyMap[vulnerable.runnerUp.partyCode]}><b>{vulnerable.runnerUp.partyCode}</b></abbr>
                         {extendedInfo}
                     </p>
                 </div>

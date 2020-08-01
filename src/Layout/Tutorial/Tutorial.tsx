@@ -7,7 +7,6 @@ export interface TutorialProps {
 export class Tutorial extends React.Component<TutorialProps, {}> {
 
     public render() {
-        console.log(this.props.showTutorial)
         const showTutorial = this.props.showTutorial ? " is-active" : "" ;
         const modalClass = "modal" + showTutorial;
 

@@ -15,6 +15,7 @@ import {
     getVulnerableSeatByVotes,
 } from "../../../utilities/district";
 import { isQuotientAlgorithm } from "../../../computation/logic";
+import { Dictionary } from "utilities/dictionary";
 
 export interface SingleDistrictProps {
     districtResults: DistrictResult[];
@@ -23,6 +24,7 @@ export interface SingleDistrictProps {
     decimals: number;
     disproportionalityIndex: DisproportionalityIndex;
     algorithm: AlgorithmType;
+    partyMap: Dictionary<string>;
 }
 
 export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
@@ -74,7 +76,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                     districtSelected={this.props.districtSelected}
                     districtResults={this.props.districtResults}
                 />
-                {calculateVulnerable && <InfoBox vulnerable={vulnerable!} vulnerableVotes={vulnerableVotes!} />}
+                {calculateVulnerable && <InfoBox vulnerable={vulnerable!} vulnerableVotes={vulnerableVotes!} partyMap={this.props.partyMap}/>}
                 <ReactTable
                     className="-highlight -striped has-text-centered"
                     data={data}

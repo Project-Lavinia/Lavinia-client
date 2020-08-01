@@ -18,6 +18,7 @@ const mapStateToProps = (state: RootState): Partial<PresentationProps> => {
         algorithm: state.computationState.algorithm,
         threshold: state.computationState.electionThreshold,
         showFilters: state.presentationMenuState.showFilters,
+        partyMap: state.requestedDataState.partyMap,
     } as PresentationProps;
 };
 

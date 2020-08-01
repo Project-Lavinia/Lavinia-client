@@ -7,6 +7,7 @@ import {
     initializeRequestedVotes,
     initializeRequestedMetrics,
     InitializeRequestedParameters,
+    initializeRequestedPartyMap,
 } from "../requested-data";
 import { initializeComputation } from "../computation";
 import { initializeComputationMenu } from "./ComputationMenu";
@@ -14,6 +15,7 @@ import { initializePresentation } from "./PresentationMenu";
 import { stateIsInvalid } from "../store/version";
 import { rawParametersToParametersConverter } from "../requested-data/requested-data-utilities";
 import { RootState } from "../reducers";
+import { Dictionary } from "utilities/dictionary";
 
 const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded"> => ({
     dataLoaded: state.requestedDataState.dataLoaded,
@@ -27,15 +29,18 @@ const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState">
         const votesPath = "votes?partyCode=ALL&district=ALL";
         const metricsPath = "metrics?district=ALL";
         const parametersPath = "parameters";
+        const partyMapPath = "parties";
         let votesUri: string;
         let metricsUri: string;
         let parametersUri: string;
+        let partyMapUri: string;
 
         defaultUri = process.env.API_V1 + electionTypePath;
 
         votesUri = process.env.API_V3 + votesPath;
         metricsUri = process.env.API_V3 + metricsPath;
         parametersUri = process.env.API_V3 + parametersPath;
+        partyMapUri = process.env.API_V3 + partyMapPath;
 
         const failover: ElectionType = {
             internationalName: "UNDEFINED",
@@ -56,6 +61,10 @@ const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState">
             const parameters = rawParameters.map<Parameters>((raw) => rawParametersToParametersConverter(raw));
             const initializeRequestedParametersAction = InitializeRequestedParameters(parameters);
             dispatch(initializeRequestedParametersAction);
+
+            const partyMap = await request<Dictionary<string>>(partyMapUri, {});
+            const initializeRequestedPartyMapAction = initializeRequestedPartyMap(partyMap);
+            dispatch(initializeRequestedPartyMapAction);
 
             const electionType = await request<ElectionType>(defaultUri, failover);
             const initializeRequestDataAction = initializeRequestedData(electionType);

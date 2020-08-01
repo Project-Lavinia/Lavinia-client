@@ -1,4 +1,5 @@
 ﻿import { ElectionType, Votes, Metrics, Parameters } from "./requested-data-models";
+import { Dictionary } from "utilities/dictionary";
 
 /**
  * Enum containing all possible RequestedDataAction types.
@@ -8,6 +9,7 @@ export enum RequestedDataActionType {
     INTIIALIZE_REQUESTED_VOTES = "INITIALIZE_REQUESTED_VOTES",
     INITIALIZE_REQUESTED_METRICS = "INITIALIZE_REQUESTED_METRICS",
     INIITALIZE_REQUESTED_PARAMETERS = "INITIALIZE_REQUESTED_PARAMETERS",
+    INIITALIZE_REQUESTED_PARTY_MAP = "INTITIALIZE_REQUESTED_PARTY_MAP",
 }
 
 /**
@@ -17,7 +19,8 @@ export type RequestedDataAction =
     | InitializeRequestedData
     | InitializeRequestedVotes
     | InitializeRequestedMetrics
-    | InitializeRequestedParameters;
+    | InitializeRequestedParameters
+    | InitializeRequestedPartyMap;
 
 /**
  * Action for initializing requested data.
@@ -50,6 +53,14 @@ export interface InitializeRequestedMetrics {
 export interface InitializeRequestedParameters {
     type: RequestedDataActionType.INIITALIZE_REQUESTED_PARAMETERS;
     parameters: Parameters[];
+}
+
+/**
+ * Action for initializing requested party map.
+ */
+export interface InitializeRequestedPartyMap {
+    type: RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP;
+    partyMap: Dictionary<string>;
 }
 
 /**
@@ -101,6 +112,19 @@ export function InitializeRequestedParameters(parameters: Parameters[]) {
     const action: InitializeRequestedParameters = {
         type: RequestedDataActionType.INIITALIZE_REQUESTED_PARAMETERS,
         parameters,
+    };
+    return action;
+}
+
+/**
+ * Action creator for initializing requested PartyMap.
+ *
+ * @param partyMap - PartyMap fetched from the API.
+ */
+export function initializeRequestedPartyMap(partyMap: Dictionary<string>) {
+    const action: InitializeRequestedPartyMap = {
+        type: RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP,
+        partyMap,
     };
     return action;
 }
