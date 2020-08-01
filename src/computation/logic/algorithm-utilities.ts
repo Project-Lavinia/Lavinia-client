@@ -65,14 +65,12 @@ export function distributeSeats(
         const seatResult: SeatResult = {
             seatIndex: i,
             winner: "",
-            winnerName: "",
             partyResults: [],
         };
 
         let tiedSeatWinners = [
             {
                 partyCode: "",
-                partyName: "",
                 quotient: -1,
                 denominator: -1,
                 votes: -1,
@@ -108,7 +106,6 @@ export function distributeSeats(
                       );
             const currentPartyResult = {
                 partyCode: result.partyCode,
-                partyName: result.partyName,
                 quotient: currentQuotient,
                 denominator: currentDenominator,
                 votes: result.votes,
