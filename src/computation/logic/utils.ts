@@ -221,7 +221,6 @@ export function distributeLevelingSeatsOnDistricts(
         if (partyRestQuotients[seat.partyCode] === undefined) {
             partyRestQuotients[seat.partyCode] = {
                 partyCode: seat.partyCode,
-                partyName: seat.partyName,
                 levelingSeats: [seat],
             };
         } else {
@@ -278,7 +277,6 @@ export function distributeLevelingSeatsOnDistrictsPre2005(
         if (partyRestQuotients[seat.partyCode] === undefined) {
             partyRestQuotients[seat.partyCode] = {
                 partyCode: seat.partyCode,
-                partyName: seat.partyName,
                 levelingSeats: [seat],
             };
         } else {

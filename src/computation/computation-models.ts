@@ -116,15 +116,12 @@ export interface LevelingSeat {
     district: string;
     /** The party the seat belongs to */
     partyCode: string;
-    /** The full name of the party the seat belongs to */
-    partyName: string;
     /** The rest-quotient computed for this seat */
     quotient: number;
 }
 
 export interface PartyRestQuotients {
     partyCode: string;
-    partyName: string;
     levelingSeats: LevelingSeat[];
 }
 

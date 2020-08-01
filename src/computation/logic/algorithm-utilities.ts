@@ -365,7 +365,6 @@ export function generateLevelingSeatArray(
             const averageVotesPerSeat = districtResults[countyName].votes / districtResults[countyName].districtSeats;
             for (const partyCode of levelingPartyCodes) {
                 const partyResult = districtPartyResults[countyName][partyCode];
-                const partyName = partyResult.partyName;
                 if (partyResult !== undefined) {
                     const adjustedQuotient = useAdjustedQuotient
                         ? calculateAdjustedQuotient(
@@ -388,7 +387,6 @@ export function generateLevelingSeatArray(
                     const seat: LevelingSeat = {
                         district: countyName,
                         partyCode,
-                        partyName,
                         quotient: adjustedQuotient,
                         seatNumber: 0,
                         quotientNumber: 0,
