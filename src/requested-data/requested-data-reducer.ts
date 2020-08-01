@@ -1,6 +1,15 @@
 ﻿import { RequestedDataActionType, RequestedDataAction } from "./requested-data-actions";
 import { RequestedDataState, unloadedState } from "./requested-data-state";
 
+function checkStateLoaded(state: RequestedDataState, action: RequestedDataAction): boolean {
+    return (
+        (state.electionType.countryId !== -1 || action.type === RequestedDataActionType.INITIALIZE_REQUESTED_DATA) &&
+        (state.metrics.length > 0 || action.type === RequestedDataActionType.INITIALIZE_REQUESTED_METRICS) &&
+        (state.parameters.length > 0 || action.type === RequestedDataActionType.INIITALIZE_REQUESTED_PARAMETERS) &&
+        (state.votes.length > 0 || action.type === RequestedDataActionType.INTIIALIZE_REQUESTED_VOTES)
+    );
+}
+
 /**
  *
  * @param state - the current state, with default parameters iff it is

@@ -126,7 +126,7 @@ export function caseInsensitiveFilterMethod(filter: Filter, rows: any) {
     const id = filter.pivotId || filter.id;
     const value: string = filter.value;
     const lowerCaseInput = value.toLowerCase();
-    return rows[id] !== undefined ? String(rows[id]).toLowerCase().startsWith(lowerCaseInput) : true;
+    return typeof rows[id] === "undefined" ? String(rows[id]).toLowerCase().startsWith(lowerCaseInput) : true;
 }
 
 /**

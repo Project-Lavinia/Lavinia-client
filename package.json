@@ -11,7 +11,12 @@
         "build": "webpack --env.NODE_ENV \"production\" -p --progress --colors",
         "build:dev": "webpack --env.NODE_ENV \"development\"",
         "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
-        "precommit": "pretty-quick --staged && tslint -p ."
+        "precommit": "pretty-quick --staged && tslint -p .",
+        "cy:verify": "cypress verify",
+        "cy:run": "cypress run",
+        "cy:test": "start-server-and-test start 3000 cy:run",
+        "cy:ci:run": "cypress run --record --key $CYPRESS_RECORD_KEY --parallel --ci-build-id $BUILD_BUILDNUMBER",
+        "cy:ci:test": "start-server-and-test start 3000 cy:ci:run"
     },
     "license": "MIT",
     "devDependencies": {
@@ -31,6 +36,7 @@
         "bulma-tooltip": "^3.0.2",
         "clean-webpack-plugin": "^3.0.0",
         "css-loader": "^3.5.3",
+        "cypress": "^4.8.0",
         "dotenv-webpack": "^1.8.0",
         "file-loader": "^6.0.0",
         "hard-source-webpack-plugin": "^0.13.1",
@@ -62,6 +68,7 @@
         "react-redux": "^7.2.0",
         "react-table": "6.10.0",
         "redux": "^4.0.5",
-        "redux-thunk": "^2.3.0"
+        "redux-thunk": "^2.3.0",
+        "start-server-and-test": "^1.11.0"
     }
 }

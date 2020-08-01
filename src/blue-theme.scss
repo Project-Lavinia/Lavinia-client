@@ -5,13 +5,13 @@ $democracy-blue: #2e4272;
 
 // Update Bulma's global variables
 $primary: $democracy-blue;
+$tooltip-background-color: $democracy-blue;
 
 @import "~bulma/bulma";
 @import "~bulma-tooltip";
 @import "~bulma-pageloader";
 @import "~bulma-switch";
 @import "../node_modules/bulma-switch/dist/css/bulma-switch.sass";
-
 
 [class*=" lavinia-logo"],
 [class^="lavinia-logo"] {
@@ -22,4 +22,3 @@ $primary: $democracy-blue;
     width: 100px;
     height: 28px;
 }
-
