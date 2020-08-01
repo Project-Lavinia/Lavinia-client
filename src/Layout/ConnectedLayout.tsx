@@ -56,12 +56,14 @@ const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState">
 
             const electionType = await request<ElectionType>(defaultUri, failover);
             const initializeRequestDataAction = initializeRequestedData(electionType);
+            dispatch(initializeRequestDataAction);
 
             const initializeSettingsAction = initializeComputationMenu(electionType, parameters[0]);
-            const initializePresentationAction = initializePresentation();
-            dispatch(initializeRequestDataAction);
-            dispatch(initializePresentationAction);
             dispatch(initializeSettingsAction);
+
+            const initializePresentationAction = initializePresentation();
+            dispatch(initializePresentationAction);
+            
             const initializeComputationAction = initializeComputation(electionType, votes, metrics, parameters);
             dispatch(initializeComputationAction);
         }
