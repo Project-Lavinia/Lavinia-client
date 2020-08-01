@@ -23,24 +23,12 @@ const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded"> => (
 
 const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState"> => ({
     initializeState: async () => {
-        const electionTypePath = "no/pe?deep=true";
-        let defaultUri: string;
+        const defaultUri = process.env.API_V1 + "no/pe?deep=true";
 
-        const votesPath = "votes?partyCode=ALL&district=ALL";
-        const metricsPath = "metrics?district=ALL";
-        const parametersPath = "parameters";
-        const partyMapPath = "parties";
-        let votesUri: string;
-        let metricsUri: string;
-        let parametersUri: string;
-        let partyMapUri: string;
-
-        defaultUri = process.env.API_V1 + electionTypePath;
-
-        votesUri = process.env.API_V3 + votesPath;
-        metricsUri = process.env.API_V3 + metricsPath;
-        parametersUri = process.env.API_V3 + parametersPath;
-        partyMapUri = process.env.API_V3 + partyMapPath;
+        const votesUri = process.env.API_V3 + "votes?partyCode=ALL&district=ALL";
+        const metricsUri = process.env.API_V3 + "metrics?district=ALL";
+        const parametersUri = process.env.API_V3 + "parameters";
+        const partyMapUri = process.env.API_V3 + "parties";
 
         const failover: ElectionType = {
             internationalName: "UNDEFINED",
