@@ -13,6 +13,7 @@ export class MergeDistrictsCheckbox extends React.Component<MergeDistrictsCheckb
                 <label className="checkbox" htmlFor="merge-setting">
                     <input
                         type="checkbox"
+                        id="merge_to_11_districts_checkbox"
                         name="merge-setting"
                         checked={this.props.mergeDistricts}
                         onChange={this.props.toggleMergeDistricts}

@@ -3,6 +3,8 @@ import { PresentationType } from "../../Presentation/presentation-models";
 import { selectionLookup } from "./presentation-selection-utilities";
 import { TooltipInfoRight } from "../../../common";
 
+const WIKIURL = process.env.WIKI;
+
 export interface PresentationSelectionProps {
     changeSelection?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     currentSelection?: PresentationType;
@@ -29,15 +31,19 @@ export class PresentationSelection extends React.Component<PresentationSelection
     render() {
         return (
             <div className="field">
-                 <label className="label">
-                <TooltipInfoRight
-                    text={"Trykk på dette ikonet for å lese om oversikten."}
-                    url={"https://project-lavinia.github.io/#Visning"}
-                />
+                <label className="label">
+                    <TooltipInfoRight
+                        text={"Trykk på dette ikonet for å lese om oversikten."}
+                        url={WIKIURL?.concat("#Visning")}
+                    />
                 </label>
                 <div className="control">
                     <div className="select is-primary is-fullwidth is-medium">
-                        <select onChange={this.props.changeSelection} value={this.props.currentSelection}>
+                        <select
+                            onChange={this.props.changeSelection}
+                            value={this.props.currentSelection}
+                            id={"presentation_select"}
+                        >
                             {this.getSelectionOptions()}
                         </select>
                     </div>
