@@ -65,14 +65,12 @@ export function distributeSeats(
         const seatResult: SeatResult = {
             seatIndex: i,
             winner: "",
-            winnerName: "",
             partyResults: [],
         };
 
         let tiedSeatWinners = [
             {
                 partyCode: "",
-                partyName: "",
                 quotient: -1,
                 denominator: -1,
                 votes: -1,
@@ -108,7 +106,6 @@ export function distributeSeats(
                       );
             const currentPartyResult = {
                 partyCode: result.partyCode,
-                partyName: result.partyName,
                 quotient: currentQuotient,
                 denominator: currentDenominator,
                 votes: result.votes,
@@ -321,7 +318,6 @@ export function calculateFinalQuotients(
 
                 districtQuotient.levellingSeatRounds.push({
                     partyCode: party.partyCode,
-                    partyName: party.partyName,
                     quotient,
                     wonLevellingSeat: party.levelingSeats > 0,
                 });
@@ -368,7 +364,6 @@ export function generateLevelingSeatArray(
             const averageVotesPerSeat = districtResults[countyName].votes / districtResults[countyName].districtSeats;
             for (const partyCode of levelingPartyCodes) {
                 const partyResult = districtPartyResults[countyName][partyCode];
-                const partyName = partyResult.partyName;
                 if (partyResult !== undefined) {
                     const adjustedQuotient = useAdjustedQuotient
                         ? calculateAdjustedQuotient(
@@ -391,7 +386,6 @@ export function generateLevelingSeatArray(
                     const seat: LevelingSeat = {
                         district: countyName,
                         partyCode,
-                        partyName,
                         quotient: adjustedQuotient,
                         seatNumber: 0,
                         quotientNumber: 0,

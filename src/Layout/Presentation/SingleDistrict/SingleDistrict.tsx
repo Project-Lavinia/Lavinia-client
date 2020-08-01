@@ -83,7 +83,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                     showPagination={data.length > 10}
                     columns={[
                         {
-                            Header: <span className="is-pulled-left" >{"Parti"}</span>,
+                            Header: <span className="is-pulled-left">Parti</span>,
                             accessor: "partyCode",
                             Footer: (
                                 <span>
@@ -95,7 +95,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             },
                         },
                         {
-                            Header: <span className="is-pulled-right" >{"Stemmer"}</span>,
+                            Header: <span className="is-pulled-right">Stemmer</span>,
                             accessor: "votes",
                             Footer: (
                                 <span>
@@ -107,15 +107,15 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             },
                         },
                         {
-                            Header: <span className="is-pulled-right" >{"Oppslutning %"}</span>,
+                            Header: <span className="is-pulled-right" >Oppslutning %</span>,
                             id: "%",
                             accessor: (d: PartyResult) => roundNumber(d.percentVotes, decimals),
                             Cell: (row) => {
-                                return numberFormatFraction(row.value, decimals)
+                                return numberFormatFraction(row.value, decimals);
                             },
                         },
                         {
-                            Header: <span className="is-pulled-right" >{"Distrikt"}</span>,
+                            Header: <span className="is-pulled-right" >Distrikt</span>,
                             accessor: "districtSeats",
                             Footer: (
                                 <span>
@@ -124,7 +124,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             ),
                         },
                         {
-                            Header: <span className="is-pulled-right" >{"Utjevning"}</span>,
+                            Header: <span className="is-pulled-right" >Utjevning</span>,
                             accessor: "levelingSeats",
                             Footer: (
                                 <span>
@@ -133,7 +133,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             ),
                         },
                         {
-                            Header: <span className="is-pulled-right" >{"Sum Mandater"}</span>,
+                            Header: <span className="is-pulled-right" >Sum Mandater</span>,
                             accessor: "totalSeats",
                             Footer: (
                                 <span>
@@ -143,7 +143,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         },
                         {
                             id: "marginInVotes",
-                            Header: <span className="is-pulled-right" >{"Margin i stemmer"}</span>,
+                            Header: <span className="is-pulled-right" >Margin i stemmer</span>,
                             accessor: (d: PartyResult) =>
                                 d.votes > 0 && vulnerableMap ? vulnerableMap.get(d.partyCode) : null,
                             Cell: (row) => {
@@ -164,7 +164,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         },
                         {
                             id: "lastSeatQuotient",
-                            Header: <span className="is-pulled-right" >{"Siste kvotient"}</span>,
+                            Header: <span className="is-pulled-right" >Siste kvotient</span>,
                             accessor: (d: PartyResult) =>
                                 d.votes > 0 && quotientMap ? quotientMap.get(d.partyCode): null,
                             Cell: (row) => {
@@ -177,10 +177,10 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             show: calculateVulnerable,
                         },
                         {
-                            Header: <span className="is-pulled-right" >{"Prop. %"}</span>,
+                            Header: <span className="is-pulled-right" >Prop. %</span>,
                             accessor: "proportionality",
                             Cell: (row) => {
-                               return numberFormatFraction(row.value, decimals)
+                               return numberFormatFraction(row.value, decimals);
                             },
                             Footer: (
                                 <span>

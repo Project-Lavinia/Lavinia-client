@@ -59,7 +59,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
         for (let i = 0; i < data[0].levellingSeatRounds.length; i++) {
             const element = data[0].levellingSeatRounds[i];
             columns.push({
-                Header: <abbr title={element.partyName}>{element.partyCode}</abbr>,
+                Header: element.partyCode,
                 accessor: `levellingSeatRounds[${i}]`,
                 minWidth: 50,
                 Cell: (row) => {

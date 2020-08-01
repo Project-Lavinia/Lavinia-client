@@ -77,7 +77,6 @@ export interface DistrictQuotients {
  */
 export interface PartyQuotient {
     partyCode: string;
-    partyName: string;
     quotient: number;
     wonLevellingSeat: boolean;
 }
@@ -116,15 +115,12 @@ export interface LevelingSeat {
     district: string;
     /** The party the seat belongs to */
     partyCode: string;
-    /** The full name of the party the seat belongs to */
-    partyName: string;
     /** The rest-quotient computed for this seat */
     quotient: number;
 }
 
 export interface PartyRestQuotients {
     partyCode: string;
-    partyName: string;
     levelingSeats: LevelingSeat[];
 }
 
@@ -185,8 +181,6 @@ export interface Result {
 export interface SeatPartyResult {
     /** The partyCode of the participating party */
     partyCode: string;
-    /** The partyName of the participating party */
-    partyName: string;
     /** The quotient the party got in the distribution */
     quotient: number;
     /** The denominator used to calculate the result */
@@ -200,8 +194,6 @@ export interface SeatResult {
     seatIndex: number;
     /** The partyCode of the party that won the seat */
     winner: string;
-    /** The partyName of the party that won the seat */
-    winnerName: string;
     /** A list with information regarding the parties compeating for the seat */
     partyResults: SeatPartyResult[];
 }
