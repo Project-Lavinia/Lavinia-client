@@ -39,7 +39,7 @@ export class Layout extends React.Component<LayoutProps, {}> {
                     <div className="column is-narrow">
                         <ConnectedComputationMenu />
                     </div>
-                    <div className="column">
+                    <div className="column" style={{overflowX: "auto"}}>
                         <ConnectedPresentationSettings />
                         <ConnectedPresentationSelection />
                         <ConnectedPresentation />
