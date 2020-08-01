@@ -9,6 +9,7 @@
     }
 
     /**
+     *  The difference between this method and numberFormat is the specified number of fraction digits. 
      *  Replace '.'  with ','  
      *  Add space between thousands.
      * @param value the value to be formatted. 
