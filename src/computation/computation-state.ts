@@ -74,3 +74,7 @@ export const unloadedState: ComputationState = {
     metrics: [],
     parameters: unloadedParameters,
 };
+
+export const computationDefaults = {
+    firstDivisor: 1.4,
+};
