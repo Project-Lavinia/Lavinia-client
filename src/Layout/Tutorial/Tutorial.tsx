@@ -35,7 +35,7 @@ export class Tutorial extends React.Component<TutorialProps, {}> {
                             kan du ta en titt på wikien vår: 
                             <a target="_blank"
                                 rel="noopener noreferrer"
-                                href={process.env.WIKI + "#Lavinia"}> https://project-lavinia.github.io/#Lavinia
+                                href={process.env.WIKI + "#Lavinia"}> {process.env.WIKI + "#Lavinia"}
                                 </a>
                         </p> 
                     </section>
