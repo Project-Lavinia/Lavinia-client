@@ -2,7 +2,6 @@
 
 describe("ComputationMenu", () => {
     beforeEach(() => {
-        cy.clearLocalStorage();
         cy.viewport(1080, 720);
     });
 

@@ -36,7 +36,6 @@ function waitForLoad(iteration: number = 0) {
 
 describe("ComputationMenu", () => {
     beforeEach(() => {
-        cy.clearLocalStorage();
         cy.viewport(1080, 720);
     });
 
