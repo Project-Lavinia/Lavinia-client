@@ -77,7 +77,6 @@ export interface DistrictQuotients {
  */
 export interface PartyQuotient {
     partyCode: string;
-    partyName: string;
     quotient: number;
     wonLevellingSeat: boolean;
 }
