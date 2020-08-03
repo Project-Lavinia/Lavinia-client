@@ -1,5 +1,4 @@
-import axios from "axios";
-import { AxiosResponse, AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 
 /**
  * Attempts to request a set of information from the URI specified,
@@ -13,20 +12,24 @@ export async function request<T>(uri: string, defaultValue: T): Promise<T> {
     let data = defaultValue;
     let attempt = 0;
 
-    while (data == defaultValue && attempt < 5) {
-        await axios
-            .get(uri)
-            .then((res: AxiosResponse) => {
-                data = res.data as T;
-            })
-            .catch((reason: AxiosError) => {
-                console.error(`Request to ${uri} failed with\n${reason}`);
-            });
+    while (data === defaultValue && attempt < 5) {
+        let response = await axios
+            .get<T>(uri)
+            .catch((reason: AxiosError) => handleError(uri, reason));
 
-        if (data == defaultValue) {
-            console.log("Requesting: " + uri + " attempt: " + ++attempt);
-            await new Promise(resolve => setTimeout(resolve, 30000));
+        if (response) {
+            if (response.status === 200) {
+                data = response.data;
+            } else if (response.status === 429) {
+                await new Promise(resolve => setTimeout(resolve, 30000));
+            } else {
+                await new Promise(resolve => setTimeout(resolve, 5000));
+            }
         }
     }
     return data;
+}
+
+function handleError(uri: string, reason: AxiosError) {
+    console.error(`Request to ${uri} failed with\n${reason}`);
 }
