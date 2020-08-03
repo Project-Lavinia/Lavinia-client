@@ -1,6 +1,6 @@
 import * as React from "react";
 import { VulnerableDistrictSeat, VulnerableVotes } from "../../../utilities/district";
-import { Dictionary } from "utilities/dictionary";
+import { Dictionary } from "../../../utilities/dictionary";
 
 interface InfoBoxProps {
     vulnerable: VulnerableDistrictSeat;
@@ -19,7 +19,7 @@ export class InfoBox extends React.Component<InfoBoxProps> {
                       " hadde nærmeste kvotient og trengte ",
                       vulnerable.moreVotesToWin,
                       " flere stemmer for å vinne mandatet. ",
-                          <b>{partyMap[vulnerableVotes.partyCode]}</b>,
+                          <b key="vulnerableVotes">{partyMap[vulnerableVotes.partyCode]}</b>,
                       " hadde derimot minst margin i stemmer og trengte bare ",
                       vulnerableVotes.moreVotesToWin,
                       " flere stemmer.",

@@ -1,5 +1,5 @@
 ﻿import { ElectionType, Votes, Metrics, Parameters } from "./requested-data-models";
-import { Dictionary } from "utilities/dictionary";
+import { Dictionary } from "../utilities/dictionary";
 
 /**
  * Enum containing all possible RequestedDataAction types.

@@ -1,4 +1,4 @@
-import { RootState } from "reducers";
+import { RootState } from "../../reducers";
 import { TutorialProps, Tutorial } from "./Tutorial";
 import { hideTutorial } from "../ui-reducer";
 import { connect } from "react-redux";

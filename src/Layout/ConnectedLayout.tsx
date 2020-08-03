@@ -15,7 +15,7 @@ import { initializePresentation } from "./PresentationMenu";
 import { stateIsInvalid } from "../store/version";
 import { rawParametersToParametersConverter } from "../requested-data/requested-data-utilities";
 import { RootState } from "../reducers";
-import { Dictionary } from "utilities/dictionary";
+import { Dictionary } from "../utilities/dictionary";
 import { toggleHamburger } from "./ui-reducer";
 
 const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded" | "hamburgerExpanded"> => ({

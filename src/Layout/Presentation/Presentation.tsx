@@ -18,7 +18,7 @@ import { LagueDhontResult, PartyResult, DistrictResult, AlgorithmType } from "..
 import { PresentationType, DisproportionalityIndex } from "./presentation-models";
 import { ElectionComparison } from "./ElectionOverview/ElectionComparison";
 import { checkExhaustively } from "../../utilities";
-import { Dictionary } from "utilities/dictionary";
+import { Dictionary } from "../../utilities/dictionary";
 
 export interface PresentationProps {
     currentPresentation: PresentationType;

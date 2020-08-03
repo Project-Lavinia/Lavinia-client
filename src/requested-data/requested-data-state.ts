@@ -1,5 +1,5 @@
 import { ElectionType, Votes, Metrics, Parameters } from "./requested-data-models";
-import { Dictionary } from "utilities/dictionary";
+import { Dictionary } from "../utilities/dictionary";
 
 export interface RequestedDataState {
     dataLoaded: boolean;

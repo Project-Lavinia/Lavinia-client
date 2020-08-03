@@ -15,7 +15,7 @@ import {
     getVulnerableSeatByVotes,
 } from "../../../utilities/district";
 import { isQuotientAlgorithm } from "../../../computation/logic";
-import { Dictionary } from "utilities/dictionary";
+import { Dictionary } from "../../../utilities/dictionary";
 
 export interface SingleDistrictProps {
     districtResults: DistrictResult[];

@@ -30,8 +30,8 @@ export interface ToggleHamburger {
 
 export function hideTutorial() {
     const action: HideTutorial  = {
-        type: UiActionType.HIDE_TUTORIAL
-    }
+        type: UiActionType.HIDE_TUTORIAL,
+    };
     return action;
 }
 
