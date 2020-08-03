@@ -26,6 +26,7 @@ export async function request<T>(uri: string, defaultValue: T): Promise<T> {
                 await new Promise(resolve => setTimeout(resolve, 5000));
             }
         }
+        attempt++;
     }
     return data;
 }
