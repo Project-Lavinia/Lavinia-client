@@ -1,5 +1,3 @@
-import axios, { AxiosError } from "axios";
-
 /**
  * Delay that is multiplied by attempt number.
  * Rationale: 1*4 + 2*4 + 3*4 + 4*4 + 5*4 = 60
@@ -8,12 +6,52 @@ import axios, { AxiosError } from "axios";
 const iterativeDelay = 4000;
 const maxNumberOfAttempts = 5;
 
-function handleError(uri: string, reason: AxiosError) {
+function handleError(uri: string, reason: any) {
     console.error(`Request to ${uri} failed with\n${reason}`);
 }
 
 function isSuccessful(responseCode: number): boolean {
     return responseCode >= 200 && responseCode < 300;
+}
+
+async function parseData<T>(response: Response, defaultValue: T): Promise<T> {
+    try {
+        const json = await response.json();
+        const result: T = JSON.parse(json);
+        return result;
+    } catch (ex) {
+        return defaultValue;
+    }
+}
+
+/**
+ * Attempts to parse the HTTP response for how long
+ * to delay the next fetch in milliseconds.
+ *
+ * If unable to find a time, it returns the default delay provided.
+ *
+ * @param response HTTP response to parse
+ * @param defaultDelay Default time to wait (in ms)
+ */
+function parseRetryHeaderToMs(response: Response, defaultDelay: number): number {
+    const retryHeader = response.headers.get("retry-after");
+
+    if (retryHeader === null) {
+        return defaultDelay;
+    }
+
+    const numSeconds = Number(retryHeader);
+    if (Number.isFinite(numSeconds)) {
+        return numSeconds * 1000 || defaultDelay;
+    }
+
+    const retryDate = Date.parse(retryHeader);
+    if (Number.isNaN(retryDate)) {
+        return defaultDelay;
+    }
+
+    const waitTime = retryDate - Date.now();
+    return Math.max(0, waitTime);
 }
 
 /**
@@ -29,20 +67,19 @@ export async function request<T>(uri: string, defaultValue: T): Promise<T> {
 }
 
 async function attemptRequest<T>(uri: string, defaultValue: T, attemptNumber: number): Promise<T> {
-    const response = await axios.get<T>(uri).catch((reason: AxiosError) => handleError(uri, reason));
+    const response = await fetch(uri).catch((reason) => handleError(uri, reason));
 
-    if (response && isSuccessful(response.status)) {
-        return response.data;
-    }
-
-    if (attemptNumber > maxNumberOfAttempts) {
-        return defaultValue;
-    }
-
-    if (response && response.status === 429) {
-        const retryAfter = response.headers["retry-after"];
-        await new Promise((resolve) => setTimeout(resolve, retryAfter));
+    if (response) {
+        if (isSuccessful(response.status)) {
+            return parseData(response, defaultValue);
+        } else if (response.status === 429) {
+            const delay = parseRetryHeaderToMs(response, 10000);
+            await new Promise((resolve) => setTimeout(resolve, delay));
+        }
     } else {
+        if (attemptNumber > maxNumberOfAttempts) {
+            return defaultValue;
+        }
         await new Promise((resolve) => setTimeout(resolve, attemptNumber * iterativeDelay));
     }
 
