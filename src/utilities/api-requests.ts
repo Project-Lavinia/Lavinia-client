@@ -12,6 +12,10 @@ function handleError(uri: string, reason: AxiosError) {
     console.error(`Request to ${uri} failed with\n${reason}`);
 }
 
+function isSuccessful(responseCode: number): boolean {
+    return responseCode >= 200 && responseCode < 300;
+}
+
 /**
  * Attempts to request a set of information from the URI specified,
  * if something goes wrong or the returned data does not match the type
@@ -27,7 +31,7 @@ export async function request<T>(uri: string, defaultValue: T): Promise<T> {
 async function attemptRequest<T>(uri: string, defaultValue: T, attemptNumber: number): Promise<T> {
     const response = await axios.get<T>(uri).catch((reason: AxiosError) => handleError(uri, reason));
 
-    if (response && response.status === 200) {
+    if (response && isSuccessful(response.status)) {
         return response.data;
     }
 
