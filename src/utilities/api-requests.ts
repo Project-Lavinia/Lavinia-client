@@ -6,10 +6,6 @@
 const iterativeDelay = 4000;
 const maxNumberOfAttempts = 5;
 
-function handleError(uri: string, reason: any) {
-    console.error(`Request to ${uri} failed with\n${reason}`);
-}
-
 function isSuccessful(responseCode: number): boolean {
     return responseCode >= 200 && responseCode < 300;
 }
@@ -45,7 +41,7 @@ function parseRetryHeaderToMs(response: Response, defaultDelay: number): number 
 }
 
 async function attemptRequest<T>(uri: string, defaultValue: T, attemptNumber: number): Promise<T> {
-    const response = await fetch(uri).catch((reason) => handleError(uri, reason));
+    const response = await fetch(uri);
 
     if (response && isSuccessful(response.status)) {
         return response.json() as Promise<T>;
