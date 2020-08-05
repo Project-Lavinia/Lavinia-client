@@ -14,16 +14,6 @@ function isSuccessful(responseCode: number): boolean {
     return responseCode >= 200 && responseCode < 300;
 }
 
-async function parseData<T>(response: Response, defaultValue: T): Promise<T> {
-    try {
-        const json = await response.json();
-        const result: T = JSON.parse(json);
-        return result;
-    } catch (ex) {
-        return defaultValue;
-    }
-}
-
 /**
  * Attempts to parse the HTTP response for how long
  * to delay the next fetch in milliseconds.
@@ -54,23 +44,11 @@ function parseRetryHeaderToMs(response: Response, defaultDelay: number): number 
     return Math.max(0, waitTime);
 }
 
-/**
- * Attempts to request a set of information from the URI specified,
- * if something goes wrong or the returned data does not match the type
- * expected, it will return a default value specified
- *
- * @param uri The uri to attempt to request data from
- * @param defaultValue The value to return if something goes wrong
- */
-export async function request<T>(uri: string, defaultValue: T): Promise<T> {
-    return attemptRequest(uri, defaultValue, 1);
-}
-
 async function attemptRequest<T>(uri: string, defaultValue: T, attemptNumber: number): Promise<T> {
     const response = await fetch(uri).catch((reason) => handleError(uri, reason));
 
     if (response && isSuccessful(response.status)) {
-        return parseData(response, defaultValue);
+        return response.json() as Promise<T>;
     }
 
     if (attemptNumber > maxNumberOfAttempts) {
@@ -85,4 +63,16 @@ async function attemptRequest<T>(uri: string, defaultValue: T, attemptNumber: nu
     }
 
     return attemptRequest(uri, defaultValue, ++attemptNumber);
+}
+
+/**
+ * Attempts to request a set of information from the URI specified,
+ * if something goes wrong or the returned data does not match the type
+ * expected, it will return a default value specified
+ *
+ * @param uri The uri to attempt to request data from
+ * @param defaultValue The value to return if something goes wrong
+ */
+export async function request<T>(uri: string, defaultValue: T): Promise<T> {
+    return attemptRequest(uri, defaultValue, 1);
 }
