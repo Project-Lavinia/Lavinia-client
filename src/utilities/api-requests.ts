@@ -69,17 +69,18 @@ export async function request<T>(uri: string, defaultValue: T): Promise<T> {
 async function attemptRequest<T>(uri: string, defaultValue: T, attemptNumber: number): Promise<T> {
     const response = await fetch(uri).catch((reason) => handleError(uri, reason));
 
-    if (response) {
-        if (isSuccessful(response.status)) {
-            return parseData(response, defaultValue);
-        } else if (response.status === 429) {
-            const delay = parseRetryHeaderToMs(response, 10000);
-            await new Promise((resolve) => setTimeout(resolve, delay));
-        }
+    if (response && isSuccessful(response.status)) {
+        return parseData(response, defaultValue);
+    }
+
+    if (attemptNumber > maxNumberOfAttempts) {
+        return defaultValue;
+    }
+
+    if (response && response.status === 429) {
+        const delay = parseRetryHeaderToMs(response, 10000);
+        await new Promise((resolve) => setTimeout(resolve, delay));
     } else {
-        if (attemptNumber > maxNumberOfAttempts) {
-            return defaultValue;
-        }
         await new Promise((resolve) => setTimeout(resolve, attemptNumber * iterativeDelay));
     }
 
