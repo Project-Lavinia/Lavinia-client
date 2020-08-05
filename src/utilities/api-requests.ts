@@ -1,5 +1,12 @@
 import axios, { AxiosError } from "axios";
 
+/**
+ * Delay that is multiplied by attempt number.
+ * Rationale: 1*4 + 2*4 + 3*4 + 4*4 + 5*4 = 60
+ * which is equal to the timeout duration
+ */
+const iterativeDelay = 4000;
+const maxNumberOfAttempts = 5;
 
 function handleError(uri: string, reason: AxiosError) {
     console.error(`Request to ${uri} failed with\n${reason}`);
@@ -14,24 +21,26 @@ function handleError(uri: string, reason: AxiosError) {
  * @param defaultValue The value to return if something goes wrong
  */
 export async function request<T>(uri: string, defaultValue: T): Promise<T> {
-    let data = defaultValue;
-    let attempt = 0;
+    return attemptRequest(uri, defaultValue, 1);
+}
 
-    while (data === defaultValue && attempt < 5) {
-        const response = await axios
-            .get<T>(uri)
-            .catch((reason: AxiosError) => handleError(uri, reason));
+async function attemptRequest<T>(uri: string, defaultValue: T, attemptNumber: number): Promise<T> {
+    const response = await axios.get<T>(uri).catch((reason: AxiosError) => handleError(uri, reason));
 
-        if (response) {
-            if (response.status === 200) {
-                data = response.data;
-            } else if (response.status === 429) {
-                await new Promise((resolve) => setTimeout(resolve, 30000));
-            } else {
-                await new Promise((resolve) => setTimeout(resolve, 5000));
-            }
-        }
-        attempt++;
+    if (response && response.status === 200) {
+        return response.data;
     }
-    return data;
+
+    if (attemptNumber > maxNumberOfAttempts) {
+        return defaultValue;
+    }
+
+    if (response && response.status === 429) {
+        const retryAfter = response.headers["retry-after"];
+        await new Promise((resolve) => setTimeout(resolve, retryAfter));
+    } else {
+        await new Promise((resolve) => setTimeout(resolve, attemptNumber * iterativeDelay));
+    }
+
+    return attemptRequest(uri, defaultValue, ++attemptNumber);
 }
