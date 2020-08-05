@@ -42,7 +42,7 @@ function parseRetryHeaderToMs(response: Response, defaultDelay: number): number 
 
     const numSeconds = Number(retryHeader);
     if (Number.isFinite(numSeconds)) {
-        return numSeconds * 1000 || defaultDelay;
+        return Math.max(0, numSeconds * 1000);
     }
 
     const retryDate = Date.parse(retryHeader);
