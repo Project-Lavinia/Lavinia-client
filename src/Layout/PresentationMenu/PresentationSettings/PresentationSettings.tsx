@@ -118,7 +118,6 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
 
         const year = this.props.year;
         let votes = this.props.votes.filter((vote) => vote.electionYear === year);
-        const tmpVotes = votes;
         const distributionYear = this.props.use2021Distribution && year >= 2005 ? 2021 : year;
         let metrics = this.props.metrics.filter((metric) => metric.electionYear === distributionYear);
         const parameters = this.props.parameters;
@@ -127,9 +126,6 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
             if (shouldDistributeDistrictSeats(year) && event.target.checked) {
                 votes = mergeVoteDistricts(votes, districtMap);
                 metrics = mergeMetricDistricts(metrics, districtMap);
-            }
-            if (tmpVotes !== votes) {
-                console.log("Changed");
             }
 
             this.props.updateCalculation(
