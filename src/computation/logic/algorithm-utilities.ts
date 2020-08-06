@@ -633,3 +633,7 @@ export function isLargestFractionAlgorithm(algorithm: AlgorithmType): boolean {
         algorithm === AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF
     );
 }
+
+export function shouldApply2005Reform(year: number) {
+    return year >= 2005;
+}

@@ -3,7 +3,7 @@ import { Dictionary, dictionaryToArray } from "../../utilities/dictionary";
 import { distributeSeats } from ".";
 import { distributeLevelingSeatsOnDistricts, distributeLevelingSeatsOnDistrictsPre2005 } from "./utils";
 import { DistributionResult, NationalDistributionResult } from "../../computation/computation-models";
-import { isLargestFractionAlgorithm, isQuotientAlgorithm } from "./algorithm-utilities";
+import { isLargestFractionAlgorithm, isQuotientAlgorithm, shouldApply2005Reform } from "./algorithm-utilities";
 
 /**
  * Distributes the leveling seats on the parties and on each district.
@@ -47,9 +47,8 @@ export function distributeLevelingSeats(
     const wonLevelingPartyCodes = levelingPartyCodes.filter((partyCode) => partyResults[partyCode].levelingSeats > 0);
 
     let partyRestQuotients: Dictionary<PartyRestQuotients> = {};
-    const preOneLevelingSeatPerDistrict = payload.parameters.electionYear < 2005;
-    if (preOneLevelingSeatPerDistrict) {
-        partyRestQuotients = distributeLevelingSeatsOnDistrictsPre2005(
+    if (shouldApply2005Reform(payload.parameters.electionYear)) {
+        partyRestQuotients = distributeLevelingSeatsOnDistricts(
             payload,
             wonLevelingPartyCodes,
             partyResults,
@@ -57,7 +56,7 @@ export function distributeLevelingSeats(
             districtResults
         );
     } else {
-        partyRestQuotients = distributeLevelingSeatsOnDistricts(
+        partyRestQuotients = distributeLevelingSeatsOnDistrictsPre2005(
             payload,
             wonLevelingPartyCodes,
             partyResults,

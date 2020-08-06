@@ -11,6 +11,7 @@ import {
     getVotesPerDistrict,
     constructPartyResults,
     constructDistrictPartyResults,
+    shouldApply2005Reform,
 } from "./algorithm-utilities";
 import { toSum } from "../../utilities/reduce";
 
@@ -68,8 +69,8 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
     const districtResultArray = dictionaryToArray(districtResults);
     const partyResultArray = dictionaryToArray(partyResults);
 
-    const didElectionUseAdjustedQuotients = payload.parameters.electionYear >= 2005;
-    const useAdjustedQuotients = didElectionUseAdjustedQuotients && isQuotientAlgorithm(payload.algorithm);
+    const useAdjustedQuotients =
+        shouldApply2005Reform(payload.parameters.electionYear) && isQuotientAlgorithm(payload.algorithm);
     const finalQuotients = calculateFinalQuotients(
         payload.algorithm,
         payload.firstDivisor,
