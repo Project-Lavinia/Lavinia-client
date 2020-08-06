@@ -1,3 +1,4 @@
+/// <reference path="../support/index.d.ts" />
 /// <reference types="cypress" />
 
 const years = [
@@ -35,9 +36,23 @@ function waitForLoad(iteration: number = 0) {
 }
 
 describe("ComputationMenu", () => {
+    const timeoutLength = 30000;
+    let previousFetch = performance.now();
+    let localStorageCache = {};
+
     beforeEach(() => {
-        cy.clearLocalStorage();
         cy.viewport(1080, 720);
+        const currentTime = performance.now();
+        if (currentTime - previousFetch < timeoutLength) {
+            cy.copyStorage(localStorageCache, localStorage);
+        } else {
+            previousFetch = currentTime;
+        }
+    });
+
+    afterEach(() => {
+        localStorageCache = {};
+        cy.copyStorage(localStorage, localStorageCache);
     });
 
     context("Default settings", () => {

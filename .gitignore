@@ -9,5 +9,4 @@ app.yaml
 .gcloudignore
 cypress/videos
 cypress/screenshots
-cypress/support
 cypress/plugins
