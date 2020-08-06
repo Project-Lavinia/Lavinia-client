@@ -68,7 +68,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
         const parameters =
             this.props.parameters.find((parameter) => parameter.electionYear === nextYear) || unloadedParameters;
 
-        if (parameters !== undefined) {
+        if (parameters) {
             if (shouldDistributeDistrictSeats(nextYear) && this.props.mergeDistricts) {
                 votes = mergeVoteDistricts(votes, districtMap);
                 metrics = mergeMetricDistricts(metrics, districtMap);

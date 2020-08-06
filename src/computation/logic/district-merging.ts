@@ -45,7 +45,7 @@ function groupVotes(
                 groupedVotes.set(newName, new Map<string, Votes[]>());
             }
             let voteMap = groupedVotes.get(newName);
-            if (voteMap !== undefined) {
+            if (voteMap) {
                 voteMap = mapAdd(voteMap, currentVote.party, currentVote);
                 groupedVotes.set(newName, voteMap!);
             }
