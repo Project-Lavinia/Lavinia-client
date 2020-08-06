@@ -4,8 +4,7 @@ import { PartyResult } from "../../../computation";
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
-import { roundNumber } from "../../../utilities/number";
-import { numberFormat, numberFormatFraction } from "../../../utilities/customNumberFormat";
+import { numberFormat } from "../../../utilities/customNumberFormat";
 import {
     selectFilterWithOptions,
     thresholdFilterMethod,
@@ -148,9 +147,9 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             id: "%",
                             Filter: selectFilterWithOptions(thresholdOptions),
                             filterMethod: thresholdFilterMethod(this.props.threshold),
-                            accessor: (d: ElectionOverviewDatum) => roundNumber(d.percentVotes, decimals),
+                            accessor: (d: ElectionOverviewDatum) => d.percentVotes,
                             Cell: (row) => {
-                                return numberFormatFraction(row.value,decimals);
+                                return numberFormat(row.value,decimals);
                             },
                         },
                         {
@@ -187,11 +186,11 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             Filter: selectFilterWithOptions(thresholdIsZeroOptions),
                             filterMethod: positiveOrNegativeFilterMethod(),
                             Cell: (row) => {
-                                return numberFormatFraction(row.value,decimals);
+                                return numberFormat(row.value,decimals);
                             },
                             Footer: (
                                 <strong>
-                                    {label}: {numberFormatFraction(index,decimals)}
+                                    {label}: {numberFormat(index,decimals)}
                                 </strong>
                             ),
                         },

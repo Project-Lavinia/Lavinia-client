@@ -6,8 +6,7 @@ import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
 import { DistrictSelect } from "./DistrictSelect";
 import { norwegian } from "../../../utilities/rt";
-import { roundNumber } from "../../../utilities/number";
-import { numberFormat,replaceComma, numberFormatFraction } from "../../../utilities/customNumberFormat";
+import { numberFormat } from "../../../utilities/customNumberFormat";
 import { InfoBox } from "./InfoBox";
 import {
     getVotesToVulnerableSeatMap,
@@ -109,9 +108,9 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: <span className="is-pulled-right" >Oppslutning %</span>,
                             id: "%",
-                            accessor: (d: PartyResult) => roundNumber(d.percentVotes, decimals),
+                            accessor: (d: PartyResult) => d.percentVotes,
                             Cell: (row) => {
-                                return numberFormatFraction(row.value, decimals);
+                                return numberFormat(row.value, decimals);
                             },
                         },
                         {
@@ -168,7 +167,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             accessor: (d: PartyResult) =>
                                 d.votes > 0 && quotientMap ? quotientMap.get(d.partyCode): null,
                             Cell: (row) => {
-                                const value = row.value ? replaceComma(row.value.toFixed(decimals)) : row.value;
+                                const value = row.value ? numberFormat(row.value, this.props.decimals) : row.value;
                                 if (vulnerable && row.original.partyCode === vulnerable.runnerUp.partyCode) {
                                     return <div className="has-background-dark has-text-white">{value}</div>;
                                 }
@@ -180,12 +179,12 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             Header: <span className="is-pulled-right" >Prop. %</span>,
                             accessor: "proportionality",
                             Cell: (row) => {
-                               return numberFormatFraction(row.value, decimals);
+                               return numberFormat(row.value, decimals);
                             },
                             Footer: (
                                 <span>
                                     <strong>
-                                        {label}: {numberFormatFraction(index, decimals)}
+                                        {label}: {numberFormat(index, decimals)}
                                     </strong>
                                 </span>
                             ),

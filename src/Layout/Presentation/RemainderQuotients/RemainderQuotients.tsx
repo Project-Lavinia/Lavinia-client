@@ -3,7 +3,7 @@ import ReactTable, { Column } from "react-table";
 import { LevelingSeat, DistrictResult, DistrictQuotients, AlgorithmType } from "../../../computation";
 import { norwegian } from "../../../utilities/rt";
 import { isQuotientAlgorithm } from "../../../computation/logic";
-import { replaceComma } from "../../../utilities/customNumberFormat";
+import { numberFormat } from "../../../utilities/customNumberFormat";
 
 export interface RemainderQuotientsProps {
     districtResults: DistrictResult[];
@@ -75,7 +75,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                             <div
                                 className={row.value.wonLevellingSeat ? "has-background-dark has-text-white" : ""}
                             >
-                                {replaceComma(Number(quotient).toFixed(this.props.decimals))}
+                                {numberFormat(Number(quotient), this.props.decimals)}
                             </div>
                         );
                     } else {

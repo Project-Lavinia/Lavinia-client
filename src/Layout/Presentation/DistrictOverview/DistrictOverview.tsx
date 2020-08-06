@@ -6,7 +6,7 @@ import { getMostVulnerableSeatByQuotient } from "../../../utilities/district";
 import { norwegian } from "../../../utilities/rt";
 import { isQuotientAlgorithm } from "../../../computation/logic";
 import { VulnerableDistrictSeatText } from "./VulnerableDistrictSeatText";
-import { numberFormat, numberFormatFraction } from "../../../utilities/customNumberFormat";
+import { numberFormat } from "../../../utilities/customNumberFormat";
 
 export interface DistrictOverviewProps {
     districtResults: DistrictResult[];
@@ -111,11 +111,11 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             Header: <span className="is-pulled-right">Stemmer/mandat</span>,
                             accessor: "votesPerSeat",
                             Cell: (row) => {
-                                return numberFormatFraction(row.value, decimals);
+                                return numberFormat(row.value, decimals);
                             },
                             Footer: (
                                 <span>
-                                    <strong>{numberFormatFraction(averageVotingPower, decimals)}</strong>
+                                    <strong>{numberFormat(averageVotingPower, decimals)}</strong>
                                 </span>
                             ),
                         },
