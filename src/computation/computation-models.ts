@@ -21,7 +21,7 @@ export interface ComputationPayload {
     votes: Votes[];
     metrics: Metrics[];
     parameters: Parameters;
-    partyMap: Dictionary<string>;
+    partyMap: Map<string, string>;
 }
 
 export interface DistrictResult {

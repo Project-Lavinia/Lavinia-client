@@ -45,7 +45,7 @@ export function constructDistrictResults(
 export function constructPartyResults(
     votes: Votes[],
     totalVotes: number,
-    partyMap: Dictionary<string>
+    partyMap: Map<string, string>
 ): Dictionary<PartyResult> {
     const partyResults: Dictionary<PartyResult> = {};
 
@@ -55,7 +55,7 @@ export function constructPartyResults(
         } else {
             partyResults[vote.party] = {
                 partyCode: vote.party,
-                partyName: partyMap[vote.party],
+                partyName: partyMap.get(vote.party)!,
                 votes: vote.votes,
                 percentVotes: 0,
                 districtSeats: 0,
@@ -79,7 +79,7 @@ export function constructPartyResults(
 export function constructDistrictPartyResults(
     votes: Votes[],
     districtVotes: Dictionary<number>,
-    partyMap: Dictionary<string>
+    partyMap: Map<string, string>
 ): Dictionary<Dictionary<PartyResult>> {
     const districtPartyResults: Dictionary<Dictionary<PartyResult>> = {};
 
@@ -89,7 +89,7 @@ export function constructDistrictPartyResults(
         }
         districtPartyResults[vote.district][vote.party] = {
             partyCode: vote.party,
-            partyName: partyMap[vote.party],
+            partyName: partyMap.get(vote.party)!,
             votes: vote.votes,
             percentVotes: calculatePercent(vote.votes, districtVotes[vote.district]),
             districtSeats: 0,

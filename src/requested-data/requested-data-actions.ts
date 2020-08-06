@@ -1,5 +1,4 @@
 ﻿import { Votes, Metrics, Parameters } from "./requested-data-models";
-import { Dictionary } from "../utilities/dictionary";
 
 /**
  * Enum containing all possible RequestedDataAction types.
@@ -49,7 +48,7 @@ export interface InitializeRequestedParameters {
  */
 export interface InitializeRequestedPartyMap {
     type: RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP;
-    partyMap: Dictionary<string>;
+    partyMap: Map<string, string>;
 }
 
 /**
@@ -96,7 +95,7 @@ export function initializeRequestedParameters(parameters: Parameters[]) {
  *
  * @param partyMap - PartyMap fetched from the API.
  */
-export function initializeRequestedPartyMap(partyMap: Dictionary<string>) {
+export function initializeRequestedPartyMap(partyMap: Map<string, string>) {
     const action: InitializeRequestedPartyMap = {
         type: RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP,
         partyMap,

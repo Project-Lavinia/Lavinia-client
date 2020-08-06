@@ -12,7 +12,6 @@ import { ComputeManuallyButton } from "./ComputeManuallyButton";
 import { districtMap, mergeVoteDistricts, mergeMetricDistricts } from "../../computation/logic/district-merging";
 import { shouldDistributeDistrictSeats } from "../../utilities/conditionals";
 import { isLargestFractionAlgorithm } from "../../computation/logic";
-import { Dictionary } from "../../utilities/dictionary";
 
 const WIKIURL = process.env.WIKI;
 
@@ -30,9 +29,14 @@ export interface ComputationMenuProps {
         votes: Votes[],
         metrics: Metrics[],
         parameters: Parameters,
-        partyMap: Dictionary<string>
+        partyMap: Map<string, string>
     ) => any;
-    resetHistorical: (votes: Votes[], metrics: Metrics[], parameters: Parameters, partyMap: Dictionary<string>) => void;
+    resetHistorical: (
+        votes: Votes[],
+        metrics: Metrics[],
+        parameters: Parameters,
+        partyMap: Map<string, string>
+    ) => void;
     resetComparison: () => void;
     saveComparison: () => void;
     showComparison: boolean;

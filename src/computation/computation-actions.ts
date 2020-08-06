@@ -2,7 +2,6 @@
 import { Votes, Metrics, Parameters, FirstDivisor } from "../requested-data/requested-data-models";
 import { lagueDhont } from "./logic";
 import { unloadedParameters } from "./computation-state";
-import { Dictionary } from "../utilities/dictionary";
 
 /**
  * Enum containing all possible ComputationAction types.
@@ -43,7 +42,7 @@ export function initializeComputation(
     votes: Votes[],
     metrics: Metrics[],
     parameters: Parameters[],
-    partyMap: Dictionary<string>
+    partyMap: Map<string, string>
 ) {
     const filterVotes: Votes[] = votes.filter((vote) => vote.electionYear === year);
     const filterMetrics: Metrics[] = metrics.filter((metric) => metric.electionYear === year);
@@ -154,7 +153,7 @@ export function updateHistorical(
     votes: Votes[],
     metrics: Metrics[],
     parameters: Parameters,
-    partyMap: Dictionary<string>
+    partyMap: Map<string, string>
 ) {
     const payload: ComputationPayload = {
         algorithm: parameters.algorithm.algorithm,

@@ -12,7 +12,6 @@ import {
 } from "../../computation";
 import { Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
 import { ComputationMenuPayload } from "./computation-menu-models";
-import { Dictionary } from "../../utilities/dictionary";
 
 const mapStateToProps = (
     state: RootState
@@ -106,7 +105,7 @@ const mapDispatchToProps = (
         votes: Votes[],
         metrics: Metrics[],
         parameters: Parameters,
-        partyMap: Dictionary<string>
+        partyMap: Map<string, string>
     ) => {
         const firstDivisor = parameters.algorithm.parameters["First Divisor"]
             ? parameters.algorithm.parameters["First Divisor"]
@@ -153,7 +152,7 @@ const mapDispatchToProps = (
         const resetSavedSettingsAction = resetSavedSettings();
         dispatch(resetSavedSettingsAction);
     },
-    resetHistorical: (votes: Votes[], metrics: Metrics[], parameters: Parameters, partyMap: Dictionary<string>) => {
+    resetHistorical: (votes: Votes[], metrics: Metrics[], parameters: Parameters, partyMap: Map<string, string>) => {
         const updateHistoricalAction = updateHistorical(votes, metrics, parameters, partyMap);
         dispatch(updateHistoricalAction);
     },

@@ -1,5 +1,4 @@
 import { Votes, Metrics, Parameters } from "./requested-data-models";
-import { Dictionary } from "../utilities/dictionary";
 
 export interface RequestedDataState {
     dataLoaded: boolean;
@@ -7,7 +6,7 @@ export interface RequestedDataState {
     votes: Votes[];
     metrics: Metrics[];
     parameters: Parameters[];
-    partyMap: Dictionary<string>;
+    partyMap: Map<string, string>;
 }
 
 export const unloadedState: RequestedDataState = {
@@ -16,5 +15,5 @@ export const unloadedState: RequestedDataState = {
     votes: [],
     metrics: [],
     parameters: [],
-    partyMap: {},
+    partyMap: new Map<string, string>(),
 };
