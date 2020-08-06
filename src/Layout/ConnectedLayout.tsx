@@ -1,12 +1,12 @@
 ﻿import { LayoutProps, Layout } from "./Layout";
 import { connect } from "react-redux";
 import { request } from "../utilities/api-requests";
-import { ElectionType, Votes, Metrics, RawParameters, Parameters } from "../requested-data/requested-data-models";
+import { Votes, Metrics, RawParameters, Parameters } from "../requested-data/requested-data-models";
 import {
-    initializeRequestedData,
     initializeRequestedVotes,
     initializeRequestedMetrics,
-    InitializeRequestedParameters,
+    initializeRequestedParameters,
+    initializeRequestedPartyMap,
 } from "../requested-data";
 import { initializeComputation } from "../computation";
 import { initializeComputationMenu } from "./ComputationMenu";
@@ -14,6 +14,7 @@ import { initializePresentation } from "./PresentationMenu";
 import { stateIsInvalid } from "../store/version";
 import { rawParametersToParametersConverter } from "../requested-data/requested-data-utilities";
 import { RootState } from "../reducers";
+import { Dictionary } from "../utilities/dictionary";
 
 const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded"> => ({
     dataLoaded: state.requestedDataState.dataLoaded,
@@ -21,28 +22,12 @@ const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded"> => (
 
 const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState"> => ({
     initializeState: async () => {
-        const electionTypePath = "no/pe?deep=true";
-        let defaultUri: string;
+        const votesUri = process.env.API_V3 + "votes?partyCode=ALL&district=ALL";
+        const metricsUri = process.env.API_V3 + "metrics?district=ALL";
+        const parametersUri = process.env.API_V3 + "parameters";
+        const yearsUri = process.env.API_V3 + "years";
+        const partyMapUri = process.env.API_V3 + "parties";
 
-        const votesPath = "votes?partyCode=ALL&district=ALL";
-        const metricsPath = "metrics?district=ALL";
-        const parametersPath = "parameters";
-        let votesUri: string;
-        let metricsUri: string;
-        let parametersUri: string;
-
-        defaultUri = process.env.API_V1 + electionTypePath;
-
-        votesUri = process.env.API_V3 + votesPath;
-        metricsUri = process.env.API_V3 + metricsPath;
-        parametersUri = process.env.API_V3 + parametersPath;
-
-        const failover: ElectionType = {
-            internationalName: "UNDEFINED",
-            electionTypeId: -1,
-            countryId: -1,
-            elections: [],
-        };
         if (stateIsInvalid()) {
             const votes = await request<Array<Votes>>(votesUri, []);
             const initializeRequestedVotesAction = initializeRequestedVotes(votes);
@@ -54,18 +39,28 @@ const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState">
 
             const rawParameters = await request<Array<RawParameters>>(parametersUri, []);
             const parameters = rawParameters.map<Parameters>((raw) => rawParametersToParametersConverter(raw));
-            const initializeRequestedParametersAction = InitializeRequestedParameters(parameters);
+            const initializeRequestedParametersAction = initializeRequestedParameters(parameters);
             dispatch(initializeRequestedParametersAction);
 
-            const electionType = await request<ElectionType>(defaultUri, failover);
-            const initializeRequestDataAction = initializeRequestedData(electionType);
+            const partyMap = await request<Dictionary<string>>(partyMapUri, {});
+            const initializeRequestedPartyMapAction = initializeRequestedPartyMap(partyMap);
+            dispatch(initializeRequestedPartyMapAction);
 
-            const initializeSettingsAction = initializeComputationMenu(electionType, parameters[0]);
+            const numberYears = await request<Array<number>>(yearsUri, []);
+            const electionYear = numberYears[0];
+            const stringYears = numberYears.map((year) => year.toString());
+
+            const initializeSettingsAction = initializeComputationMenu(stringYears, parameters[0]);
             const initializePresentationAction = initializePresentation();
-            dispatch(initializeRequestDataAction);
             dispatch(initializePresentationAction);
             dispatch(initializeSettingsAction);
-            const initializeComputationAction = initializeComputation(electionType, votes, metrics, parameters);
+            const initializeComputationAction = initializeComputation(
+                electionYear,
+                votes,
+                metrics,
+                parameters,
+                partyMap
+            );
             dispatch(initializeComputationAction);
         }
     },

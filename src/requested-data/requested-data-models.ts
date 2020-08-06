@@ -1,47 +1,6 @@
 import { Dictionary, RawDictionaryEntry } from "../utilities/dictionary";
 import { AlgorithmType } from "../computation";
 
-export interface County {
-    countyId: number;
-    name: string;
-    seats: number;
-    countryId: number;
-    electionId: number;
-    results: Result[];
-}
-
-export interface Election {
-    electionId: number;
-    year: number;
-    algorithm: number;
-    firstDivisor: number;
-    threshold: number;
-    seats: number;
-    levelingSeats: number;
-    countryId: number;
-    electionTypeId: number;
-    counties: County[];
-}
-
-export interface ElectionType {
-    countryId: number;
-    electionTypeId: number;
-    elections: Election[];
-    internationalName: string;
-}
-
-export interface Result {
-    resultId: number;
-    votes: number;
-    percentage: number;
-    electionId: number;
-    partyId: number;
-    countyId: number;
-    countyName: string;
-    partyCode: string;
-    partyName: string;
-}
-
 export interface Votes {
     party: string;
     votes: number;
@@ -90,3 +49,5 @@ export interface Parameters {
     levelingSeats: number;
     totalVotes: number;
 }
+
+export const FirstDivisor = "First Divisor";

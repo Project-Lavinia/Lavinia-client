@@ -1,6 +1,5 @@
 ﻿import {
     AlgorithmType,
-    Result,
     SeatResult,
     PartyResult,
     DistributionResult,
@@ -13,8 +12,107 @@ import { SeatPartyResult } from "./../../computation/computation-models";
 import * as _ from "lodash";
 import { largestFraction } from "./distribution";
 import { checkExhaustively } from "../../utilities";
+import { Votes } from "../../requested-data/requested-data-models";
+import { calculatePercent } from "../../utilities/number";
 
 const illegalPartyCodes = new Set(["BLANKE"]);
+
+export function constructDistrictResults(
+    districtSeats: Dictionary<number>,
+    districtVotes: Dictionary<number>,
+    totalVotes: number
+): Dictionary<DistrictResult> {
+    const districtResults: Dictionary<DistrictResult> = {};
+    for (const district in districtSeats) {
+        if (districtSeats.hasOwnProperty(district)) {
+            districtResults[district] = {
+                name: district,
+                districtSeats: districtSeats[district],
+                levelingSeats: 0,
+                totalSeats: 0,
+                votes: districtVotes[district],
+                percentVotes: calculatePercent(districtVotes[district], totalVotes),
+                votesPerSeat: 0,
+                districtSeatResult: [],
+                partyResults: [],
+            };
+        }
+    }
+
+    return districtResults;
+}
+
+export function constructPartyResults(
+    votes: Votes[],
+    totalVotes: number,
+    partyMap: Dictionary<string>
+): Dictionary<PartyResult> {
+    const partyResults: Dictionary<PartyResult> = {};
+
+    for (const vote of votes) {
+        if (vote.party in partyResults) {
+            partyResults[vote.party].votes += vote.votes;
+        } else {
+            partyResults[vote.party] = {
+                partyCode: vote.party,
+                partyName: partyMap[vote.party],
+                votes: vote.votes,
+                percentVotes: 0,
+                districtSeats: 0,
+                levelingSeats: 0,
+                totalSeats: 0,
+                proportionality: 0,
+            };
+        }
+    }
+
+    for (const partyCode in partyResults) {
+        if (partyResults.hasOwnProperty(partyCode)) {
+            const votes = partyResults[partyCode].votes;
+            partyResults[partyCode].percentVotes = calculatePercent(votes, totalVotes);
+        }
+    }
+
+    return partyResults;
+}
+
+export function constructDistrictPartyResults(
+    votes: Votes[],
+    districtVotes: Dictionary<number>,
+    partyMap: Dictionary<string>
+): Dictionary<Dictionary<PartyResult>> {
+    const districtPartyResults: Dictionary<Dictionary<PartyResult>> = {};
+
+    for (const vote of votes) {
+        if (!districtPartyResults[vote.district]) {
+            districtPartyResults[vote.district] = {};
+        }
+        districtPartyResults[vote.district][vote.party] = {
+            partyCode: vote.party,
+            partyName: partyMap[vote.party],
+            votes: vote.votes,
+            percentVotes: calculatePercent(vote.votes, districtVotes[vote.district]),
+            districtSeats: 0,
+            levelingSeats: 0,
+            totalSeats: 0,
+            proportionality: 0,
+        };
+    }
+    return districtPartyResults;
+}
+
+export function getVotesPerDistrict(votes: Votes[]): Dictionary<number> {
+    const voteCount: Dictionary<number> = {};
+    for (const vote of votes) {
+        if (vote.district in voteCount) {
+            voteCount[vote.district] += vote.votes;
+        } else {
+            voteCount[vote.district] = vote.votes;
+        }
+    }
+
+    return voteCount;
+}
 
 /**
  * Distributes a number of partyResults on a set of parties, based on their number of votes,
@@ -32,7 +130,7 @@ export function distributeSeats(
     districtThreshold: number,
     numSeats: number,
     totalVotes: number,
-    results: Result[],
+    results: Dictionary<PartyResult>,
     averageVotesPerSeat?: number,
     partyResults?: Dictionary<PartyResult>
 ): DistributionResult {
@@ -47,9 +145,12 @@ export function distributeSeats(
     const seatResults: SeatResult[] = [];
 
     if (partyResults === undefined) {
-        for (const party of results) {
-            seatsWon[party.partyCode] = 0;
-            currentSeatsWon[party.partyCode] = 0;
+        for (const partyCode in results) {
+            if (results.hasOwnProperty(partyCode)) {
+                const vote = results[partyCode];
+                seatsWon[vote.partyCode] = 0;
+                currentSeatsWon[vote.partyCode] = 0;
+            }
         }
     } else {
         for (const partyCode in partyResults) {
@@ -77,43 +178,47 @@ export function distributeSeats(
             },
         ];
 
-        for (const result of results) {
-            const currentDenominator = getDenominator(
-                algorithm,
-                seatsWon[result.partyCode],
-                firstDivisor,
-                numSeats,
-                totalVotes
-            );
-            const currentQuotient =
-                averageVotesPerSeat != null
-                    ? calculateAdjustedQuotient(
-                          algorithm,
-                          seatsWon[result.partyCode],
-                          averageVotesPerSeat,
-                          result.votes,
-                          firstDivisor,
-                          numSeats,
-                          totalVotes
-                      )
-                    : calculateQuotient(
-                          algorithm,
-                          seatsWon[result.partyCode],
-                          result.votes,
-                          firstDivisor,
-                          numSeats,
-                          totalVotes
-                      );
-            const currentPartyResult = {
-                partyCode: result.partyCode,
-                quotient: currentQuotient,
-                denominator: currentDenominator,
-                votes: result.votes,
-            };
-            seatResult.partyResults.push(currentPartyResult);
+        for (const partyCode in results) {
+            if (Object.prototype.hasOwnProperty.call(results, partyCode)) {
+                const result = results[partyCode];
 
-            if (!illegalPartyCodes.has(result.partyCode) && result.percentage > districtThreshold) {
-                tiedSeatWinners = updateWinners(tiedSeatWinners, currentPartyResult);
+                const currentDenominator = getDenominator(
+                    algorithm,
+                    seatsWon[partyCode],
+                    firstDivisor,
+                    numSeats,
+                    totalVotes
+                );
+                const currentQuotient =
+                    averageVotesPerSeat != null
+                        ? calculateAdjustedQuotient(
+                              algorithm,
+                              seatsWon[partyCode],
+                              averageVotesPerSeat,
+                              result.votes,
+                              firstDivisor,
+                              numSeats,
+                              totalVotes
+                          )
+                        : calculateQuotient(
+                              algorithm,
+                              seatsWon[partyCode],
+                              result.votes,
+                              firstDivisor,
+                              numSeats,
+                              totalVotes
+                          );
+                const currentPartyResult = {
+                    partyCode,
+                    quotient: currentQuotient,
+                    denominator: currentDenominator,
+                    votes: result.votes,
+                };
+                seatResult.partyResults.push(currentPartyResult);
+
+                if (!illegalPartyCodes.has(partyCode) && result.percentVotes > districtThreshold) {
+                    tiedSeatWinners = updateWinners(tiedSeatWinners, currentPartyResult);
+                }
             }
         }
 
@@ -404,11 +509,14 @@ export function generateLevelingSeatArray(
  *
  * @param results An array of results
  */
-function resultArrayToDictionary(results: Result[]): Dictionary<number> {
+function resultArrayToDictionary(results: Dictionary<PartyResult>): Dictionary<number> {
     const resultDict: Dictionary<number> = {};
-    results.forEach((result) => {
-        resultDict[result.partyCode] = result.votes;
-    });
+    for (const partyCode in results) {
+        if (results.hasOwnProperty(partyCode)) {
+            const partyVotes = results[partyCode];
+            resultDict[partyVotes.partyCode] = partyVotes.votes;
+        }
+    }
 
     return resultDict;
 }

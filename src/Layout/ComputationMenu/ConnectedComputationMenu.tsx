@@ -10,9 +10,9 @@ import {
     saveComparison,
     computationDefaults,
 } from "../../computation";
-import { Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
-import { getAlgorithmType } from "../../computation/logic";
+import { Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
 import { ComputationMenuPayload } from "./computation-menu-models";
+import { Dictionary } from "../../utilities/dictionary";
 
 const mapStateToProps = (
     state: RootState
@@ -20,7 +20,6 @@ const mapStateToProps = (
     ComputationMenuProps,
     | "computationPayload"
     | "settingsPayload"
-    | "electionType"
     | "showComparison"
     | "parameters"
     | "metrics"
@@ -29,7 +28,6 @@ const mapStateToProps = (
     | "use2021Distribution"
 > => ({
     computationPayload: {
-        election: state.computationState.election,
         algorithm: state.computationState.algorithm,
         firstDivisor: state.computationState.firstDivisor,
         electionThreshold: state.computationState.electionThreshold,
@@ -40,6 +38,7 @@ const mapStateToProps = (
         votes: state.computationState.votes,
         metrics: state.computationState.metrics,
         parameters: state.computationState.parameters,
+        partyMap: state.requestedDataState.partyMap,
     },
     settingsPayload: {
         electionYears: state.settingsState.electionYears,
@@ -55,7 +54,6 @@ const mapStateToProps = (
         areaFactor: state.settingsState.areaFactor,
         comparison: state.settingsState.comparison,
     },
-    electionType: state.requestedDataState.electionType,
     showComparison: state.presentationMenuState.showComparison,
     parameters: state.requestedDataState.parameters,
     metrics: state.requestedDataState.metrics,
@@ -79,7 +77,6 @@ const mapDispatchToProps = (
     updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => {
         if (autoCompute || forceCompute) {
             const payload: ComputationPayload = {
-                election: computationPayload.election,
                 algorithm: computationPayload.algorithm,
                 firstDivisor: computationPayload.firstDivisor,
                 electionThreshold: computationPayload.electionThreshold,
@@ -90,6 +87,7 @@ const mapDispatchToProps = (
                 votes: computationPayload.votes,
                 metrics: computationPayload.metrics,
                 parameters: computationPayload.parameters,
+                partyMap: computationPayload.partyMap,
             };
             const updateCalculationAction = updateComputation(payload);
             dispatch(updateCalculationAction);
@@ -105,10 +103,10 @@ const mapDispatchToProps = (
     },
     resetToHistoricalSettings: (
         settingsPayload: ComputationMenuPayload,
-        election: Election,
         votes: Votes[],
         metrics: Metrics[],
-        parameters: Parameters
+        parameters: Parameters,
+        partyMap: Dictionary<string>
     ) => {
         const firstDivisor = parameters.algorithm.parameters["First Divisor"]
             ? parameters.algorithm.parameters["First Divisor"]
@@ -116,7 +114,6 @@ const mapDispatchToProps = (
 
         if (settingsPayload.autoCompute) {
             const payload: ComputationPayload = {
-                election,
                 algorithm: parameters.algorithm.algorithm,
                 firstDivisor,
                 electionThreshold: parameters.threshold,
@@ -127,8 +124,9 @@ const mapDispatchToProps = (
                 votes,
                 metrics,
                 parameters,
+                partyMap,
             };
-            const updateHistoricalAction = updateHistorical(election, votes, metrics, parameters);
+            const updateHistoricalAction = updateHistorical(votes, metrics, parameters, partyMap);
             dispatch(updateHistoricalAction);
             const updateCalculationAction = updateComputation(payload);
             dispatch(updateCalculationAction);
@@ -136,12 +134,12 @@ const mapDispatchToProps = (
 
         const newSettingsPayload: ComputationMenuPayload = {
             ...settingsPayload,
-            algorithm: getAlgorithmType(election.algorithm),
+            algorithm: parameters.algorithm.algorithm,
             firstDivisor: firstDivisor.toString(),
-            electionThreshold: election.threshold.toString(),
+            electionThreshold: parameters.threshold.toString(),
             districtThreshold: "0",
-            districtSeats: election.seats.toString(),
-            levelingSeats: election.levelingSeats.toString(),
+            districtSeats: parameters.districtSeats.toString(),
+            levelingSeats: parameters.levelingSeats.toString(),
             areaFactor: parameters.areaFactor.toString(),
         };
         const updateSettingsAction = updateComputationMenu(newSettingsPayload);
@@ -155,8 +153,8 @@ const mapDispatchToProps = (
         const resetSavedSettingsAction = resetSavedSettings();
         dispatch(resetSavedSettingsAction);
     },
-    resetHistorical: (election: Election, votes: Votes[], metrics: Metrics[], parameters: Parameters) => {
-        const updateHistoricalAction = updateHistorical(election, votes, metrics, parameters);
+    resetHistorical: (votes: Votes[], metrics: Metrics[], parameters: Parameters, partyMap: Dictionary<string>) => {
+        const updateHistoricalAction = updateHistorical(votes, metrics, parameters, partyMap);
         dispatch(updateHistoricalAction);
     },
     saveComparison: () => {

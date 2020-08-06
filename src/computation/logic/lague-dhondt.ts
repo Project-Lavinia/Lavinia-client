@@ -1,18 +1,20 @@
-﻿import { ComputationPayload, LagueDhontResult, PartyResult, DistrictResult } from "..";
+﻿import { ComputationPayload, LagueDhontResult } from "..";
 
-import { Dictionary, dictionaryToArray } from "../../utilities/dictionary";
+import { dictionaryToArray } from "../../utilities/dictionary";
 
 import { distributeSeats, distributeLevelingSeats, calculateProportionality, finalizeDistrictCalculations } from ".";
 import { distributeDistrictSeatsOnDistricts } from "./utils";
-import { calculateFinalQuotients, isQuotientAlgorithm } from "./algorithm-utilities";
+import {
+    calculateFinalQuotients,
+    isQuotientAlgorithm,
+    constructDistrictResults,
+    getVotesPerDistrict,
+    constructPartyResults,
+    constructDistrictPartyResults,
+} from "./algorithm-utilities";
+import { toSum } from "../../utilities/reduce";
 
 export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
-    const partyResults: Dictionary<PartyResult> = {};
-    const districtPartyResults: Dictionary<Dictionary<PartyResult>> = {};
-    const districtResults: Dictionary<DistrictResult> = {};
-
-    let totalVotes = 0;
-
     // Calculate the district seats for each district
     const districtSeats = distributeDistrictSeatsOnDistricts(
         payload.areaFactor,
@@ -21,101 +23,31 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
         payload.metrics
     );
 
-    // Assemble a list of all parties as well as the number of votes per district
-    for (const county of payload.election.counties) {
-        districtResults[county.name] = {
-            name: county.name,
-            districtSeats: districtSeats[county.name],
-            levelingSeats: 0,
-            totalSeats: 0,
-            votes: 0,
-            percentVotes: 0,
-            votesPerSeat: 0,
-            districtSeatResult: [],
-            partyResults: [],
-        };
-        districtPartyResults[county.name] = {};
-
-        for (const party of county.results) {
-            totalVotes += party.votes;
-
-            districtResults[county.name].votes += party.votes;
-            districtPartyResults[county.name][party.partyCode] = {
-                partyCode: party.partyCode,
-                partyName: party.partyName,
-                votes: party.votes,
-                percentVotes: 0,
-                districtSeats: 0,
-                levelingSeats: 0,
-                totalSeats: 0,
-                proportionality: 0,
-            };
-            if (partyResults[party.partyCode] === undefined) {
-                partyResults[party.partyCode] = {
-                    partyCode: party.partyCode,
-                    partyName: party.partyName,
-                    votes: party.votes,
-                    percentVotes: 0,
-                    districtSeats: 0,
-                    levelingSeats: 0,
-                    totalSeats: 0,
-                    proportionality: 0,
-                };
-            } else {
-                partyResults[party.partyCode].votes += party.votes;
-            }
-        }
-    }
-
-    for (const county in districtPartyResults) {
-        for (const partyCode in partyResults) {
-            if (partyResults.hasOwnProperty(partyCode)) {
-                if (districtPartyResults[county][partyCode] === undefined) {
-                    const party = partyResults[partyCode];
-                    districtPartyResults[county][partyCode] = {
-                        partyCode: party.partyCode,
-                        partyName: party.partyName,
-                        votes: 0,
-                        percentVotes: 0,
-                        districtSeats: 0,
-                        levelingSeats: 0,
-                        totalSeats: 0,
-                        proportionality: 0,
-                    };
-                }
-            }
-        }
-    }
-
-    // Update percentages as all votes have been counted
-    for (const county of payload.election.counties) {
-        districtResults[county.name].percentVotes = (districtResults[county.name].votes / totalVotes) * 100;
-        for (const party of county.results) {
-            partyResults[party.partyCode].percentVotes = (partyResults[party.partyCode].votes / totalVotes) * 100;
-            districtPartyResults[county.name][party.partyCode].percentVotes =
-                (districtPartyResults[county.name][party.partyCode].votes / districtResults[county.name].votes) * 100;
-        }
-    }
+    const totalVotes = payload.votes.map((vote) => vote.votes).reduce(toSum, 0);
+    const districtVotes = getVotesPerDistrict(payload.votes);
+    const partyResults = constructPartyResults(payload.votes, totalVotes, payload.partyMap);
+    const districtPartyResults = constructDistrictPartyResults(payload.votes, districtVotes, payload.partyMap);
+    const districtResults = constructDistrictResults(districtSeats, districtVotes, totalVotes);
 
     // st. lague iterates over each county, and in turn, each party of the party, so first we have to create objects for partyCodes
-    for (const county of payload.election.counties) {
+    for (const metric of payload.metrics) {
         const distributionResult = distributeSeats(
             payload.algorithm,
             payload.firstDivisor,
             payload.districtThreshold,
-            districtSeats[county.name],
-            districtResults[county.name].votes,
-            county.results
+            districtSeats[metric.district],
+            districtResults[metric.district].votes,
+            districtPartyResults[metric.district]
         );
 
-        districtResults[county.name].districtSeatResult = distributionResult.seatResults;
+        districtResults[metric.district].districtSeatResult = distributionResult.seatResults;
 
         // Update how many district seats the party has won, both nationally and within the district
         for (const partyCode in distributionResult.seatsWon) {
             partyResults[partyCode].districtSeats += distributionResult.seatsWon[partyCode];
             partyResults[partyCode].totalSeats += distributionResult.seatsWon[partyCode];
-            districtPartyResults[county.name][partyCode].districtSeats += distributionResult.seatsWon[partyCode];
-            districtPartyResults[county.name][partyCode].totalSeats += distributionResult.seatsWon[partyCode];
+            districtPartyResults[metric.district][partyCode].districtSeats += distributionResult.seatsWon[partyCode];
+            districtPartyResults[metric.district][partyCode].totalSeats += distributionResult.seatsWon[partyCode];
         }
     }
 

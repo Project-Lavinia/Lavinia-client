@@ -1,4 +1,4 @@
-import { ComputationPayload, PartyResult, DistrictResult, PartyRestQuotients, Result } from "..";
+import { ComputationPayload, PartyResult, DistrictResult, PartyRestQuotients } from "..";
 import { Dictionary, dictionaryToArray } from "../../utilities/dictionary";
 import { distributeSeats } from ".";
 import { distributeLevelingSeatsOnDistricts, distributeLevelingSeatsOnDistrictsPre2005 } from "./utils";
@@ -47,7 +47,7 @@ export function distributeLevelingSeats(
     const wonLevelingPartyCodes = levelingPartyCodes.filter((partyCode) => partyResults[partyCode].levelingSeats > 0);
 
     let partyRestQuotients: Dictionary<PartyRestQuotients> = {};
-    const preOneLevelingSeatPerDistrict = payload.election.year < 2005;
+    const preOneLevelingSeatPerDistrict = payload.parameters.electionYear < 2005;
     if (preOneLevelingSeatPerDistrict) {
         partyRestQuotients = distributeLevelingSeatsOnDistrictsPre2005(
             payload,
@@ -85,22 +85,21 @@ function nationalDistributionFilter(
 ): NationalDistributionResult {
     let totalVotes = 0;
     let seatsToDistribute = payload.levelingSeats;
-    const levelingParties: Result[] = [];
+    const levelingParties: Dictionary<PartyResult> = {};
     for (const partyCode of levelingPartyCodes) {
         totalVotes += partyResults[partyCode].votes;
         seatsToDistribute += partyResults[partyCode].districtSeats;
-        const party: Result = {
-            countyId: -1,
-            electionId: -1,
-            partyId: -1,
-            resultId: -1,
-            countyName: "",
+        const party: PartyResult = {
+            districtSeats: -1,
+            levelingSeats: -1,
             partyCode,
             partyName: "",
+            percentVotes: -1,
+            proportionality: -1,
+            totalSeats: -1,
             votes: partyResults[partyCode].votes,
-            percentage: -1,
         };
-        levelingParties.push(party);
+        levelingParties[partyCode] = party;
     }
 
     // Compute the distribution of the total number of seats on the whole country
@@ -169,21 +168,20 @@ function finalQuotientLevelingSeatDistribution(
     payload: ComputationPayload
 ) {
     let totalVotes = 0;
-    const levelingParties = [];
+    const levelingParties: Dictionary<PartyResult> = {};
     for (const partyCode of levelingPartyCodes) {
         totalVotes += partyResults[partyCode].votes;
-        const party: Result = {
-            countyId: -1,
-            electionId: -1,
-            partyId: -1,
-            resultId: -1,
-            countyName: "",
+        const party: PartyResult = {
+            districtSeats: -1,
+            levelingSeats: -1,
             partyCode,
             partyName: "",
+            percentVotes: -1,
+            proportionality: -1,
+            totalSeats: -1,
             votes: partyResults[partyCode].votes,
-            percentage: partyResults[partyCode].percentVotes,
         };
-        levelingParties.push(party);
+        levelingParties[partyCode] = party;
     }
 
     // Distribute the leveling seats, taking the district seats into account

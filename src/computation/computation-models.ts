@@ -1,4 +1,4 @@
-import { Election, Votes, Metrics, Parameters } from "../requested-data/requested-data-models";
+import { Votes, Metrics, Parameters } from "../requested-data/requested-data-models";
 import { Dictionary } from "../utilities/dictionary";
 
 export enum AlgorithmType {
@@ -11,7 +11,6 @@ export enum AlgorithmType {
 }
 
 export interface ComputationPayload {
-    election: Election;
     algorithm: AlgorithmType;
     firstDivisor: number;
     districtThreshold: number;
@@ -22,6 +21,7 @@ export interface ComputationPayload {
     votes: Votes[];
     metrics: Metrics[];
     parameters: Parameters;
+    partyMap: Dictionary<string>;
 }
 
 export interface DistrictResult {
@@ -164,18 +164,6 @@ export interface NationalPartyResult {
 export interface PartyResultv2 extends NationalPartyResult {
     /** The district which the results are from */
     district: string;
-}
-
-export interface Result {
-    resultId: number;
-    votes: number;
-    percentage: number;
-    electionId: number;
-    partyId: number;
-    countyId: number;
-    countyName: string;
-    partyCode: string;
-    partyName: string;
 }
 
 export interface SeatPartyResult {

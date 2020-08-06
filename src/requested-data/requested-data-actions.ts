@@ -1,32 +1,24 @@
-﻿import { ElectionType, Votes, Metrics, Parameters } from "./requested-data-models";
+﻿import { Votes, Metrics, Parameters } from "./requested-data-models";
+import { Dictionary } from "../utilities/dictionary";
 
 /**
  * Enum containing all possible RequestedDataAction types.
  */
 export enum RequestedDataActionType {
-    INITIALIZE_REQUESTED_DATA = "INITIALIZE_REQUESTED_DATA",
     INTIIALIZE_REQUESTED_VOTES = "INITIALIZE_REQUESTED_VOTES",
     INITIALIZE_REQUESTED_METRICS = "INITIALIZE_REQUESTED_METRICS",
     INIITALIZE_REQUESTED_PARAMETERS = "INITIALIZE_REQUESTED_PARAMETERS",
+    INIITALIZE_REQUESTED_PARTY_MAP = "INTITIALIZE_REQUESTED_PARTY_MAP",
 }
 
 /**
  * Type containing all possible RequestedDataActions.
  */
 export type RequestedDataAction =
-    | InitializeRequestedData
     | InitializeRequestedVotes
     | InitializeRequestedMetrics
-    | InitializeRequestedParameters;
-
-/**
- * Action for initializing requested data.
- */
-export interface InitializeRequestedData {
-    type: RequestedDataActionType.INITIALIZE_REQUESTED_DATA;
-    electionType: ElectionType;
-    enableAutoSave: boolean;
-}
+    | InitializeRequestedParameters
+    | InitializeRequestedPartyMap;
 
 /**
  * Action for initializing requested votes.
@@ -53,17 +45,11 @@ export interface InitializeRequestedParameters {
 }
 
 /**
- * Action creator for initializing requested data.
- *
- * @param electionType - Election data fetched from the API.
+ * Action for initializing requested party map.
  */
-export function initializeRequestedData(electionType: ElectionType) {
-    const action: InitializeRequestedData = {
-        type: RequestedDataActionType.INITIALIZE_REQUESTED_DATA,
-        electionType,
-        enableAutoSave: true,
-    };
-    return action;
+export interface InitializeRequestedPartyMap {
+    type: RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP;
+    partyMap: Dictionary<string>;
 }
 
 /**
@@ -97,10 +83,23 @@ export function initializeRequestedMetrics(metrics: Metrics[]) {
  *
  * @param parameters - Parameters fetched from the API.
  */
-export function InitializeRequestedParameters(parameters: Parameters[]) {
+export function initializeRequestedParameters(parameters: Parameters[]) {
     const action: InitializeRequestedParameters = {
         type: RequestedDataActionType.INIITALIZE_REQUESTED_PARAMETERS,
         parameters,
+    };
+    return action;
+}
+
+/**
+ * Action creator for initializing requested PartyMap.
+ *
+ * @param partyMap - PartyMap fetched from the API.
+ */
+export function initializeRequestedPartyMap(partyMap: Dictionary<string>) {
+    const action: InitializeRequestedPartyMap = {
+        type: RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP,
+        partyMap,
     };
     return action;
 }

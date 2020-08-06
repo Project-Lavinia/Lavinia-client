@@ -1,7 +1,8 @@
 ﻿import { ComputationPayload, LagueDhontResult } from "./computation-models";
-import { ElectionType, Election, Votes, Metrics, Parameters } from "../requested-data/requested-data-models";
-import { getAlgorithmType, lagueDhont } from "./logic";
+import { Votes, Metrics, Parameters, FirstDivisor } from "../requested-data/requested-data-models";
+import { lagueDhont } from "./logic";
 import { unloadedParameters } from "./computation-state";
+import { Dictionary } from "../utilities/dictionary";
 
 /**
  * Enum containing all possible ComputationAction types.
@@ -38,29 +39,29 @@ export interface InitializeComputation extends ComputationPayload {
  * @param electionType - election data fetched from the API.
  */
 export function initializeComputation(
-    electionType: ElectionType,
+    year: number,
     votes: Votes[],
     metrics: Metrics[],
-    parameters: Parameters[]
+    parameters: Parameters[],
+    partyMap: Dictionary<string>
 ) {
-    const election: Election = electionType.elections[0]; // Most recent election
-    const filterVotes: Votes[] = votes.filter((vote) => vote.electionYear === election.year);
-    const filterMetrics: Metrics[] = metrics.filter((metric) => metric.electionYear === election.year);
+    const filterVotes: Votes[] = votes.filter((vote) => vote.electionYear === year);
+    const filterMetrics: Metrics[] = metrics.filter((metric) => metric.electionYear === year);
     const filterParameters: Parameters =
-        parameters.find((parameter) => parameter.electionYear === election.year) || unloadedParameters;
+        parameters.find((parameter) => parameter.electionYear === year) || unloadedParameters;
 
     const payload: ComputationPayload = {
-        election,
-        algorithm: getAlgorithmType(election.algorithm),
-        firstDivisor: election.firstDivisor,
-        electionThreshold: election.threshold,
+        algorithm: filterParameters.algorithm.algorithm,
+        firstDivisor: filterParameters.algorithm.parameters[FirstDivisor],
+        electionThreshold: filterParameters.threshold,
         districtThreshold: 0,
-        districtSeats: election.seats,
-        levelingSeats: election.levelingSeats,
+        districtSeats: filterParameters.districtSeats,
+        levelingSeats: filterParameters.levelingSeats,
         areaFactor: filterParameters.areaFactor,
         votes: filterVotes,
         metrics: filterMetrics,
         parameters: filterParameters,
+        partyMap,
     };
 
     const results = lagueDhont(payload);
@@ -149,19 +150,24 @@ export interface UpdateHistorical {
  *
  * @param election - the election to calculate based on its default parameters
  */
-export function updateHistorical(election: Election, votes: Votes[], metrics: Metrics[], parameters: Parameters) {
+export function updateHistorical(
+    votes: Votes[],
+    metrics: Metrics[],
+    parameters: Parameters,
+    partyMap: Dictionary<string>
+) {
     const payload: ComputationPayload = {
-        election,
-        algorithm: getAlgorithmType(election.algorithm),
-        districtSeats: election.seats,
-        levelingSeats: election.levelingSeats,
-        electionThreshold: election.threshold,
+        algorithm: parameters.algorithm.algorithm,
+        districtSeats: parameters.districtSeats,
+        levelingSeats: parameters.levelingSeats,
+        electionThreshold: parameters.threshold,
         districtThreshold: 0,
-        firstDivisor: election.firstDivisor,
+        firstDivisor: parameters.algorithm.parameters[FirstDivisor],
         areaFactor: parameters.areaFactor,
         votes,
         metrics,
         parameters,
+        partyMap,
     };
     const action: UpdateHistorical = {
         type: ComputationActionType.UPDATE_HISTORICAL,
