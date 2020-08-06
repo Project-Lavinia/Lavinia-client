@@ -1,9 +1,22 @@
 /// <reference types="cypress" />
-
 describe("ComputationMenu", () => {
+    const timeoutLength = 30000;
+    let previousFetch = performance.now();
+    let localStorageCache = {};
+
     beforeEach(() => {
-        cy.clearLocalStorage();
         cy.viewport(1080, 720);
+        const currentTime = performance.now();
+        if (currentTime - previousFetch < timeoutLength) {
+            cy.copyStorage(localStorageCache, localStorage);
+        } else {
+            previousFetch = currentTime;
+        }
+    });
+
+    afterEach(() => {
+        localStorageCache = {};
+        cy.copyStorage(localStorage, localStorageCache);
     });
 
     function waitForLoad(iteration: number = 0) {
