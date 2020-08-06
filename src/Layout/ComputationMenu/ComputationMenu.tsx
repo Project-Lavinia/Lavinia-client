@@ -279,7 +279,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
         const metrics = this.props.metrics.filter((metric) => metric.electionYear === distributionYear);
         const parameters =
             this.props.parameters.find((parameter) => parameter.electionYear === year) || unloadedParameters;
-        if (parameters !== undefined) {
+        if (parameters) {
             this.props.updateCalculation(
                 {
                     algorithm: this.props.settingsPayload.algorithm,
