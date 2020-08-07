@@ -7,6 +7,6 @@
      * @param decimals number of decimals. 
      */
     export function numberFormat(value: number, decimals?: number | undefined) {
-        const fractionDigits = decimals ? { minimumFractionDigits: decimals, maximumFractionDigits: decimals } : undefined;
+        const fractionDigits = decimals ? { minimumFractionDigits: decimals, maximumFractionDigits: decimals } : {};
         return new Intl.NumberFormat("nb-NO", fractionDigits).format(value);
     }
