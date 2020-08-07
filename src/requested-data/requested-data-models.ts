@@ -1,4 +1,4 @@
-import { Dictionary, RawDictionaryEntry } from "../utilities/dictionary";
+import { RawDictionaryEntry } from "../utilities/dictionary";
 import { AlgorithmType } from "../computation";
 
 export interface Votes {
@@ -25,7 +25,7 @@ export interface RawAlgorithm {
 
 export interface Algorithm {
     algorithm: AlgorithmType;
-    parameters: Dictionary<number>;
+    parameters: _.Dictionary<number>;
 }
 
 export interface RawParameters {

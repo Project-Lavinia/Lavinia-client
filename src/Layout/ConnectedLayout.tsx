@@ -14,7 +14,6 @@ import { initializePresentation } from "./PresentationMenu";
 import { stateIsInvalid } from "../store/version";
 import { rawParametersToParametersConverter } from "../requested-data/requested-data-utilities";
 import { RootState } from "../reducers";
-import { createMapFromObject } from "../utilities/map";
 
 const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded"> => ({
     dataLoaded: state.requestedDataState.dataLoaded,
@@ -42,8 +41,7 @@ const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState">
             const initializeRequestedParametersAction = initializeRequestedParameters(parameters);
             dispatch(initializeRequestedParametersAction);
 
-            const partyMapObject = await request<{ [name: string]: string }>(partyMapUri, {});
-            const partyMap = createMapFromObject(partyMapObject);
+            const partyMap = await request<_.Dictionary<string>>(partyMapUri, {});
             const initializeRequestedPartyMapAction = initializeRequestedPartyMap(partyMap);
             dispatch(initializeRequestedPartyMapAction);
 

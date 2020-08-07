@@ -29,13 +29,13 @@ export interface ComputationMenuProps {
         votes: Votes[],
         metrics: Metrics[],
         parameters: Parameters,
-        partyMap: Map<string, string>
+        partyMap: _.Dictionary<string>
     ) => any;
     resetHistorical: (
         votes: Votes[],
         metrics: Metrics[],
         parameters: Parameters,
-        partyMap: Map<string, string>
+        partyMap: _.Dictionary<string>
     ) => void;
     resetComparison: () => void;
     saveComparison: () => void;

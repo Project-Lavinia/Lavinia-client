@@ -1,5 +1,5 @@
 import { ComputationPayload, PartyResult, DistrictResult, PartyRestQuotients } from "..";
-import { Dictionary, dictionaryToArray } from "../../utilities/dictionary";
+import { dictionaryToArray } from "../../utilities/dictionary";
 import { distributeSeats } from ".";
 import { distributeLevelingSeatsOnDistricts, distributeLevelingSeatsOnDistrictsPre2005 } from "./utils";
 import { DistributionResult, NationalDistributionResult } from "../../computation/computation-models";
@@ -15,9 +15,9 @@ import { isLargestFractionAlgorithm, isQuotientAlgorithm, shouldApply2005Reform 
  */
 export function distributeLevelingSeats(
     payload: ComputationPayload,
-    partyResults: Dictionary<PartyResult>,
-    districtPartyResults: Dictionary<Dictionary<PartyResult>>,
-    districtResults: Dictionary<DistrictResult>
+    partyResults: _.Dictionary<PartyResult>,
+    districtPartyResults: _.Dictionary<_.Dictionary<PartyResult>>,
+    districtResults: _.Dictionary<DistrictResult>
 ): PartyRestQuotients[] {
     const allPartyCodes = [...Object.keys(partyResults)];
     // Filter out parties with less than the threshold
@@ -46,7 +46,7 @@ export function distributeLevelingSeats(
 
     const wonLevelingPartyCodes = levelingPartyCodes.filter((partyCode) => partyResults[partyCode].levelingSeats > 0);
 
-    let partyRestQuotients: Dictionary<PartyRestQuotients> = {};
+    let partyRestQuotients: _.Dictionary<PartyRestQuotients> = {};
     if (shouldApply2005Reform(payload.parameters.electionYear)) {
         partyRestQuotients = distributeLevelingSeatsOnDistricts(
             payload,
@@ -80,11 +80,11 @@ export function distributeLevelingSeats(
 function nationalDistributionFilter(
     levelingPartyCodes: string[],
     payload: ComputationPayload,
-    partyResults: Dictionary<PartyResult>
+    partyResults: _.Dictionary<PartyResult>
 ): NationalDistributionResult {
     let totalVotes = 0;
     let seatsToDistribute = payload.levelingSeats;
-    const levelingParties: Dictionary<PartyResult> = {};
+    const levelingParties: _.Dictionary<PartyResult> = {};
     for (const partyCode of levelingPartyCodes) {
         totalVotes += partyResults[partyCode].votes;
         seatsToDistribute += partyResults[partyCode].districtSeats;
@@ -137,7 +137,7 @@ function nationalDistributionFilter(
  */
 function finalLevelingSeatDistribution(
     levelingPartyCodes: string[],
-    partyResults: Dictionary<PartyResult>,
+    partyResults: _.Dictionary<PartyResult>,
     payload: ComputationPayload,
     nationalDistribution: DistributionResult
 ): DistributionResult {
@@ -163,11 +163,11 @@ function finalLevelingSeatDistribution(
  */
 function finalQuotientLevelingSeatDistribution(
     levelingPartyCodes: string[],
-    partyResults: Dictionary<PartyResult>,
+    partyResults: _.Dictionary<PartyResult>,
     payload: ComputationPayload
 ) {
     let totalVotes = 0;
-    const levelingParties: Dictionary<PartyResult> = {};
+    const levelingParties: _.Dictionary<PartyResult> = {};
     for (const partyCode of levelingPartyCodes) {
         totalVotes += partyResults[partyCode].votes;
         const party: PartyResult = {
@@ -205,10 +205,10 @@ function finalQuotientLevelingSeatDistribution(
  */
 function finalLargestFractionLevelingSeatDistribution(
     levelingPartyCodes: string[],
-    partyResults: Dictionary<PartyResult>,
+    partyResults: _.Dictionary<PartyResult>,
     nationalDistribution: DistributionResult
 ): DistributionResult {
-    const levelingSeatDistribution: Dictionary<number> = {};
+    const levelingSeatDistribution: _.Dictionary<number> = {};
     levelingPartyCodes.forEach((partyCode) => {
         levelingSeatDistribution[partyCode] =
             nationalDistribution.seatsWon[partyCode] - partyResults[partyCode].districtSeats;

@@ -1,5 +1,4 @@
 import { Votes, Metrics, Parameters } from "../requested-data/requested-data-models";
-import { Dictionary } from "../utilities/dictionary";
 
 export enum AlgorithmType {
     SAINTE_LAGUE = "SAINTE_LAGUE",
@@ -21,7 +20,7 @@ export interface ComputationPayload {
     votes: Votes[];
     metrics: Metrics[];
     parameters: Parameters;
-    partyMap: Map<string, string>;
+    partyMap: _.Dictionary<string>;
 }
 
 export interface DistrictResult {
@@ -83,7 +82,7 @@ export interface PartyQuotient {
 
 export interface DistributionResult {
     /** A dictionary taking partyCodes and returning the matching number of seats won in this distribution */
-    seatsWon: Dictionary<number>;
+    seatsWon: _.Dictionary<number>;
     /** List of information regarding the distribution of the individual seats */
     seatResults: SeatResult[];
 }

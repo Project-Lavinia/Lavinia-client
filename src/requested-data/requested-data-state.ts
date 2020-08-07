@@ -6,7 +6,7 @@ export interface RequestedDataState {
     votes: Votes[];
     metrics: Metrics[];
     parameters: Parameters[];
-    partyMap: Map<string, string>;
+    partyMap: _.Dictionary<string>;
 }
 
 export const unloadedState: RequestedDataState = {
@@ -15,5 +15,5 @@ export const unloadedState: RequestedDataState = {
     votes: [],
     metrics: [],
     parameters: [],
-    partyMap: new Map<string, string>(),
+    partyMap: {},
 };

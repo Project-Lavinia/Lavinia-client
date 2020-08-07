@@ -28,24 +28,28 @@ export function requestedData(
                 ...state,
                 votes: action.votes,
                 dataLoaded: checkStateLoaded(state, action),
+                enableAutoSave: checkStateLoaded(state, action),
             };
         case RequestedDataActionType.INITIALIZE_REQUESTED_METRICS:
             return {
                 ...state,
                 metrics: action.metrics,
                 dataLoaded: checkStateLoaded(state, action),
+                enableAutoSave: checkStateLoaded(state, action),
             };
         case RequestedDataActionType.INIITALIZE_REQUESTED_PARAMETERS:
             return {
                 ...state,
                 parameters: action.parameters,
                 dataLoaded: checkStateLoaded(state, action),
+                enableAutoSave: checkStateLoaded(state, action),
             };
         case RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP:
             return {
                 ...state,
                 partyMap: action.partyMap,
                 dataLoaded: checkStateLoaded(state, action),
+                enableAutoSave: checkStateLoaded(state, action),
             };
         default:
             return state;

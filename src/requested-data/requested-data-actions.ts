@@ -48,7 +48,7 @@ export interface InitializeRequestedParameters {
  */
 export interface InitializeRequestedPartyMap {
     type: RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP;
-    partyMap: Map<string, string>;
+    partyMap: _.Dictionary<string>;
 }
 
 /**
@@ -95,7 +95,7 @@ export function initializeRequestedParameters(parameters: Parameters[]) {
  *
  * @param partyMap - PartyMap fetched from the API.
  */
-export function initializeRequestedPartyMap(partyMap: Map<string, string>) {
+export function initializeRequestedPartyMap(partyMap: _.Dictionary<string>) {
     const action: InitializeRequestedPartyMap = {
         type: RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP,
         partyMap,

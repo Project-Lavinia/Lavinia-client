@@ -7,7 +7,6 @@
     LevelingSeat,
     DistrictQuotients,
 } from "..";
-import { Dictionary } from "../../utilities/dictionary";
 import { SeatPartyResult } from "./../../computation/computation-models";
 import * as _ from "lodash";
 import { largestFraction } from "./distribution";
@@ -18,11 +17,11 @@ import { calculatePercent } from "../../utilities/number";
 const illegalPartyCodes = new Set(["BLANKE"]);
 
 export function constructDistrictResults(
-    districtSeats: Dictionary<number>,
-    districtVotes: Dictionary<number>,
+    districtSeats: _.Dictionary<number>,
+    districtVotes: _.Dictionary<number>,
     totalVotes: number
-): Dictionary<DistrictResult> {
-    const districtResults: Dictionary<DistrictResult> = {};
+): _.Dictionary<DistrictResult> {
+    const districtResults: _.Dictionary<DistrictResult> = {};
     for (const district in districtSeats) {
         if (districtSeats.hasOwnProperty(district)) {
             districtResults[district] = {
@@ -45,9 +44,9 @@ export function constructDistrictResults(
 export function constructPartyResults(
     votes: Votes[],
     totalVotes: number,
-    partyMap: Map<string, string>
-): Dictionary<PartyResult> {
-    const partyResults: Dictionary<PartyResult> = {};
+    partyMap: _.Dictionary<string>
+): _.Dictionary<PartyResult> {
+    const partyResults: _.Dictionary<PartyResult> = {};
 
     for (const vote of votes) {
         if (vote.party in partyResults) {
@@ -55,7 +54,7 @@ export function constructPartyResults(
         } else {
             partyResults[vote.party] = {
                 partyCode: vote.party,
-                partyName: partyMap.get(vote.party)!,
+                partyName: partyMap[vote.party],
                 votes: vote.votes,
                 percentVotes: 0,
                 districtSeats: 0,
@@ -78,10 +77,10 @@ export function constructPartyResults(
 
 export function constructDistrictPartyResults(
     votes: Votes[],
-    districtVotes: Dictionary<number>,
-    partyMap: Map<string, string>
-): Dictionary<Dictionary<PartyResult>> {
-    const districtPartyResults: Dictionary<Dictionary<PartyResult>> = {};
+    districtVotes: _.Dictionary<number>,
+    partyMap: _.Dictionary<string>
+): _.Dictionary<_.Dictionary<PartyResult>> {
+    const districtPartyResults: _.Dictionary<_.Dictionary<PartyResult>> = {};
 
     for (const vote of votes) {
         if (!districtPartyResults[vote.district]) {
@@ -89,7 +88,7 @@ export function constructDistrictPartyResults(
         }
         districtPartyResults[vote.district][vote.party] = {
             partyCode: vote.party,
-            partyName: partyMap.get(vote.party)!,
+            partyName: partyMap[vote.party],
             votes: vote.votes,
             percentVotes: calculatePercent(vote.votes, districtVotes[vote.district]),
             districtSeats: 0,
@@ -101,8 +100,8 @@ export function constructDistrictPartyResults(
     return districtPartyResults;
 }
 
-export function getVotesPerDistrict(votes: Votes[]): Dictionary<number> {
-    const voteCount: Dictionary<number> = {};
+export function getVotesPerDistrict(votes: Votes[]): _.Dictionary<number> {
+    const voteCount: _.Dictionary<number> = {};
     for (const vote of votes) {
         if (vote.district in voteCount) {
             voteCount[vote.district] += vote.votes;
@@ -130,9 +129,9 @@ export function distributeSeats(
     districtThreshold: number,
     numSeats: number,
     totalVotes: number,
-    results: Dictionary<PartyResult>,
+    results: _.Dictionary<PartyResult>,
     averageVotesPerSeat?: number,
-    partyResults?: Dictionary<PartyResult>
+    partyResults?: _.Dictionary<PartyResult>
 ): DistributionResult {
     if (isLargestFractionAlgorithm(algorithm)) {
         const electionNumber = getElectionNumber(algorithm, totalVotes, numSeats);
@@ -140,8 +139,8 @@ export function distributeSeats(
         return largestFraction(numSeats, partyVotes, electionNumber);
     }
 
-    const seatsWon: Dictionary<number> = {};
-    const currentSeatsWon: Dictionary<number> = {};
+    const seatsWon: _.Dictionary<number> = {};
+    const currentSeatsWon: _.Dictionary<number> = {};
     const seatResults: SeatResult[] = [];
 
     if (partyResults === undefined) {
@@ -311,9 +310,9 @@ function getElectionNumber(algorithm: AlgorithmType, totalVotes: number, totalSe
  */
 export function calculateProportionality(
     totalSeats: number,
-    partyResults: Dictionary<PartyResult>,
-    districtPartyResults: Dictionary<Dictionary<PartyResult>>,
-    districtResults: Dictionary<DistrictResult>
+    partyResults: _.Dictionary<PartyResult>,
+    districtPartyResults: _.Dictionary<_.Dictionary<PartyResult>>,
+    districtResults: _.Dictionary<DistrictResult>
 ) {
     for (const partyCode in partyResults) {
         if (partyResults.hasOwnProperty(partyCode) && !illegalPartyCodes.has(partyCode)) {
@@ -374,7 +373,7 @@ export function calculateQuotient(
  * Calculates the total number of seats and the average number of votes per seat for each district
  * @param districtResults The district results to finalize
  */
-export function finalizeDistrictCalculations(districtResults: Dictionary<DistrictResult>) {
+export function finalizeDistrictCalculations(districtResults: _.Dictionary<DistrictResult>) {
     for (const district in districtResults) {
         if (districtResults.hasOwnProperty(district)) {
             districtResults[district].totalSeats =
@@ -389,7 +388,7 @@ export function calculateFinalQuotients(
     algorithm: AlgorithmType,
     firstDivisor: number,
     adjusted: boolean,
-    districtResults: Dictionary<DistrictResult>
+    districtResults: _.Dictionary<DistrictResult>
 ): DistrictQuotients[] {
     const finalQuotients: DistrictQuotients[] = [];
     for (const districtName in districtResults) {
@@ -438,9 +437,9 @@ export function calculateFinalQuotients(
 /**
  * Sorts a list of leveling seats as described here: https://lovdata.no/NL/lov/2002-06-28-57/§11-6
  * @param levelingSeats The list of leveling seats to be sorted
- * @param partyResults A dictionary used to look up how many votes the parties got
+ * @param partyResults A _.Dictionary used to look up how many votes the parties got
  */
-export function sortLevelingSeats(levelingSeats: LevelingSeat[], partyResults: Dictionary<PartyResult>) {
+export function sortLevelingSeats(levelingSeats: LevelingSeat[], partyResults: _.Dictionary<PartyResult>) {
     return levelingSeats.sort((v, t) => {
         if (t.quotient !== v.quotient) {
             return t.quotient - v.quotient;
@@ -457,9 +456,9 @@ export function sortLevelingSeats(levelingSeats: LevelingSeat[], partyResults: D
 export function generateLevelingSeatArray(
     algorithm: AlgorithmType,
     levelingPartyCodes: string[],
-    partyResults: Dictionary<PartyResult>,
-    districtResults: Dictionary<DistrictResult>,
-    districtPartyResults: Dictionary<Dictionary<PartyResult>>,
+    partyResults: _.Dictionary<PartyResult>,
+    districtResults: _.Dictionary<DistrictResult>,
+    districtPartyResults: _.Dictionary<_.Dictionary<PartyResult>>,
     useAdjustedQuotient: boolean
 ): LevelingSeat[] {
     let levelingSeats: LevelingSeat[] = [];
@@ -505,12 +504,12 @@ export function generateLevelingSeatArray(
 }
 
 /**
- * Converts an array of results to a dictionary from Party Code to Votes.
+ * Converts an array of results to a Dictionary from Party Code to Votes.
  *
  * @param results An array of results
  */
-function resultArrayToDictionary(results: Dictionary<PartyResult>): Dictionary<number> {
-    const resultDict: Dictionary<number> = {};
+function resultArrayToDictionary(results: _.Dictionary<PartyResult>): _.Dictionary<number> {
+    const resultDict: _.Dictionary<number> = {};
     for (const partyCode in results) {
         if (results.hasOwnProperty(partyCode)) {
             const partyVotes = results[partyCode];

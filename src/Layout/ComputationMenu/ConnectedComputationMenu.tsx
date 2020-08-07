@@ -105,7 +105,7 @@ const mapDispatchToProps = (
         votes: Votes[],
         metrics: Metrics[],
         parameters: Parameters,
-        partyMap: Map<string, string>
+        partyMap: _.Dictionary<string>
     ) => {
         const firstDivisor = parameters.algorithm.parameters["First Divisor"]
             ? parameters.algorithm.parameters["First Divisor"]
@@ -152,7 +152,7 @@ const mapDispatchToProps = (
         const resetSavedSettingsAction = resetSavedSettings();
         dispatch(resetSavedSettingsAction);
     },
-    resetHistorical: (votes: Votes[], metrics: Metrics[], parameters: Parameters, partyMap: Map<string, string>) => {
+    resetHistorical: (votes: Votes[], metrics: Metrics[], parameters: Parameters, partyMap: _.Dictionary<string>) => {
         const updateHistoricalAction = updateHistorical(votes, metrics, parameters, partyMap);
         dispatch(updateHistoricalAction);
     },

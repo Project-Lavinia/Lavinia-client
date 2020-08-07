@@ -42,7 +42,7 @@ export function initializeComputation(
     votes: Votes[],
     metrics: Metrics[],
     parameters: Parameters[],
-    partyMap: Map<string, string>
+    partyMap: _.Dictionary<string>
 ) {
     const filterVotes: Votes[] = votes.filter((vote) => vote.electionYear === year);
     const filterMetrics: Metrics[] = metrics.filter((metric) => metric.electionYear === year);
@@ -153,7 +153,7 @@ export function updateHistorical(
     votes: Votes[],
     metrics: Metrics[],
     parameters: Parameters,
-    partyMap: Map<string, string>
+    partyMap: _.Dictionary<string>
 ) {
     const payload: ComputationPayload = {
         algorithm: parameters.algorithm.algorithm,
