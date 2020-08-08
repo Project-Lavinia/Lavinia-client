@@ -5,9 +5,10 @@ function checkStateLoaded(state: RequestedDataState, action: RequestedDataAction
     return (
         (state.electionType.countryId !== -1 || action.type === RequestedDataActionType.INITIALIZE_REQUESTED_DATA) &&
         (state.metrics.length > 0 || action.type === RequestedDataActionType.INITIALIZE_REQUESTED_METRICS) &&
-        (state.parameters.length > 0 || action.type === RequestedDataActionType.INIITALIZE_REQUESTED_PARAMETERS) &&
-        (state.votes.length > 0 || action.type === RequestedDataActionType.INTIIALIZE_REQUESTED_VOTES) &&
-        (Object.keys(state.partyMap).length > 0 || action.type === RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP)
+        (state.parameters.length > 0 || action.type === RequestedDataActionType.INITIALIZE_REQUESTED_PARAMETERS) &&
+        (state.votes.length > 0 || action.type === RequestedDataActionType.INITIALIZE_REQUESTED_VOTES) &&
+        (Object.keys(state.partyMap).length > 0 ||
+            action.type === RequestedDataActionType.INITIALIZE_REQUESTED_PARTY_MAP)
     );
 }
 
@@ -30,7 +31,7 @@ export function requestedData(
                 enableAutoSave: true,
                 dataLoaded: checkStateLoaded(state, action),
             };
-        case RequestedDataActionType.INTIIALIZE_REQUESTED_VOTES:
+        case RequestedDataActionType.INITIALIZE_REQUESTED_VOTES:
             return {
                 ...state,
                 votes: action.votes,
@@ -42,13 +43,13 @@ export function requestedData(
                 metrics: action.metrics,
                 dataLoaded: checkStateLoaded(state, action),
             };
-        case RequestedDataActionType.INIITALIZE_REQUESTED_PARAMETERS:
+        case RequestedDataActionType.INITIALIZE_REQUESTED_PARAMETERS:
             return {
                 ...state,
                 parameters: action.parameters,
                 dataLoaded: checkStateLoaded(state, action),
             };
-        case RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP:
+        case RequestedDataActionType.INITIALIZE_REQUESTED_PARTY_MAP:
             return {
                 ...state,
                 partyMap: action.partyMap,
