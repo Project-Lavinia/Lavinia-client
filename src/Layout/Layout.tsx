@@ -21,8 +21,7 @@ export class Layout extends React.Component<LayoutProps, {}> {
         if (this.props.hamburgerExpanded) {
             this.props.toggleHamburger!(true);
         }
-    }
-
+    };
 
     public render() {
         const showLoading = this.props.dataLoaded ? "" : " is-active";
@@ -39,7 +38,7 @@ export class Layout extends React.Component<LayoutProps, {}> {
                     <div className="column is-narrow">
                         <ConnectedComputationMenu />
                     </div>
-                    <div className="column" style={{overflowX: "auto"}}>
+                    <div className="column presentation">
                         <ConnectedPresentationSettings />
                         <ConnectedPresentationSelection />
                         <ConnectedPresentation />
