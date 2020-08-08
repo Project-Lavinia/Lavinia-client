@@ -1,5 +1,6 @@
 ﻿import { RequestedDataActionType, RequestedDataAction } from "./requested-data-actions";
 import { RequestedDataState, unloadedState } from "./requested-data-state";
+import { checkExhaustively } from "../utilities";
 
 function checkStateLoaded(state: RequestedDataState, action: RequestedDataAction): boolean {
     return (
@@ -56,6 +57,7 @@ export function requestedData(
                 dataLoaded: checkStateLoaded(state, action),
             };
         default:
+            checkExhaustively(action);
             return state;
     }
 }
