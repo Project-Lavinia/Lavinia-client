@@ -1,6 +1,7 @@
 import * as React from "react";
 import { VulnerableDistrictSeat } from "../../../utilities/district";
 import { Dictionary } from "lodash";
+import { PartyName } from "../../../common/PartyName";
 
 export interface VulnerableDistrictSeatTextProps {
     mostVulnerable?: VulnerableDistrictSeat | undefined;
@@ -18,9 +19,9 @@ export class VulnerableDistrictSeatText extends React.Component<VulnerableDistri
                     {" Det mest utsatte sistemandatet (relativt til kvotient) var i "}
                     {this.props.mostVulnerable.district}
                     {" og ble vunnet av "}
-                    <b>{partyMap[winnerPartyCode]}</b>
+                    <PartyName name={winnerPartyCode} partyMap={partyMap} />
                     {". "}
-                    <b>{partyMap[runnerUpPartyCode]}</b>
+                    <PartyName name={runnerUpPartyCode} partyMap={partyMap} />
                     {" ville trengt "}
                     {this.props.mostVulnerable.moreVotesToWin.toFixed(0)}
                     {" flere stemmer for å vinne det."}
