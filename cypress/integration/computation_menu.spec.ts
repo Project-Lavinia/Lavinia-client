@@ -79,7 +79,7 @@ describe("ComputationMenu", () => {
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
-                cy.get("#merge-setting").check();
+                cy.get("#merge-setting").check({force: true});
                 cy.get("#merge-setting").should("be.checked");
             });
         });
@@ -92,7 +92,7 @@ describe("ComputationMenu", () => {
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
-                cy.get("#2021-distribution-setting").check();
+                cy.get("#2021-distribution-setting").check({force: true});
                 cy.get("#2021-distribution-setting").should("be.checked");
             });
         });
@@ -105,8 +105,8 @@ describe("ComputationMenu", () => {
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
-                cy.get("#merge-setting").check();
-                cy.get("#2021-distribution-setting").check();
+                cy.get("#merge-setting").check({force: true});
+                cy.get("#2021-distribution-setting").check({force: true});
                 cy.get("#merge-setting").should("be.checked");
                 cy.get("#2021-distribution-setting").should("be.checked");
             });
@@ -120,8 +120,8 @@ describe("ComputationMenu", () => {
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
-                cy.get("#2021-distribution-setting").check();
-                cy.get("#merge-setting").check();
+                cy.get("#2021-distribution-setting").check({force: true});
+                cy.get("#merge-setting").check({force: true});
                 cy.get("#merge-setting").should("be.checked");
                 cy.get("#2021-distribution-setting").should("be.checked");
             });
