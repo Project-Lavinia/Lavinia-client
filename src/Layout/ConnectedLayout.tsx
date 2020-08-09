@@ -14,12 +14,13 @@ import { initializePresentation } from "./PresentationMenu";
 import { stateIsInvalid } from "../store/version";
 import { rawParametersToParametersConverter } from "../requested-data/requested-data-utilities";
 import { RootState } from "../reducers";
+import { clearState } from "../reducers/global-actions";
 
 const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded"> => ({
     dataLoaded: state.requestedDataState.dataLoaded,
 });
 
-const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState"> => ({
+const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState" | "clearState"> => ({
     initializeState: async () => {
         const votesUri = process.env.API_V3 + "votes?partyCode=ALL&district=ALL";
         const metricsUri = process.env.API_V3 + "metrics?district=ALL";
@@ -62,6 +63,11 @@ const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState">
             );
             dispatch(initializeComputationAction);
         }
+    },
+
+    clearState: () => {
+        const clearStateAction = clearState();
+        dispatch(clearStateAction);
     },
 });
 

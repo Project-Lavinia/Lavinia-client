@@ -1,6 +1,7 @@
 ﻿import { ComputationState, unloadedState } from "./computation-state";
 import { ComputationActionType, ComputationAction } from "./computation-actions";
 import { checkExhaustively } from "../utilities";
+import { GlobalActionType } from "../reducers/global-actions";
 
 /**
  * Reducer for computations. Handles all state changes to the computation.
@@ -59,6 +60,8 @@ export function computation(state: ComputationState = unloadedState, action: Com
                 ...state,
                 historical: action.historical,
             };
+        case GlobalActionType.CLEAR_STATE:
+            return unloadedState;
         default:
             checkExhaustively(action);
             return state;

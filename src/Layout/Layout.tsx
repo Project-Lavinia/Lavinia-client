@@ -8,11 +8,20 @@ import { ConnectedPresentationSelection } from "./PresentationMenu/PresentationS
 export interface LayoutProps {
     dataLoaded: boolean;
     initializeState: () => any;
+    clearState: () => void;
 }
 
 export class Layout extends React.Component<LayoutProps, {}> {
     async componentWillMount() {
         await this.props.initializeState();
+    }
+
+    async componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+        this.props.clearState();
+        localStorage.clear();
+        await this.props.initializeState();
+        console.error(error.name);
+        console.error(error.message);
     }
 
     public render() {

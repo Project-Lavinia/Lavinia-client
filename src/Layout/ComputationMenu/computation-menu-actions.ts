@@ -1,6 +1,7 @@
 ﻿import { Parameters, FirstDivisor } from "../../requested-data/requested-data-models";
 import { ComputationMenuPayload } from "./computation-menu-models";
 import { AlgorithmType } from "../../computation";
+import { ClearState } from "../../reducers/global-actions";
 
 /**
  * Enum containing all possible ComputationMenuAction types.
@@ -21,7 +22,8 @@ export type ComputationMenuAction =
     | UpdateComputationMenu
     | ToggleAutoCompute
     | SaveSettings
-    | ResetSavedSettings;
+    | ResetSavedSettings
+    | ClearState;
 
 /**
  * Action for initializing the computation menu.
