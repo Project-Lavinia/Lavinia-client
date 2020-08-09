@@ -35,7 +35,7 @@ export class Tutorial extends React.Component<TutorialProps, {}> {
                         </p>
                     </section>
                     <footer className="modal-card-foot has-text-centered" style={{ justifyContent: "center" }}>
-                        <button className="button is-medium" onClick={this.props.closeTutorial}>
+                        <button className="button is-medium" onClick={this.props.closeTutorial} id={"close_tutorial_button"}>
                             OK
                         </button>
                     </footer>
