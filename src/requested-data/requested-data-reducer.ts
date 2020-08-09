@@ -52,12 +52,6 @@ export function requestedData(
                 dataLoaded: checkStateLoaded(state, action),
                 enableAutoSave: checkStateLoaded(state, action),
             };
-        case RequestedDataActionType.INITIALIZE_REQUESTED_PARTY_MAP:
-            return {
-                ...state,
-                partyMap: action.partyMap,
-                dataLoaded: checkStateLoaded(state, action),
-            };
         default:
             checkExhaustively(action);
             return state;

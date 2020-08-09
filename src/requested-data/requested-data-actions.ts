@@ -47,7 +47,7 @@ export interface InitializeRequestedParameters {
  * Action for initializing requested party map.
  */
 export interface InitializeRequestedPartyMap {
-    type: RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP;
+    type: RequestedDataActionType.INITIALIZE_REQUESTED_PARTY_MAP;
     partyMap: _.Dictionary<string>;
 }
 
