@@ -7,13 +7,8 @@ import { NoSeatsCheckbox } from "./NoSeatsCheckbox";
 import { ComparisonCheckbox } from "./ComparisonCheckbox";
 import { FiltersCheckbox } from "./FiltersCheckbox";
 import { MergeDistrictsCheckbox } from "./MergeDistrictsCheckbox";
-import { ElectionType, Votes, Metrics, Parameters } from "../../../requested-data/requested-data-models";
-import {
-    mergeElectionDistricts,
-    districtMap,
-    mergeVoteDistricts,
-    mergeMetricDistricts,
-} from "../../../computation/logic/district-merging";
+import { Votes, Metrics, Parameters } from "../../../requested-data/requested-data-models";
+import { districtMap, mergeVoteDistricts, mergeMetricDistricts } from "../../../computation/logic/district-merging";
 import { ComputationMenuPayload } from "../../ComputationMenu/computation-menu-models";
 import { Use2021DistributionCheckbox } from "./Use2021DistributionCheckbox";
 import { shouldDistributeDistrictSeats } from "../../../utilities/conditionals";
@@ -39,7 +34,6 @@ export interface PresentationSettingsProps {
     toggleMergeDistricts: (checked: boolean) => void;
     use2021Distribution: boolean;
     toggleUse2021Distribution: (checked: boolean) => void;
-    electionType: ElectionType;
     votes: Votes[];
     metrics: Metrics[];
     parameters: Parameters;
@@ -123,15 +117,13 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         this.props.toggleMergeDistricts(event.target.checked);
 
         const year = this.props.year;
-        let election = this.props.electionType.elections.find((election) => election.year === year);
         let votes = this.props.votes.filter((vote) => vote.electionYear === year);
         const distributionYear = this.props.use2021Distribution && year >= 2005 ? 2021 : year;
         let metrics = this.props.metrics.filter((metric) => metric.electionYear === distributionYear);
         const parameters = this.props.parameters;
 
-        if (election !== undefined) {
+        if (votes.length > 0) {
             if (shouldDistributeDistrictSeats(year) && event.target.checked) {
-                election = mergeElectionDistricts(election, districtMap);
                 votes = mergeVoteDistricts(votes, districtMap);
                 metrics = mergeMetricDistricts(metrics, districtMap);
             }
@@ -139,7 +131,6 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
             this.props.updateCalculation(
                 {
                     ...this.props.computationPayload,
-                    election,
                     metrics,
                     votes,
                     parameters,
@@ -158,17 +149,15 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         this.props.toggleUse2021Distribution(event.target.checked);
 
         const year = this.props.year;
-        const election = this.props.electionType.elections.find((election) => election.year === year);
         const votes = this.props.votes.filter((vote) => vote.electionYear === year);
         const metricsYear = event.target.checked && year >= 2005 ? 2021 : year;
         const metrics = this.props.metrics.filter((metric) => metric.electionYear === metricsYear);
         const parameters = this.props.parameters;
 
-        if (election !== undefined) {
+        if (votes.length > 0) {
             this.props.updateCalculation(
                 {
                     ...this.props.computationPayload,
-                    election,
                     metrics,
                     votes,
                     parameters,

@@ -1,11 +1,9 @@
-﻿import { ElectionType, Votes, Metrics, Parameters } from "./requested-data-models";
-import { Dictionary } from "../utilities/dictionary";
+﻿import { Votes, Metrics, Parameters } from "./requested-data-models";
 
 /**
  * Enum containing all possible RequestedDataAction types.
  */
 export enum RequestedDataActionType {
-    INITIALIZE_REQUESTED_DATA = "INITIALIZE_REQUESTED_DATA",
     INITIALIZE_REQUESTED_VOTES = "INITIALIZE_REQUESTED_VOTES",
     INITIALIZE_REQUESTED_METRICS = "INITIALIZE_REQUESTED_METRICS",
     INITIALIZE_REQUESTED_PARAMETERS = "INITIALIZE_REQUESTED_PARAMETERS",
@@ -16,20 +14,10 @@ export enum RequestedDataActionType {
  * Type containing all possible RequestedDataActions.
  */
 export type RequestedDataAction =
-    | InitializeRequestedData
     | InitializeRequestedVotes
     | InitializeRequestedMetrics
     | InitializeRequestedParameters
     | InitializeRequestedPartyMap;
-
-/**
- * Action for initializing requested data.
- */
-export interface InitializeRequestedData {
-    type: RequestedDataActionType.INITIALIZE_REQUESTED_DATA;
-    electionType: ElectionType;
-    enableAutoSave: boolean;
-}
 
 /**
  * Action for initializing requested votes.
@@ -59,22 +47,8 @@ export interface InitializeRequestedParameters {
  * Action for initializing requested party map.
  */
 export interface InitializeRequestedPartyMap {
-    type: RequestedDataActionType.INITIALIZE_REQUESTED_PARTY_MAP;
-    partyMap: Dictionary<string>;
-}
-
-/**
- * Action creator for initializing requested data.
- *
- * @param electionType - Election data fetched from the API.
- */
-export function initializeRequestedData(electionType: ElectionType) {
-    const action: InitializeRequestedData = {
-        type: RequestedDataActionType.INITIALIZE_REQUESTED_DATA,
-        electionType,
-        enableAutoSave: true,
-    };
-    return action;
+    type: RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP;
+    partyMap: _.Dictionary<string>;
 }
 
 /**
@@ -108,7 +82,7 @@ export function initializeRequestedMetrics(metrics: Metrics[]) {
  *
  * @param parameters - Parameters fetched from the API.
  */
-export function InitializeRequestedParameters(parameters: Parameters[]) {
+export function initializeRequestedParameters(parameters: Parameters[]) {
     const action: InitializeRequestedParameters = {
         type: RequestedDataActionType.INITIALIZE_REQUESTED_PARAMETERS,
         parameters,
@@ -121,7 +95,7 @@ export function InitializeRequestedParameters(parameters: Parameters[]) {
  *
  * @param partyMap - PartyMap fetched from the API.
  */
-export function initializeRequestedPartyMap(partyMap: Dictionary<string>) {
+export function initializeRequestedPartyMap(partyMap: _.Dictionary<string>) {
     const action: InitializeRequestedPartyMap = {
         type: RequestedDataActionType.INITIALIZE_REQUESTED_PARTY_MAP,
         partyMap,
