@@ -65,11 +65,6 @@ export class Navigation extends React.Component<NavigationProps> {
                                 >
                                     API
                                 </a>
-                                <a  className="navbar-item"
-                                    target="_blank"
-                                    href="https://www.github.com/Project-Lavinia/"
-                                    rel="noopener noreferrer"
-                                >Github</a>
                                 <hr className="navbar-divider" />
                                 <a
                                     target="_blank"
