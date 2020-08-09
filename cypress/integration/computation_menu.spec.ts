@@ -79,8 +79,8 @@ describe("ComputationMenu", () => {
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
-                cy.get("#merge_to_11_districts_checkbox").check();
-                cy.get("#merge_to_11_districts_checkbox").should("be.checked");
+                cy.get("#merge-setting").check();
+                cy.get("#merge-setting").should("be.checked");
             });
         });
     });
@@ -92,8 +92,8 @@ describe("ComputationMenu", () => {
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
-                cy.get("#2021_distribution_checkbox").check();
-                cy.get("#2021_distribution_checkbox").should("be.checked");
+                cy.get("#2021-distribution-setting").check();
+                cy.get("#2021-distribution-setting").should("be.checked");
             });
         });
     });
@@ -105,10 +105,10 @@ describe("ComputationMenu", () => {
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
-                cy.get("#merge_to_11_districts_checkbox").check();
-                cy.get("#2021_distribution_checkbox").check();
-                cy.get("#merge_to_11_districts_checkbox").should("be.checked");
-                cy.get("#2021_distribution_checkbox").should("be.checked");
+                cy.get("#merge-setting").check();
+                cy.get("#2021-distribution-setting").check();
+                cy.get("#merge-setting").should("be.checked");
+                cy.get("#2021-distribution-setting").should("be.checked");
             });
         });
     });
@@ -120,10 +120,10 @@ describe("ComputationMenu", () => {
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
-                cy.get("#2021_distribution_checkbox").check();
-                cy.get("#merge_to_11_districts_checkbox").check();
-                cy.get("#merge_to_11_districts_checkbox").should("be.checked");
-                cy.get("#2021_distribution_checkbox").should("be.checked");
+                cy.get("#2021-distribution-setting").check();
+                cy.get("#merge-setting").check();
+                cy.get("#merge-setting").should("be.checked");
+                cy.get("#2021-distribution-setting").should("be.checked");
             });
         });
     });
