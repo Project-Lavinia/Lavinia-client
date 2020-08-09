@@ -18,7 +18,6 @@ import { LagueDhontResult, PartyResult, DistrictResult, AlgorithmType } from "..
 import { PresentationType, DisproportionalityIndex } from "./presentation-models";
 import { ElectionComparison } from "./ElectionOverview/ElectionComparison";
 import { checkExhaustively } from "../../utilities";
-import { Dictionary } from "../../utilities/dictionary";
 
 export interface PresentationProps {
     currentPresentation: PresentationType;
@@ -34,7 +33,7 @@ export interface PresentationProps {
     algorithm: AlgorithmType;
     showFilters: boolean;
     selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-    partyMap: Dictionary<string>;
+    partyMap: _.Dictionary<string>;
 }
 
 export class Presentation extends React.Component<PresentationProps, {}> {

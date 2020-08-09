@@ -1,12 +1,11 @@
 import * as React from "react";
 import { VulnerableDistrictSeat, VulnerableVotes } from "../../../utilities/district";
-import { Dictionary } from "../../../utilities/dictionary";
 import { PartyName } from "../../../common/PartyName";
 
 interface InfoBoxProps {
     vulnerable: VulnerableDistrictSeat;
     vulnerableVotes: VulnerableVotes;
-    partyMap: Dictionary<string>;
+    partyMap: _.Dictionary<string>;
 }
 
 export class InfoBox extends React.Component<InfoBoxProps> {

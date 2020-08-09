@@ -15,7 +15,6 @@ import {
     getVulnerableSeatByVotes,
 } from "../../../utilities/district";
 import { isQuotientAlgorithm } from "../../../computation/logic";
-import { Dictionary } from "../../../utilities/dictionary";
 
 export interface SingleDistrictProps {
     districtResults: DistrictResult[];
@@ -24,7 +23,7 @@ export interface SingleDistrictProps {
     decimals: number;
     disproportionalityIndex: DisproportionalityIndex;
     algorithm: AlgorithmType;
-    partyMap: Dictionary<string>;
+    partyMap: _.Dictionary<string>;
 }
 
 export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
