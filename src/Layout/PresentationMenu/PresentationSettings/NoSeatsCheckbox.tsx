@@ -10,14 +10,16 @@ export class NoSeatsCheckbox extends React.Component<NoSeatsCheckboxProps> {
     render() {
         return (
             <div hidden={this.props.hidden} className="field">
-                <label className="checkbox" htmlFor="no-seats-setting">
-                    <input
+                <input
                         type="checkbox"
+                        className="switch"
+                        id="no-seats-setting"
                         name="no-seats-setting"
                         checked={this.props.showPartiesWithoutSeats}
                         onChange={this.props.toggleShowPartiesWithoutSeats}
                     />
-                    &nbsp;Vis alle partier
+                <label className="checkbox" htmlFor="no-seats-setting">
+                    Vis alle partier
                 </label>
             </div>
         );

@@ -21,6 +21,7 @@ export class SmartNumericInputWithLabel extends SmartNumericInput<SmartNumericIn
                         className="input is-primary is-fullwidth"
                         type={"number"}
                         name={this.props.name}
+                        id={this.props.name}
                         onChange={this.updateNumeric}
                         placeholder={value.numericValue.toString()}
                         value={value.stringValue}

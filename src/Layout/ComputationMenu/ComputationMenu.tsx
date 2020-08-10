@@ -1,6 +1,6 @@
 import * as React from "react";
 import { SmartNumericInput, SmartNumericInputWithLabel, TooltipInfo, TooltipInfoRight } from "../../common";
-import { ElectionType, Election, Votes, Metrics, Parameters } from "../../requested-data/requested-data-models";
+import { Votes, Metrics, Parameters, FirstDivisor } from "../../requested-data/requested-data-models";
 import { ComputationPayload, AlgorithmType, unloadedParameters } from "../../computation";
 import { ComputationMenuPayload } from "./computation-menu-models";
 import { YearSelect } from "./YearSelect";
@@ -9,19 +9,13 @@ import { AutoComputeCheckbox } from "./AutoComputeCheckbox";
 import { ResetButton } from "./ResetButton";
 import { ComparisonOptions } from "./ComparisonOptions";
 import { ComputeManuallyButton } from "./ComputeManuallyButton";
-import {
-    mergeElectionDistricts,
-    districtMap,
-    mergeVoteDistricts,
-    mergeMetricDistricts,
-} from "../../computation/logic/district-merging";
+import { districtMap, mergeVoteDistricts, mergeMetricDistricts } from "../../computation/logic/district-merging";
 import { shouldDistributeDistrictSeats } from "../../utilities/conditionals";
 import { isLargestFractionAlgorithm } from "../../computation/logic";
 
-const WIKIURL = "https://project-lavinia.github.io";
+const WIKIURL = process.env.WIKI;
 
 export interface ComputationMenuProps {
-    electionType: ElectionType;
     votes: Votes[];
     metrics: Metrics[];
     parameters: Parameters[];
@@ -32,12 +26,17 @@ export interface ComputationMenuProps {
     toggleAutoCompute: (autoCompute: boolean) => any;
     resetToHistoricalSettings: (
         settingsPayload: ComputationMenuPayload,
-        election: Election,
         votes: Votes[],
         metrics: Metrics[],
-        parameters: Parameters
+        parameters: Parameters,
+        partyMap: _.Dictionary<string>
     ) => any;
-    resetHistorical: (election: Election, votes: Votes[], metrics: Metrics[], parameters: Parameters) => void;
+    resetHistorical: (
+        votes: Votes[],
+        metrics: Metrics[],
+        parameters: Parameters,
+        partyMap: _.Dictionary<string>
+    ) => void;
     resetComparison: () => void;
     saveComparison: () => void;
     showComparison: boolean;
@@ -67,24 +66,22 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
      */
     onYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const nextYear = parseInt(event.target.value);
-        let election = this.props.electionType.elections.find((election) => election.year === nextYear);
         let votes = this.props.votes.filter((vote) => vote.electionYear === nextYear);
         const distributionYear = this.props.use2021Distribution && nextYear >= 2005 ? 2021 : nextYear;
         let metrics = this.props.metrics.filter((metric) => metric.electionYear === distributionYear);
         const parameters =
             this.props.parameters.find((parameter) => parameter.electionYear === nextYear) || unloadedParameters;
 
-        if (election !== undefined) {
+        if (parameters) {
             if (shouldDistributeDistrictSeats(nextYear) && this.props.mergeDistricts) {
-                election = mergeElectionDistricts(election, districtMap);
                 votes = mergeVoteDistricts(votes, districtMap);
                 metrics = mergeMetricDistricts(metrics, districtMap);
             }
 
+            this.props.resetHistorical(votes, metrics, parameters, this.props.computationPayload.partyMap);
             this.props.updateCalculation(
                 {
                     ...this.props.computationPayload,
-                    election,
                     metrics,
                     votes,
                     parameters,
@@ -92,17 +89,16 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                 this.props.settingsPayload.autoCompute,
                 false
             );
-            this.props.resetHistorical(election, votes, metrics, parameters);
             this.props.resetComparison();
             this.props.resetToHistoricalSettings(
                 {
                     ...this.props.settingsPayload,
                     year: event.target.value,
                 },
-                election,
                 votes,
                 metrics,
-                parameters
+                parameters,
+                this.props.computationPayload.partyMap
             );
         }
     };
@@ -278,16 +274,14 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
      */
     computeManually = () => {
         const year = parseInt(this.props.settingsPayload.year);
-        const election = this.props.electionType.elections.find((e) => e.year === year);
         const votes = this.props.votes.filter((vote) => vote.electionYear === year);
         const distributionYear = this.props.use2021Distribution && year >= 2005 ? 2021 : year;
         const metrics = this.props.metrics.filter((metric) => metric.electionYear === distributionYear);
         const parameters =
             this.props.parameters.find((parameter) => parameter.electionYear === year) || unloadedParameters;
-        if (election !== undefined && election !== null) {
+        if (parameters) {
             this.props.updateCalculation(
                 {
-                    election,
                     algorithm: this.props.settingsPayload.algorithm,
                     firstDivisor: parseFloat(this.props.settingsPayload.firstDivisor),
                     electionThreshold: parseFloat(this.props.settingsPayload.electionThreshold),
@@ -298,6 +292,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                     votes,
                     metrics,
                     parameters,
+                    partyMap: this.props.computationPayload.partyMap,
                 },
                 this.props.settingsPayload.autoCompute,
                 true
@@ -313,10 +308,10 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
         const compPayload = this.props.computationPayload;
         this.props.resetToHistoricalSettings(
             this.props.settingsPayload,
-            compPayload.election,
             compPayload.votes,
             compPayload.metrics,
-            compPayload.parameters
+            compPayload.parameters,
+            compPayload.partyMap
         );
     };
 
@@ -326,27 +321,16 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
     settingsChanged = () => {
         const { settingsPayload } = this.props;
         const { comparison } = settingsPayload;
-        return (settingsPayload.algorithm !==
-            comparison.algorithm)
-            ||
-            (comparison.firstDivisor !==
-                settingsPayload.firstDivisor)
-            ||
-            (settingsPayload.electionThreshold !==
-                comparison.electionThreshold)
-            ||
-            (comparison.districtThreshold !==
-                settingsPayload.districtThreshold)
-            ||
-            (settingsPayload.levelingSeats !==
-                comparison.levelingSeats)
-            ||
-            (settingsPayload.districtSeats !==
-                comparison.districtSeats)
-            ||
-            (comparison.areaFactor !==
-                settingsPayload.areaFactor);
-    }
+        return (
+            settingsPayload.algorithm !== comparison.algorithm ||
+            comparison.firstDivisor !== settingsPayload.firstDivisor ||
+            settingsPayload.electionThreshold !== comparison.electionThreshold ||
+            comparison.districtThreshold !== settingsPayload.districtThreshold ||
+            settingsPayload.levelingSeats !== comparison.levelingSeats ||
+            settingsPayload.districtSeats !== comparison.districtSeats ||
+            comparison.areaFactor !== settingsPayload.areaFactor
+        );
+    };
 
     render() {
         const year = parseInt(this.props.settingsPayload.year);
@@ -368,7 +352,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfoRight
                                 text={"Her kan du velge året stortingsvalget ble holdt."}
-                                url={WIKIURL + "/#Valgt%20%C3%A5r"}
+                                url={WIKIURL + "#Valgt%20%C3%A5r"}
                             />
                         }
                     />
@@ -379,7 +363,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du velge beregningsmetode for fordeling av mandater."}
-                                url={WIKIURL + "/#Valgt%20metode"}
+                                url={WIKIURL + "#Valgt%20metode"}
                             />
                         }
                     />
@@ -391,13 +375,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         onChange={this.onFirstDivisorChange}
                         min={1}
                         max={5}
-                        defaultValue={this.props.computationPayload.election.firstDivisor}
+                        defaultValue={this.props.computationPayload.parameters.algorithm.parameters[FirstDivisor] || 0}
                         originalValue={this.props.settingsPayload.comparison.firstDivisor}
                         integer={false}
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du forandre det første delingstallet i Sainte-Laguës metode."}
-                                url={WIKIURL + "/#F%C3%B8rste%20delingstall"}
+                                url={WIKIURL + "#F%C3%B8rste%20delingstall"}
                             />
                         }
                     />
@@ -408,7 +392,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         onChange={this.onThresholdChange}
                         min={0}
                         max={15}
-                        defaultValue={this.props.computationPayload.election.threshold}
+                        defaultValue={this.props.computationPayload.parameters.threshold}
                         originalValue={this.props.settingsPayload.comparison.electionThreshold}
                         integer={false}
                         label={"%"}
@@ -434,7 +418,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du sette inn en sperregrense også for distriktsmandatene."}
-                                url={WIKIURL + "/#Sperregrense%20for%20distriktmandat"}
+                                url={WIKIURL + "#Sperregrense%20for%20distriktmandat"}
                             />
                         }
                     />
@@ -445,13 +429,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         onChange={this.onLevelingSeatsChange}
                         min={0}
                         max={100}
-                        defaultValue={this.props.computationPayload.election.levelingSeats}
+                        defaultValue={this.props.computationPayload.parameters.levelingSeats}
                         originalValue={this.props.settingsPayload.comparison.levelingSeats}
                         integer={true}
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du endre antall utjevningsmandater."}
-                                url={WIKIURL + "/#Utjevningsmandater"}
+                                url={WIKIURL + "#Utjevningsmandater"}
                             />
                         }
                     />
@@ -462,14 +446,14 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         onChange={this.onDistrictSeatsChange}
                         min={0}
                         max={500}
-                        defaultValue={this.props.computationPayload.election.seats}
+                        defaultValue={this.props.computationPayload.parameters.districtSeats}
                         originalValue={this.props.settingsPayload.comparison.districtSeats}
                         integer={true}
                         hidden={!shouldDistributeDistrictSeats(year)}
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du endre antall distriktsmandater."}
-                                url={WIKIURL + "/#Distriktsmandater"}
+                                url={WIKIURL + "#Distriktsmandater"}
                             />
                         }
                     />
@@ -487,7 +471,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du endre balansen mellom folketall og fylkets areal."}
-                                url={WIKIURL + "/#Arealfaktor"}
+                                url={WIKIURL + "#Arealfaktor"}
                             />
                         }
                     />
@@ -496,7 +480,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         computeManually={this.computeManually}
                     />
 
-                    <ResetButton restoreToDefault={this.restoreToDefault} highlight={this.settingsChanged()}/>
+                    <ResetButton restoreToDefault={this.restoreToDefault} highlight={this.settingsChanged()} />
                     <ComparisonOptions
                         showComparison={this.props.showComparison}
                         resetComparison={this.props.resetComparison}
