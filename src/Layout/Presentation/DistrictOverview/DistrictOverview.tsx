@@ -29,7 +29,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const calculateVulnerable = isQuotientAlgorithm(this.props.algorithm);
         const mostVulnerable = calculateVulnerable
             ? getMostVulnerableSeatByQuotient(data, this.props.districtThreshold)
-            : undefined;
+            : void 0;
         return (
             <React.Fragment>
                 <div className="card has-background-primary has-text-light is-size-5">
