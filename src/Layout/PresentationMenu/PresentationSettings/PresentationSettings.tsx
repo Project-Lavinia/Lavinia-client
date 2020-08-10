@@ -149,12 +149,17 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         this.props.toggleUse2021Distribution(event.target.checked);
 
         const year = this.props.year;
-        const votes = this.props.votes.filter((vote) => vote.electionYear === year);
+        let votes = this.props.votes.filter((vote) => vote.electionYear === year);
         const metricsYear = event.target.checked && year >= 2005 ? 2021 : year;
-        const metrics = this.props.metrics.filter((metric) => metric.electionYear === metricsYear);
+        let metrics = this.props.metrics.filter((metric) => metric.electionYear === metricsYear);
         const parameters = this.props.parameters;
 
         if (votes.length > 0) {
+            if (shouldDistributeDistrictSeats(year) && this.props.mergeDistricts) {
+                votes = mergeVoteDistricts(votes, districtMap);
+                metrics = mergeMetricDistricts(metrics, districtMap);
+            }
+
             this.props.updateCalculation(
                 {
                     ...this.props.computationPayload,
