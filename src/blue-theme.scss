@@ -12,7 +12,6 @@ $primary: $democracy-blue;
 @import "~bulma-switch";
 @import "../node_modules/bulma-switch/dist/css/bulma-switch.sass";
 
-
 [class*=" lavinia-logo"],
 [class^="lavinia-logo"] {
     letter-spacing: 2px;
@@ -23,3 +22,11 @@ $primary: $democracy-blue;
     height: 28px;
 }
 
+[class*="toast-display"] {
+    position: absolute;
+    z-index: 1000000;
+}
+
+[class*="toast"] {
+    margin-bottom: 0px !important;
+}

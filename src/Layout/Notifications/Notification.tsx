@@ -8,7 +8,7 @@ export interface NotificationProps {
 }
 
 function buildClassText(type: NotificationType): string {
-    const baseClass = "notification ";
+    const baseClass = "toast notification ";
     switch (type) {
         case NotificationType.DANGER:
             return baseClass + "is-danger";

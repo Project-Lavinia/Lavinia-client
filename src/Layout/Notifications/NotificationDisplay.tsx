@@ -10,11 +10,11 @@ export interface NotificationDisplayProps {
 export class NotificationDisplay extends React.Component<NotificationDisplayProps, {}> {
     public render() {
         return (
-            <React.Fragment>
+            <div className="toast-display">
                 {this.props.notifications.map((notification) => (
                     <Notification data={notification} close={this.props.close} key={notification.id} />
                 ))}
-            </React.Fragment>
+            </div>
         );
     }
 }

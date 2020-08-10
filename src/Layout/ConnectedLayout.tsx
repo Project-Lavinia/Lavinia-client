@@ -33,31 +33,48 @@ const mapDispatchToProps = (
         const partyMapUri = process.env.API_V3 + "parties";
 
         if (stateIsInvalid()) {
-            const votes = await request<Array<Votes>>(votesUri, []);
+            let votes: Votes[] = [];
+            let metrics: Metrics[] = [];
+            let rawParameters: RawParameters[] = [];
+            let partyMap: _.Dictionary<string> = {};
+            let numberYears: number[] = [];
+
+            try {
+                votes = await request<Array<Votes>>(votesUri);
+                metrics = await request<Array<Metrics>>(metricsUri);
+                rawParameters = await request<Array<RawParameters>>(parametersUri);
+                partyMap = await request<_.Dictionary<string>>(partyMapUri);
+                numberYears = await request<Array<number>>(yearsUri);
+            } catch (error) {
+                const notification: NotificationData = {
+                    text: `Klarte ikke å laste ned valgdata fra APIet, prøv igjen senere. Feilmeldingen var: ${error.message}`,
+                    type: NotificationType.DANGER,
+                };
+                const addNotificationAction = addNotification(notification);
+                dispatch(addNotificationAction);
+            }
+
             const initializeRequestedVotesAction = initializeRequestedVotes(votes);
             dispatch(initializeRequestedVotesAction);
 
-            const metrics = await request<Array<Metrics>>(metricsUri, []);
             const initializeRequestedMetricsAction = initializeRequestedMetrics(metrics);
             dispatch(initializeRequestedMetricsAction);
 
-            const rawParameters = await request<Array<RawParameters>>(parametersUri, []);
             const parameters = rawParameters.map<Parameters>((raw) => rawParametersToParametersConverter(raw));
             const initializeRequestedParametersAction = initializeRequestedParameters(parameters);
             dispatch(initializeRequestedParametersAction);
 
-            const partyMap = await request<_.Dictionary<string>>(partyMapUri, {});
             const initializeRequestedPartyMapAction = initializeRequestedPartyMap(partyMap);
             dispatch(initializeRequestedPartyMapAction);
 
-            const numberYears = await request<Array<number>>(yearsUri, []);
             const electionYear = numberYears[0];
             const stringYears = numberYears.map((year) => year.toString());
-
             const initializeSettingsAction = initializeComputationMenu(stringYears, parameters[0]);
+            dispatch(initializeSettingsAction);
+
             const initializePresentationAction = initializePresentation();
             dispatch(initializePresentationAction);
-            dispatch(initializeSettingsAction);
+
             const initializeComputationAction = initializeComputation(
                 electionYear,
                 votes,
