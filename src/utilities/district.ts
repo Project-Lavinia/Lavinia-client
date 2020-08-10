@@ -33,32 +33,6 @@ export function getQuotientsToVulnerableSeatMap(districtResult: DistrictResult):
 }
 
 /**
- * Takes all district results and returns the most vulnerable district based on
- * quotient with its winner and runner up, and votes needed to win.
- *
- * @param districtResult result to find vulnerable seat by quotient for
- *
- * @returns vulnerable seat by quotient
- */
-export function getMostVulnerableSeatByQuotient(
-    districtResults: DistrictResult[],
-    nationalPartyResults: PartyResult[],
-    districtThreshold: number
-) {
-    const vulnerableDistrictSeats: VulnerableDistrictSeat[] = [];
-    districtResults.forEach((districtResult) => {
-        if (districtResult.districtSeats > 0) {
-            const partyResultMap = createPartyResultMap(districtResult.partyResults);
-            vulnerableDistrictSeats.push({
-                ...getVulnerableSeatByQuotient(districtResult, partyResultMap, districtThreshold),
-                district: districtResult.name,
-            });
-        }
-    });
-    return vulnerableDistrictSeats.sort((a, b) => (a.moreVotesToWin >= b.moreVotesToWin ? 1 : -1))[0];
-}
-
-/**
  * Takes a district result and compares the winner to its quotient runner up.
  *
  * @param districtResult result to find vulnerable seat by quotient for
@@ -112,6 +86,28 @@ export function getVulnerableSeatByVotes(
         partyCode: filtered[0].partyCode,
         moreVotesToWin: filtered[0].moreVotesToWin,
     };
+}
+
+/**
+ * Takes all district results and returns the most vulnerable district based on
+ * quotient with its winner and runner up, and votes needed to win.
+ *
+ * @param districtResult result to find vulnerable seat by quotient for
+ *
+ * @returns vulnerable seat by quotient
+ */
+export function getMostVulnerableSeatByQuotient(districtResults: DistrictResult[], districtThreshold: number) {
+    const vulnerableDistrictSeats: VulnerableDistrictSeat[] = [];
+    districtResults.forEach((districtResult) => {
+        if (districtResult.districtSeats > 0) {
+            const partyResultMap = createPartyResultMap(districtResult.partyResults);
+            vulnerableDistrictSeats.push({
+                ...getVulnerableSeatByQuotient(districtResult, partyResultMap, districtThreshold),
+                district: districtResult.name,
+            });
+        }
+    });
+    return vulnerableDistrictSeats.sort((a, b) => (a.moreVotesToWin >= b.moreVotesToWin ? 1 : -1))[0];
 }
 
 interface VulnerableSeat {

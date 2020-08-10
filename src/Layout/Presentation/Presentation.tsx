@@ -140,7 +140,6 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         decimals={this.props.decimals}
                         algorithm={this.props.algorithm}
                         districtThreshold={this.props.districtThreshold}
-                        nationalPartyResults={this.props.results.partyResults}
                     />
                 );
             case PresentationType.SeatDistribution:
@@ -159,7 +158,6 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         disproportionalityIndex={this.props.disproportionalityIndex}
                         selectDistrict={this.props.selectDistrict}
                         algorithm={this.props.algorithm}
-                        nationalPartyResults={this.props.results.partyResults}
                         districtThreshold={this.props.districtThreshold}
                     />
                 );

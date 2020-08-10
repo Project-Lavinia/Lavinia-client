@@ -25,7 +25,6 @@ export interface SingleDistrictProps {
     disproportionalityIndex: DisproportionalityIndex;
     algorithm: AlgorithmType;
     districtThreshold: number;
-    nationalPartyResults: PartyResult[];
 }
 
 export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
@@ -46,14 +45,14 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
         const partyResultMap = createPartyResultMap(data);
         const calculateVulnerable =
             isQuotientAlgorithm(this.props.algorithm) && currentDistrictResult.districtSeats > 0;
-        const vulnerableMap = calculateVulnerable ? getVotesToVulnerableSeatMap(currentDistrictResult) : undefined;
-        const quotientMap = calculateVulnerable ? getQuotientsToVulnerableSeatMap(currentDistrictResult) : undefined;
+        const vulnerableMap = calculateVulnerable ? getVotesToVulnerableSeatMap(currentDistrictResult) : void 0;
+        const quotientMap = calculateVulnerable ? getQuotientsToVulnerableSeatMap(currentDistrictResult) : void 0;
         const vulnerable = calculateVulnerable
             ? getVulnerableSeatByQuotient(currentDistrictResult, partyResultMap, this.props.districtThreshold)
-            : undefined;
+            : void 0;
         const vulnerableVotes = calculateVulnerable
             ? getVulnerableSeatByVotes(currentDistrictResult, partyResultMap, this.props.districtThreshold)
-            : undefined;
+            : void 0;
         const decimals = this.props.decimals;
         const proportionalities = data.map((value) => value.proportionality);
         let label: string;

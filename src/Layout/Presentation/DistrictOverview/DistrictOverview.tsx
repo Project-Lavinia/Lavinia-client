@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 import ReactTable from "react-table";
-import { DistrictResult, AlgorithmType, PartyResult } from "../../../computation";
+import { DistrictResult, AlgorithmType } from "../../../computation";
 import { toMin, toMax, toMean, toSum } from "../../../utilities/reduce";
 import { getMostVulnerableSeatByQuotient } from "../../../utilities/district";
 import { norwegian } from "../../../utilities/rt";
@@ -8,7 +8,6 @@ import { isQuotientAlgorithm } from "../../../computation/logic";
 import { VulnerableDistrictSeatText } from "./VulnerableDistrictSeatText";
 
 export interface DistrictOverviewProps {
-    nationalPartyResults: PartyResult[];
     districtResults: DistrictResult[];
     districtWidth: number;
     decimals: number;
@@ -29,7 +28,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const leastWeightedDistrict = data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name;
         const calculateVulnerable = isQuotientAlgorithm(this.props.algorithm);
         const mostVulnerable = calculateVulnerable
-            ? getMostVulnerableSeatByQuotient(data, this.props.nationalPartyResults, this.props.districtThreshold)
+            ? getMostVulnerableSeatByQuotient(data, this.props.districtThreshold)
             : undefined;
         return (
             <React.Fragment>
