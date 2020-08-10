@@ -4,11 +4,13 @@ import { ConnectedComputationMenu } from "./ComputationMenu";
 import { ConnectedPresentationSettings } from "./PresentationMenu";
 import { ConnectedNavigation } from "./Navigation/ConnectedNavigation";
 import { ConnectedPresentationSelection } from "./PresentationMenu/PresentationSelection/ConnectedPresentationSelection";
+import { ConnectedNotificationDisplay, NotificationType } from "./Notifications";
 
 export interface LayoutProps {
     dataLoaded: boolean;
     initializeState: () => any;
     clearState: () => void;
+    showNotification: (type: NotificationType, text: string) => void;
 }
 
 export class Layout extends React.Component<LayoutProps, {}> {
@@ -20,8 +22,8 @@ export class Layout extends React.Component<LayoutProps, {}> {
         this.props.clearState();
         localStorage.clear();
         await this.props.initializeState();
-        console.error(error.name);
-        console.error(error.message);
+        const notificationText = `Det oppstod en feil så Lavinia måtte tilbakestilles. Feilmeldingen var: ${error.message}`;
+        this.props.showNotification(NotificationType.DANGER, notificationText);
     }
 
     public render() {
@@ -31,6 +33,7 @@ export class Layout extends React.Component<LayoutProps, {}> {
         return (
             <React.Fragment>
                 <ConnectedNavigation />
+                <ConnectedNotificationDisplay />
                 <div className={pageLoaderClass} id={"page_loader"}>
                     <span className="title is-size-2">Laster inn Lavinia...</span>
                 </div>

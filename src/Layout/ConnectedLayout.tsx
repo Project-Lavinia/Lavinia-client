@@ -15,12 +15,16 @@ import { stateIsInvalid } from "../store/version";
 import { rawParametersToParametersConverter } from "../requested-data/requested-data-utilities";
 import { RootState } from "../reducers";
 import { clearState } from "../reducers/global-actions";
+import { NotificationType, NotificationData } from "./Notifications";
+import { addNotification } from "./ui-actions";
 
 const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded"> => ({
     dataLoaded: state.requestedDataState.dataLoaded,
 });
 
-const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState" | "clearState"> => ({
+const mapDispatchToProps = (
+    dispatch: any
+): Pick<LayoutProps, "initializeState" | "clearState" | "showNotification"> => ({
     initializeState: async () => {
         const votesUri = process.env.API_V3 + "votes?partyCode=ALL&district=ALL";
         const metricsUri = process.env.API_V3 + "metrics?district=ALL";
@@ -68,6 +72,15 @@ const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState" 
     clearState: () => {
         const clearStateAction = clearState();
         dispatch(clearStateAction);
+    },
+
+    showNotification: (type: NotificationType, text: string) => {
+        const notification: NotificationData = {
+            text,
+            type,
+        };
+        const addNotificationAction = addNotification(notification);
+        dispatch(addNotificationAction);
     },
 });
 

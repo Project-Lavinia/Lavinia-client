@@ -1,31 +1,7 @@
-import { ClearState, GlobalActionType } from "../reducers/global-actions";
-
-export interface UiState {
-    hamburgerExpanded: boolean;
-}
-
-const defaultState: UiState = {
-    hamburgerExpanded: false,
-};
-
-export enum UiActionType {
-    TOGGLE_HAMBURGER_EXPANDED = "TOGGLE_HAMBURGER_EXPANDED",
-}
-
-export type UiAction = ToggleHamburger | ClearState;
-
-export function toggleHamburger(hamburgerExpanded: boolean) {
-    const action: ToggleHamburger = {
-        type: UiActionType.TOGGLE_HAMBURGER_EXPANDED,
-        hamburgerExpanded: !hamburgerExpanded,
-    };
-    return action;
-}
-
-export interface ToggleHamburger {
-    type: UiActionType.TOGGLE_HAMBURGER_EXPANDED;
-    hamburgerExpanded: boolean;
-}
+import { GlobalActionType } from "../reducers/global-actions";
+import { UiState, defaultState } from "./ui-state";
+import { UiAction, UiActionType } from "./ui-actions";
+import { FullNotificationData } from "./Notifications";
 
 export function ui(state: UiState = defaultState, action: UiAction): UiState {
     switch (action.type) {
@@ -35,6 +11,30 @@ export function ui(state: UiState = defaultState, action: UiAction): UiState {
                 hamburgerExpanded: action.hamburgerExpanded,
             };
         }
+        case UiActionType.ADD_NOTIFICATION: {
+            const newNotificationId = state.notificationId + 1;
+            const fullNotificationData: FullNotificationData = {
+                id: newNotificationId,
+                text: action.notification.text,
+                type: action.notification.type,
+            };
+
+            const copiedNotifications = [...state.notifications];
+            copiedNotifications.push(fullNotificationData);
+            return {
+                ...state,
+                notifications: copiedNotifications,
+                notificationId: newNotificationId,
+            };
+        }
+        case UiActionType.REMOVE_NOTIFICATION: {
+            const filteredNotifications = state.notifications.filter((notification) => notification.id !== action.id);
+            return {
+                ...state,
+                notifications: filteredNotifications,
+            };
+        }
+
         case GlobalActionType.CLEAR_STATE: {
             return defaultState;
         }
