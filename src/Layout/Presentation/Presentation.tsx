@@ -29,6 +29,7 @@ export interface PresentationProps {
     comparisonPartyResults: PartyResult[];
     showComparison: boolean;
     threshold: number;
+    districtThreshold: number;
     year: number;
     algorithm: AlgorithmType;
     showFilters: boolean;
@@ -138,6 +139,8 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         districtWidth={this.getWidestStringWidth(this.getDistricts())}
                         decimals={this.props.decimals}
                         algorithm={this.props.algorithm}
+                        districtThreshold={this.props.districtThreshold}
+                        nationalPartyResults={this.props.results.partyResults}
                     />
                 );
             case PresentationType.SeatDistribution:
@@ -156,6 +159,8 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         disproportionalityIndex={this.props.disproportionalityIndex}
                         selectDistrict={this.props.selectDistrict}
                         algorithm={this.props.algorithm}
+                        nationalPartyResults={this.props.results.partyResults}
+                        districtThreshold={this.props.districtThreshold}
                     />
                 );
             case PresentationType.RemainderQuotients:

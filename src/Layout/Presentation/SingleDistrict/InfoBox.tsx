@@ -16,7 +16,7 @@ export class InfoBox extends React.Component<InfoBoxProps> {
                       " hadde nærmeste kvotient og trengte ",
                       vulnerable.moreVotesToWin,
                       " flere stemmer for å vinne mandatet. ",
-                          vulnerableVotes.partyCode,
+                      vulnerableVotes.partyCode,
                       " hadde derimot minst margin i stemmer og trengte bare ",
                       vulnerableVotes.moreVotesToWin,
                       " flere stemmer.",
@@ -31,7 +31,7 @@ export class InfoBox extends React.Component<InfoBoxProps> {
             <div className="card has-background-primary has-text-light is-size-5">
                 <div className="card-content">
                     <p>
-                        {"Sistemandat i "}
+                        {"Siste mandat i "}
                         {vulnerable.district}
                         {" gikk til "}
                         {vulnerable.winner.partyCode}

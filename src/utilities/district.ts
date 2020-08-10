@@ -1,4 +1,10 @@
-import { DistrictResult, SeatPartyResult } from "../computation";
+import { DistrictResult, SeatPartyResult, PartyResult } from "../computation";
+
+export function createPartyResultMap(partyResults: PartyResult[]): _.Dictionary<PartyResult> {
+    const partyResultMap: _.Dictionary<PartyResult> = {};
+    partyResults.forEach((partyResult) => (partyResultMap[partyResult.partyCode] = partyResult));
+    return partyResultMap;
+}
 
 /**
  * Helper method for SingleDistrict to get a map between partyCode and votes
@@ -34,12 +40,17 @@ export function getQuotientsToVulnerableSeatMap(districtResult: DistrictResult):
  *
  * @returns vulnerable seat by quotient
  */
-export function getMostVulnerableSeatByQuotient(districtResults: DistrictResult[]) {
+export function getMostVulnerableSeatByQuotient(
+    districtResults: DistrictResult[],
+    nationalPartyResults: PartyResult[],
+    districtThreshold: number
+) {
     const vulnerableDistrictSeats: VulnerableDistrictSeat[] = [];
     districtResults.forEach((districtResult) => {
         if (districtResult.districtSeats > 0) {
+            const partyResultMap = createPartyResultMap(districtResult.partyResults);
             vulnerableDistrictSeats.push({
-                ...getVulnerableSeatByQuotient(districtResult),
+                ...getVulnerableSeatByQuotient(districtResult, partyResultMap, districtThreshold),
                 district: districtResult.name,
             });
         }
@@ -54,11 +65,18 @@ export function getMostVulnerableSeatByQuotient(districtResults: DistrictResult[
  *
  * @returns vulnerable seat by quotient
  */
-export function getVulnerableSeatByQuotient(districtResult: DistrictResult): VulnerableDistrictSeat {
+export function getVulnerableSeatByQuotient(
+    districtResult: DistrictResult,
+    partyResultMap: _.Dictionary<PartyResult>,
+    districtThreshold: number
+): VulnerableDistrictSeat {
     const lastSeat = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 1];
     const winner = lastSeat.partyResults.find((pr) => pr.partyCode === lastSeat.winner)!;
     const lastSeatByQuotient = lastSeat.partyResults.sort((a, b) => (a.quotient <= b.quotient ? 1 : -1));
-    const filtered = lastSeatByQuotient.filter((result) => result.partyCode !== winner.partyCode);
+    const filtered = lastSeatByQuotient.filter(
+        (result) =>
+            result.partyCode !== winner.partyCode && partyResultMap[result.partyCode].percentVotes > districtThreshold
+    );
     const runnerUp = filtered[0];
     const moreVotesToWin = Math.floor(winner.quotient * runnerUp.denominator) - runnerUp.votes + 1;
     return {
@@ -69,7 +87,11 @@ export function getVulnerableSeatByQuotient(districtResult: DistrictResult): Vul
     };
 }
 
-export function getVulnerableSeatByVotes(districtResult: DistrictResult): VulnerableVotes {
+export function getVulnerableSeatByVotes(
+    districtResult: DistrictResult,
+    partyResultMap: _.Dictionary<PartyResult>,
+    districtThreshold: number
+): VulnerableVotes {
     const lastSeat = districtResult.districtSeatResult[districtResult.districtSeatResult.length - 1];
     const winner = lastSeat.partyResults.find((pr) => pr.partyCode === lastSeat.winner)!;
     const margins: { partyCode: string; moreVotesToWin: number }[] = [];
@@ -81,7 +103,10 @@ export function getVulnerableSeatByVotes(districtResult: DistrictResult): Vulner
         });
     });
     const sorted = margins.slice().sort((a, b) => (a.moreVotesToWin >= b.moreVotesToWin ? 1 : -1))!;
-    const filtered = sorted.filter((result) => result.partyCode !== winner.partyCode);
+    const filtered = sorted.filter(
+        (result) =>
+            result.partyCode !== winner.partyCode && partyResultMap[result.partyCode].percentVotes > districtThreshold
+    );
     return {
         winner,
         partyCode: filtered[0].partyCode,
