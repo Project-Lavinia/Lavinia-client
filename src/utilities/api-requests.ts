@@ -46,7 +46,6 @@ function parseRetryHeaderToMs(response: Response, defaultDelay: number): number 
 }
 
 async function attemptRequest<T>(uri: string, attemptNumber: number): Promise<T> {
-    throw new Error("Test Network Error!");
     const response = await fetch(uri);
 
     if (response && isSuccessful(response.status)) {
