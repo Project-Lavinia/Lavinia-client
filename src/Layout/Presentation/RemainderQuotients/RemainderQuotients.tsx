@@ -76,16 +76,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                             quotient = quotient / 10000;
                         }
                         return (
-                            <div
-                                className={row.value.wonLevellingSeat ? "has-background-dark has-text-white" : ""}
-                                style={
-                                    {
-                                        /* textAlign: "center",
-                                    color: row.value.wonLevellingSeat ? "white" : "black",
-                                    backgroundColor: row.value.wonLevellingSeat ? "#ff6e00" : "white", */
-                                    }
-                                }
-                            >
+                            <div className={row.value.wonLevellingSeat ? "has-background-dark has-text-white" : ""}>
                                 {Number(quotient).toFixed(this.props.decimals)}
                             </div>
                         );
