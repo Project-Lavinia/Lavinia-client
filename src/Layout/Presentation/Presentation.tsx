@@ -32,6 +32,7 @@ export interface PresentationProps {
     year: number;
     algorithm: AlgorithmType;
     showFilters: boolean;
+    partyMap: _.Dictionary<string>;
     selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
@@ -167,6 +168,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         decimals={this.props.decimals}
                         showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
                         algorithm={this.props.algorithm}
+                        partyMap={this.props.partyMap}
                     />
                 );
             case PresentationType.LevellingSeats:
