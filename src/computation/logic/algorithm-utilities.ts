@@ -1,6 +1,5 @@
 ﻿import {
     AlgorithmType,
-    Result,
     SeatResult,
     PartyResult,
     DistributionResult,
@@ -8,13 +7,111 @@
     LevelingSeat,
     DistrictQuotients,
 } from "..";
-import { Dictionary } from "../../utilities/dictionary";
 import { SeatPartyResult } from "./../../computation/computation-models";
 import * as _ from "lodash";
 import { largestFraction } from "./distribution";
 import { checkExhaustively } from "../../utilities";
+import { Votes } from "../../requested-data/requested-data-models";
+import { calculatePercent } from "../../utilities/number";
 
 const illegalPartyCodes = new Set(["BLANKE"]);
+
+export function constructDistrictResults(
+    districtSeats: _.Dictionary<number>,
+    districtVotes: _.Dictionary<number>,
+    totalVotes: number
+): _.Dictionary<DistrictResult> {
+    const districtResults: _.Dictionary<DistrictResult> = {};
+    for (const district in districtSeats) {
+        if (districtSeats.hasOwnProperty(district)) {
+            districtResults[district] = {
+                name: district,
+                districtSeats: districtSeats[district],
+                levelingSeats: 0,
+                totalSeats: 0,
+                votes: districtVotes[district],
+                percentVotes: calculatePercent(districtVotes[district], totalVotes),
+                votesPerSeat: 0,
+                districtSeatResult: [],
+                partyResults: [],
+            };
+        }
+    }
+
+    return districtResults;
+}
+
+export function constructPartyResults(
+    votes: Votes[],
+    totalVotes: number,
+    partyMap: _.Dictionary<string>
+): _.Dictionary<PartyResult> {
+    const partyResults: _.Dictionary<PartyResult> = {};
+
+    for (const vote of votes) {
+        if (vote.party in partyResults) {
+            partyResults[vote.party].votes += vote.votes;
+        } else {
+            partyResults[vote.party] = {
+                partyCode: vote.party,
+                partyName: partyMap[vote.party],
+                votes: vote.votes,
+                percentVotes: 0,
+                districtSeats: 0,
+                levelingSeats: 0,
+                totalSeats: 0,
+                proportionality: 0,
+            };
+        }
+    }
+
+    for (const partyCode in partyResults) {
+        if (partyResults.hasOwnProperty(partyCode)) {
+            const votes = partyResults[partyCode].votes;
+            partyResults[partyCode].percentVotes = calculatePercent(votes, totalVotes);
+        }
+    }
+
+    return partyResults;
+}
+
+export function constructDistrictPartyResults(
+    votes: Votes[],
+    districtVotes: _.Dictionary<number>,
+    partyMap: _.Dictionary<string>
+): _.Dictionary<_.Dictionary<PartyResult>> {
+    const districtPartyResults: _.Dictionary<_.Dictionary<PartyResult>> = {};
+
+    for (const vote of votes) {
+        if (!districtPartyResults[vote.district]) {
+            districtPartyResults[vote.district] = {};
+        }
+        districtPartyResults[vote.district][vote.party] = {
+            partyCode: vote.party,
+            partyName: partyMap[vote.party],
+            votes: vote.votes,
+            percentVotes: calculatePercent(vote.votes, districtVotes[vote.district]),
+            districtSeats: 0,
+            levelingSeats: 0,
+            totalSeats: 0,
+            proportionality: 0,
+        };
+    }
+    return districtPartyResults;
+}
+
+export function getVotesPerDistrict(votes: Votes[]): _.Dictionary<number> {
+    const voteCount: _.Dictionary<number> = {};
+    for (const vote of votes) {
+        if (vote.district in voteCount) {
+            voteCount[vote.district] += vote.votes;
+        } else {
+            voteCount[vote.district] = vote.votes;
+        }
+    }
+
+    return voteCount;
+}
 
 /**
  * Distributes a number of partyResults on a set of parties, based on their number of votes,
@@ -32,9 +129,9 @@ export function distributeSeats(
     districtThreshold: number,
     numSeats: number,
     totalVotes: number,
-    results: Result[],
+    results: _.Dictionary<PartyResult>,
     averageVotesPerSeat?: number,
-    partyResults?: Dictionary<PartyResult>
+    partyResults?: _.Dictionary<PartyResult>
 ): DistributionResult {
     if (isLargestFractionAlgorithm(algorithm)) {
         const electionNumber = getElectionNumber(algorithm, totalVotes, numSeats);
@@ -42,14 +139,17 @@ export function distributeSeats(
         return largestFraction(numSeats, partyVotes, electionNumber);
     }
 
-    const seatsWon: Dictionary<number> = {};
-    const currentSeatsWon: Dictionary<number> = {};
+    const seatsWon: _.Dictionary<number> = {};
+    const currentSeatsWon: _.Dictionary<number> = {};
     const seatResults: SeatResult[] = [];
 
     if (partyResults === undefined) {
-        for (const party of results) {
-            seatsWon[party.partyCode] = 0;
-            currentSeatsWon[party.partyCode] = 0;
+        for (const partyCode in results) {
+            if (results.hasOwnProperty(partyCode)) {
+                const vote = results[partyCode];
+                seatsWon[vote.partyCode] = 0;
+                currentSeatsWon[vote.partyCode] = 0;
+            }
         }
     } else {
         for (const partyCode in partyResults) {
@@ -77,43 +177,47 @@ export function distributeSeats(
             },
         ];
 
-        for (const result of results) {
-            const currentDenominator = getDenominator(
-                algorithm,
-                seatsWon[result.partyCode],
-                firstDivisor,
-                numSeats,
-                totalVotes
-            );
-            const currentQuotient =
-                averageVotesPerSeat != null
-                    ? calculateAdjustedQuotient(
-                          algorithm,
-                          seatsWon[result.partyCode],
-                          averageVotesPerSeat,
-                          result.votes,
-                          firstDivisor,
-                          numSeats,
-                          totalVotes
-                      )
-                    : calculateQuotient(
-                          algorithm,
-                          seatsWon[result.partyCode],
-                          result.votes,
-                          firstDivisor,
-                          numSeats,
-                          totalVotes
-                      );
-            const currentPartyResult = {
-                partyCode: result.partyCode,
-                quotient: currentQuotient,
-                denominator: currentDenominator,
-                votes: result.votes,
-            };
-            seatResult.partyResults.push(currentPartyResult);
+        for (const partyCode in results) {
+            if (Object.prototype.hasOwnProperty.call(results, partyCode)) {
+                const result = results[partyCode];
 
-            if (!illegalPartyCodes.has(result.partyCode) && result.percentage > districtThreshold) {
-                tiedSeatWinners = updateWinners(tiedSeatWinners, currentPartyResult);
+                const currentDenominator = getDenominator(
+                    algorithm,
+                    seatsWon[partyCode],
+                    firstDivisor,
+                    numSeats,
+                    totalVotes
+                );
+                const currentQuotient =
+                    averageVotesPerSeat != null
+                        ? calculateAdjustedQuotient(
+                              algorithm,
+                              seatsWon[partyCode],
+                              averageVotesPerSeat,
+                              result.votes,
+                              firstDivisor,
+                              numSeats,
+                              totalVotes
+                          )
+                        : calculateQuotient(
+                              algorithm,
+                              seatsWon[partyCode],
+                              result.votes,
+                              firstDivisor,
+                              numSeats,
+                              totalVotes
+                          );
+                const currentPartyResult = {
+                    partyCode,
+                    quotient: currentQuotient,
+                    denominator: currentDenominator,
+                    votes: result.votes,
+                };
+                seatResult.partyResults.push(currentPartyResult);
+
+                if (!illegalPartyCodes.has(partyCode) && result.percentVotes > districtThreshold) {
+                    tiedSeatWinners = updateWinners(tiedSeatWinners, currentPartyResult);
+                }
             }
         }
 
@@ -206,9 +310,9 @@ function getElectionNumber(algorithm: AlgorithmType, totalVotes: number, totalSe
  */
 export function calculateProportionality(
     totalSeats: number,
-    partyResults: Dictionary<PartyResult>,
-    districtPartyResults: Dictionary<Dictionary<PartyResult>>,
-    districtResults: Dictionary<DistrictResult>
+    partyResults: _.Dictionary<PartyResult>,
+    districtPartyResults: _.Dictionary<_.Dictionary<PartyResult>>,
+    districtResults: _.Dictionary<DistrictResult>
 ) {
     for (const partyCode in partyResults) {
         if (partyResults.hasOwnProperty(partyCode) && !illegalPartyCodes.has(partyCode)) {
@@ -269,7 +373,7 @@ export function calculateQuotient(
  * Calculates the total number of seats and the average number of votes per seat for each district
  * @param districtResults The district results to finalize
  */
-export function finalizeDistrictCalculations(districtResults: Dictionary<DistrictResult>) {
+export function finalizeDistrictCalculations(districtResults: _.Dictionary<DistrictResult>) {
     for (const district in districtResults) {
         if (districtResults.hasOwnProperty(district)) {
             districtResults[district].totalSeats =
@@ -284,7 +388,7 @@ export function calculateFinalQuotients(
     algorithm: AlgorithmType,
     firstDivisor: number,
     adjusted: boolean,
-    districtResults: Dictionary<DistrictResult>
+    districtResults: _.Dictionary<DistrictResult>
 ): DistrictQuotients[] {
     const finalQuotients: DistrictQuotients[] = [];
     for (const districtName in districtResults) {
@@ -333,9 +437,9 @@ export function calculateFinalQuotients(
 /**
  * Sorts a list of leveling seats as described here: https://lovdata.no/NL/lov/2002-06-28-57/§11-6
  * @param levelingSeats The list of leveling seats to be sorted
- * @param partyResults A dictionary used to look up how many votes the parties got
+ * @param partyResults A _.Dictionary used to look up how many votes the parties got
  */
-export function sortLevelingSeats(levelingSeats: LevelingSeat[], partyResults: Dictionary<PartyResult>) {
+export function sortLevelingSeats(levelingSeats: LevelingSeat[], partyResults: _.Dictionary<PartyResult>) {
     return levelingSeats.sort((v, t) => {
         if (t.quotient !== v.quotient) {
             return t.quotient - v.quotient;
@@ -352,9 +456,9 @@ export function sortLevelingSeats(levelingSeats: LevelingSeat[], partyResults: D
 export function generateLevelingSeatArray(
     algorithm: AlgorithmType,
     levelingPartyCodes: string[],
-    partyResults: Dictionary<PartyResult>,
-    districtResults: Dictionary<DistrictResult>,
-    districtPartyResults: Dictionary<Dictionary<PartyResult>>,
+    partyResults: _.Dictionary<PartyResult>,
+    districtResults: _.Dictionary<DistrictResult>,
+    districtPartyResults: _.Dictionary<_.Dictionary<PartyResult>>,
     useAdjustedQuotient: boolean
 ): LevelingSeat[] {
     let levelingSeats: LevelingSeat[] = [];
@@ -400,15 +504,18 @@ export function generateLevelingSeatArray(
 }
 
 /**
- * Converts an array of results to a dictionary from Party Code to Votes.
+ * Converts an array of results to a Dictionary from Party Code to Votes.
  *
  * @param results An array of results
  */
-function resultArrayToDictionary(results: Result[]): Dictionary<number> {
-    const resultDict: Dictionary<number> = {};
-    results.forEach((result) => {
-        resultDict[result.partyCode] = result.votes;
-    });
+function resultArrayToDictionary(results: _.Dictionary<PartyResult>): _.Dictionary<number> {
+    const resultDict: _.Dictionary<number> = {};
+    for (const partyCode in results) {
+        if (results.hasOwnProperty(partyCode)) {
+            const partyVotes = results[partyCode];
+            resultDict[partyVotes.partyCode] = partyVotes.votes;
+        }
+    }
 
     return resultDict;
 }
@@ -524,4 +631,8 @@ export function isLargestFractionAlgorithm(algorithm: AlgorithmType): boolean {
         algorithm === AlgorithmType.LARGEST_FRACTION_HARE ||
         algorithm === AlgorithmType.LARGEST_FRACTION_HAGENBACH_BISCHOFF
     );
+}
+
+export function shouldApply2005Reform(year: number) {
+    return year >= 2005;
 }

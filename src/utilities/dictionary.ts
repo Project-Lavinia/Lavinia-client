@@ -1,15 +1,11 @@
-﻿export interface Dictionary<T> {
-    [key: string]: T;
-}
-
-export interface RawDictionaryEntry {
+﻿export interface RawDictionaryEntry {
     id: number;
     key: string;
     value: number;
 }
 
-export function copyDictionary<T>(dictionary: Dictionary<T>): Dictionary<T> {
-    const copy: Dictionary<T> = {};
+export function copyDictionary<T>(dictionary: _.Dictionary<T>): _.Dictionary<T> {
+    const copy: _.Dictionary<T> = {};
 
     for (const entry in dictionary) {
         if (dictionary.hasOwnProperty(entry)) {
@@ -20,7 +16,7 @@ export function copyDictionary<T>(dictionary: Dictionary<T>): Dictionary<T> {
     return copy;
 }
 
-export function dictionaryToArray<T>(dictionary: Dictionary<T>): T[] {
+export function dictionaryToArray<T>(dictionary: _.Dictionary<T>): T[] {
     const array: T[] = [];
 
     for (const key in dictionary) {
@@ -32,8 +28,8 @@ export function dictionaryToArray<T>(dictionary: Dictionary<T>): T[] {
     return array;
 }
 
-export function rawDictionaryToDictionary(rawDictionary: Array<RawDictionaryEntry>): Dictionary<number> {
-    const dict: Dictionary<number> = {};
+export function rawDictionaryToDictionary(rawDictionary: Array<RawDictionaryEntry>): _.Dictionary<number> {
+    const dict: _.Dictionary<number> = {};
 
     rawDictionary.forEach((entry) => (dict[entry.key] = entry.value));
 
