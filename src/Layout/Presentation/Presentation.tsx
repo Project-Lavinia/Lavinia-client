@@ -33,6 +33,7 @@ export interface PresentationProps {
     algorithm: AlgorithmType;
     showFilters: boolean;
     selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    partyMap: _.Dictionary<string>;
 }
 
 export class Presentation extends React.Component<PresentationProps, {}> {
@@ -137,6 +138,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         districtWidth={this.getWidestStringWidth(this.getDistricts())}
                         decimals={this.props.decimals}
                         algorithm={this.props.algorithm}
+                        partyMap={this.props.partyMap}
                     />
                 );
             case PresentationType.SeatDistribution:
@@ -155,6 +157,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         disproportionalityIndex={this.props.disproportionalityIndex}
                         selectDistrict={this.props.selectDistrict}
                         algorithm={this.props.algorithm}
+                        partyMap={this.props.partyMap}
                     />
                 );
             case PresentationType.RemainderQuotients:
