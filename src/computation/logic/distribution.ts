@@ -1,4 +1,4 @@
-import { copyDictionary, Dictionary } from "../../utilities/dictionary";
+import { copyDictionary } from "../../utilities/dictionary";
 import { QuotientDictionary } from "./quotient-dictionary";
 import { SortedReverseDict } from "./sorted-reverse-dict";
 import { breakTies } from "./utils";
@@ -17,10 +17,10 @@ import { DistributionResult } from "../computation-models";
  */
 export function distributionByQuotient(
     numberToDistribute: number,
-    distributeOn: Dictionary<number>,
-    baseValue: Dictionary<number>,
+    distributeOn: _.Dictionary<number>,
+    baseValue: _.Dictionary<number>,
     denominatorFunction: (timesWon: number) => number
-): Dictionary<number> {
+): _.Dictionary<number> {
     const updatedDistribution = copyDictionary(distributeOn);
     const quotientDictionary = new QuotientDictionary(denominatorFunction);
     quotientDictionary.populateQuotients(updatedDistribution, baseValue);
@@ -73,7 +73,7 @@ export function dHondt(numberOfSeatsAssigned: number): number {
  */
 export function largestFraction(
     numberToDistribute: number,
-    partyVotes: Dictionary<number>,
+    partyVotes: _.Dictionary<number>,
     electionNumber: number
 ): DistributionResult {
     const { ratedParties, seatsWon, seatsDistributed } = distributeWholeSeats(partyVotes, electionNumber);
@@ -92,11 +92,11 @@ export function largestFraction(
 }
 
 function distributeWholeSeats(
-    partyVotes: Dictionary<number>,
+    partyVotes: _.Dictionary<number>,
     electionNumber: number
-): { ratedParties: SortedReverseDict; seatsWon: Dictionary<number>; seatsDistributed: number } {
+): { ratedParties: SortedReverseDict; seatsWon: _.Dictionary<number>; seatsDistributed: number } {
     const ratedParties = new SortedReverseDict();
-    const seatsWon: Dictionary<number> = {};
+    const seatsWon: _.Dictionary<number> = {};
     let seatsDistributed = 0;
     for (const partyCode in partyVotes) {
         if (partyVotes.hasOwnProperty(partyCode)) {
