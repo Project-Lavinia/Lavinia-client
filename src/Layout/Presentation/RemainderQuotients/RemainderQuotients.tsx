@@ -61,7 +61,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
             columns.push({
                 Header: element.partyCode,
                 accessor: `levellingSeatRounds[${i}]`,
-                minWidth: 50,
+                minWidth: 80,
                 Cell: (row) => {
                     if (row.value !== undefined) {
                         let quotient = row.value.quotient;
