@@ -15,7 +15,7 @@ export class ResetButton extends React.Component<ResetButtonProps> {
                     onClick={this.props.restoreToDefault}
                     type="button"
                 >
-                    Tilbakestill til nåværende ordning
+                    Tilbakestill til historisk ordning
                 </button>
             </div>
         );

@@ -14,12 +14,14 @@ import { initializePresentation } from "./PresentationMenu";
 import { stateIsInvalid } from "../store/version";
 import { rawParametersToParametersConverter } from "../requested-data/requested-data-utilities";
 import { RootState } from "../reducers";
+import { toggleHamburger } from "./ui-reducer";
 
-const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded"> => ({
+const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded" | "hamburgerExpanded"> => ({
     dataLoaded: state.requestedDataState.dataLoaded,
+    hamburgerExpanded: state.uiState.hamburgerExpanded,
 });
 
-const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState"> => ({
+const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState" | "toggleHamburger"> => ({
     initializeState: async () => {
         const votesUri = process.env.API_V3 + "votes?partyCode=ALL&district=ALL";
         const metricsUri = process.env.API_V3 + "metrics?district=ALL";
@@ -50,9 +52,11 @@ const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState">
             const stringYears = numberYears.map((year) => year.toString());
 
             const initializeSettingsAction = initializeComputationMenu(stringYears, parameters[0]);
+            dispatch(initializeSettingsAction);
+          
             const initializePresentationAction = initializePresentation();
             dispatch(initializePresentationAction);
-            dispatch(initializeSettingsAction);
+          
             const initializeComputationAction = initializeComputation(
                 electionYear,
                 votes,
@@ -62,6 +66,9 @@ const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState">
             );
             dispatch(initializeComputationAction);
         }
+    },
+    toggleHamburger: (hamburgerExpanded: boolean) => {
+        dispatch(toggleHamburger(hamburgerExpanded));
     },
 });
 

@@ -13,6 +13,7 @@ export interface DistrictOverviewProps {
     districtWidth: number;
     decimals: number;
     algorithm: AlgorithmType;
+    partyMap: _.Dictionary<string>;
 }
 
 export class DistrictOverview extends React.Component<DistrictOverviewProps, {}> {
@@ -42,7 +43,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                         {leastWeightedDistrict}
                         {" hadde minst vekt, og bare telte "}
                         {lowestVsAverageInPercentage.toFixed(decimals) + "%."}
-                        <VulnerableDistrictSeatText mostVulnerable={mostVulnerable} />
+                        <VulnerableDistrictSeatText mostVulnerable={mostVulnerable} partyMap={this.props.partyMap} />
                     </p>
                 </div>
 
