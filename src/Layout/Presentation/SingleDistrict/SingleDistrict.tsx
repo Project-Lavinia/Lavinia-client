@@ -176,7 +176,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                     ? quotientMap.get(d.partyCode)!.toFixed(decimals)
                                     : null,
                             Cell: (row) => {
-                                if (vulnerable && row.original.partyCode === vulnerable.runnerUp.partyCode) {
+                                if (vulnerable && row.original.partyCode === vulnerable.runnerUp?.partyCode) {
                                     return <div className="has-background-dark has-text-white">{row.value}</div>;
                                 }
                                 return row.value;

@@ -52,7 +52,11 @@ export function getVulnerableSeatByQuotient(
             result.partyCode !== winner.partyCode && partyResultMap[result.partyCode].percentVotes > districtThreshold
     );
     const runnerUp = filtered[0];
-    const moreVotesToWin = Math.floor(winner.quotient * runnerUp.denominator) - runnerUp.votes + 1;
+    let moreVotesToWin;
+    
+    if (runnerUp) {
+        moreVotesToWin = Math.floor(winner.quotient * runnerUp.denominator) - runnerUp.votes + 1;
+    }
     return {
         winner,
         runnerUp,
@@ -81,11 +85,24 @@ export function getVulnerableSeatByVotes(
         (result) =>
             result.partyCode !== winner.partyCode && partyResultMap[result.partyCode].percentVotes > districtThreshold
     );
+    const runnerUp = filtered[0];
     return {
         winner,
-        partyCode: filtered[0].partyCode,
-        moreVotesToWin: filtered[0].moreVotesToWin,
+        partyCode: runnerUp?.partyCode,
+        moreVotesToWin: runnerUp?.moreVotesToWin,
     };
+}
+
+function sortVulnerableDistrictSeat(seatA: VulnerableDistrictSeat, seatB: VulnerableDistrictSeat): number {
+    if (!seatB.moreVotesToWin) {
+        return 1;
+    }
+
+    if (!seatA.moreVotesToWin) {
+        return -1;
+    }
+
+    return seatA.moreVotesToWin >= seatB.moreVotesToWin ? 1 : -1;
 }
 
 /**
@@ -107,13 +124,13 @@ export function getMostVulnerableSeatByQuotient(districtResults: DistrictResult[
             });
         }
     });
-    return vulnerableDistrictSeats.sort((a, b) => (a.moreVotesToWin >= b.moreVotesToWin ? 1 : -1))[0];
+    return vulnerableDistrictSeats.sort(sortVulnerableDistrictSeat)[0];
 }
 
 interface VulnerableSeat {
     winner: SeatPartyResult;
-    runnerUp: SeatPartyResult;
-    moreVotesToWin: number;
+    runnerUp: SeatPartyResult | undefined;
+    moreVotesToWin: number | undefined;
 }
 
 export interface VulnerableDistrictSeat extends VulnerableSeat {
@@ -122,6 +139,6 @@ export interface VulnerableDistrictSeat extends VulnerableSeat {
 
 export interface VulnerableVotes {
     winner: SeatPartyResult;
-    partyCode: string;
-    moreVotesToWin: number;
+    partyCode: string | undefined;
+    moreVotesToWin: number | undefined;
 }
