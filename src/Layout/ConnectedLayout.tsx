@@ -16,15 +16,16 @@ import { rawParametersToParametersConverter } from "../requested-data/requested-
 import { RootState } from "../reducers";
 import { clearState } from "../reducers/global-actions";
 import { NotificationType, NotificationData } from "./Notifications";
-import { addNotification } from "./ui-actions";
+import { addNotification, toggleHamburger } from "./ui-actions";
 
-const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded"> => ({
+const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded" | "hamburgerExpanded"> => ({
     dataLoaded: state.requestedDataState.dataLoaded,
+    hamburgerExpanded: state.uiState.hamburgerExpanded,
 });
 
 const mapDispatchToProps = (
     dispatch: any
-): Pick<LayoutProps, "initializeState" | "clearState" | "showNotification"> => ({
+): Pick<LayoutProps, "initializeState" | "toggleHamburger" | "clearState" | "showNotification"> => ({
     initializeState: async () => {
         const votesUri = process.env.API_V3 + "votes?partyCode=ALL&district=ALL";
         const metricsUri = process.env.API_V3 + "metrics?district=ALL";
@@ -98,6 +99,10 @@ const mapDispatchToProps = (
         };
         const addNotificationAction = addNotification(notification);
         dispatch(addNotificationAction);
+    },
+    
+    toggleHamburger: (hamburgerExpanded: boolean) => {
+        dispatch(toggleHamburger(hamburgerExpanded));
     },
 });
 

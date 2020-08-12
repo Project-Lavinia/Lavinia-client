@@ -27,6 +27,12 @@ describe("ComputationMenu", () => {
                     waitForLoad(iteration++);
                 }
             });
+
+            cy.get("#close_tutorial_button").then((button) => {
+                if (button.is(":visible")) {
+                    button.click();
+                }
+            });
         });
     }
 

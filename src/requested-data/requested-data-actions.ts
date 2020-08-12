@@ -5,10 +5,10 @@ import { ClearState } from "../reducers/global-actions";
  * Enum containing all possible RequestedDataAction types.
  */
 export enum RequestedDataActionType {
-    INTIIALIZE_REQUESTED_VOTES = "INITIALIZE_REQUESTED_VOTES",
+    INITIALIZE_REQUESTED_VOTES = "INITIALIZE_REQUESTED_VOTES",
     INITIALIZE_REQUESTED_METRICS = "INITIALIZE_REQUESTED_METRICS",
-    INIITALIZE_REQUESTED_PARAMETERS = "INITIALIZE_REQUESTED_PARAMETERS",
-    INIITALIZE_REQUESTED_PARTY_MAP = "INTITIALIZE_REQUESTED_PARTY_MAP",
+    INITIALIZE_REQUESTED_PARAMETERS = "INITIALIZE_REQUESTED_PARAMETERS",
+    INITIALIZE_REQUESTED_PARTY_MAP = "INITIALIZE_REQUESTED_PARTY_MAP",
 }
 
 /**
@@ -25,7 +25,7 @@ export type RequestedDataAction =
  * Action for initializing requested votes.
  */
 export interface InitializeRequestedVotes {
-    type: RequestedDataActionType.INTIIALIZE_REQUESTED_VOTES;
+    type: RequestedDataActionType.INITIALIZE_REQUESTED_VOTES;
     votes: Votes[];
 }
 
@@ -41,7 +41,7 @@ export interface InitializeRequestedMetrics {
  * Action for initializing requested parameters.
  */
 export interface InitializeRequestedParameters {
-    type: RequestedDataActionType.INIITALIZE_REQUESTED_PARAMETERS;
+    type: RequestedDataActionType.INITIALIZE_REQUESTED_PARAMETERS;
     parameters: Parameters[];
 }
 
@@ -49,7 +49,7 @@ export interface InitializeRequestedParameters {
  * Action for initializing requested party map.
  */
 export interface InitializeRequestedPartyMap {
-    type: RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP;
+    type: RequestedDataActionType.INITIALIZE_REQUESTED_PARTY_MAP;
     partyMap: _.Dictionary<string>;
 }
 
@@ -60,7 +60,7 @@ export interface InitializeRequestedPartyMap {
  */
 export function initializeRequestedVotes(votes: Votes[]) {
     const action: InitializeRequestedVotes = {
-        type: RequestedDataActionType.INTIIALIZE_REQUESTED_VOTES,
+        type: RequestedDataActionType.INITIALIZE_REQUESTED_VOTES,
         votes,
     };
     return action;
@@ -86,7 +86,7 @@ export function initializeRequestedMetrics(metrics: Metrics[]) {
  */
 export function initializeRequestedParameters(parameters: Parameters[]) {
     const action: InitializeRequestedParameters = {
-        type: RequestedDataActionType.INIITALIZE_REQUESTED_PARAMETERS,
+        type: RequestedDataActionType.INITIALIZE_REQUESTED_PARAMETERS,
         parameters,
     };
     return action;
@@ -99,7 +99,7 @@ export function initializeRequestedParameters(parameters: Parameters[]) {
  */
 export function initializeRequestedPartyMap(partyMap: _.Dictionary<string>) {
     const action: InitializeRequestedPartyMap = {
-        type: RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP,
+        type: RequestedDataActionType.INITIALIZE_REQUESTED_PARTY_MAP,
         partyMap,
     };
     return action;

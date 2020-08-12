@@ -11,6 +11,12 @@ export function ui(state: UiState = defaultState, action: UiAction): UiState {
                 hamburgerExpanded: action.hamburgerExpanded,
             };
         }
+        case UiActionType.HIDE_TUTORIAL: {
+            return {
+                ...state,
+                showTutorial: false,
+            };
+        }
         case UiActionType.ADD_NOTIFICATION: {
             const newNotificationId = state.notificationId + 1;
             const fullNotificationData: FullNotificationData = {
@@ -34,7 +40,6 @@ export function ui(state: UiState = defaultState, action: UiAction): UiState {
                 notifications: filteredNotifications,
             };
         }
-
         case GlobalActionType.CLEAR_STATE: {
             return defaultState;
         }

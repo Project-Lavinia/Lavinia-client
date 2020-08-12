@@ -1,14 +1,15 @@
 ﻿import { RequestedDataActionType, RequestedDataAction } from "./requested-data-actions";
 import { RequestedDataState, unloadedState } from "./requested-data-state";
 import { GlobalActionType } from "../reducers/global-actions";
+import { checkExhaustively } from "../utilities";
 
 function checkStateLoaded(state: RequestedDataState, action: RequestedDataAction): boolean {
     return (
         (state.metrics.length > 0 || action.type === RequestedDataActionType.INITIALIZE_REQUESTED_METRICS) &&
-        (state.parameters.length > 0 || action.type === RequestedDataActionType.INIITALIZE_REQUESTED_PARAMETERS) &&
-        (state.votes.length > 0 || action.type === RequestedDataActionType.INTIIALIZE_REQUESTED_VOTES) &&
+        (state.parameters.length > 0 || action.type === RequestedDataActionType.INITIALIZE_REQUESTED_PARAMETERS) &&
+        (state.votes.length > 0 || action.type === RequestedDataActionType.INITIALIZE_REQUESTED_VOTES) &&
         (Object.keys(state.partyMap).length > 0 ||
-            action.type === RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP)
+            action.type === RequestedDataActionType.INITIALIZE_REQUESTED_PARTY_MAP)
     );
 }
 
@@ -24,7 +25,7 @@ export function requestedData(
     action: RequestedDataAction
 ): RequestedDataState {
     switch (action.type) {
-        case RequestedDataActionType.INTIIALIZE_REQUESTED_VOTES:
+        case RequestedDataActionType.INITIALIZE_REQUESTED_VOTES:
             return {
                 ...state,
                 votes: action.votes,
@@ -38,14 +39,14 @@ export function requestedData(
                 dataLoaded: checkStateLoaded(state, action),
                 enableAutoSave: checkStateLoaded(state, action),
             };
-        case RequestedDataActionType.INIITALIZE_REQUESTED_PARAMETERS:
+        case RequestedDataActionType.INITIALIZE_REQUESTED_PARAMETERS:
             return {
                 ...state,
                 parameters: action.parameters,
                 dataLoaded: checkStateLoaded(state, action),
                 enableAutoSave: checkStateLoaded(state, action),
             };
-        case RequestedDataActionType.INIITALIZE_REQUESTED_PARTY_MAP:
+        case RequestedDataActionType.INITIALIZE_REQUESTED_PARTY_MAP:
             return {
                 ...state,
                 partyMap: action.partyMap,
@@ -55,6 +56,7 @@ export function requestedData(
         case GlobalActionType.CLEAR_STATE:
             return unloadedState;
         default:
+            checkExhaustively(action);
             return state;
     }
 }

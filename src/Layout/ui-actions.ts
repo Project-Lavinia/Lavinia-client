@@ -3,11 +3,12 @@ import { NotificationData } from "./Notifications";
 
 export enum UiActionType {
     TOGGLE_HAMBURGER_EXPANDED = "TOGGLE_HAMBURGER_EXPANDED",
+    HIDE_TUTORIAL = "HIDE_TUTORIAL",
     ADD_NOTIFICATION = "ADD_NOTIFICATION",
     REMOVE_NOTIFICATION = "REMOVE_NOTIFICATION",
 }
 
-export type UiAction = ToggleHamburger | AddNotificationAction | RemoveNotificationAction | ClearState;
+export type UiAction = ToggleHamburger | HideTutorial | AddNotificationAction | RemoveNotificationAction | ClearState;
 
 export interface ToggleHamburger {
     type: UiActionType.TOGGLE_HAMBURGER_EXPANDED;
@@ -20,6 +21,17 @@ export function toggleHamburger(hamburgerExpanded: boolean) {
         hamburgerExpanded: !hamburgerExpanded,
     };
     return action;
+}
+
+export function hideTutorial() {
+    const action: HideTutorial  = {
+        type: UiActionType.HIDE_TUTORIAL,
+    };
+    return action;
+}
+
+export interface HideTutorial {
+    type: UiActionType.HIDE_TUTORIAL;
 }
 
 export interface AddNotificationAction {

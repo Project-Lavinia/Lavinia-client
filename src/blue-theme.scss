@@ -12,6 +12,19 @@ $primary: $democracy-blue;
 @import "~bulma-switch";
 @import "../node_modules/bulma-switch/dist/css/bulma-switch.sass";
 
+[class*="auto-scroll-y"] {
+    overflow-y: auto;
+}
+
+[class*="min-column-width"] {
+    min-width: 11.5rem;
+}
+
+[class*="presentation"] {
+    overflow-x: auto;
+    padding-top: 15px;
+}
+
 [class*=" lavinia-logo"],
 [class^="lavinia-logo"] {
     letter-spacing: 2px;
