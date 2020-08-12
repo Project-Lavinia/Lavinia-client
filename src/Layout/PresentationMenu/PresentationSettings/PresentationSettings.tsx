@@ -177,7 +177,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         return (
             <div className="columns">
                 <div className="columns">
-                    <div className="column">
+                    <div className="column min-column-width">
                         <NoSeatsCheckbox
                             hidden={!this.showNoSeatsCheckbox()}
                             showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}

@@ -65,7 +65,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                     return <abbr title={partyMap[element.partyCode]}>{element.partyCode}</abbr>;
                 },
                 accessor: `levellingSeatRounds[${i}]`,
-                minWidth: 50,
+                minWidth: 80,
                 Cell: (row) => {
                     if (row.value !== undefined) {
                         let quotient = row.value.quotient;
