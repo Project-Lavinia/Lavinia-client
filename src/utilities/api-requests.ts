@@ -46,17 +46,22 @@ function parseRetryHeaderToMs(response: Response, defaultDelay: number): number 
 }
 
 async function attemptRequest<T>(uri: string, attemptNumber: number): Promise<T> {
-    const response = await fetch(uri);
+    const response = await fetch(uri).catch((reason: Error) => {return reason.message});
+    console.log(attemptNumber);
 
-    if (response && isSuccessful(response.status)) {
+    if (typeof response !== "string" && isSuccessful(response.status)) {
         return response.json() as Promise<T>;
     }
 
     if (attemptNumber > maxNumberOfAttempts) {
-        throw new Error(response.statusText);
+        if (typeof response !== "string") {
+            throw new Error(response.statusText);
+        } else {
+            throw new Error(response);
+        }
     }
 
-    if (response && response.status === 429) {
+    if (typeof response !== "string" && response.status === 429) {
         const delay = parseRetryHeaderToMs(response, 10000);
         await new Promise((resolve) => setTimeout(resolve, delay));
     } else {
