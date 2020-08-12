@@ -33,7 +33,6 @@ export interface PresentationProps {
     year: number;
     algorithm: AlgorithmType;
     showFilters: boolean;
-    partyMap: _.Dictionary<string>;
     selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     partyMap: _.Dictionary<string>;
 }

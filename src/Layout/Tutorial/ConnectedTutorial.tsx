@@ -1,7 +1,7 @@
 import { RootState } from "../../reducers";
 import { TutorialProps, Tutorial } from "./Tutorial";
-import { hideTutorial } from "../ui-reducer";
 import { connect } from "react-redux";
+import { hideTutorial } from "../ui-reducer";
 
 const mapStateToProps = (state: RootState): Pick<TutorialProps, "showTutorial"> => ({
     showTutorial: state.uiState.showTutorial,
