@@ -46,8 +46,7 @@ function parseRetryHeaderToMs(response: Response, defaultDelay: number): number 
 }
 
 async function attemptRequest<T>(uri: string, attemptNumber: number): Promise<T> {
-    const response = await fetch(uri).catch((reason: Error) => {return reason.message});
-    console.log(attemptNumber);
+    const response = await fetch(uri).catch((reason: Error) => reason.message);
 
     if (typeof response !== "string" && isSuccessful(response.status)) {
         return response.json() as Promise<T>;
