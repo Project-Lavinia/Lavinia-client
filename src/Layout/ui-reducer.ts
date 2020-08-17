@@ -1,43 +1,7 @@
-export interface UiState {
-    hamburgerExpanded: boolean;
-    showTutorial: boolean;
-}
-
-const defaultState: UiState = {
-    hamburgerExpanded: false,
-    showTutorial: true,
-};
-
-export enum UiActionType {
-    TOGGLE_HAMBURGER_EXPANDED = "TOGGLE_HAMBURGER_EXPANDED",
-    HIDE_TUTORIAL = "HIDE_TUTORIAL",
-}
-
-export type UiAction = ToggleHamburger | HideTutorial;
-
-export function toggleHamburger(hamburgerExpanded: boolean) {
-    const action: ToggleHamburger = {
-        type: UiActionType.TOGGLE_HAMBURGER_EXPANDED,
-        hamburgerExpanded: !hamburgerExpanded,
-    };
-    return action;
-}
-
-export interface ToggleHamburger {
-    type: UiActionType.TOGGLE_HAMBURGER_EXPANDED;
-    hamburgerExpanded: boolean;
-}
-
-export function hideTutorial() {
-    const action: HideTutorial  = {
-        type: UiActionType.HIDE_TUTORIAL,
-    };
-    return action;
-}
-
-export interface HideTutorial {
-    type: UiActionType.HIDE_TUTORIAL;
-}
+import { GlobalActionType } from "../reducers/global-actions";
+import { UiState, defaultState } from "./ui-state";
+import { UiAction, UiActionType } from "./ui-actions";
+import { FullNotificationData } from "./Notifications";
 
 export function ui(state: UiState = defaultState, action: UiAction): UiState {
     switch (action.type) {
@@ -52,6 +16,32 @@ export function ui(state: UiState = defaultState, action: UiAction): UiState {
                 ...state,
                 showTutorial: false,
             };
+        }
+        case UiActionType.ADD_NOTIFICATION: {
+            const newNotificationId = state.notificationId + 1;
+            const fullNotificationData: FullNotificationData = {
+                id: newNotificationId,
+                text: action.notification.text,
+                type: action.notification.type,
+            };
+
+            const copiedNotifications = [...state.notifications];
+            copiedNotifications.push(fullNotificationData);
+            return {
+                ...state,
+                notifications: copiedNotifications,
+                notificationId: newNotificationId,
+            };
+        }
+        case UiActionType.REMOVE_NOTIFICATION: {
+            const filteredNotifications = state.notifications.filter((notification) => notification.id !== action.id);
+            return {
+                ...state,
+                notifications: filteredNotifications,
+            };
+        }
+        case GlobalActionType.CLEAR_STATE: {
+            return defaultState;
         }
         default: {
             return {

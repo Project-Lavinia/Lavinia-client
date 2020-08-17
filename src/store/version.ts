@@ -1,4 +1,4 @@
-import { loadVersion, saveVersion } from "./local-storage";
+import { loadVersion, saveVersion, loadState } from "./local-storage";
 
 /**
  * Simple version validator.
@@ -9,7 +9,7 @@ import { loadVersion, saveVersion } from "./local-storage";
 export function stateIsInvalid() {
     const localVersion = loadVersion();
     if (localVersion) {
-        if (isIncompatibleVersion(localVersion)) {
+        if (isIncompatibleVersion(localVersion) || !loadState()) {
             clearAndSave();
             return true;
         }

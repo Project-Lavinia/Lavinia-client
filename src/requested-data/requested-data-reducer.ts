@@ -1,5 +1,6 @@
 ﻿import { RequestedDataActionType, RequestedDataAction } from "./requested-data-actions";
 import { RequestedDataState, unloadedState } from "./requested-data-state";
+import { GlobalActionType } from "../reducers/global-actions";
 import { checkExhaustively } from "../utilities";
 
 function checkStateLoaded(state: RequestedDataState, action: RequestedDataAction): boolean {
@@ -52,6 +53,8 @@ export function requestedData(
                 dataLoaded: checkStateLoaded(state, action),
                 enableAutoSave: checkStateLoaded(state, action),
             };
+        case GlobalActionType.CLEAR_STATE:
+            return unloadedState;
         default:
             checkExhaustively(action);
             return state;

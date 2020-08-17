@@ -34,3 +34,12 @@ $primary: $democracy-blue;
     width: 100px;
     height: 28px;
 }
+
+[class*="toast-display"] {
+    position: absolute;
+    z-index: 1000000;
+}
+
+[class*="toast"] {
+    margin-bottom: 0 !important;
+}
