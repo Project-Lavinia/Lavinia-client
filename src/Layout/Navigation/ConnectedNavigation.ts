@@ -1,7 +1,7 @@
 import { RootState } from "../../reducers";
 import { NavigationProps, Navigation } from "./Navigation";
 import { connect } from "react-redux";
-import { toggleHamburger } from "../ui-reducer";
+import { toggleHamburger } from "../ui-actions";
 
 const mapStateToProps = (state: RootState): NavigationProps => {
     return {
@@ -17,7 +17,4 @@ const mapDispatchToProps = (dispatch: any): NavigationProps => {
     };
 };
 
-export const ConnectedNavigation = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Navigation);
+export const ConnectedNavigation = connect(mapStateToProps, mapDispatchToProps)(Navigation);

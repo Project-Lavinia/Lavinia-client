@@ -10,6 +10,11 @@ function isSuccessful(responseCode: number): boolean {
     return responseCode >= 200 && responseCode < 300;
 }
 
+export interface RequestResult<T> {
+    httpStatus?: string | undefined;
+    data: Promise<T> | T;
+}
+
 /**
  * Attempts to parse the HTTP response for how long
  * to delay the next fetch in milliseconds.
@@ -40,35 +45,36 @@ function parseRetryHeaderToMs(response: Response, defaultDelay: number): number 
     return Math.max(0, waitTime);
 }
 
-async function attemptRequest<T>(uri: string, defaultValue: T, attemptNumber: number): Promise<T> {
-    const response = await fetch(uri);
+async function attemptRequest<T>(uri: string, attemptNumber: number): Promise<T> {
+    const response = await fetch(uri).catch((reason: Error) => reason.message);
 
-    if (response && isSuccessful(response.status)) {
+    if (typeof response !== "string" && isSuccessful(response.status)) {
         return response.json() as Promise<T>;
     }
 
     if (attemptNumber > maxNumberOfAttempts) {
-        return defaultValue;
+        if (typeof response !== "string") {
+            throw new Error(response.statusText);
+        } else {
+            throw new Error(response);
+        }
     }
 
-    if (response && response.status === 429) {
+    if (typeof response !== "string" && response.status === 429) {
         const delay = parseRetryHeaderToMs(response, 10000);
         await new Promise((resolve) => setTimeout(resolve, delay));
     } else {
         await new Promise((resolve) => setTimeout(resolve, attemptNumber * iterativeDelay));
     }
 
-    return attemptRequest(uri, defaultValue, ++attemptNumber);
+    return attemptRequest(uri, ++attemptNumber);
 }
 
 /**
- * Attempts to request a set of information from the URI specified,
- * if something goes wrong or the returned data does not match the type
- * expected, it will return a default value specified
+ * Attempts to request a set of information from the URI specified.
  *
  * @param uri The uri to attempt to request data from
- * @param defaultValue The value to return if something goes wrong
  */
-export async function request<T>(uri: string, defaultValue: T): Promise<T> {
-    return attemptRequest(uri, defaultValue, 1);
+export async function request<T>(uri: string): Promise<T> {
+    return attemptRequest(uri, 1);
 }

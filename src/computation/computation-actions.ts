@@ -2,6 +2,7 @@
 import { Votes, Metrics, Parameters, FirstDivisor } from "../requested-data/requested-data-models";
 import { lagueDhont } from "./logic";
 import { unloadedParameters } from "./computation-state";
+import { ClearState } from "../reducers/global-actions";
 
 /**
  * Enum containing all possible ComputationAction types.
@@ -22,7 +23,8 @@ export type ComputationAction =
     | UpdateComputation
     | SaveComputation
     | ResetSavedComputation
-    | UpdateHistorical;
+    | UpdateHistorical
+    | ClearState;
 
 /**
  * Action for initializing the computation.

@@ -14,14 +14,18 @@ import { initializePresentation } from "./PresentationMenu";
 import { stateIsInvalid } from "../store/version";
 import { rawParametersToParametersConverter } from "../requested-data/requested-data-utilities";
 import { RootState } from "../reducers";
-import { toggleHamburger } from "./ui-reducer";
+import { clearState } from "../reducers/global-actions";
+import { NotificationType, NotificationData } from "./Notifications";
+import { addNotification, toggleHamburger } from "./ui-actions";
 
 const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded" | "hamburgerExpanded"> => ({
     dataLoaded: state.requestedDataState.dataLoaded,
     hamburgerExpanded: state.uiState.hamburgerExpanded,
 });
 
-const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState" | "toggleHamburger"> => ({
+const mapDispatchToProps = (
+    dispatch: any
+): Pick<LayoutProps, "initializeState" | "toggleHamburger" | "clearState" | "showNotification"> => ({
     initializeState: async () => {
         const votesUri = process.env.API_V3 + "votes?partyCode=ALL&district=ALL";
         const metricsUri = process.env.API_V3 + "metrics?district=ALL";
@@ -30,33 +34,48 @@ const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState" 
         const partyMapUri = process.env.API_V3 + "parties";
 
         if (stateIsInvalid()) {
-            const votes = await request<Array<Votes>>(votesUri, []);
+            let votes: Votes[] = [];
+            let metrics: Metrics[] = [];
+            let rawParameters: RawParameters[] = [];
+            let partyMap: _.Dictionary<string> = {};
+            let numberYears: number[] = [];
+
+            try {
+                votes = await request<Array<Votes>>(votesUri);
+                metrics = await request<Array<Metrics>>(metricsUri);
+                rawParameters = await request<Array<RawParameters>>(parametersUri);
+                partyMap = await request<_.Dictionary<string>>(partyMapUri);
+                numberYears = await request<Array<number>>(yearsUri);
+            } catch (error) {
+                const notification: NotificationData = {
+                    text: `Klarte ikke å laste ned valgdata fra APIet, prøv igjen senere. Feilmeldingen var: ${error.message}`,
+                    type: NotificationType.DANGER,
+                };
+                const addNotificationAction = addNotification(notification);
+                dispatch(addNotificationAction);
+            }
+
             const initializeRequestedVotesAction = initializeRequestedVotes(votes);
             dispatch(initializeRequestedVotesAction);
 
-            const metrics = await request<Array<Metrics>>(metricsUri, []);
             const initializeRequestedMetricsAction = initializeRequestedMetrics(metrics);
             dispatch(initializeRequestedMetricsAction);
 
-            const rawParameters = await request<Array<RawParameters>>(parametersUri, []);
             const parameters = rawParameters.map<Parameters>((raw) => rawParametersToParametersConverter(raw));
             const initializeRequestedParametersAction = initializeRequestedParameters(parameters);
             dispatch(initializeRequestedParametersAction);
 
-            const partyMap = await request<_.Dictionary<string>>(partyMapUri, {});
             const initializeRequestedPartyMapAction = initializeRequestedPartyMap(partyMap);
             dispatch(initializeRequestedPartyMapAction);
 
-            const numberYears = await request<Array<number>>(yearsUri, []);
             const electionYear = numberYears[0];
             const stringYears = numberYears.map((year) => year.toString());
-
             const initializeSettingsAction = initializeComputationMenu(stringYears, parameters[0]);
             dispatch(initializeSettingsAction);
-          
+
             const initializePresentationAction = initializePresentation();
             dispatch(initializePresentationAction);
-          
+
             const initializeComputationAction = initializeComputation(
                 electionYear,
                 votes,
@@ -67,6 +86,21 @@ const mapDispatchToProps = (dispatch: any): Pick<LayoutProps, "initializeState" 
             dispatch(initializeComputationAction);
         }
     },
+
+    clearState: () => {
+        const clearStateAction = clearState();
+        dispatch(clearStateAction);
+    },
+
+    showNotification: (type: NotificationType, text: string) => {
+        const notification: NotificationData = {
+            text,
+            type,
+        };
+        const addNotificationAction = addNotification(notification);
+        dispatch(addNotificationAction);
+    },
+    
     toggleHamburger: (hamburgerExpanded: boolean) => {
         dispatch(toggleHamburger(hamburgerExpanded));
     },
