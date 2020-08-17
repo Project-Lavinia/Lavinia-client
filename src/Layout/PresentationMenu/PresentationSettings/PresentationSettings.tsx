@@ -11,7 +11,8 @@ import { Votes, Metrics, Parameters } from "../../../requested-data/requested-da
 import { districtMap, mergeVoteDistricts, mergeMetricDistricts } from "../../../computation/logic/district-merging";
 import { ComputationMenuPayload } from "../../ComputationMenu/computation-menu-models";
 import { Use2021DistributionCheckbox } from "./Use2021DistributionCheckbox";
-import { shouldDistributeDistrictSeats } from "../../../utilities/conditionals";
+import { getVotesForYear, getMetricsForYear, getMetricsYear } from "../../../utilities/data-filters";
+import { reform2005Applies } from "../../../utilities/conditionals";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -117,13 +118,13 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         this.props.toggleMergeDistricts(event.target.checked);
 
         const year = this.props.year;
-        let votes = this.props.votes.filter((vote) => vote.electionYear === year);
-        const distributionYear = this.props.use2021Distribution && year >= 2005 ? 2021 : year;
-        let metrics = this.props.metrics.filter((metric) => metric.electionYear === distributionYear);
+        let votes = getVotesForYear(this.props.votes, year);
+        const metricsYear = getMetricsYear(this.props.use2021Distribution, year);
+        let metrics = getMetricsForYear(this.props.metrics, metricsYear);
         const parameters = this.props.parameters;
 
         if (votes.length > 0) {
-            if (shouldDistributeDistrictSeats(year) && event.target.checked) {
+            if (reform2005Applies(year) && event.target.checked) {
                 votes = mergeVoteDistricts(votes, districtMap);
                 metrics = mergeMetricDistricts(metrics, districtMap);
             }
@@ -149,13 +150,13 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         this.props.toggleUse2021Distribution(event.target.checked);
 
         const year = this.props.year;
-        let votes = this.props.votes.filter((vote) => vote.electionYear === year);
-        const metricsYear = event.target.checked && year >= 2005 ? 2021 : year;
-        let metrics = this.props.metrics.filter((metric) => metric.electionYear === metricsYear);
+        let votes = getVotesForYear(this.props.votes, year);
+        const metricsYear = getMetricsYear(event.target.checked, year);
+        let metrics = getMetricsForYear(this.props.metrics, metricsYear);
         const parameters = this.props.parameters;
 
         if (votes.length > 0) {
-            if (shouldDistributeDistrictSeats(year) && this.props.mergeDistricts) {
+            if (reform2005Applies(year) && this.props.mergeDistricts) {
                 votes = mergeVoteDistricts(votes, districtMap);
                 metrics = mergeMetricDistricts(metrics, districtMap);
             }
@@ -196,7 +197,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                     </div>
                     <div className="column">
                         <MergeDistrictsCheckbox
-                            hidden={!shouldDistributeDistrictSeats(this.props.year)}
+                            hidden={!reform2005Applies(this.props.year)}
                             mergeDistricts={this.props.mergeDistricts}
                             toggleMergeDistricts={this.onToggleMergeDistricts}
                         />
