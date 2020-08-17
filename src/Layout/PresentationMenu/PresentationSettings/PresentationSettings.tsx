@@ -142,10 +142,6 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         }
     };
 
-    showUse2021Distribution(): boolean {
-        return this.props.year >= 2005;
-    }
-
     onToggleUse2021Distribution = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.props.toggleUse2021Distribution(event.target.checked);
 
@@ -202,7 +198,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                             toggleMergeDistricts={this.onToggleMergeDistricts}
                         />
                         <Use2021DistributionCheckbox
-                            hidden={!this.showUse2021Distribution()}
+                            hidden={!reform2005Applies(this.props.year)}
                             use2021Distribution={this.props.use2021Distribution}
                             toggleUse2021Distribution={this.onToggleUse2021Distribution}
                         />
