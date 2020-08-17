@@ -10,5 +10,5 @@ export function getMetricsForYear(metrics: Metrics[], year: number): Metrics[] {
 }
 
 export function getMetricsYear(use2021Distribution: boolean, year: number): number {
-    return use2021Distribution && reform2005Applies(year) ? 2021 : year
+    return use2021Distribution && reform2005Applies(year) ? 2021 : year;
 }
