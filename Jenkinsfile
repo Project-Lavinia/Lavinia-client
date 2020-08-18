@@ -5,7 +5,8 @@ pipeline {
       steps {
         sh 'ls'
         sh 'yarn'
-        sh 'webpack --env.NODE_ENV \\"production\\" -p --progress --colors'
+        sh 'yarn build'
+        sh 'ls'
       }
     }
 
