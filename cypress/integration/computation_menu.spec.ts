@@ -1,3 +1,4 @@
+/// <reference path="../support/index.d.ts" />
 /// <reference types="cypress" />
 
 const years = [
@@ -31,13 +32,33 @@ function waitForLoad(iteration: number = 0) {
                 waitForLoad(iteration++);
             }
         });
+
+        cy.get("#close_tutorial_button").then((button) => {
+            if (button.is(":visible")) {
+                button.click();
+            }
+        });
     });
 }
 
 describe("ComputationMenu", () => {
+    const timeoutLength = 30000;
+    let previousFetch = performance.now();
+    let localStorageCache = {};
+
     beforeEach(() => {
-        cy.clearLocalStorage();
         cy.viewport(1080, 720);
+        const currentTime = performance.now();
+        if (currentTime - previousFetch < timeoutLength) {
+            cy.copyStorage(localStorageCache, localStorage);
+        } else {
+            previousFetch = currentTime;
+        }
+    });
+
+    afterEach(() => {
+        localStorageCache = {};
+        cy.copyStorage(localStorage, localStorageCache);
     });
 
     context("Default settings", () => {
@@ -58,8 +79,8 @@ describe("ComputationMenu", () => {
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
-                cy.get("#merge_to_11_districts_checkbox").check();
-                cy.get("#merge_to_11_districts_checkbox").should("be.checked");
+                cy.get("#merge-setting").check({force: true});
+                cy.get("#merge-setting").should("be.checked");
             });
         });
     });
@@ -71,8 +92,8 @@ describe("ComputationMenu", () => {
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
-                cy.get("#2021_distribution_checkbox").check();
-                cy.get("#2021_distribution_checkbox").should("be.checked");
+                cy.get("#2021-distribution-setting").check({force: true});
+                cy.get("#2021-distribution-setting").should("be.checked");
             });
         });
     });
@@ -84,10 +105,10 @@ describe("ComputationMenu", () => {
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
-                cy.get("#merge_to_11_districts_checkbox").check();
-                cy.get("#2021_distribution_checkbox").check();
-                cy.get("#merge_to_11_districts_checkbox").should("be.checked");
-                cy.get("#2021_distribution_checkbox").should("be.checked");
+                cy.get("#merge-setting").check({force: true});
+                cy.get("#2021-distribution-setting").check({force: true});
+                cy.get("#merge-setting").should("be.checked");
+                cy.get("#2021-distribution-setting").should("be.checked");
             });
         });
     });
@@ -99,10 +120,10 @@ describe("ComputationMenu", () => {
             yearsWithModernElectionSystem.forEach((year) => {
                 cy.get("#year_select").select(`${year}`);
                 cy.get("#year_select").should("have.value", `${year}`);
-                cy.get("#2021_distribution_checkbox").check();
-                cy.get("#merge_to_11_districts_checkbox").check();
-                cy.get("#merge_to_11_districts_checkbox").should("be.checked");
-                cy.get("#2021_distribution_checkbox").should("be.checked");
+                cy.get("#2021-distribution-setting").check({force: true});
+                cy.get("#merge-setting").check({force: true});
+                cy.get("#merge-setting").should("be.checked");
+                cy.get("#2021-distribution-setting").should("be.checked");
             });
         });
     });

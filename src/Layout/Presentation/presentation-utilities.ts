@@ -1,5 +1,4 @@
 import { PartyResult, DistrictResult, LevelingSeat, PartyRestQuotients } from "../../computation";
-import { Dictionary } from "../../utilities/dictionary";
 import { roundNumber } from "../../utilities/number";
 
 export function getPartyTableData(
@@ -59,7 +58,7 @@ export function getSeatDistributionData(
     if (showPartiesWithoutSeats) {
         return districtResults;
     } else {
-        const partySeats: Dictionary<number> = {};
+        const partySeats: _.Dictionary<number> = {};
         const newDistrictResults: DistrictResult[] = [];
 
         for (const party of partyResults) {

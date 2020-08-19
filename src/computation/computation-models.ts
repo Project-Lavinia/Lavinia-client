@@ -1,5 +1,4 @@
-import { Election, Votes, Metrics, Parameters } from "../requested-data/requested-data-models";
-import { Dictionary } from "../utilities/dictionary";
+import { Votes, Metrics, Parameters } from "../requested-data/requested-data-models";
 
 export enum AlgorithmType {
     SAINTE_LAGUE = "SAINTE_LAGUE",
@@ -11,7 +10,6 @@ export enum AlgorithmType {
 }
 
 export interface ComputationPayload {
-    election: Election;
     algorithm: AlgorithmType;
     firstDivisor: number;
     districtThreshold: number;
@@ -22,6 +20,7 @@ export interface ComputationPayload {
     votes: Votes[];
     metrics: Metrics[];
     parameters: Parameters;
+    partyMap: _.Dictionary<string>;
 }
 
 export interface DistrictResult {
@@ -83,7 +82,7 @@ export interface PartyQuotient {
 
 export interface DistributionResult {
     /** A dictionary taking partyCodes and returning the matching number of seats won in this distribution */
-    seatsWon: Dictionary<number>;
+    seatsWon: _.Dictionary<number>;
     /** List of information regarding the distribution of the individual seats */
     seatResults: SeatResult[];
 }
@@ -164,18 +163,6 @@ export interface NationalPartyResult {
 export interface PartyResultv2 extends NationalPartyResult {
     /** The district which the results are from */
     district: string;
-}
-
-export interface Result {
-    resultId: number;
-    votes: number;
-    percentage: number;
-    electionId: number;
-    partyId: number;
-    countyId: number;
-    countyName: string;
-    partyCode: string;
-    partyName: string;
 }
 
 export interface SeatPartyResult {

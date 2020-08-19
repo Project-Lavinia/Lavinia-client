@@ -10,15 +10,16 @@ export class MergeDistrictsCheckbox extends React.Component<MergeDistrictsCheckb
     render() {
         return (
             <div className="field" hidden={this.props.hidden}>
-                <label className="checkbox" htmlFor="merge-setting">
-                    <input
+                <input
                         type="checkbox"
-                        id="merge_to_11_districts_checkbox"
+                        className="switch"
                         name="merge-setting"
+                        id="merge-setting"
                         checked={this.props.mergeDistricts}
                         onChange={this.props.toggleMergeDistricts}
                     />
-                    &nbsp;Slå sammen 19 fylker til 11 fylker
+                <label className="checkbox" htmlFor="merge-setting">
+                    Slå sammen 19 fylker til 11 fylker
                 </label>
             </div>
         );
