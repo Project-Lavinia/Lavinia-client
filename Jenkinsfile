@@ -20,7 +20,7 @@ pipeline {
                         verbose: true,
                         transfers: [
                             sshTransfer(execCommand: "sudo /bin/rm -rf /var/www/*"),
-                            sshTransfer(sourceFiles: "dist/**"),
+                            sshTransfer(sourceFiles: "dist/**/*"),
                             sshTransfer(execCommand: "sudo chcon -R -t httpd_sys_content_t /var/www/")
                         ],
                     )
