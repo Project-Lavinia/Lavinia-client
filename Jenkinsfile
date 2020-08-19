@@ -10,6 +10,12 @@ pipeline {
       }
     }
 
+    stage('Deploy') {
+      steps {
+        sh '/storage/deploy_client.sh'
+      }
+    }
+
   }
   environment {
     API_V3 = 'https://api.lavinia.no/api/v3.0.0/'
