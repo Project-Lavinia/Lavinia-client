@@ -12,6 +12,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
+        sh 'ping web-0.lavinia.no'
         sh '/storage/deploy_client.sh'
       }
     }
