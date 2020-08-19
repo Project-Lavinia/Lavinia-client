@@ -21,6 +21,7 @@ pipeline {
                             sshTransfer(sourceFiles: "dist/**/*"),
                             sshTransfer(execCommand: "mv /var/www/dist/* /var/www/"),
                             sshTransfer(execCommand: "rm -r /var/www/dist"),
+                            sshTransfer(execCommand: "sudo chmod -R 0755 /var/www"),
                             sshTransfer(execCommand: "sudo chcon -R -t httpd_sys_content_t /var/www/")
                         ],
                     )
