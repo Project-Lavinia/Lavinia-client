@@ -3,10 +3,8 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'ls'
         sh 'yarn'
         sh 'yarn build'
-        sh 'ls'
       }
     }
 
@@ -21,7 +19,7 @@ pipeline {
                         transfers: [
                             sshTransfer(execCommand: "sudo /bin/rm -rf /var/www/*"),
                             sshTransfer(sourceFiles: "dist/**/*"),
-                            sshTransfer(execCommand: "mv -r /var/www/dist/* /var/www/"),
+                            sshTransfer(execCommand: "mv /var/www/dist/* /var/www/"),
                             sshTransfer(execCommand: "rm -r /var/www/dist"),
                             sshTransfer(execCommand: "sudo chcon -R -t httpd_sys_content_t /var/www/")
                         ],
