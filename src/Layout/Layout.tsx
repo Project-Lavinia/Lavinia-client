@@ -46,7 +46,7 @@ export class Layout extends React.Component<LayoutProps, {}> {
                 <div className={pageLoaderClass} id={"page_loader"}>
                     <span className="title is-size-2">Laster inn Lavinia...</span>
                 </div>
-                <div className="columns is-desktop section" onClick={this.closeHamburger}>
+                <div className="columns is-desktop section fit-page" onClick={this.closeHamburger}>
                     <div className="column is-narrow">
                         <ConnectedComputationMenu />
                     </div>
