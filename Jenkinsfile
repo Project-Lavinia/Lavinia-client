@@ -18,12 +18,12 @@ pipeline {
                     configName: "web-0",
                     verbose: true,
                     transfers: [
-                        sshTransfer(execCommand: "sudo /bin/rm -rf $WEB_ROOT/*"),
+                        sshTransfer(execCommand: "sudo /bin/rm -rf ${WEB_ROOT}/*"),
                         sshTransfer(sourceFiles: "dist/**/*"),
-                        sshTransfer(execCommand: "mv $WEB_ROOT/dist/* $WEB_ROOT/"),
-                        sshTransfer(execCommand: "rm -r $WEB_ROOT/dist"),
-                        sshTransfer(execCommand: "sudo chmod -R 0755 $WEB_ROOT"),
-                        sshTransfer(execCommand: "sudo chcon -R -t httpd_sys_content_t $WEB_ROOT/")
+                        sshTransfer(execCommand: "mv ${WEB_ROOT}/dist/* ${WEB_ROOT}/"),
+                        sshTransfer(execCommand: "rm -r ${WEB_ROOT}/dist"),
+                        sshTransfer(execCommand: "sudo chmod -R 0755 ${WEB_ROOT}"),
+                        sshTransfer(execCommand: "sudo chcon -R -t httpd_sys_content_t ${WEB_ROOT}/")
                     ],
                 )
             ]
