@@ -43,3 +43,11 @@ $primary: $democracy-blue;
 [class*="toast"] {
     margin-bottom: 0 !important;
 }
+
+[class*="pageloader"]
+[class*="title"] {
+    max-width: 100vw;
+    width: fit-content;
+    text-align: center;
+    white-space: normal;
+}
