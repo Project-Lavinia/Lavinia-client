@@ -10,7 +10,10 @@ pipeline {
 
     stage('Deploy') {
       steps([$class: 'BapSshPromotionPublisherPlugin']) {
-        sh 'source /storage/jenkins_vars.sh'
+        script {
+                def props = readProperties file: '/storage/jenkins_vars.properties'
+                env.WEB_ROOT = props.WEB_ROOT
+            }
         sshPublisher(
             continueOnError: false, failOnError: true,
             publishers: [
