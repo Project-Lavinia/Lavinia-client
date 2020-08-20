@@ -9,28 +9,26 @@ pipeline {
     }
 
     stage('Deploy') {
-      when{
-        branch 'master'
-      }
       steps([$class: 'BapSshPromotionPublisherPlugin']) {
-            sshPublisher(
-                continueOnError: false, failOnError: true,
-                publishers: [
-                    sshPublisherDesc(
-                        configName: "web-0",
-                        verbose: true,
-                        transfers: [
-                            sshTransfer(execCommand: "sudo /bin/rm -rf /var/www/*"),
-                            sshTransfer(sourceFiles: "dist/**/*"),
-                            sshTransfer(execCommand: "mv /var/www/dist/* /var/www/"),
-                            sshTransfer(execCommand: "rm -r /var/www/dist"),
-                            sshTransfer(execCommand: "sudo chmod -R 0755 /var/www"),
-                            sshTransfer(execCommand: "sudo chcon -R -t httpd_sys_content_t /var/www/")
-                        ],
-                    )
-                ]
-            )
-        }
+        sh 'source /storage/jenkins_vars.sh'
+        sshPublisher(
+            continueOnError: false, failOnError: true,
+            publishers: [
+                sshPublisherDesc(
+                    configName: "web-0",
+                    verbose: true,
+                    transfers: [
+                        sshTransfer(execCommand: "sudo /bin/rm -rf $WEB_ROOT/*"),
+                        sshTransfer(sourceFiles: "dist/**/*"),
+                        sshTransfer(execCommand: "mv $WEB_ROOT/dist/* $WEB_ROOT/"),
+                        sshTransfer(execCommand: "rm -r $WEB_ROOT/dist"),
+                        sshTransfer(execCommand: "sudo chmod -R 0755 $WEB_ROOT"),
+                        sshTransfer(execCommand: "sudo chcon -R -t httpd_sys_content_t $WEB_ROOT/")
+                    ],
+                )
+            ]
+        )
+      }
     }
   }
   environment {
