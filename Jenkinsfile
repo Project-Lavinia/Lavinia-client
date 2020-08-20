@@ -9,6 +9,9 @@ pipeline {
     }
 
     stage('Deploy') {
+      when{
+        branch 'master'
+      }
       steps([$class: 'BapSshPromotionPublisherPlugin']) {
         script {
                 def props = readProperties file: '/storage/jenkins_vars.properties'
