@@ -1,4 +1,4 @@
-import { Dictionary, copyDictionary } from "../../utilities/dictionary";
+import { copyDictionary } from "../../utilities/dictionary";
 import {
     DistrictResultv2,
     PartyResultv2,
@@ -15,8 +15,8 @@ import { generateLevelingSeatArray } from ".";
 import { KeyValuePair } from "./sorted-reverse-dict";
 import { AlgorithmType } from "../computation-models";
 
-export function buildDistrictResults(metrics: Metrics[]): Dictionary<DistrictResultv2> {
-    const districtResults: Dictionary<DistrictResultv2> = {};
+export function buildDistrictResults(metrics: Metrics[]): _.Dictionary<DistrictResultv2> {
+    const districtResults: _.Dictionary<DistrictResultv2> = {};
 
     // Create an object for each district containing information about the district wide results
     metrics.map(
@@ -37,9 +37,9 @@ export function buildDistrictResults(metrics: Metrics[]): Dictionary<DistrictRes
 
 export function sumAllVotes(
     payload: ComputationPayload,
-    districtResults: Dictionary<DistrictResultv2>,
-    partyResults: Dictionary<Dictionary<PartyResultv2>>,
-    nationalPartyResults: Dictionary<NationalPartyResult>
+    districtResults: _.Dictionary<DistrictResultv2>,
+    partyResults: _.Dictionary<_.Dictionary<PartyResultv2>>,
+    nationalPartyResults: _.Dictionary<NationalPartyResult>
 ) {
     // Create an object for each party containing information about it's results by district
     payload.votes.forEach((vote) => {
@@ -79,9 +79,9 @@ export function sumAllVotes(
 
 export function calculatePercentages(
     totalVotes: number,
-    districtResults: Dictionary<DistrictResultv2>,
-    partyResults: Dictionary<Dictionary<PartyResultv2>>,
-    nationalPartyResults: Dictionary<NationalPartyResult>
+    districtResults: _.Dictionary<DistrictResultv2>,
+    partyResults: _.Dictionary<_.Dictionary<PartyResultv2>>,
+    nationalPartyResults: _.Dictionary<NationalPartyResult>
 ) {
     // Iterate over all parties
     for (const party in partyResults) {
@@ -119,8 +119,8 @@ export function distributeDistrictSeatsOnDistricts(
     levelingSeats: number,
     numDistrictSeats: number,
     metrics: Metrics[]
-): Dictionary<number> {
-    const baseValues: Dictionary<number> = {};
+): _.Dictionary<number> {
+    const baseValues: _.Dictionary<number> = {};
 
     // Wrap Sainte Lagues so it only takes one argument
     function denominatorFunction(seatsWon: number): number {
@@ -129,11 +129,11 @@ export function distributeDistrictSeatsOnDistricts(
 
     if (areaFactor === -1) {
         // If we don't have an area factor, just return the predetermined values
-        const districtSeats: Dictionary<number> = {};
+        const districtSeats: _.Dictionary<number> = {};
         metrics.forEach((metric) => (districtSeats[metric.district] = metric.seats));
         return districtSeats;
     } else {
-        const districtSeats: Dictionary<number> = {};
+        const districtSeats: _.Dictionary<number> = {};
         metrics.forEach((metric) => {
             // Fill districtSeats with all the districts, with no wins yet
             districtSeats[metric.district] = 0;
@@ -161,7 +161,7 @@ export function distributeDistrictSeatsOnDistricts(
  *
  * @param seatMapping The mapping between district and number of seats to subtract from
  */
-function subtractLevelingSeats(seatMapping: Dictionary<number>): Dictionary<number> {
+function subtractLevelingSeats(seatMapping: _.Dictionary<number>): _.Dictionary<number> {
     const copyMapping = copyDictionary(seatMapping);
 
     for (const name in copyMapping) {
@@ -176,15 +176,15 @@ function subtractLevelingSeats(seatMapping: Dictionary<number>): Dictionary<numb
 export function distributeLevelingSeatsOnDistricts(
     payload: ComputationPayload,
     levelingPartyCodes: string[],
-    partyResults: Dictionary<PartyResult>,
-    districtPartyResults: Dictionary<Dictionary<PartyResult>>,
-    districtResults: Dictionary<DistrictResult>
-): Dictionary<PartyRestQuotients> {
+    partyResults: _.Dictionary<PartyResult>,
+    districtPartyResults: _.Dictionary<_.Dictionary<PartyResult>>,
+    districtResults: _.Dictionary<DistrictResult>
+): _.Dictionary<PartyRestQuotients> {
     let finishedDistricts: string[] = [];
     let levelingSeats: LevelingSeat[] = [];
-    const partyRestQuotients: Dictionary<PartyRestQuotients> = {};
+    const partyRestQuotients: _.Dictionary<PartyRestQuotients> = {};
 
-    const partySeats: Dictionary<number> = {};
+    const partySeats: _.Dictionary<number> = {};
     let seatIndex = 1;
     let quotientIndex = 1;
     while (seatIndex <= payload.levelingSeats) {
@@ -236,14 +236,14 @@ export function distributeLevelingSeatsOnDistricts(
 export function distributeLevelingSeatsOnDistrictsPre2005(
     payload: ComputationPayload,
     levelingPartyCodes: string[],
-    partyResults: Dictionary<PartyResult>,
-    districtPartyResults: Dictionary<Dictionary<PartyResult>>,
-    districtResults: Dictionary<DistrictResult>
-): Dictionary<PartyRestQuotients> {
+    partyResults: _.Dictionary<PartyResult>,
+    districtPartyResults: _.Dictionary<_.Dictionary<PartyResult>>,
+    districtResults: _.Dictionary<DistrictResult>
+): _.Dictionary<PartyRestQuotients> {
     let levelingSeats: LevelingSeat[] = [];
-    const partyRestQuotients: Dictionary<PartyRestQuotients> = {};
+    const partyRestQuotients: _.Dictionary<PartyRestQuotients> = {};
 
-    const partySeats: Dictionary<number> = {};
+    const partySeats: _.Dictionary<number> = {};
     let seatIndex = 1;
     let quotientIndex = 1;
     while (seatIndex <= payload.levelingSeats) {
@@ -293,7 +293,7 @@ export function distributeLevelingSeatsOnDistrictsPre2005(
  *
  * @param districtSeats The distribution of district seats to check
  */
-function anyNegativeSeats(districtSeats: Dictionary<number>): boolean {
+function anyNegativeSeats(districtSeats: _.Dictionary<number>): boolean {
     for (const districtName in districtSeats) {
         if (districtSeats.hasOwnProperty(districtName)) {
             if (districtSeats[districtName] < 0) {
@@ -308,9 +308,9 @@ function anyNegativeSeats(districtSeats: Dictionary<number>): boolean {
  * Breaks ties in the distribution of items on names
  *
  * @param winners The list of multiple winners from the distribution stage
- * @param baseValue The dictionary from winners to their respective numerators
+ * @param baseValue The _.Dictionary from winners to their respective numerators
  */
-export function breakTies(winners: KeyValuePair[], baseValue: Dictionary<number>): KeyValuePair {
+export function breakTies(winners: KeyValuePair[], baseValue: _.Dictionary<number>): KeyValuePair {
     const winnersCopy = [...winners];
 
     // Find the highest numerator of the winners

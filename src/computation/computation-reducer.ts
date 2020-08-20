@@ -1,6 +1,7 @@
 ﻿import { ComputationState, unloadedState } from "./computation-state";
 import { ComputationActionType, ComputationAction } from "./computation-actions";
 import { checkExhaustively } from "../utilities";
+import { GlobalActionType } from "../reducers/global-actions";
 
 /**
  * Reducer for computations. Handles all state changes to the computation.
@@ -15,7 +16,6 @@ export function computation(state: ComputationState = unloadedState, action: Com
         case ComputationActionType.INITIALIZE_COMPUTATION:
             return {
                 ...state,
-                election: action.election,
                 algorithm: action.algorithm,
                 firstDivisor: action.firstDivisor,
                 electionThreshold: action.electionThreshold,
@@ -33,7 +33,6 @@ export function computation(state: ComputationState = unloadedState, action: Com
         case ComputationActionType.UPDATE_COMPUTATION:
             return {
                 ...state,
-                election: action.election,
                 algorithm: action.algorithm,
                 firstDivisor: action.firstDivisor,
                 electionThreshold: action.electionThreshold,
@@ -61,6 +60,8 @@ export function computation(state: ComputationState = unloadedState, action: Com
                 ...state,
                 historical: action.historical,
             };
+        case GlobalActionType.CLEAR_STATE:
+            return unloadedState;
         default:
             checkExhaustively(action);
             return state;

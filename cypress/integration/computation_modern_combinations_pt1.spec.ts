@@ -1,9 +1,22 @@
 /// <reference types="cypress" />
-
 describe("ComputationMenu", () => {
+    const timeoutLength = 30000;
+    let previousFetch = performance.now();
+    let localStorageCache = {};
+
     beforeEach(() => {
-        cy.clearLocalStorage();
         cy.viewport(1080, 720);
+        const currentTime = performance.now();
+        if (currentTime - previousFetch < timeoutLength) {
+            cy.copyStorage(localStorageCache, localStorage);
+        } else {
+            previousFetch = currentTime;
+        }
+    });
+
+    afterEach(() => {
+        localStorageCache = {};
+        cy.copyStorage(localStorage, localStorageCache);
     });
 
     function waitForLoad(iteration: number = 0) {
@@ -11,6 +24,12 @@ describe("ComputationMenu", () => {
             cy.get("#page_loader").then((loader) => {
                 if (loader.is(":visible") && iteration < 30) {
                     waitForLoad(iteration++);
+                }
+            });
+
+            cy.get("#close_tutorial_button").then((button) => {
+                if (button.is(":visible")) {
+                    button.click();
                 }
             });
         });
