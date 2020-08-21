@@ -13,8 +13,8 @@ pipeline {
         ansiblePlaybook(
           playbook: '/storage/web_deploy.yaml',
           credentialsId: 'ansible_key',
-          inventory: '/storage/hosts'
-          disableHostKeyChecking: true,
+          inventory: '/storage/hosts',
+          disableHostKeyChecking: true
         )
       }
     }
