@@ -14,7 +14,8 @@ pipeline {
           playbook: '/storage/web_deploy.yaml',
           credentialsId: 'ansible_key',
           inventory: '/storage/hosts',
-          disableHostKeyChecking: true
+          disableHostKeyChecking: true,
+          ansibleName: 'centos'
         )
       }
     }
