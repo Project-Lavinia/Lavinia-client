@@ -8,7 +8,6 @@ pipeline {
         WIKI = 'https://project-lavinia.github.io/'
       }
       steps {
-        sh 'export API_V3="https://api.lavinia.no/api/v3.0.0/"'
         sh 'yarn'
         sh 'yarn build'
       }
