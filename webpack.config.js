@@ -87,7 +87,8 @@ module.exports = (env) => {
         plugins: [
             new DotenvWebpackPlugin({
                 path: "./.env.defaults",
-                defaults: true,
+                defaults: !isProduction,
+                systemvars: isProduction
             }),
             new CleanWebpackPlugin({
                 verbose: true,
