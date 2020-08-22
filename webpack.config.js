@@ -1,5 +1,4 @@
 var path = require("path");
-console.log(process.env);
 
 // variables
 var isProduction = process.argv.indexOf("-p") >= 0 || process.env.NODE_ENV === "production";
@@ -15,6 +14,7 @@ var DotenvWebpackPlugin = require("dotenv-webpack");
 
 module.exports = (env) => {
     console.log("environment:", env);
+    console.log("Is production: " + isProduction);
 
     return {
         context: sourcePath,
