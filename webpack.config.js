@@ -14,6 +14,8 @@ var DotenvWebpackPlugin = require("dotenv-webpack");
 
 module.exports = (env) => {
     console.log("environment:", env);
+    console.log("API_V3:", process.env.API_V3);
+    console.log("SWAGGERUI:", process.env.SWAGGERUI);
 
     return {
         context: sourcePath,
