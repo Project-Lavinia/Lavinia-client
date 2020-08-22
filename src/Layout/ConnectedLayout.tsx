@@ -27,8 +27,6 @@ const mapDispatchToProps = (
     dispatch: any
 ): Pick<LayoutProps, "initializeState" | "toggleHamburger" | "clearState" | "showNotification"> => ({
     initializeState: async () => {
-        console.log("API PATH:" + process.env.API_V3);
-
         const votesUri = process.env.API_V3 + "votes?partyCode=ALL&district=ALL";
         const metricsUri = process.env.API_V3 + "metrics?district=ALL";
         const parametersUri = process.env.API_V3 + "parameters";
