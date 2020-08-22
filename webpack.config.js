@@ -14,6 +14,7 @@ var DotenvWebpackPlugin = require("dotenv-webpack");
 
 module.exports = (env) => {
     console.log("environment:", env);
+    console.log("Path: " + process.env.API_V3);
 
     return {
         context: sourcePath,
