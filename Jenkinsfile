@@ -8,7 +8,6 @@ pipeline {
         WIKI = 'https://project-lavinia.github.io/'
       }
       steps {
-        sh 'printenv'
         sh 'yarn'
         sh 'yarn build'
       }
