@@ -13,8 +13,6 @@ export class Navigation extends React.Component<NavigationProps> {
     public render() {
         const wikiUrl = process.env.WIKI;
         const swaggerUiUrl = process.env.SWAGGERUI;
-        console.log(process.env.SWAGGERUI);
-        console.log(swaggerUiUrl);
         const style = {
             menuButton: "navbar-burger burger",
             menu: "navbar-menu",
