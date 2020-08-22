@@ -3,6 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       environment {
+        GITHUB_TOKEN = credentials('jenkins_release_token')
         API_V3 = 'https://api.lavinia.no/api/v3.0.0/'
         SWAGGERUI = 'https://api.lavinia.no/'
         WIKI = 'https://project-lavinia.github.io/'
@@ -10,10 +11,13 @@ pipeline {
       steps {
         sh 'yarn'
         sh 'yarn build'
+        sh 'cd dist; zip -r ../artifact.zip *; cd ..'
+        archiveArtifacts artifacts: 'artifact.zip'
       }
     }
 
     stage('Deploy') {
+      when { tag "*.*.*" }
       steps {
         ansiblePlaybook(
           playbook: '/storage/web_deploy.yaml',
@@ -25,9 +29,8 @@ pipeline {
     }
 
     stage('Release') {
+      when { tag "*.*.*" }
       steps {
-        sh 'cd dist; zip -r ../artifact.zip *; cd ..'
-        archiveArtifacts artifacts: 'artifact.zip'
         publishArtifact()
       }
     }
