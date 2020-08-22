@@ -15,6 +15,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
+        sh 'printenv'
         ansiblePlaybook(
           playbook: '/storage/web_deploy.yaml',
           credentialsId: 'ansible_key',
