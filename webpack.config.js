@@ -1,4 +1,5 @@
 var path = require("path");
+console.log(process.env);
 
 // variables
 var isProduction = process.argv.indexOf("-p") >= 0 || process.env.NODE_ENV === "production";
