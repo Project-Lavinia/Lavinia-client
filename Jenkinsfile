@@ -8,6 +8,7 @@ pipeline {
         WIKI = 'https://project-lavinia.github.io/'
       }
       steps {
+        sh 'printenv'
         sh 'yarn'
         sh 'yarn build'
       }
@@ -15,7 +16,6 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh 'printenv'
         ansiblePlaybook(
           playbook: '/storage/web_deploy.yaml',
           credentialsId: 'ansible_key',
