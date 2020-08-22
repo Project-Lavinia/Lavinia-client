@@ -14,7 +14,6 @@ var DotenvWebpackPlugin = require("dotenv-webpack");
 
 module.exports = (env) => {
     console.log("environment:", env);
-    console.log("Is production: " + isProduction);
 
     return {
         context: sourcePath,
@@ -87,7 +86,6 @@ module.exports = (env) => {
         },
         plugins: [
             new DotenvWebpackPlugin({
-                path: "./.env.defaults",
                 defaults: !isProduction,
                 systemvars: isProduction
             }),
