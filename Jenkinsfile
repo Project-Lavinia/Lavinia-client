@@ -23,5 +23,12 @@ pipeline {
         )
       }
     }
+
+    stage('Release') {
+      steps {
+        sh 'cd dist; zip -r ../artifacts.zip *; cd ..'
+        archiveArtifacts artifacts: 'artifacts.zip'
+      }
+    }
   }
 }
