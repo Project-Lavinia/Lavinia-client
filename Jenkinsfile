@@ -2,6 +2,11 @@ pipeline {
   agent any
   stages {
     stage('Build') {
+      environment {
+        API_V3 = 'https://api.lavinia.no/api/v3.0.0/'
+        SWAGGERUI = 'https://api.lavinia.no/'
+        WIKI = 'https://project-lavinia.github.io/'
+      }
       steps {
         sh 'yarn'
         sh 'yarn build'
@@ -18,10 +23,5 @@ pipeline {
         )
       }
     }
-  }
-  environment {
-    API_V3 = 'https://api.lavinia.no/api/v3.0.0/'
-    SWAGGERUI = 'https://api.lavinia.no/'
-    WIKI = 'https://project-lavinia.github.io/'
   }
 }
