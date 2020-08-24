@@ -1,8 +1,8 @@
 /**
- * Determines wether or not district seats should be distributed for a given year.
+ * Determines wether or not the 2005 reform applies to the given election.
  *
  * @param year The year to check
  */
-export function shouldDistributeDistrictSeats(year: number): boolean {
+export function reform2005Applies(year: number): boolean {
     return year >= 2005;
 }

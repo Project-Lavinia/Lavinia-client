@@ -10,8 +10,8 @@ import { ResetButton } from "./ResetButton";
 import { ComparisonOptions } from "./ComparisonOptions";
 import { ComputeManuallyButton } from "./ComputeManuallyButton";
 import { districtMap, mergeVoteDistricts, mergeMetricDistricts } from "../../computation/logic/district-merging";
-import { shouldDistributeDistrictSeats } from "../../utilities/conditionals";
 import { isLargestFractionAlgorithm } from "../../computation/logic";
+import { reform2005Applies } from "../../utilities/conditionals";
 
 const WIKIURL = process.env.WIKI;
 
@@ -73,7 +73,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
             this.props.parameters.find((parameter) => parameter.electionYear === nextYear) || unloadedParameters;
 
         if (parameters) {
-            if (shouldDistributeDistrictSeats(nextYear) && this.props.mergeDistricts) {
+            if (reform2005Applies(nextYear) && this.props.mergeDistricts) {
                 votes = mergeVoteDistricts(votes, districtMap);
                 metrics = mergeMetricDistricts(metrics, districtMap);
             }
@@ -449,7 +449,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.parameters.districtSeats}
                         originalValue={this.props.settingsPayload.comparison.districtSeats}
                         integer={true}
-                        hidden={!shouldDistributeDistrictSeats(year)}
+                        hidden={!reform2005Applies(year)}
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du endre antall distriktsmandater."}
@@ -467,7 +467,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         defaultValue={this.props.computationPayload.parameters.areaFactor}
                         originalValue={this.props.settingsPayload.comparison.areaFactor}
                         integer={false}
-                        hidden={!shouldDistributeDistrictSeats(year)}
+                        hidden={!reform2005Applies(year)}
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du endre balansen mellom folketall og fylkets areal."}
