@@ -13,6 +13,7 @@ import {
     getQuotientsToVulnerableSeatMap,
     getVulnerableSeatByQuotient,
     getVulnerableSeatByVotes,
+    createPartyResultMap,
 } from "../../../utilities/district";
 import { isQuotientAlgorithm } from "../../../computation/logic";
 
@@ -23,6 +24,7 @@ export interface SingleDistrictProps {
     decimals: number;
     disproportionalityIndex: DisproportionalityIndex;
     algorithm: AlgorithmType;
+    districtThreshold: number;
     partyMap: _.Dictionary<string>;
 }
 
@@ -39,14 +41,19 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
     };
 
     render() {
-        const currentDistrictResult = this.getDistrictResult(this.props.districtSelected);
+        const currentDistrictResult = this.getDistrictResult(this.props.districtSelected)!;
+        const data = this.getData()!;
+        const partyResultMap = createPartyResultMap(data);
         const calculateVulnerable =
             isQuotientAlgorithm(this.props.algorithm) && currentDistrictResult.districtSeats > 0;
-        const vulnerableMap = calculateVulnerable ? getVotesToVulnerableSeatMap(currentDistrictResult!) : undefined;
-        const quotientMap = calculateVulnerable ? getQuotientsToVulnerableSeatMap(currentDistrictResult!) : undefined;
-        const vulnerable = calculateVulnerable ? getVulnerableSeatByQuotient(currentDistrictResult!) : undefined;
-        const vulnerableVotes = calculateVulnerable ? getVulnerableSeatByVotes(currentDistrictResult!) : undefined;
-        const data = this.getData()!;
+        const vulnerableMap = calculateVulnerable ? getVotesToVulnerableSeatMap(currentDistrictResult) : undefined;
+        const quotientMap = calculateVulnerable ? getQuotientsToVulnerableSeatMap(currentDistrictResult) : undefined;
+        const vulnerable = calculateVulnerable
+            ? getVulnerableSeatByQuotient(currentDistrictResult, partyResultMap, this.props.districtThreshold)
+            : undefined;
+        const vulnerableVotes = calculateVulnerable
+            ? getVulnerableSeatByVotes(currentDistrictResult, partyResultMap, this.props.districtThreshold)
+            : undefined;
         const decimals = this.props.decimals;
         const proportionalities = data.map((value) => value.proportionality);
         let label: string;
@@ -91,9 +98,11 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                 </span>
                             ),
                             Cell: (row) => {
-                                return row.original.partyName
-                                    ? <abbr title={row.original.partyName}>{row.value}</abbr>
-                                    : row.value;
+                                return row.original.partyName ? (
+                                    <abbr title={row.original.partyName}>{row.value}</abbr>
+                                ) : (
+                                    row.value
+                                );
                             },
                         },
                         {
@@ -141,7 +150,9 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             id: "marginInVotes",
                             Header: "Margin i stemmer",
                             accessor: (d: PartyResult) =>
-                                d.votes > 0 && vulnerableMap ? vulnerableMap.get(d.partyCode) : null,
+                                partyResultMap[d.partyCode].percentVotes > this.props.districtThreshold && vulnerableMap
+                                    ? vulnerableMap.get(d.partyCode)
+                                    : null,
                             Cell: (row) => {
                                 if (vulnerableVotes && row.original.partyCode === vulnerableVotes.partyCode) {
                                     return <div className="has-background-dark has-text-white">{row.value}</div>;
@@ -161,9 +172,11 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             id: "lastSeatQuotient",
                             Header: "Siste kvotient",
                             accessor: (d: PartyResult) =>
-                                d.votes > 0 && quotientMap ? quotientMap.get(d.partyCode)!.toFixed(decimals) : null,
+                                partyResultMap[d.partyCode].percentVotes > this.props.districtThreshold && quotientMap
+                                    ? quotientMap.get(d.partyCode)!.toFixed(decimals)
+                                    : null,
                             Cell: (row) => {
-                                if (vulnerable && row.original.partyCode === vulnerable.runnerUp.partyCode) {
+                                if (vulnerable && row.original.partyCode === vulnerable.runnerUp?.partyCode) {
                                     return <div className="has-background-dark has-text-white">{row.value}</div>;
                                 }
                                 return row.value;
