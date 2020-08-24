@@ -1,4 +1,5 @@
 ﻿import { PresentationType, DisproportionalityIndex } from "../Presentation/presentation-models";
+import { ClearState } from "../../reducers/global-actions";
 
 /**
  * Enum containing all possible PresentationMenuAction types.
@@ -29,7 +30,8 @@ export type PresentationMenuAction =
     | ToggleShowComparison
     | ToggleShowFilters
     | ToggleMergeDistricts
-    | ToggleUse2021Distribution;
+    | ToggleUse2021Distribution
+    | ClearState;
 
 /**
  * Action for initializing the presentation.

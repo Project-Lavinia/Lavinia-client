@@ -1,4 +1,5 @@
 ﻿import { Votes, Metrics, Parameters } from "./requested-data-models";
+import { ClearState } from "../reducers/global-actions";
 
 /**
  * Enum containing all possible RequestedDataAction types.
@@ -17,7 +18,8 @@ export type RequestedDataAction =
     | InitializeRequestedVotes
     | InitializeRequestedMetrics
     | InitializeRequestedParameters
-    | InitializeRequestedPartyMap;
+    | InitializeRequestedPartyMap
+    | ClearState;
 
 /**
  * Action for initializing requested votes.

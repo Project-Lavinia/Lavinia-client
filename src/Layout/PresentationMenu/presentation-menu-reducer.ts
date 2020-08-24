@@ -1,6 +1,7 @@
 ﻿import { unloadedState, PresentationMenuState } from "./presentation-menu-state";
 import { PresentationMenuActionType, PresentationMenuAction } from "./presentation-menu-actions";
 import { checkExhaustively } from "../../utilities";
+import { GlobalActionType } from "../../reducers/global-actions";
 
 /**
  * Reducer for the presentation menu. Handles all state changes to the presentation menu.
@@ -69,6 +70,8 @@ export function presentationMenu(
                 ...state,
                 use2021Distribution: action.use2021Distribution,
             };
+        case GlobalActionType.CLEAR_STATE: 
+            return unloadedState;
         default:
             checkExhaustively(action);
             return state;
