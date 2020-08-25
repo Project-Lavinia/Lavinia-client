@@ -18,7 +18,7 @@ export class QuotientDictionary extends SortedReverseDict {
      */
     insertParty(partyCode: string, votes: number, timesWon: number) {
         const quotient = votes / this.denominatorFunction(timesWon);
-        this.insert({ key: partyCode, value: quotient });
+        this.insert(partyCode, quotient);
     }
 
     /**
@@ -39,7 +39,7 @@ export class QuotientDictionary extends SortedReverseDict {
             // Return the losers back into the distribution
             winners.forEach((entry) => {
                 if (entry.key !== winner.key) {
-                    this.insert(entry);
+                    this.insert(entry.key, entry.value);
                 }
             });
         } else {
