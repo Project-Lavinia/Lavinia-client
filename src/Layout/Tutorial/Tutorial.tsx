@@ -40,6 +40,11 @@ export class Tutorial extends React.Component<TutorialProps, {}> {
                                 {process.env.WIKI + "#Lavinia"}
                             </a>
                         </p>
+                        <br />
+                        <b>Personvern</b>
+                        <p>
+                            Lavinia bruker ikke cookies, sporer deg ikke, og samler ikke inn informasjon om deg.
+                        </p>
                     </section>
                     <footer className="modal-card-foot has-text-centered" style={{ justifyContent: "center" }}>
                         <button className="button is-medium" onClick={this.props.closeTutorial} id={"close_tutorial_button"}>
