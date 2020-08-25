@@ -37,12 +37,12 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                         {"En stemme i "}
                         {mostWeightedDistrict}
                         {" hadde mest vekt, og telte "}
-                        {highestVsAverageInPercentage.toFixed(decimals) + "%"}
+                        {numberFormat(highestVsAverageInPercentage, decimals) + "%"}
                         {" av en gjennomsnittlig stemme"}
                         {", mens en stemme i "}
                         {leastWeightedDistrict}
                         {" hadde minst vekt, og bare telte "}
-                        {lowestVsAverageInPercentage.toFixed(decimals) + "%."}
+                        {numberFormat(lowestVsAverageInPercentage, decimals) + "%."}
                         <VulnerableDistrictSeatText mostVulnerable={mostVulnerable} partyMap={this.props.partyMap} />
                     </p>
                 </div>

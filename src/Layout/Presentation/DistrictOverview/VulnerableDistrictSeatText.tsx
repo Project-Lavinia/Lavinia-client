@@ -2,6 +2,7 @@ import * as React from "react";
 import { VulnerableDistrictSeat } from "../../../utilities/district";
 import { Dictionary } from "lodash";
 import { PartyName } from "../../../common/PartyName";
+import { numberFormat } from "../../../utilities/customNumberFormat";
 
 export interface VulnerableDistrictSeatTextProps {
     mostVulnerable?: VulnerableDistrictSeat | undefined;
@@ -23,7 +24,7 @@ export class VulnerableDistrictSeatText extends React.Component<VulnerableDistri
                     {". "}
                     <PartyName name={runnerUpPartyCode} partyMap={partyMap} />
                     {" ville trengt "}
-                    {this.props.mostVulnerable.moreVotesToWin.toFixed(0)}
+                    {numberFormat(this.props.mostVulnerable.moreVotesToWin)}
                     {" flere stemmer for å vinne det."}
                 </React.Fragment>
             );

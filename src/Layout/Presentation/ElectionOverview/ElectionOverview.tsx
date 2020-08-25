@@ -143,7 +143,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             Footer: <strong>{numberFormat(data.map((value) => value.votes).reduce(toSum, 0))}</strong>,
                         },
                         {
-                            Header: <span className="is-pulled-right">Oppsluting %</span> ,
+                            Header: <span className="is-pulled-right">Oppslutning %</span> ,
                             id: "%",
                             Filter: selectFilterWithOptions(thresholdOptions),
                             filterMethod: thresholdFilterMethod(this.props.threshold),
