@@ -24,6 +24,7 @@ export interface ElectionOverviewProps {
     disproportionalityIndex: DisproportionalityIndex;
     showPartiesWithoutSeats: boolean;
     showFilters: boolean;
+    showDiff: boolean;
 }
 
 interface ElectionOverviewDatum extends PartyResult {
@@ -54,17 +55,6 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
             return data.filter((datum) => datum.totalSeats > 0 || datum.totalSeatDifference !== 0);
         }
         return data;
-    };
-
-    /**
-     * Utility for checking whether the difference column should be displayed,
-     * ie -- are there any differences?
-     *
-     * @param data the data, required to figure out if there is a difference.
-     * @returns true if there is a difference, else false.
-     */
-    shouldShowDifference = (data: ElectionOverviewDatum[]) => {
-        return data.some((datum) => datum.totalSeatDifference !== 0);
     };
 
     render() {
@@ -176,7 +166,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             accessor: "totalSeatDifference",
                             Filter: selectFilterWithOptions(allTrueFalseOptions),
                             filterMethod: zeroNotZeroFilterMethod,
-                            show: this.shouldShowDifference(data),
+                            show: this.props.showDiff,
                         },
                         {
                             Header: "Prop. %",
