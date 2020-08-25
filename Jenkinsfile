@@ -20,7 +20,7 @@ pipeline {
     }
 
     stage('Deploy') {
-      when { tag "*.*.*" }
+      //when { tag "*.*.*" }
       steps {
         ansiblePlaybook(
           playbook: '/storage/web_deploy.yaml',
