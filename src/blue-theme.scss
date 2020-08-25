@@ -43,3 +43,9 @@ $primary: $democracy-blue;
 [class*="toast"] {
     margin-bottom: 0 !important;
 }
+
+// wraps text that has whitespace (handy for column header and labels)
+[class*="wrap"] {
+    white-space: normal;
+    height: auto;
+}

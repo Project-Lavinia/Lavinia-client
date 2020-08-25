@@ -109,7 +109,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             ),
                         },
                         {
-                            Header: <span className="is-pulled-right">Stemmer/mandat</span>,
+                            Header: <span className="is-pulled-right wrap">Stemmer / mandat</span>,
                             accessor: "votesPerSeat",
                             Cell: (row) => {
                                 return numberFormat(row.value, decimals);

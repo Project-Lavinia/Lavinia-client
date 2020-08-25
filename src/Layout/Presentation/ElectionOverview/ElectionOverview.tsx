@@ -143,7 +143,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             Footer: <strong>{numberFormat(data.map((value) => value.votes).reduce(toSum, 0))}</strong>,
                         },
                         {
-                            Header: <span className="is-pulled-right">Oppslutning %</span> ,
+                            Header: <span className="is-pulled-right wrap">Oppslutning %</span> ,
                             id: "%",
                             Filter: selectFilterWithOptions(thresholdOptions),
                             filterMethod: thresholdFilterMethod(this.props.threshold),
@@ -181,7 +181,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             show: this.shouldShowDifference(data),
                         },
                         {
-                            Header: <span className="is-pulled-right">Prop. %</span>, 
+                            Header: <span className="is-pulled-right wrap">Prop. %</span>, 
                             accessor: "proportionality",
                             Filter: selectFilterWithOptions(thresholdIsZeroOptions),
                             filterMethod: positiveOrNegativeFilterMethod(),
