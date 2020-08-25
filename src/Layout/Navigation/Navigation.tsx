@@ -51,7 +51,7 @@ export class Navigation extends React.Component<NavigationProps> {
                             <a
                                 className="navbar-link"
                                 target="_blank"
-                                href={wikiUrl?.concat("#Lavinia")}
+                                href={wikiUrl}
                                 rel="noopener noreferrer"
                             >
                                 Om Lavinia
@@ -65,6 +65,22 @@ export class Navigation extends React.Component<NavigationProps> {
                                 >
                                     API
                                 </a>
+                                <a
+                                    className="navbar-item"
+                                    target="_blank"
+                                    href={wikiUrl}
+                                    rel="noopener noreferrer"
+                                >
+                                    Wiki
+                                </a>
+                                <a
+                                    target="_blank"
+                                    href="https://www.github.com/Project-Lavinia"
+                                    rel="noopener noreferrer"
+                                    className="navbar-item"
+                                >
+                                    Kildekode (GitHub)
+                                </a>
                                 <hr className="navbar-divider" />
                                 <a
                                     target="_blank"
@@ -73,14 +89,6 @@ export class Navigation extends React.Component<NavigationProps> {
                                     className="navbar-item"
                                 >
                                     Gi en tilbakemelding
-                                </a>
-                                <a
-                                    target="_blank"
-                                    href="https://www.github.com/Project-Lavinia"
-                                    rel="noopener noreferrer"
-                                    className="navbar-item"
-                                >
-                                    GitHub
                                 </a>
                             </div>
                         </div>
