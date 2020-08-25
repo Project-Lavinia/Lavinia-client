@@ -1,5 +1,4 @@
 import { ClearState } from "../reducers/global-actions";
-import { NotificationData } from "./Notifications";
 
 export enum UiActionType {
     TOGGLE_HAMBURGER_EXPANDED = "TOGGLE_HAMBURGER_EXPANDED",
@@ -8,7 +7,7 @@ export enum UiActionType {
     REMOVE_NOTIFICATION = "REMOVE_NOTIFICATION",
 }
 
-export type UiAction = ToggleHamburger | HideTutorial | AddNotificationAction | RemoveNotificationAction | ClearState;
+export type UiAction = ToggleHamburger | HideTutorial | ClearState;
 
 export interface ToggleHamburger {
     type: UiActionType.TOGGLE_HAMBURGER_EXPANDED;
@@ -32,30 +31,4 @@ export function hideTutorial() {
 
 export interface HideTutorial {
     type: UiActionType.HIDE_TUTORIAL;
-}
-
-export interface AddNotificationAction {
-    type: UiActionType.ADD_NOTIFICATION;
-    notification: NotificationData;
-}
-
-export function addNotification(notification: NotificationData) {
-    const action: AddNotificationAction = {
-        type: UiActionType.ADD_NOTIFICATION,
-        notification,
-    };
-    return action;
-}
-
-export interface RemoveNotificationAction {
-    type: UiActionType.REMOVE_NOTIFICATION;
-    id: number;
-}
-
-export function removeNotification(id: number) {
-    const action: RemoveNotificationAction = {
-        type: UiActionType.REMOVE_NOTIFICATION,
-        id,
-    };
-    return action;
 }
