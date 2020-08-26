@@ -13,7 +13,7 @@
         "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
         "precommit": "pretty-quick --staged && tslint -p .",
         "cy:verify": "cypress verify",
-        "cy:run": "cypress run",
+        "cy:run": "cypress run --reporter junit --reporter-options \"mochaFile=results/cypress-[hash].xml,toConsole=true\"",
         "cy:test": "start-server-and-test start 3000 cy:run",
         "cy:ci:run": "cypress run --record --key $CYPRESS_RECORD_KEY --parallel --ci-build-id $BUILD_BUILDNUMBER",
         "cy:ci:test": "start-server-and-test start 3000 cy:ci:run"
