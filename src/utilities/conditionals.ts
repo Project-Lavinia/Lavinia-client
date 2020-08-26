@@ -10,10 +10,10 @@ export function reform2005Applies(year: number): boolean {
 }
 
 /**
-* Helper function to check if settings have changed.
-* @param settingsPayload The current chosen settings
-* @param comparison The original election settings
-*/
+ * Helper function to check if settings have changed.
+ * @param settingsPayload The current chosen settings
+ * @param comparison The original election settings
+ */
 export function settingsChanged(settingsPayload: ComputationMenuPayload, comparison: ComputationMenuComparison) {
    return (
        settingsPayload.algorithm !== comparison.algorithm ||
@@ -24,4 +24,4 @@ export function settingsChanged(settingsPayload: ComputationMenuPayload, compari
        settingsPayload.districtSeats !== comparison.districtSeats ||
        comparison.areaFactor !== settingsPayload.areaFactor
    );
-};
+}
