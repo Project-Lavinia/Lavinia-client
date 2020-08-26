@@ -49,7 +49,7 @@ export function getVulnerableSeatByQuotient(
     const lastSeatByQuotient = lastSeat.partyResults.sort((a, b) => (a.quotient <= b.quotient ? 1 : -1));
     const potentialRunnerUps = lastSeatByQuotient.filter(
         (result) =>
-            result.partyCode !== winner.partyCode && partyResultMap[result.partyCode].percentVotes > districtThreshold
+            result.partyCode !== winner.partyCode && partyResultMap[result.partyCode]?.percentVotes > districtThreshold
     );
     const runnerUp = potentialRunnerUps[0];
     let moreVotesToWin;
@@ -83,7 +83,7 @@ export function getVulnerableSeatByVotes(
     const sortedSeatMargins = margins.slice().sort((a, b) => (a.moreVotesToWin >= b.moreVotesToWin ? 1 : -1))!;
     const potentialRunnerUps = sortedSeatMargins.filter(
         (result) =>
-            result.partyCode !== winner.partyCode && partyResultMap[result.partyCode].percentVotes > districtThreshold
+            result.partyCode !== winner.partyCode && partyResultMap[result.partyCode]?.percentVotes > districtThreshold
     );
     const runnerUp = potentialRunnerUps[0];
     return {
