@@ -23,5 +23,5 @@ export const unloadedState: PresentationMenuState = {
     decimalsNumber: 2,
     showPartiesWithoutSeats: true,
     districtSelected: "Østfold",
-    disproportionalityIndex: DisproportionalityIndex.LOOSEMORE_HANBY,
+    disproportionalityIndex: DisproportionalityIndex.GALLAGHER,
 };
