@@ -14,13 +14,14 @@ pipeline {
       steps {
         sh 'yarn'
         sh 'yarn build'
+        sh 'yarn cy:test'
         sh "cd dist; zip -r ../${ARTIFACT} *; cd .."
         archiveArtifacts artifacts: ARTIFACT
       }
     }
 
     stage('Deploy') {
-      //when { tag "*.*.*" }
+      when { tag "*.*.*" }
       steps {
         ansiblePlaybook(
           playbook: '/storage/web_deploy.yaml',
