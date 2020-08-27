@@ -18,11 +18,13 @@ pipeline {
         sh 'yarn build'
         sh "cd dist; zip -r ../${ARTIFACT} *; cd .."
         archiveArtifacts artifacts: ARTIFACT
-        try {
-          sh 'yarn cy:test'
-        } catch (ex) {
-          unstable('Some tests failed')
-          testPassed = false
+        script {
+          try {
+            sh 'yarn cy:test'
+          } catch (ex) {
+            unstable('Some tests failed')
+            testPassed = false
+          }
         }
         junit 'results/*.xml'
       }
