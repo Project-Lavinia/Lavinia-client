@@ -11,12 +11,18 @@ pipeline {
         SWAGGERUI = 'https://api.lavinia.no/'
         WIKI = 'https://wiki.lavinia.no/'
       }
+      boolean testPassed = true
       steps {
         sh 'yarn'
         sh 'yarn build'
         sh "cd dist; zip -r ../${ARTIFACT} *; cd .."
         archiveArtifacts artifacts: ARTIFACT
-        sh 'yarn cy:test'
+        try {
+          sh 'yarn cy:test'
+        } catch (ex) {
+          unstable('Some tests failed')
+          testPassed = false
+        }
         junit 'results/*.xml'
       }
     }
@@ -34,7 +40,7 @@ pipeline {
     }
 
     stage('Release') {
-      when { tag "*.*.*" }
+      when { tag "*.*.*" && testPassed }
       environment {
         GITHUB_TOKEN = credentials('jenkins_release_token')
         REPOSITORY = "Project-Lavinia/Lavinia-client"
