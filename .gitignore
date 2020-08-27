@@ -10,3 +10,4 @@ app.yaml
 cypress/videos
 cypress/screenshots
 cypress/plugins
+results
