@@ -9,7 +9,7 @@ pipeline {
         GITHUB_TOKEN = credentials('jenkins_release_token')
         API_V3 = 'https://api.lavinia.no/api/v3.0.0/'
         SWAGGERUI = 'https://api.lavinia.no/'
-        WIKI = 'https://project-lavinia.github.io/'
+        WIKI = 'https://wiki.lavinia.no/'
       }
       steps {
         sh 'yarn'
