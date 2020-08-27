@@ -195,6 +195,12 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             ),
                         },
                     ]}
+                    defaultSorted={[
+                        {
+                            id: "totalSeats",
+                            desc: true,
+                        },
+                    ]}
                     showPageSizeOptions={false}
                     {...norwegian}
                 />
