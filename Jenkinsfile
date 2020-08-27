@@ -14,10 +14,10 @@ pipeline {
       steps {
         sh 'yarn'
         sh 'yarn build'
-        sh 'yarn cy:test'
-        junit 'results/*.xml'
         sh "cd dist; zip -r ../${ARTIFACT} *; cd .."
         archiveArtifacts artifacts: ARTIFACT
+        sh 'yarn cy:test'
+        junit 'results/*.xml'
       }
     }
 
