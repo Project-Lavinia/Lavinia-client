@@ -4,8 +4,8 @@ import { ConnectedComputationMenu } from "./ComputationMenu";
 import { ConnectedPresentationSettings } from "./PresentationMenu";
 import { ConnectedNavigation } from "./Navigation/ConnectedNavigation";
 import { ConnectedPresentationSelection } from "./PresentationMenu/PresentationSelection/ConnectedPresentationSelection";
-import { ConnectedNotificationDisplay, NotificationType } from "./Notifications";
 import { ConnectedTutorial } from "./Tutorial";
+import { toast } from "bulma-toast";
 
 export interface LayoutProps {
     dataLoaded: boolean;
@@ -13,7 +13,6 @@ export interface LayoutProps {
     toggleHamburger: (toggled: boolean) => void;
     initializeState: () => any;
     clearState: () => void;
-    showNotification: (type: NotificationType, text: string) => void;
 }
 
 export class Layout extends React.Component<LayoutProps, {}> {
@@ -30,8 +29,13 @@ export class Layout extends React.Component<LayoutProps, {}> {
         this.props.clearState();
         localStorage.clear();
         await this.props.initializeState();
-        const notificationText = `Det oppstod en feil så Lavinia måtte tilbakestilles. Feilmeldingen var: ${error.message}`;
-        this.props.showNotification(NotificationType.DANGER, notificationText);
+        toast({
+            dismissible: true,
+            duration: 5000,
+            message: `Det oppstod en feil så Lavinia måtte tilbakestilles. Feilmeldingen var: ${error.message}`,
+            position: "top-left",
+            type: "is-danger"
+        });
     }
 
     public render() {
@@ -42,7 +46,6 @@ export class Layout extends React.Component<LayoutProps, {}> {
             <React.Fragment>
                 <ConnectedTutorial />
                 <ConnectedNavigation />
-                <ConnectedNotificationDisplay />
                 <div className={pageLoaderClass} id={"page_loader"}>
                     <span className="title is-size-2">Laster inn Lavinia...</span>
                 </div>

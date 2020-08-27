@@ -1,7 +1,8 @@
 ﻿import { Parameters, FirstDivisor } from "../../requested-data/requested-data-models";
-import { ComputationMenuPayload } from "./computation-menu-models";
+import { ComputationMenuPayload, ComputationMenuComparison } from "./computation-menu-models";
 import { AlgorithmType } from "../../computation";
 import { ClearState } from "../../reducers/global-actions";
+import { settingsChanged } from "../../utilities/conditionals";
 
 /**
  * Enum containing all possible ComputationMenuAction types.
@@ -77,6 +78,7 @@ export interface UpdateComputationMenu {
     districtSeats: string;
     levelingSeats: string;
     areaFactor: string;
+    settingsChanged: boolean;
 }
 
 /**
@@ -84,7 +86,7 @@ export interface UpdateComputationMenu {
  *
  * @param settingsPayload - the displayed parameters
  */
-export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
+export function updateComputationMenu(settingsPayload: ComputationMenuPayload, comparison: ComputationMenuComparison) {
     const action: UpdateComputationMenu = {
         type: ComputationMenuActionType.UPDATE_COMPUTATION_MENU,
         year: settingsPayload.year,
@@ -95,6 +97,7 @@ export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
         districtSeats: settingsPayload.districtSeats,
         levelingSeats: settingsPayload.levelingSeats,
         areaFactor: settingsPayload.areaFactor,
+        settingsChanged: settingsChanged(settingsPayload, comparison)
     };
     return action;
 }
