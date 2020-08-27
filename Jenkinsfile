@@ -1,3 +1,5 @@
+def testPassed = true
+
 pipeline {
   agent any
   environment {
@@ -11,7 +13,6 @@ pipeline {
         SWAGGERUI = 'https://api.lavinia.no/'
         WIKI = 'https://wiki.lavinia.no/'
       }
-      boolean testPassed = true
       steps {
         sh 'yarn'
         sh 'yarn build'
@@ -28,7 +29,12 @@ pipeline {
     }
 
     stage('Deploy') {
-      when { tag "*.*.*" }
+      when {
+        allOf {
+          tag "*.*.*"
+          expression { testPassed }
+        }
+      }
       steps {
         ansiblePlaybook(
           playbook: '/storage/web_deploy.yaml',
@@ -40,7 +46,12 @@ pipeline {
     }
 
     stage('Release') {
-      when { tag "*.*.*" && testPassed }
+      when {
+        allOf {
+          tag "*.*.*"
+          expression { testPassed }
+        }
+      }
       environment {
         GITHUB_TOKEN = credentials('jenkins_release_token')
         REPOSITORY = "Project-Lavinia/Lavinia-client"
