@@ -15,8 +15,8 @@ import { stateIsInvalid } from "../store/version";
 import { rawParametersToParametersConverter } from "../requested-data/requested-data-utilities";
 import { RootState } from "../reducers";
 import { clearState } from "../reducers/global-actions";
-import { NotificationType, NotificationData } from "./Notifications";
-import { addNotification, toggleHamburger } from "./ui-actions";
+import { toggleHamburger } from "./ui-actions";
+import { toast } from "bulma-toast";
 
 const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded" | "hamburgerExpanded"> => ({
     dataLoaded: state.requestedDataState.dataLoaded,
@@ -25,7 +25,7 @@ const mapStateToProps = (state: RootState): Pick<LayoutProps, "dataLoaded" | "ha
 
 const mapDispatchToProps = (
     dispatch: any
-): Pick<LayoutProps, "initializeState" | "toggleHamburger" | "clearState" | "showNotification"> => ({
+): Pick<LayoutProps, "initializeState" | "toggleHamburger" | "clearState"> => ({
     initializeState: async () => {
         const votesUri = process.env.API_V3 + "votes?partyCode=ALL&district=ALL";
         const metricsUri = process.env.API_V3 + "metrics?district=ALL";
@@ -47,12 +47,13 @@ const mapDispatchToProps = (
                 partyMap = await request<_.Dictionary<string>>(partyMapUri);
                 numberYears = await request<Array<number>>(yearsUri);
             } catch (error) {
-                const notification: NotificationData = {
-                    text: `Klarte ikke å laste ned valgdata fra APIet, prøv igjen senere. Feilmeldingen var: ${error.message}`,
-                    type: NotificationType.DANGER,
-                };
-                const addNotificationAction = addNotification(notification);
-                dispatch(addNotificationAction);
+                toast({
+                    dismissible: true,
+                    duration: 5000,
+                    message: `Klarte ikke å laste ned valgdata fra APIet, prøv igjen senere. Feilmeldingen var: ${error.message}`,
+                    position: "top-left",
+                    type: "is-danger"
+                });
             }
 
             const initializeRequestedVotesAction = initializeRequestedVotes(votes);
@@ -90,15 +91,6 @@ const mapDispatchToProps = (
     clearState: () => {
         const clearStateAction = clearState();
         dispatch(clearStateAction);
-    },
-
-    showNotification: (type: NotificationType, text: string) => {
-        const notification: NotificationData = {
-            text,
-            type,
-        };
-        const addNotificationAction = addNotification(notification);
-        dispatch(addNotificationAction);
     },
     
     toggleHamburger: (hamburgerExpanded: boolean) => {
