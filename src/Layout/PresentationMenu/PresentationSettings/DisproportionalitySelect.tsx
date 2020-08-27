@@ -22,14 +22,14 @@ export class DisproportionalitySelect extends React.Component<Disproportionality
                             onChange={this.props.changeDisproportionalityIndex}
                             value={this.props.disproportionalityIndex}
                         >
+                            <option key={DisproportionalityIndex.GALLAGHER} value={DisproportionalityIndex.GALLAGHER}>
+                                Gallagher
+                            </option>
                             <option
                                 key={DisproportionalityIndex.LOOSEMORE_HANBY}
                                 value={DisproportionalityIndex.LOOSEMORE_HANBY}
                             >
                                 Loosemore-Hanby
-                            </option>
-                            <option key={DisproportionalityIndex.GALLAGHER} value={DisproportionalityIndex.GALLAGHER}>
-                                Gallagher
                             </option>
                         </select>
                     </div>
