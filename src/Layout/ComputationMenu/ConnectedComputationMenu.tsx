@@ -19,6 +19,7 @@ const mapStateToProps = (
     ComputationMenuProps,
     | "computationPayload"
     | "settingsPayload"
+    | "settingsChanged"
     | "showComparison"
     | "parameters"
     | "metrics"
@@ -53,6 +54,7 @@ const mapStateToProps = (
         areaFactor: state.settingsState.areaFactor,
         comparison: state.settingsState.comparison,
     },
+    settingsChanged: state.settingsState.settingsChanged,
     showComparison: state.presentationMenuState.showComparison,
     parameters: state.requestedDataState.parameters,
     metrics: state.requestedDataState.metrics,
@@ -93,7 +95,7 @@ const mapDispatchToProps = (
         }
     },
     updateSettings: (settingsPayload: ComputationMenuPayload) => {
-        const updateSettingsAction = updateComputationMenu(settingsPayload);
+        const updateSettingsAction = updateComputationMenu(settingsPayload, settingsPayload.comparison);
         dispatch(updateSettingsAction);
     },
     toggleAutoCompute: (isChecked: boolean) => {
@@ -141,7 +143,7 @@ const mapDispatchToProps = (
             levelingSeats: parameters.levelingSeats.toString(),
             areaFactor: parameters.areaFactor.toString(),
         };
-        const updateSettingsAction = updateComputationMenu(newSettingsPayload);
+        const updateSettingsAction = updateComputationMenu(newSettingsPayload, newSettingsPayload.comparison);
         dispatch(updateSettingsAction);
         const saveSettingsAction = saveSettings();
         dispatch(saveSettingsAction);

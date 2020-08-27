@@ -20,6 +20,7 @@ const mapStateToProps = (state: RootState): Partial<PresentationProps> => {
         districtThreshold: state.computationState.districtThreshold,
         showFilters: state.presentationMenuState.showFilters,
         partyMap: state.requestedDataState.partyMap,
+        settingsChanged: state.settingsState.settingsChanged,
     } as PresentationProps;
 };
 

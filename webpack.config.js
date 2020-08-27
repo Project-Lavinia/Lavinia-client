@@ -13,8 +13,6 @@ var HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 var DotenvWebpackPlugin = require("dotenv-webpack");
 
 module.exports = (env) => {
-    console.log("environment:", env);
-
     return {
         context: sourcePath,
         devtool: "inline-source-map",
@@ -86,8 +84,8 @@ module.exports = (env) => {
         },
         plugins: [
             new DotenvWebpackPlugin({
-                path: "./.env.defaults",
-                defaults: true,
+                defaults: !isProduction,
+                systemvars: isProduction
             }),
             new CleanWebpackPlugin({
                 verbose: true,

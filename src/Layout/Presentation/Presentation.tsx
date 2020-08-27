@@ -35,6 +35,7 @@ export interface PresentationProps {
     showFilters: boolean;
     selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     partyMap: _.Dictionary<string>;
+    settingsChanged: boolean;
 }
 
 export class Presentation extends React.Component<PresentationProps, {}> {
@@ -130,6 +131,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         disproportionalityIndex={this.props.disproportionalityIndex}
                         threshold={this.props.threshold}
                         showFilters={this.props.showFilters}
+                        showDiff={this.props.settingsChanged}
                     />
                 );
             case PresentationType.DistrictTable:
