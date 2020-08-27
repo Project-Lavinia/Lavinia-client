@@ -51,6 +51,7 @@ export function computationMenu(
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
                 areaFactor: action.areaFactor,
+                settingsChanged: action.settingsChanged,
             };
         case ComputationMenuActionType.SAVE_SETTINGS:
             return {
