@@ -51,7 +51,7 @@ export class Navigation extends React.Component<NavigationProps> {
                             <a
                                 className="navbar-link"
                                 target="_blank"
-                                href={wikiUrl}
+                                href={wikiUrl?.concat("#Lavinia")}
                                 rel="noopener noreferrer"
                             >
                                 Om Lavinia
