@@ -161,8 +161,10 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         disproportionalityIndex={this.props.disproportionalityIndex}
                         selectDistrict={this.props.selectDistrict}
                         algorithm={this.props.algorithm}
+                        threshold={this.props.threshold}
                         districtThreshold={this.props.districtThreshold}
                         partyMap={this.props.partyMap}
+                        showFilters={this.props.showFilters}
                     />
                 );
             case PresentationType.RemainderQuotients:

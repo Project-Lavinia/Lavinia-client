@@ -14,6 +14,21 @@ function handleSelectChange(onChange: (value: any) => void) {
     };
 }
 
+
+export const eqOrNeqZeroOptions = [
+    { value: "all", title: "Alle" },
+    { value: "true", title: "≠ 0" },
+    { value: "false", title: "= 0" },
+];
+
+export function thresholdOptions(threshold: number): {value: string, title: string}[] {
+    return [
+        { value: "all", title: "Alle" },
+        { value: "gteq", title: `≥ ${threshold}%` },
+        { value: "lt", title: `< ${threshold}%` },
+    ];
+}
+
 /**
  * Function to generate a react-table Filter with custom option.
  * @param options options to generate a Filter from

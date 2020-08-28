@@ -99,7 +99,8 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
      * @returns true if filters checkbox should be shown, false otherwise
      */
     showFilters(): boolean {
-        return this.props.currentPresentation === PresentationType.ElectionTable;
+        return this.props.currentPresentation === PresentationType.ElectionTable
+            || this.props.currentPresentation === PresentationType.SingleDistrict;
     }
 
     /**

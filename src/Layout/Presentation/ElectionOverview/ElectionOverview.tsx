@@ -13,6 +13,8 @@ import {
     caseInsensitiveFilterMethod,
     zeroNotZeroFilterMethod,
     norwegian,
+    thresholdOptions,
+    eqOrNeqZeroOptions,
 } from "../../../utilities/rt";
 
 export interface ElectionOverviewProps {
@@ -84,23 +86,6 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                 index = -1;
             }
         }
-        const allTrueFalseOptions = [
-            { value: "all", title: "Alle" },
-            { value: "true", title: "≠ 0" },
-            { value: "false", title: "= 0" },
-        ];
-
-        const thresholdOptions = [
-            { value: "all", title: "Alle" },
-            { value: "gteq", title: `≥ ${this.props.threshold}%` },
-            { value: "lt", title: `< ${this.props.threshold}%` },
-        ];
-
-        const thresholdIsZeroOptions = [
-            { value: "all", title: "Alle" },
-            { value: "gteq", title: "≥ 0" },
-            { value: "lt", title: "< 0" },
-        ];
 
         return (
             <React.Fragment>
@@ -136,14 +121,14 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                         {
                             Header: "%",
                             id: "%",
-                            Filter: selectFilterWithOptions(thresholdOptions),
+                            Filter: selectFilterWithOptions(thresholdOptions(this.props.threshold)),
                             filterMethod: thresholdFilterMethod(this.props.threshold),
                             accessor: (d: ElectionOverviewDatum) => roundNumber(d.percentVotes, decimals),
                         },
                         {
                             Header: "Distrikt",
                             accessor: "districtSeats",
-                            Filter: selectFilterWithOptions(allTrueFalseOptions),
+                            Filter: selectFilterWithOptions(eqOrNeqZeroOptions),
                             filterMethod: allGreaterThanEqualsMethod,
                             Footer: <strong>{data.map((value) => value.districtSeats).reduce(toSum, 0)}</strong>,
                         },
@@ -151,7 +136,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                         {
                             Header: "Utjevning",
                             accessor: "levelingSeats",
-                            Filter: selectFilterWithOptions(allTrueFalseOptions),
+                            Filter: selectFilterWithOptions(eqOrNeqZeroOptions),
                             filterMethod: allGreaterThanEqualsMethod,
                             Footer: <strong>{data.map((value) => value.levelingSeats).reduce(toSum, 0)}</strong>,
                         },
@@ -164,7 +149,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                         {
                             Header: "Differanse",
                             accessor: "totalSeatDifference",
-                            Filter: selectFilterWithOptions(allTrueFalseOptions),
+                            Filter: selectFilterWithOptions(eqOrNeqZeroOptions),
                             filterMethod: zeroNotZeroFilterMethod,
                             show: this.props.showDiff,
                         },
@@ -172,7 +157,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                             Header: "Prop. %",
                             id: "proportionality",
                             accessor: (d: ElectionOverviewDatum) => roundNumber(d.proportionality, decimals),
-                            Filter: selectFilterWithOptions(thresholdIsZeroOptions),
+                            Filter: selectFilterWithOptions(thresholdOptions(0)),
                             filterMethod: positiveOrNegativeFilterMethod(),
                             Footer: (
                                 <strong>
