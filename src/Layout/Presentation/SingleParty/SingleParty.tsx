@@ -64,15 +64,18 @@ function getMarginInVotes(partyCode: string, vulnerableMap: Map<string, number> 
 export class SingleParty extends React.Component<SinglePartyProps, {}> {
     constructSinglePartyResult(districtResult: DistrictResult, calculateVulnerable: boolean, partyCode: string): SinglePartyResult {
         const partyResultMap = createPartyResultMap(districtResult.partyResults);
+        const partyResult = districtResult.partyResults.find((result) => result.partyCode === partyCode);
+
         const vulnerable = calculateVulnerable
             ? getVulnerableSeatByQuotient(districtResult, partyResultMap, this.props.districtThreshold)
             : undefined;
         const vulnerableVotes = calculateVulnerable
             ? getVulnerableSeatByVotes(districtResult, partyResultMap, this.props.districtThreshold)
             : undefined;
+
         const vulnerableMap = calculateVulnerable ? getVotesToVulnerableSeatMap(districtResult) : undefined;
         const quotientMap = calculateVulnerable ? getQuotientsToVulnerableSeatMap(districtResult) : undefined;
-        const partyResult = districtResult.partyResults.find((result) => result.partyCode === partyCode);
+
         return {
             district: districtResult.name,
             votes: partyResult?.votes || 0,
@@ -81,10 +84,10 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
             levelingSeats: partyResult?.levelingSeats || 0,
             totalSeats: partyResult?.totalSeats || 0,
             marginInVotes: getMarginInVotes(partyCode, vulnerableMap, vulnerableVotes, this.props.firstDivisor),
-            seatWinner: vulnerableVotes ? vulnerableVotes.winner.partyCode === partyCode : false,
-            closestVotes: vulnerableVotes ? vulnerableVotes.partyCode === partyCode : false,
+            seatWinner: vulnerableVotes?.winner.partyCode === partyCode,
+            closestVotes: vulnerableVotes?.partyCode === partyCode,
             quotientMargin: quotientMap?.get(partyCode) || 0,
-            closestQuotient: vulnerable ? vulnerable.runnerUp?.partyCode === partyCode : false,
+            closestQuotient: vulnerable?.runnerUp?.partyCode === partyCode,
             proportionality: partyResult?.proportionality || 0
         };
     }
