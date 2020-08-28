@@ -62,33 +62,31 @@ function getMarginInVotes(partyCode: string, vulnerableMap: Map<string, number> 
 }
 
 export class SingleParty extends React.Component<SinglePartyProps, {}> {
-    getData(calculateVulnerable: boolean, partyCode: string): SinglePartyResult[] {
-        return this.props.districtResults.map((districtResult) => {
-            const partyResultMap = createPartyResultMap(districtResult.partyResults);
-            const vulnerable = calculateVulnerable
-                ? getVulnerableSeatByQuotient(districtResult, partyResultMap, this.props.districtThreshold)
-                : undefined;
-            const vulnerableVotes = calculateVulnerable
-                ? getVulnerableSeatByVotes(districtResult, partyResultMap, this.props.districtThreshold)
-                : undefined;
-            const vulnerableMap = calculateVulnerable ? getVotesToVulnerableSeatMap(districtResult) : undefined;
-            const quotientMap = calculateVulnerable ? getQuotientsToVulnerableSeatMap(districtResult) : undefined;
-            const partyResult = districtResult.partyResults.find((result) => result.partyCode === partyCode);
-            return {
-                district: districtResult.name,
-                votes: partyResult?.votes || 0,
-                percentVotes: partyResult?.percentVotes || 0,
-                districtSeats: partyResult?.districtSeats || 0,
-                levelingSeats: partyResult?.levelingSeats || 0,
-                totalSeats: partyResult?.totalSeats || 0,
-                marginInVotes: getMarginInVotes(partyCode, vulnerableMap, vulnerableVotes, this.props.firstDivisor),
-                seatWinner: vulnerableVotes ? vulnerableVotes.winner.partyCode === partyCode : false,
-                closestVotes: vulnerableVotes ? vulnerableVotes.partyCode === partyCode : false,
-                quotientMargin: quotientMap?.get(partyCode) || 0,
-                closestQuotient: vulnerable ? vulnerable.runnerUp?.partyCode === partyCode : false,
-                proportionality: partyResult?.proportionality || 0
-            };
-        });
+    constructSinglePartyResult(districtResult: DistrictResult, calculateVulnerable: boolean, partyCode: string): SinglePartyResult {
+        const partyResultMap = createPartyResultMap(districtResult.partyResults);
+        const vulnerable = calculateVulnerable
+            ? getVulnerableSeatByQuotient(districtResult, partyResultMap, this.props.districtThreshold)
+            : undefined;
+        const vulnerableVotes = calculateVulnerable
+            ? getVulnerableSeatByVotes(districtResult, partyResultMap, this.props.districtThreshold)
+            : undefined;
+        const vulnerableMap = calculateVulnerable ? getVotesToVulnerableSeatMap(districtResult) : undefined;
+        const quotientMap = calculateVulnerable ? getQuotientsToVulnerableSeatMap(districtResult) : undefined;
+        const partyResult = districtResult.partyResults.find((result) => result.partyCode === partyCode);
+        return {
+            district: districtResult.name,
+            votes: partyResult?.votes || 0,
+            percentVotes: partyResult?.percentVotes || 0,
+            districtSeats: partyResult?.districtSeats || 0,
+            levelingSeats: partyResult?.levelingSeats || 0,
+            totalSeats: partyResult?.totalSeats || 0,
+            marginInVotes: getMarginInVotes(partyCode, vulnerableMap, vulnerableVotes, this.props.firstDivisor),
+            seatWinner: vulnerableVotes ? vulnerableVotes.winner.partyCode === partyCode : false,
+            closestVotes: vulnerableVotes ? vulnerableVotes.partyCode === partyCode : false,
+            quotientMargin: quotientMap?.get(partyCode) || 0,
+            closestQuotient: vulnerable ? vulnerable.runnerUp?.partyCode === partyCode : false,
+            proportionality: partyResult?.proportionality || 0
+        };
     }
 
     render() {
@@ -97,7 +95,7 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
 
         const calculateVulnerable =
         isQuotientAlgorithm(this.props.algorithm) && this.props.districtSeats > 0;
-        const data = this.getData(calculateVulnerable, partyCode)!;
+        const data = this.props.districtResults.map((districtResult) => this.constructSinglePartyResult(districtResult, calculateVulnerable, partyCode));
         const decimals = this.props.decimals;
         const proportionalities = data.map((value) => value.proportionality);
         let label: string;

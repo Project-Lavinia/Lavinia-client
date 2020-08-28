@@ -83,7 +83,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
     getPartyCodes(): string[] {
         const partyCodes: string[] = [];
         this.props.results.partyResults.forEach((party) => {
-            if (party.totalSeats > 0 || !this.props.showPartiesWithoutSeats) {
+            if (this.props.showPartiesWithoutSeats || party.totalSeats > 0 ) {
                 partyCodes.push(party.partyCode);
             }
         });
