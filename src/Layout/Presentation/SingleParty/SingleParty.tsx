@@ -76,20 +76,37 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
         const vulnerableMap = calculateVulnerable ? getVotesToVulnerableSeatMap(districtResult) : undefined;
         const quotientMap = calculateVulnerable ? getQuotientsToVulnerableSeatMap(districtResult) : undefined;
 
-        return {
-            district: districtResult.name,
-            votes: partyResult?.votes || 0,
-            percentVotes: partyResult?.percentVotes || 0,
-            districtSeats: partyResult?.districtSeats || 0,
-            levelingSeats: partyResult?.levelingSeats || 0,
-            totalSeats: partyResult?.totalSeats || 0,
-            marginInVotes: getMarginInVotes(partyCode, vulnerableMap, vulnerableVotes, this.props.firstDivisor),
-            seatWinner: vulnerableVotes?.winner.partyCode === partyCode,
-            closestVotes: vulnerableVotes?.partyCode === partyCode,
-            quotientMargin: quotientMap?.get(partyCode) || 0,
-            closestQuotient: vulnerable?.runnerUp?.partyCode === partyCode,
-            proportionality: partyResult?.proportionality || 0
-        };
+        if (partyResult) {
+            return {
+                district: districtResult.name,
+                votes: partyResult.votes,
+                percentVotes: partyResult.percentVotes,
+                districtSeats: partyResult.districtSeats,
+                levelingSeats: partyResult.levelingSeats,
+                totalSeats: partyResult.totalSeats,
+                marginInVotes: getMarginInVotes(partyCode, vulnerableMap, vulnerableVotes, this.props.firstDivisor),
+                seatWinner: vulnerableVotes?.winner.partyCode === partyCode,
+                closestVotes: vulnerableVotes?.partyCode === partyCode,
+                quotientMargin: quotientMap?.get(partyCode) || 0,
+                closestQuotient: vulnerable?.runnerUp?.partyCode === partyCode,
+                proportionality: partyResult.proportionality
+            };
+        } else {
+            return {
+                district: districtResult.name,
+                votes: 0,
+                percentVotes: 0,
+                districtSeats: 0,
+                levelingSeats: 0,
+                totalSeats: 0,
+                marginInVotes: getMarginInVotes(partyCode, vulnerableMap, vulnerableVotes, this.props.firstDivisor),
+                seatWinner: vulnerableVotes?.winner.partyCode === partyCode,
+                closestVotes: vulnerableVotes?.partyCode === partyCode,
+                quotientMargin: quotientMap?.get(partyCode) || 0,
+                closestQuotient: vulnerable?.runnerUp?.partyCode === partyCode,
+                proportionality: 0
+            };
+        }
     }
 
     render() {
