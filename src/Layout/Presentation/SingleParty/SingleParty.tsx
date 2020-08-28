@@ -7,7 +7,6 @@ import { checkExhaustively } from "../../../utilities";
 import { PartySelect } from "./PartySelect";
 import { norwegian } from "../../../utilities/rt";
 import { roundNumber } from "../../../utilities/number";
-//import { assert } from "../../../utilities/conditionals";
 import {
     getVotesToVulnerableSeatMap,
     getQuotientsToVulnerableSeatMap,
@@ -63,11 +62,16 @@ function getMarginInVotes(partyCode: string, vulnerableMap: Map<string, number> 
 
 function createPartyCodeList(districtResults: DistrictResult[]): string[] {
     const partyCodeSet = new Set<string>();
-    districtResults.forEach((districtResult) => {
-        districtResult.partyResults.forEach((partyResult) => {
+    
+    for (let i = 0; i < districtResults.length; i++) {
+        const districtResult = districtResults[i];
+        for (let j = 0; j < districtResult.partyResults.length; j++) {
+            const partyResult = districtResult.partyResults[j];
             partyCodeSet.add(partyResult.partyCode);
-        })
-    });
+            
+        }
+    }
+    
     const partyCodeList = Array.from(partyCodeSet);
     const sortedPartyCodeList = partyCodeList.sort((a, b) => a > b ? 1 : -1);
     return sortedPartyCodeList;
@@ -86,7 +90,6 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
             const vulnerableMap = calculateVulnerable ? getVotesToVulnerableSeatMap(districtResult) : undefined;
             const quotientMap = calculateVulnerable ? getQuotientsToVulnerableSeatMap(districtResult) : undefined;
             const partyResult = districtResult.partyResults.find((result) => result.partyCode === partyCode);
-            //assert(partyResult !== undefined, "Party result was undefined");
             return {
                 district: districtResult.name,
                 votes: partyResult?.votes || 0,
@@ -100,9 +103,9 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
                 quotientMargin: quotientMap?.get(partyCode) || 0,
                 closestQuotient: vulnerable ? vulnerable.runnerUp?.partyCode === partyCode : false,
                 proportionality: partyResult?.proportionality || 0
-            }
+            };
         })
-    };
+    }
 
     render() {
         const partyCodeList = createPartyCodeList(this.props.districtResults);
