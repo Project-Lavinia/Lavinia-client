@@ -83,7 +83,9 @@ export class Presentation extends React.Component<PresentationProps, {}> {
     getPartyCodes(): string[] {
         const partyCodes: string[] = [];
         this.props.results.partyResults.forEach((party) => {
-            partyCodes.push(party.partyCode);
+            if (party.totalSeats > 0 || !this.props.showPartiesWithoutSeats) {
+                partyCodes.push(party.partyCode);
+            }
         });
         return partyCodes;
     }
@@ -175,6 +177,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                     <SingleParty
                         partySelected={this.props.partySelected}
                         districtResults={this.getSingleDistrictData()}
+                        partyCodeList={this.getPartyCodes()}
                         decimals={this.props.decimals}
                         disproportionalityIndex={this.props.disproportionalityIndex}
                         selectParty={this.props.selectParty}

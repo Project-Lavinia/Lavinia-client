@@ -19,6 +19,7 @@ import { isQuotientAlgorithm } from "../../../computation/logic";
 
 export interface SinglePartyProps {
     districtResults: DistrictResult[];
+    partyCodeList: string[];
     partySelected: string;
     selectParty: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     decimals: number;
@@ -60,23 +61,6 @@ function getMarginInVotes(partyCode: string, vulnerableMap: Map<string, number> 
     return 0;
 }
 
-function createPartyCodeList(districtResults: DistrictResult[]): string[] {
-    const partyCodeSet = new Set<string>();
-    
-    for (let i = 0; i < districtResults.length; i++) {
-        const districtResult = districtResults[i];
-        for (let j = 0; j < districtResult.partyResults.length; j++) {
-            const partyResult = districtResult.partyResults[j];
-            partyCodeSet.add(partyResult.partyCode);
-            
-        }
-    }
-    
-    const partyCodeList = Array.from(partyCodeSet);
-    const sortedPartyCodeList = partyCodeList.sort((a, b) => a > b ? 1 : -1);
-    return sortedPartyCodeList;
-}
-
 export class SingleParty extends React.Component<SinglePartyProps, {}> {
     getData(calculateVulnerable: boolean, partyCode: string): SinglePartyResult[] {
         return this.props.districtResults.map((districtResult) => {
@@ -104,11 +88,11 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
                 closestQuotient: vulnerable ? vulnerable.runnerUp?.partyCode === partyCode : false,
                 proportionality: partyResult?.proportionality || 0
             };
-        })
+        });
     }
 
     render() {
-        const partyCodeList = createPartyCodeList(this.props.districtResults);
+        const partyCodeList = this.props.partyCodeList;
         const partyCode = partyCodeList.indexOf(this.props.partySelected) >= 0 ? this.props.partySelected : partyCodeList[0];
 
         const calculateVulnerable =
