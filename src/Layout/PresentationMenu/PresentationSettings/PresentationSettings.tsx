@@ -67,7 +67,8 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
     showDisproportionalitySelect(): boolean {
         return (
             this.props.currentPresentation === PresentationType.SingleDistrict ||
-            this.props.currentPresentation === PresentationType.ElectionTable
+            this.props.currentPresentation === PresentationType.ElectionTable ||
+            this.props.currentPresentation === PresentationType.SingleParty
         );
     }
 

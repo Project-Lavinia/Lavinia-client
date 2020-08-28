@@ -45,6 +45,11 @@ export function presentationMenu(
                 ...state,
                 districtSelected: action.districtSelected,
             };
+            case PresentationMenuActionType.SELECT_PARTY:
+                return {
+                    ...state,
+                    partySelected: action.partySelected,
+                };
         case PresentationMenuActionType.CHANGE_DISPROPORTIONALITY_INDEX:
             return {
                 ...state,

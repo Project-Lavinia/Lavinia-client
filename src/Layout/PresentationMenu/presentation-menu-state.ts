@@ -7,6 +7,7 @@ export interface PresentationMenuState {
     use2021Distribution: boolean;
     currentPresentation: PresentationType;
     districtSelected: string;
+    partySelected: string;
     decimals: string;
     decimalsNumber: number;
     showPartiesWithoutSeats: boolean;
@@ -23,5 +24,6 @@ export const unloadedState: PresentationMenuState = {
     decimalsNumber: 2,
     showPartiesWithoutSeats: true,
     districtSelected: "Østfold",
+    partySelected: "A",
     disproportionalityIndex: DisproportionalityIndex.GALLAGHER,
 };

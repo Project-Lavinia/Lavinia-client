@@ -30,6 +30,10 @@ export const selectionLookup: SelectionItem[] = [
         type: PresentationType.SingleDistrict,
         displayName: "Enkeltfylke",
     },
+    {
+        type: PresentationType.SingleParty,
+        displayName: "Enkeltparti",
+    },
 ];
 
 export function getSelectionName(type: PresentationType) {
