@@ -5,7 +5,7 @@ import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
 import { DistrictSelect } from "./DistrictSelect";
-import { norwegian } from "../../../utilities/rt";
+import { norwegian, caseInsensitiveFilterMethod, selectFilterWithOptions, thresholdOptions, thresholdFilterMethod, eqOrNeqZeroOptions, allGreaterThanEqualsMethod, positiveOrNegativeFilterMethod } from "../../../utilities/rt";
 import { roundNumber } from "../../../utilities/number";
 import { InfoBox } from "./InfoBox";
 import {
@@ -24,8 +24,10 @@ export interface SingleDistrictProps {
     decimals: number;
     disproportionalityIndex: DisproportionalityIndex;
     algorithm: AlgorithmType;
+    threshold: number;
     districtThreshold: number;
     partyMap: _.Dictionary<string>;
+    showFilters: boolean;
 }
 
 export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
@@ -86,12 +88,14 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                 <ReactTable
                     className="-highlight -striped has-text-centered"
                     data={data}
+                    filterable={this.props.showFilters}
                     pageSize={data.length <= 10 ? data.length : 10}
                     showPagination={data.length > 10}
                     columns={[
                         {
                             Header: "Parti",
                             accessor: "partyCode",
+                            filterMethod: caseInsensitiveFilterMethod,
                             Footer: (
                                 <span>
                                     <strong>Utvalg</strong>
@@ -108,6 +112,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: "Stemmer",
                             accessor: "votes",
+                            filterable: false,
                             Footer: (
                                 <span>
                                     <strong>{data.map((value) => value.votes).reduce(toSum)}</strong>
@@ -117,11 +122,15 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: "%",
                             id: "%",
+                            Filter: selectFilterWithOptions(thresholdOptions(this.props.threshold)),
+                            filterMethod: thresholdFilterMethod(this.props.threshold),
                             accessor: (d: PartyResult) => roundNumber(d.percentVotes, decimals),
                         },
                         {
                             Header: "Distrikt",
                             accessor: "districtSeats",
+                            Filter: selectFilterWithOptions(eqOrNeqZeroOptions),
+                            filterMethod: allGreaterThanEqualsMethod,
                             Footer: (
                                 <span>
                                     <strong>{data.map((value) => value.districtSeats).reduce(toSum)}</strong>
@@ -131,6 +140,8 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: "Utjevning",
                             accessor: "levelingSeats",
+                            Filter: selectFilterWithOptions(eqOrNeqZeroOptions),
+                            filterMethod: allGreaterThanEqualsMethod,
                             Footer: (
                                 <span>
                                     <strong>{data.map((value) => value.levelingSeats).reduce(toSum)}</strong>
@@ -140,6 +151,8 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: "Sum Mandater",
                             accessor: "totalSeats",
+                            Filter: selectFilterWithOptions(eqOrNeqZeroOptions),
+                            filterMethod: allGreaterThanEqualsMethod,
                             Footer: (
                                 <span>
                                     <strong>{data.map((value) => value.totalSeats).reduce(toSum)}</strong>
@@ -149,6 +162,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             id: "marginInVotes",
                             Header: "Margin i stemmer",
+                            filterable: false,
                             accessor: (d: PartyResult) =>
                                 partyResultMap[d.partyCode].percentVotes > this.props.districtThreshold && vulnerableMap
                                     ? vulnerableMap.get(d.partyCode)
@@ -171,6 +185,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             id: "lastSeatQuotient",
                             Header: "Siste kvotient",
+                            filterable: false,
                             accessor: (d: PartyResult) =>
                                 partyResultMap[d.partyCode].percentVotes > this.props.districtThreshold && quotientMap
                                     ? quotientMap.get(d.partyCode)!.toFixed(decimals)
@@ -186,6 +201,8 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: "Prop. %",
                             accessor: "proportionality",
+                            Filter: selectFilterWithOptions(thresholdOptions(0)),
+                            filterMethod: positiveOrNegativeFilterMethod(),
                             Footer: (
                                 <span>
                                     <strong>
