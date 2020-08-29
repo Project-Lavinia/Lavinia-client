@@ -1,6 +1,7 @@
 import * as React from "react";
 import { VulnerableDistrictSeat, VulnerableVotes } from "../../../utilities/district";
 import { PartyName } from "../../../common/PartyName";
+import { numberFormat } from "../../../utilities/customNumberFormat";
 
 interface InfoBoxProps {
     vulnerable: VulnerableDistrictSeat;
@@ -16,11 +17,11 @@ export class InfoBox extends React.Component<InfoBoxProps> {
                         &nbsp;
                         <PartyName name={vulnerable.runnerUp.partyCode} partyMap={partyMap} />
                         {" hadde nærmeste kvotient og trengte "}
-                        {vulnerable.moreVotesToWin}
+                        {numberFormat(vulnerable.moreVotesToWin!)}
                         {" flere stemmer for å vinne mandatet. "}
                         <PartyName name={vulnerableVotes.partyCode} partyMap={partyMap} key="vulnerableVotes" />,
                         {" hadde derimot minst margin i stemmer og trengte bare "}
-                        {vulnerableVotes.moreVotesToWin}
+                        {numberFormat(vulnerableVotes.moreVotesToWin!)}
                         {" flere stemmer."}
                     </React.Fragment>;
             } else {
@@ -28,7 +29,7 @@ export class InfoBox extends React.Component<InfoBoxProps> {
                         &nbsp;
                         <PartyName name={vulnerable.runnerUp.partyCode} partyMap={partyMap} />
                         {" hadde nærmeste kvotient og trengte "}
-                        {vulnerable.moreVotesToWin}
+                        {numberFormat(vulnerable.moreVotesToWin!)}
                         {" flere stemmer for å vinne mandatet. "}
                     </React.Fragment>;
             }

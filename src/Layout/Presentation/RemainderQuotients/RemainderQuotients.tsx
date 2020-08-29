@@ -3,6 +3,7 @@ import ReactTable, { Column } from "react-table";
 import { LevelingSeat, DistrictResult, DistrictQuotients, AlgorithmType } from "../../../computation";
 import { norwegian } from "../../../utilities/rt";
 import { isQuotientAlgorithm } from "../../../computation/logic";
+import { numberFormat } from "../../../utilities/customNumberFormat";
 
 export interface RemainderQuotientsProps {
     districtResults: DistrictResult[];
@@ -57,7 +58,6 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
         const partyMap = this.props.partyMap;
         const data = this.makeData();
         const columns: Column[] = [];
-
         for (let i = 0; i < data[0].levellingSeatRounds.length; i++) {
             const element = data[0].levellingSeatRounds[i];
             columns.push({
@@ -76,8 +76,10 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                             quotient = quotient / 10000;
                         }
                         return (
-                            <div className={row.value.wonLevellingSeat ? "has-background-dark has-text-white" : ""}>
-                                {Number(quotient).toFixed(this.props.decimals)}
+                            <div
+                                className={row.value.wonLevellingSeat ? "has-background-dark has-text-white" : ""}
+                            >
+                                {numberFormat(Number(quotient), this.props.decimals)}
                             </div>
                         );
                     } else {
@@ -103,8 +105,11 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
             }
         });
         columns.unshift({
-            Header: "Fylker",
+            Header: <span className="is-pulled-left"> {"Fylker"}</span> ,
             accessor: "district",
+            Cell: (row) => {
+                return <span className="is-pulled-left">{row.value}</span>;
+            },
         });
 
         return columns;
@@ -137,7 +142,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                 </div>
 
                 <ReactTable
-                    className="has-text-centered"
+                    className="-highlight -striped has-text-centered"
                     data={data}
                     columns={this.getColumns()}
                     defaultPageSize={10}
