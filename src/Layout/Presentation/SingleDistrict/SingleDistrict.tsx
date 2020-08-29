@@ -116,7 +116,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: <span className="is-pulled-right wrap" >Oppslutning %</span>,
                             id: "%",
-                            accessor: (d: PartyResult) => d.percentVotes,
+                            accessor: "percentVotes",
                             Cell: (row) => {
                                 return numberFormat(row.value, decimals);
                             },

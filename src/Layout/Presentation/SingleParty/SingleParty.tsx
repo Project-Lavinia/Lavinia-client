@@ -16,6 +16,7 @@ import {
     VulnerableVotes,
 } from "../../../utilities/district";
 import { isQuotientAlgorithm } from "../../../computation/logic";
+import { numberFormat } from "../../../utilities/customNumberFormat";
 
 export interface SinglePartyProps {
     districtResults: DistrictResult[];
@@ -146,36 +147,45 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
                     partyMap={this.props.partyMap}
                 />
                 <ReactTable
-                    className="-highlight -striped has-text-centered"
+                    className="-highlight -striped has-text-right"
                     data={data}
                     pageSize={this.props.districtResults.length}
                     showPaginationBottom={false}
                     columns={[
                         {
-                            Header: "Fylke",
+                            Header: <span className="is-pulled-left">Fylke</span>,
                             accessor: "district",
                             Footer: (
                                 <span>
-                                    <strong>Utvalg</strong>
+                                    <strong className="is-pulled-left">Alle fylker</strong>
                                 </span>
-                            )
+                            ),
+                            Cell: (row) => {
+                                return <span className="is-pulled-left">{row.value}</span>;
+                            },
                         },
                         {
-                            Header: "Stemmer",
+                            Header: <span className="is-pulled-right">Stemmer</span>,
                             accessor: "votes",
                             Footer: (
                                 <span>
-                                    <strong>{data.map((value) => value.votes).reduce(toSum)}</strong>
+                                    <strong>{numberFormat(data.map((value) => value.votes).reduce(toSum))}</strong>
                                 </span>
                             ),
+                            Cell: (row) => {
+                                return numberFormat(row.value);
+                            },
                         },
                         {
-                            Header: "%",
+                            Header: <span className="is-pulled-right wrap" >Oppslutning %</span>,
                             id: "%",
-                            accessor: (d: SinglePartyResult) => roundNumber(d.percentVotes, decimals),
+                            accessor: "percentVotes",
+                            Cell: (row) => {
+                                return numberFormat(row.value, decimals);
+                            },
                         },
                         {
-                            Header: "Distrikt",
+                            Header: <span className="is-pulled-right" >Distrikt</span>,
                             accessor: "districtSeats",
                             Footer: (
                                 <span>
@@ -184,7 +194,7 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
                             ),
                         },
                         {
-                            Header: "Utjevning",
+                            Header: <span className="is-pulled-right" >Utjevning</span>,
                             accessor: "levelingSeats",
                             Footer: (
                                 <span>
@@ -193,7 +203,7 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
                             ),
                         },
                         {
-                            Header: "Sum Mandater",
+                            Header: <span className="is-pulled-right wrap" >Sum Mandater</span>,
                             accessor: "totalSeats",
                             Footer: (
                                 <span>
@@ -203,11 +213,12 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
                         },
                         {
                             id: "marginInVotes",
-                            Header: "Margin i stemmer",
+                            Header: <span className="is-pulled-right wrap" >Margin i stemmer</span>,
                             accessor: "marginInVotes",
                             Cell: (row) => {
+                                const value = numberFormat(row.value);  
                                 if ( row.original.closestVotes ) {
-                                    return <div className="has-background-dark has-text-white">{row.value}</div>;
+                                    return <div className="has-background-dark has-text-white">{value}</div>;
                                 }
                                 if ( row.original.seatWinner ) {
                                     return (
@@ -216,29 +227,30 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
                                         </span>
                                     );
                                 }
-                                return row.value;
+                                return value;
                             },
                             show: calculateVulnerable,
                         },
                         {
                             id: "lastSeatQuotient",
-                            Header: "Siste kvotient",
+                            Header: <span className="is-pulled-right wrap" >Siste kvotient</span>,
                             accessor: (d: SinglePartyResult) => roundNumber(d.quotientMargin, decimals),
                             Cell: (row) => {
+                                const value = row.value ? numberFormat(row.value, this.props.decimals) : row.value;
                                 if ( row.original.closestQuotient ) {
-                                    return <div className="has-background-dark has-text-white">{row.value}</div>;
+                                    return <div className="has-background-dark has-text-white">{value}</div>;
                                 }
-                                return row.value;
+                                return value;
                             },
                             show: calculateVulnerable,
                         },
                         {
-                            Header: "Prop. %",
+                            Header: <span className="is-pulled-right wrap" >Prop. %</span>,
                             accessor: "proportionality",
                             Footer: (
                                 <span>
                                     <strong>
-                                        {label}: {index.toFixed(decimals)}
+                                        {label}: {numberFormat(index, decimals)}
                                     </strong>
                                 </span>
                             ),
