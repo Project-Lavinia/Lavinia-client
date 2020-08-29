@@ -6,7 +6,7 @@ import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
 import { DistrictSelect } from "./DistrictSelect";
 import { norwegian } from "../../../utilities/rt";
-import { roundNumber } from "../../../utilities/number";
+import { numberFormat } from "../../../utilities/customNumberFormat";
 import { InfoBox } from "./InfoBox";
 import {
     getVotesToVulnerableSeatMap,
@@ -84,43 +84,45 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                 />
                 {calculateVulnerable && <InfoBox vulnerable={vulnerable!} vulnerableVotes={vulnerableVotes!} partyMap={this.props.partyMap}/>}
                 <ReactTable
-                    className="-highlight -striped has-text-centered"
+                    className="-highlight -striped has-text-right"
                     data={data}
                     pageSize={data.length <= 10 ? data.length : 10}
                     showPagination={data.length > 10}
                     columns={[
                         {
-                            Header: "Parti",
+                            Header: <span className="is-pulled-left">Parti</span>,
                             accessor: "partyCode",
                             Footer: (
                                 <span>
-                                    <strong>Utvalg</strong>
+                                    <strong className="is-pulled-left">Utvalg</strong>
                                 </span>
                             ),
                             Cell: (row) => {
-                                return row.original.partyName ? (
-                                    <abbr title={row.original.partyName}>{row.value}</abbr>
-                                ) : (
-                                    row.value
-                                );
+                                return <span className="is-pulled-left">{row.original.partyName}</span>;
                             },
                         },
                         {
-                            Header: "Stemmer",
+                            Header: <span className="is-pulled-right">Stemmer</span>,
                             accessor: "votes",
                             Footer: (
                                 <span>
-                                    <strong>{data.map((value) => value.votes).reduce(toSum)}</strong>
+                                    <strong>{numberFormat(data.map((value) => value.votes).reduce(toSum))}</strong>
                                 </span>
                             ),
+                            Cell: (row) => {
+                                return numberFormat(row.value);
+                            },
                         },
                         {
-                            Header: "%",
+                            Header: <span className="is-pulled-right wrap" >Oppslutning %</span>,
                             id: "%",
-                            accessor: (d: PartyResult) => roundNumber(d.percentVotes, decimals),
+                            accessor: (d: PartyResult) => d.percentVotes,
+                            Cell: (row) => {
+                                return numberFormat(row.value, decimals);
+                            },
                         },
                         {
-                            Header: "Distrikt",
+                            Header: <span className="is-pulled-right" >Distrikt</span>,
                             accessor: "districtSeats",
                             Footer: (
                                 <span>
@@ -129,7 +131,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             ),
                         },
                         {
-                            Header: "Utjevning",
+                            Header: <span className="is-pulled-right" >Utjevning</span>,
                             accessor: "levelingSeats",
                             Footer: (
                                 <span>
@@ -138,7 +140,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                             ),
                         },
                         {
-                            Header: "Sum Mandater",
+                            Header: <span className="is-pulled-right wrap" >Sum Mandater</span>,
                             accessor: "totalSeats",
                             Footer: (
                                 <span>
@@ -148,14 +150,15 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         },
                         {
                             id: "marginInVotes",
-                            Header: "Margin i stemmer",
+                            Header: <span className="is-pulled-right wrap" >Margin i stemmer</span>,
                             accessor: (d: PartyResult) =>
                                 partyResultMap[d.partyCode].percentVotes > this.props.districtThreshold && vulnerableMap
                                     ? vulnerableMap.get(d.partyCode)
                                     : null,
                             Cell: (row) => {
+                                const value = numberFormat(row.value);  
                                 if (vulnerableVotes && row.original.partyCode === vulnerableVotes.partyCode) {
-                                    return <div className="has-background-dark has-text-white">{row.value}</div>;
+                                    return <div className="has-background-dark has-text-white">{value}</div>;
                                 }
                                 if (vulnerableVotes && row.original.partyCode === vulnerableVotes.winner.partyCode) {
                                     return (
@@ -164,32 +167,36 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                         </span>
                                     );
                                 }
-                                return row.value;
+                                return value;
                             },
                             show: calculateVulnerable,
                         },
                         {
                             id: "lastSeatQuotient",
-                            Header: "Siste kvotient",
+                            Header: <span className="is-pulled-right wrap" >Siste kvotient</span>,
                             accessor: (d: PartyResult) =>
                                 partyResultMap[d.partyCode].percentVotes > this.props.districtThreshold && quotientMap
-                                    ? quotientMap.get(d.partyCode)!.toFixed(decimals)
-                                    : null,
+                                ? quotientMap.get(d.partyCode)
+                                : null,
                             Cell: (row) => {
+                                const value = row.value ? numberFormat(row.value, this.props.decimals) : row.value;
                                 if (vulnerable && row.original.partyCode === vulnerable.runnerUp?.partyCode) {
-                                    return <div className="has-background-dark has-text-white">{row.value}</div>;
+                                    return <div className="has-background-dark has-text-white">{value}</div>;
                                 }
-                                return row.value;
+                                return value;
                             },
                             show: calculateVulnerable,
                         },
                         {
-                            Header: "Prop. %",
+                            Header: <span className="is-pulled-right wrap" >Prop. %</span>,
                             accessor: "proportionality",
+                            Cell: (row) => {
+                               return numberFormat(row.value, decimals);
+                            },
                             Footer: (
                                 <span>
                                     <strong>
-                                        {label}: {index.toFixed(decimals)}
+                                        {label}: {numberFormat(index, decimals)}
                                     </strong>
                                 </span>
                             ),

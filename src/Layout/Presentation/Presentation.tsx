@@ -202,7 +202,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                     />
                 );
             case PresentationType.LevellingSeats:
-                return <LevellingSeatOverview levellingSeatQuotients={this.props.results.levelingSeatDistribution} />;
+                return <LevellingSeatOverview levellingSeatQuotients={this.props.results.levelingSeatDistribution} partyMap={this.props.partyMap} />;
             default:
                 checkExhaustively(this.props.currentPresentation);
                 return;
