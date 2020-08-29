@@ -42,11 +42,8 @@ export class LevellingSeatOverview extends React.Component<LevellingSeatOverview
             for (let i = 0; i < data[mostSeatsIndex].seatsWon.length; i++) {
                 // const current = data[i];
                 columns.push({
-                    Header: <span className="is-pulled-left">{i + 1}.</span>,
+                    Header: `${i + 1}.`,
                     accessor: `seatsWon[${i}]`,
-                    Cell: (row) => {
-                        return <span className="is-pulled-left">{row.value}</span>;
-                    },
                     minWidth: 150,
                 });
             }
