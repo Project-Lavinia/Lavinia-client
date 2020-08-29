@@ -14,20 +14,33 @@ export class VulnerableDistrictSeatText extends React.Component<VulnerableDistri
         if (this.props.mostVulnerable) {
             const partyMap = this.props.partyMap;
             const winnerPartyCode = this.props.mostVulnerable.winner.partyCode;
-            const runnerUpPartyCode = this.props.mostVulnerable.runnerUp.partyCode;
-            return (
-                <React.Fragment>
-                    {" Det mest utsatte sistemandatet (relativt til kvotient) var i "}
-                    {this.props.mostVulnerable.district}
-                    {" og ble vunnet av "}
-                    <PartyName name={winnerPartyCode} partyMap={partyMap} />
-                    {". "}
-                    <PartyName name={runnerUpPartyCode} partyMap={partyMap} />
-                    {" ville trengt "}
-                    {numberFormat(this.props.mostVulnerable.moreVotesToWin)}
-                    {" flere stemmer for å vinne det."}
-                </React.Fragment>
-            );
+
+            if (this.props.mostVulnerable.runnerUp) {
+                const runnerUpPartyCode = this.props.mostVulnerable.runnerUp.partyCode;
+                return (
+                    <React.Fragment>
+                        {" Det mest utsatte sistemandatet (relativt til kvotient) var i "}
+                        {this.props.mostVulnerable.district}
+                        {" og ble vunnet av "}
+                        <PartyName name={winnerPartyCode} partyMap={partyMap} />
+                        {". "}
+                        <PartyName name={runnerUpPartyCode} partyMap={partyMap} />
+                        {" ville trengt "}
+                        {numberFormat(this.props.mostVulnerable.moreVotesToWin!)}
+                        {" flere stemmer for å vinne det."}
+                    </React.Fragment>
+                );
+            } else {
+                return (
+                    <React.Fragment>
+                        {" Det mest utsatte sistemandatet (relativt til kvotient) var i "}
+                        {this.props.mostVulnerable.district}
+                        {" og ble vunnet av "}
+                        <PartyName name={winnerPartyCode} partyMap={partyMap} />
+                        {". "}
+                    </React.Fragment>
+                );
+            }
         } else {
             return null;
         }

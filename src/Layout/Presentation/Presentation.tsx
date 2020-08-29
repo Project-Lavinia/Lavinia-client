@@ -29,11 +29,13 @@ export interface PresentationProps {
     comparisonPartyResults: PartyResult[];
     showComparison: boolean;
     threshold: number;
+    districtThreshold: number;
     year: number;
     algorithm: AlgorithmType;
     showFilters: boolean;
     selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     partyMap: _.Dictionary<string>;
+    settingsChanged: boolean;
 }
 
 export class Presentation extends React.Component<PresentationProps, {}> {
@@ -129,6 +131,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         disproportionalityIndex={this.props.disproportionalityIndex}
                         threshold={this.props.threshold}
                         showFilters={this.props.showFilters}
+                        showDiff={this.props.settingsChanged}
                     />
                 );
             case PresentationType.DistrictTable:
@@ -138,6 +141,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         districtWidth={this.getWidestStringWidth(this.getDistricts())}
                         decimals={this.props.decimals}
                         algorithm={this.props.algorithm}
+                        districtThreshold={this.props.districtThreshold}
                         partyMap={this.props.partyMap}
                     />
                 );
@@ -157,6 +161,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         disproportionalityIndex={this.props.disproportionalityIndex}
                         selectDistrict={this.props.selectDistrict}
                         algorithm={this.props.algorithm}
+                        districtThreshold={this.props.districtThreshold}
                         partyMap={this.props.partyMap}
                     />
                 );
@@ -170,10 +175,11 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         decimals={this.props.decimals}
                         showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
                         algorithm={this.props.algorithm}
+                        partyMap={this.props.partyMap}
                     />
                 );
             case PresentationType.LevellingSeats:
-                return <LevellingSeatOverview levellingSeatQuotients={this.props.results.levelingSeatDistribution} />;
+                return <LevellingSeatOverview levellingSeatQuotients={this.props.results.levelingSeatDistribution} partyMap={this.props.partyMap} />;
             default:
                 checkExhaustively(this.props.currentPresentation);
                 return;

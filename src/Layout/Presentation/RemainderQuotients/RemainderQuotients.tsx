@@ -13,6 +13,7 @@ export interface RemainderQuotientsProps {
     decimals: number;
     showPartiesWithoutSeats: boolean;
     algorithm: AlgorithmType;
+    partyMap: _.Dictionary<string>;
 }
 
 /**
@@ -54,12 +55,15 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
     }
 
     getColumns(): Column[] {
+        const partyMap = this.props.partyMap;
         const data = this.makeData();
         const columns: Column[] = [];
         for (let i = 0; i < data[0].levellingSeatRounds.length; i++) {
             const element = data[0].levellingSeatRounds[i];
             columns.push({
-                Header: element.partyCode,
+                Header: () => {
+                    return <abbr title={partyMap[element.partyCode]}>{element.partyCode}</abbr>;
+                },
                 accessor: `levellingSeatRounds[${i}]`,
                 minWidth: 80,
                 Cell: (row) => {

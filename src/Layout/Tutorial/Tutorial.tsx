@@ -18,6 +18,13 @@ export class Tutorial extends React.Component<TutorialProps, {}> {
                         <button className="delete" aria-label="close" onClick={this.props.closeTutorial} />
                     </header>
                     <section className="modal-card-body">
+                        <b>Lavinia</b>
+                        <p>
+                            Lavinia er et verktøy for å vise hvordan den norkse valgordningen gjør om stemmer
+                            til mandater ved stortingsvalg. Ved å justere på instillingene for valgordningen kan du
+                            se hvordan det påvirker resultatene og hvilke partier som vinner eller taper på forandringene.
+                        </p>
+                        <br />
                         <b>Programtips</b>
                         <p>
                             I Lavinia vil du se hjelpesymboler (<i className="fas fa-info-circle has-text-primary" />)
@@ -28,10 +35,15 @@ export class Tutorial extends React.Component<TutorialProps, {}> {
                         <b>Wiki</b>
                         <p>
                             For å lese mer som Lavinia og det norske valgsystemet kan du ta en titt på wikien vår:
-                            <a target="_blank" rel="noopener noreferrer" href={process.env.WIKI + "#Lavinia"}>
+                            <a target="_blank" rel="noopener noreferrer" href={process.env.WIKI}>
                                 {" "}
-                                {process.env.WIKI + "#Lavinia"}
+                                {process.env.WIKI}
                             </a>
+                        </p>
+                        <br />
+                        <b>Personvern</b>
+                        <p>
+                            Lavinia bruker ikke cookies, sporer deg ikke, og samler ikke inn informasjon om deg.
                         </p>
                     </section>
                     <footer className="modal-card-foot has-text-centered" style={{ justifyContent: "center" }}>

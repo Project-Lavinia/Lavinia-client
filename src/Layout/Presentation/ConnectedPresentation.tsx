@@ -17,8 +17,10 @@ const mapStateToProps = (state: RootState): Partial<PresentationProps> => {
         year,
         algorithm: state.computationState.algorithm,
         threshold: state.computationState.electionThreshold,
+        districtThreshold: state.computationState.districtThreshold,
         showFilters: state.presentationMenuState.showFilters,
         partyMap: state.requestedDataState.partyMap,
+        settingsChanged: state.settingsState.settingsChanged,
     } as PresentationProps;
 };
 
@@ -28,7 +30,4 @@ const mapDispatchToProps = (dispatch: any): Partial<PresentationProps> => ({
     },
 });
 
-export const ConnectedPresentation = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Presentation as any);
+export const ConnectedPresentation = connect(mapStateToProps, mapDispatchToProps)(Presentation as any);

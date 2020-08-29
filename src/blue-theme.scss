@@ -35,13 +35,20 @@ $primary: $democracy-blue;
     height: 28px;
 }
 
-[class*="toast-display"] {
-    position: absolute;
-    z-index: 1000000;
+[class*="pageloader"] [class*="title"] {
+    max-width: 100vw;
+    width: fit-content;
+    text-align: center;
+    white-space: normal;
 }
 
-[class*="toast"] {
-    margin-bottom: 0 !important;
+[class*="pageloader"] {
+    z-index: 99998;
+}
+
+[class*="fit-page"] {
+    max-width: 100vw;
+    max-height: 100vh;
 }
 
 // wraps text that has whitespace (handy for column header and labels)

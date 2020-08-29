@@ -13,6 +13,7 @@ export interface DistrictOverviewProps {
     districtWidth: number;
     decimals: number;
     algorithm: AlgorithmType;
+    districtThreshold: number;
     partyMap: _.Dictionary<string>;
 }
 
@@ -29,7 +30,9 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const mostWeightedDistrict = data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name;
         const leastWeightedDistrict = data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name;
         const calculateVulnerable = isQuotientAlgorithm(this.props.algorithm);
-        const mostVulnerable = calculateVulnerable ? getMostVulnerableSeatByQuotient(data) : undefined;
+        const mostVulnerable = calculateVulnerable
+            ? getMostVulnerableSeatByQuotient(data, this.props.districtThreshold)
+            : undefined;
         return (
             <React.Fragment>
                 <div className="card has-background-primary has-text-light is-size-5">

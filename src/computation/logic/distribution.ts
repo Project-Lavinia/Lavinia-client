@@ -107,7 +107,7 @@ function distributeWholeSeats(
 
             seatsWon[partyCode] = partySeats;
             seatsDistributed += partySeats;
-            ratedParties.insert({ key: partyCode, value: remainder });
+            ratedParties.insert(partyCode, remainder);
         }
     }
 
