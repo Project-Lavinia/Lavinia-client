@@ -28,13 +28,61 @@ export class PresentationSelection extends React.Component<PresentationSelection
         });
     };
 
+    selectTooltipContent(table: string | undefined) {
+        switch (table) {
+            case 'TABLE_ELECTION_OVERVIEW': {
+                return {
+                    text: "Her kan du se valgresultatet på landsbasis. Trykk på meg for mer informasjon!",
+                    url: "#Landsoversikt"
+                };
+            }
+            case 'TABLE_DISTRICT_OVERVIEW': {
+                return {
+                    text: "Her kan du se valgresultatet for hvert fylke.",
+                    url: "#Fylkesoversikt"
+                };
+            }
+            case 'TABLE_LEVELLING_SEATS_OVERVIEW': {
+                return {
+                    text: "Her kan du se fra hvilke fylker partiene har fått utjevningsmandater fra.",
+                    url: "#Utjevningsmandater."
+                };
+            }
+            case 'TABLE_REMAINDER_QUOTIENTS': {
+                return {
+                    text: "Her ser du en oversikt over restkvotienter.",
+                    url: "#Restkvotienter"
+                };
+            }
+            case 'SEAT_DISTRIBUTION': {
+                return {
+                    text: "Her ser du fordelingen av mandater på hvert fylke.",
+                    url: "#Fylkesfordeling%20av%20mandater"
+                };
+            }
+            case 'TABLE_SINGLE_COUNTY': {
+                return {
+                    text: "Her kan du velge fylke og se en fullstendig oversikt for valgt fylke.",
+                    url: "#Enkeltfylke"
+                };
+            }
+            default: {
+                return {
+                    text: "Trykk på ikonet for å lese om oversikten.",
+                    url: "#Visning"
+                };;
+            }
+        }
+    }
+
     render() {
+        const tooltipContent = this.selectTooltipContent(this.props.currentSelection);
         return (
             <div className="field">
                 <label className="label">
                     <TooltipInfoRight
-                        text={"Trykk på dette ikonet for å lese om oversikten."}
-                        url={WIKIURL?.concat("#Visning")}
+                        text={tooltipContent.text}
+                        url={WIKIURL?.concat(tooltipContent.url)}
                     />
                 </label>
                 <div className="control">
