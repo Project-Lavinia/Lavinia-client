@@ -49,13 +49,13 @@ export class PresentationSelection extends React.Component<PresentationSelection
                     url: "#Utjevningsmandater."
                 };
             }
-            case PresentationType.SeatDistribution: {
+            case PresentationType.RemainderQuotients: {
                 return {
                     text: "Her ser du en oversikt over restkvotienter.",
                     url: "#Restkvotienter"
                 };
             }
-            case PresentationType.RemainderQuotients: {
+            case PresentationType.SeatDistribution: {
                 return {
                     text: "Her ser du fordelingen av mandater på hvert fylke.",
                     url: "#Fylkesfordeling%20av%20mandater"
