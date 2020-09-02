@@ -13,7 +13,7 @@ import { ComputationMenuPayload } from "../../ComputationMenu/computation-menu-m
 import { Use2021DistributionCheckbox } from "./Use2021DistributionCheckbox";
 import { getVotesForYear, getMetricsForYear, getMetricsYear } from "../../../utilities/data-filters";
 import { reform2005Applies } from "../../../utilities/conditionals";
-import { TooltipInfoBottom } from "../../../common/TooltipInfo/TooltipInfoBottom";
+import { TooltipInfoBottom } from "../../../common/TooltipInfo";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
