@@ -21,22 +21,22 @@ function getClassName(direction: TooltipDirection | undefined): string {
     switch (direction) {
         case undefined:
         case TooltipDirection.TOP:
-            return base
+            return base;
         case TooltipDirection.BOTTOM:
-            return base + " has-tooltip-bottom"
+            return base + " has-tooltip-bottom";
         case TooltipDirection.LEFT:
-            return base + " has-tooltip-left"
+            return base + " has-tooltip-left";
         case TooltipDirection.RIGHT:
-            return base + " has-tooltip-right"
+            return base + " has-tooltip-right";
         default:
-            checkExhaustively(direction)
+            checkExhaustively(direction);
             toast({
                 dismissible: true,
                 duration: 5000,
                 message: `En feil oppstod: TooltipInfo getClassName switch nådde umulig valg: ${direction}`,
                 position: "top-left",
                 type: "is-danger"
-            })
+            });
             return base;
     }
 }
