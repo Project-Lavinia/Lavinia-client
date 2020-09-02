@@ -228,7 +228,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                                 disproportionalityIndex={this.props.disproportionalityIndex}
                                 tooltip={
                                     <TooltipInfoBottom
-                                        text={"Her kan du velge mellom Loosemore-Hanbys (L-H) og Gallaghers (LSq)."}
+                                        text={"Her kan du velge mellom Gallaghers (LSq) og Loosemore-Hanbys (L-H)."}
                                         url={"https://project-lavinia.github.io/#Disproporsjonalitetsindeks"}
                                     />
                                 }
