@@ -1,6 +1,6 @@
 ﻿import * as React from "react";
 import { LagueDhontResult, ComputationPayload } from "../../../computation";
-import { SmartNumericInput } from "../../../common";
+import { SmartNumericInput, TooltipInfo, TooltipDirection } from "../../../common";
 import { PresentationType, DisproportionalityIndex } from "../../Presentation/presentation-models";
 import { DisproportionalitySelect } from "./DisproportionalitySelect";
 import { NoSeatsCheckbox } from "./NoSeatsCheckbox";
@@ -13,7 +13,6 @@ import { ComputationMenuPayload } from "../../ComputationMenu/computation-menu-m
 import { Use2021DistributionCheckbox } from "./Use2021DistributionCheckbox";
 import { getVotesForYear, getMetricsForYear, getMetricsYear } from "../../../utilities/data-filters";
 import { reform2005Applies } from "../../../utilities/conditionals";
-import { TooltipInfoBottom } from "../../../common/TooltipInfo";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -227,9 +226,10 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                                 changeDisproportionalityIndex={this.props.changeDisproportionalityIndex}
                                 disproportionalityIndex={this.props.disproportionalityIndex}
                                 tooltip={
-                                    <TooltipInfoBottom
+                                    <TooltipInfo
                                         text={"Her kan du velge mellom Gallaghers (LSq) og Loosemore-Hanbys (L-H)."}
                                         url={"https://project-lavinia.github.io/#Disproporsjonalitetsindeks"}
+                                        direction={TooltipDirection.BOTTOM}
                                     />
                                 }
                             />
