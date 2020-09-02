@@ -2,12 +2,13 @@
 import { PresentationType } from "../../Presentation/presentation-models";
 import { selectionLookup } from "./presentation-selection-utilities";
 import { TooltipInfoRight } from "../../../common";
+import { checkExhaustively } from "../../../utilities";
 
 const WIKIURL = process.env.WIKI;
 
 export interface PresentationSelectionProps {
     changeSelection?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-    currentSelection?: PresentationType;
+    currentSelection: PresentationType;
 }
 
 export class PresentationSelection extends React.Component<PresentationSelectionProps> {
@@ -28,49 +29,46 @@ export class PresentationSelection extends React.Component<PresentationSelection
         });
     };
 
-    selectTooltipContent(table: string | undefined) {
+    selectTooltipContent(table: PresentationType) {
         switch (table) {
-            case "TABLE_ELECTION_OVERVIEW": {
+            case PresentationType.ElectionTable: {
                 return {
-                    text: "Her kan du se valgresultatet på landsbasis. Trykk på meg for mer informasjon!",
+                    text: "Her ser du valgresultatet på landsbasis.",
                     url: "#Landsoversikt"
                 };
             }
-            case "TABLE_DISTRICT_OVERVIEW": {
+            case PresentationType.DistrictTable: {
                 return {
-                    text: "Her kan du se valgresultatet for hvert fylke.",
+                    text: "Her ser du resultatet for hvert fylke.",
                     url: "#Fylkesoversikt"
                 };
             }
-            case "TABLE_LEVELLING_SEATS_OVERVIEW": {
+            case PresentationType.LevellingSeats: {
                 return {
-                    text: "Her kan du se fra hvilke fylker partiene har fått utjevningsmandater fra.",
+                    text: "Her ser du fra hvilke fylker partiene har fått utjevningsmandater fra.",
                     url: "#Utjevningsmandater."
                 };
             }
-            case "TABLE_REMAINDER_QUOTIENTS": {
+            case PresentationType.SeatDistribution: {
                 return {
                     text: "Her ser du en oversikt over restkvotienter.",
                     url: "#Restkvotienter"
                 };
             }
-            case "SEAT_DISTRIBUTION": {
+            case PresentationType.RemainderQuotients: {
                 return {
                     text: "Her ser du fordelingen av mandater på hvert fylke.",
                     url: "#Fylkesfordeling%20av%20mandater"
                 };
             }
-            case "TABLE_SINGLE_COUNTY": {
+            case PresentationType.SingleDistrict: {
                 return {
-                    text: "Her kan du velge fylke og se en fullstendig oversikt for valgt fylke.",
+                    text: "Her kan du velge fylke og se partienes valgresultat for valgt fylke.",
                     url: "#Enkeltfylke"
                 };
             }
             default: {
-                return {
-                    text: "Trykk på ikonet for å lese om oversikten.",
-                    url: "#Visning"
-                };
+                return checkExhaustively(table);
             }
         }
     }
