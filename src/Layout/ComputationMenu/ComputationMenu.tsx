@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SmartNumericInput, SmartNumericInputWithLabel, TooltipInfo, TooltipInfoRight } from "../../common";
+import { SmartNumericInput, SmartNumericInputWithLabel, TooltipInfo, TooltipDirection } from "../../common";
 import { Votes, Metrics, Parameters, FirstDivisor } from "../../requested-data/requested-data-models";
 import { ComputationPayload, AlgorithmType, unloadedParameters } from "../../computation";
 import { ComputationMenuPayload } from "./computation-menu-models";
@@ -334,9 +334,10 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         onYearChange={this.onYearChange}
                         year={this.props.settingsPayload.year}
                         tooltip={
-                            <TooltipInfoRight
+                            <TooltipInfo
                                 text={"Her kan du velge året stortingsvalget ble holdt."}
                                 url={WIKIURL + "#Valgt%20%C3%A5r"}
+                                direction={TooltipDirection.RIGHT}
                             />
                         }
                     />
