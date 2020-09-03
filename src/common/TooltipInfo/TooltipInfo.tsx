@@ -15,11 +15,10 @@ export interface TooltipInfoProps {
     direction?: TooltipDirection;
 }
 
-function getClassName(direction: TooltipDirection | undefined): string {
+function getClassName(direction: TooltipDirection): string {
     const base = "icon has-tooltip-multiline has-tooltip-arrow";
 
     switch (direction) {
-        case undefined:
         case TooltipDirection.TOP:
             return base;
         case TooltipDirection.BOTTOM:
@@ -43,8 +42,9 @@ function getClassName(direction: TooltipDirection | undefined): string {
 
 export class TooltipInfo extends React.Component<TooltipInfoProps, {}> {
     render() {
+        const finalDirection = this.props.direction || TooltipDirection.TOP;
         return (
-            <span className={getClassName(this.props.direction)} data-tooltip={this.props.text}>
+            <span className={getClassName(finalDirection)} data-tooltip={this.props.text}>
                 <a href={this.props.url} target="_blank" rel="noreferrer noopener">
                 <i className="fas fa-info-circle has-text-primary" />
                 </a>
