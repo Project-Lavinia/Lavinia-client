@@ -34,7 +34,7 @@ export class PresentationSelection extends React.Component<PresentationSelection
                 <label className="label">
                     <TooltipInfo
                         text={"Trykk på dette ikonet for å lese om oversikten."}
-                        url={WIKIURL?.concat("#Visning")}
+                        url={WIKIURL + "#Visning"}
                         direction={TooltipDirection.RIGHT}
                     />
                 </label>

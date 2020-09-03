@@ -228,7 +228,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                                 tooltip={
                                     <TooltipInfo
                                         text={"Her kan du velge mellom Gallaghers (LSq) og Loosemore-Hanbys (L-H)."}
-                                        url={"https://project-lavinia.github.io/#Disproporsjonalitetsindeks"}
+                                        url={process.env.WIKI + "#Disproporsjonalitetsindeks"}
                                         direction={TooltipDirection.BOTTOM}
                                     />
                                 }
