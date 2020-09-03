@@ -49,14 +49,14 @@ interface SinglePartyResult {
 }
 
 function getMarginInVotes(partyCode: string, vulnerableMap: Map<string, number> | undefined, vulnerableVotes: VulnerableVotes | undefined, firstDivisor: number): number {
-    if (!!vulnerableMap) {
+    if (vulnerableMap) {
         const vulnerableVotes = vulnerableMap.get(partyCode);
-        if (!!vulnerableVotes) {
+        if (vulnerableVotes) {
             return vulnerableVotes;
         }
     }
 
-    if (!!vulnerableVotes) {
+    if (vulnerableVotes) {
         return Math.floor(vulnerableVotes.winner.quotient * firstDivisor) + 1;
     }
     return 0;
@@ -74,10 +74,10 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
             ? getVulnerableSeatByVotes(districtResult, partyResultMap, this.props.districtThreshold)
             : undefined;
 
-        const vulnerableMap = !!calculateVulnerable ? getVotesToVulnerableSeatMap(districtResult) : undefined;
-        const quotientMap = !!calculateVulnerable ? getQuotientsToVulnerableSeatMap(districtResult) : undefined;
+        const vulnerableMap = calculateVulnerable ? getVotesToVulnerableSeatMap(districtResult) : undefined;
+        const quotientMap = calculateVulnerable ? getQuotientsToVulnerableSeatMap(districtResult) : undefined;
 
-        if (!!partyResult) {
+        if (partyResult) {
             return {
                 district: districtResult.name,
                 votes: partyResult.votes,
