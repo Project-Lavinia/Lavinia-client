@@ -50,3 +50,10 @@ $primary: $democracy-blue;
     max-width: 100vw;
     max-height: 100vh;
 }
+
+// wraps text that has whitespace (handy for column header and labels)
+[class*="wrap"] {
+    white-space: normal;
+    height: auto;
+}
+

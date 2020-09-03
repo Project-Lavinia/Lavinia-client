@@ -5,10 +5,12 @@ import { norwegianLeveling } from "../../../utilities/rt";
 
 interface LevellingSeatOverviewProps {
     levellingSeatQuotients: PartyRestQuotients[];
+    partyMap: _.Dictionary<string>;
 }
 
 interface LevellingSeatData {
     partyCode: string;
+    partyName: string;
     seatsWon: string[];
 }
 
@@ -20,7 +22,7 @@ export class LevellingSeatOverview extends React.Component<LevellingSeatOverview
         });
         const seatData: LevellingSeatData[] = [];
         parties.forEach((party) => {
-            seatData.push({ partyCode: party, seatsWon: [] });
+            seatData.push({ partyCode: party, partyName: this.props.partyMap[party], seatsWon: [] });
         });
         quotientsArray.forEach((party) => {
             const currentIndex = seatData.findIndex((data) => data.partyCode === party.partyCode);
@@ -48,8 +50,11 @@ export class LevellingSeatOverview extends React.Component<LevellingSeatOverview
 
             // Set the first column
             columns.unshift({
-                Header: "Parti",
-                accessor: "partyCode",
+                Header: <span className="is-pulled-left">Parti</span>,
+                accessor: "partyName",
+                Cell: (row) => {
+                    return <span className="is-pulled-left">{row.original.partyName}</span>;
+                },
             });
         }
         return columns;
