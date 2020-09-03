@@ -246,6 +246,9 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
                         {
                             Header: <span className="is-pulled-right wrap" >Prop. %</span>,
                             accessor: "proportionality",
+                            Cell: (row) => {
+                               return numberFormat(row.value, decimals);
+                            },
                             Footer: (
                                 <span>
                                     <strong>
