@@ -17,6 +17,7 @@ import {
 } from "../../../utilities/district";
 import { isQuotientAlgorithm } from "../../../computation/logic";
 import { numberFormat } from "../../../utilities/customNumberFormat";
+import { InfoBox } from "./InfoBox";
 
 export interface SinglePartyProps {
     districtResults: DistrictResult[];
@@ -145,6 +146,7 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
                     partySelected={this.props.partySelected}
                     partyMap={this.props.partyMap}
                 />
+                <InfoBox />
                 <ReactTable
                     className="-highlight -striped has-text-right"
                     data={data}
