@@ -8,7 +8,6 @@ pipeline {
   stages {
     stage('Build') {
       environment {
-        GITHUB_TOKEN = credentials('jenkins_release_token')
         API_V3 = 'https://api.lavinia.no/api/v3.0.0/'
         SWAGGERUI = 'https://api.lavinia.no/'
         WIKI = 'https://wiki.lavinia.no/'
@@ -18,6 +17,19 @@ pipeline {
         sh 'yarn build'
         sh "cd dist; zip -r ../${ARTIFACT} *; cd .."
         archiveArtifacts artifacts: ARTIFACT
+      }
+    }
+
+    stage('Test') {
+      environment {
+        API_V3 = 'https://api.lavinia.no/api/v3.0.0/'
+        SWAGGERUI = 'https://api.lavinia.no/'
+        WIKI = 'https://wiki.lavinia.no/'
+      }
+      when {
+          tag "*.*.*"
+      }
+      steps {
         script {
           try {
             sh 'yarn cy:test'
