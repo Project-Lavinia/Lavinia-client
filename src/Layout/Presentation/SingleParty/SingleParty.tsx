@@ -58,7 +58,6 @@ function getMarginInVotes(partyCode: string, vulnerableMap: Map<string, number> 
     if (!!vulnerableVotes) {
         return Math.floor(vulnerableVotes.winner.quotient * firstDivisor) + 1;
     }
-
     return 0;
 }
 
