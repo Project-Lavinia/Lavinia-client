@@ -25,11 +25,3 @@ export function settingsChanged(settingsPayload: ComputationMenuPayload, compari
        comparison.areaFactor !== settingsPayload.areaFactor
    );
 }
-
-export function assert(condition: boolean, message?: string) {
-    const errorMessage = message || "Assertion failed";
-    if (!condition) {
-        throw new Error(errorMessage);
-        
-    }
-}
