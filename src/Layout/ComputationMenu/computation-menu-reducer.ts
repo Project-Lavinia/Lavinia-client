@@ -1,6 +1,7 @@
 import { ComputationMenuActionType, ComputationMenuAction } from "./computation-menu-actions";
 import { ComputationMenuState, unloadedState } from "./computation-menu-state";
 import { checkExhaustively } from "../../utilities";
+import { GlobalActionType } from "../../reducers/global-actions";
 
 /**
  * Reducer for the computation menu. Handles all state changes to the
@@ -50,6 +51,7 @@ export function computationMenu(
                 districtSeats: action.districtSeats,
                 levelingSeats: action.levelingSeats,
                 areaFactor: action.areaFactor,
+                settingsChanged: action.settingsChanged,
             };
         case ComputationMenuActionType.SAVE_SETTINGS:
             return {
@@ -80,6 +82,8 @@ export function computationMenu(
                 ...state,
                 autoCompute: action.autoCompute,
             };
+        case GlobalActionType.CLEAR_STATE:
+            return unloadedState;
         default:
             checkExhaustively(action);
             return state;

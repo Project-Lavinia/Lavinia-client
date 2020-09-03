@@ -32,7 +32,6 @@ interface StateProps
         | "year"
         | "mergeDistricts"
         | "use2021Distribution"
-        | "electionType"
         | "votes"
         | "metrics"
         | "parameters"
@@ -50,15 +49,13 @@ function mapStateToProps(state: RootState): StateProps {
         disproportionalityIndex: state.presentationMenuState.disproportionalityIndex,
         showComparison: state.presentationMenuState.showComparison,
         showFilters: state.presentationMenuState.showFilters,
-        year: state.computationState.election.year,
+        year: state.computationState.parameters.electionYear,
         mergeDistricts: state.presentationMenuState.mergeDistricts,
         use2021Distribution: state.presentationMenuState.use2021Distribution,
-        electionType: state.requestedDataState.electionType,
         votes: state.requestedDataState.votes,
         metrics: state.requestedDataState.metrics,
         parameters: state.computationState.parameters,
         computationPayload: {
-            election: state.computationState.election,
             algorithm: state.computationState.algorithm,
             firstDivisor: state.computationState.firstDivisor,
             electionThreshold: state.computationState.electionThreshold,
@@ -69,6 +66,7 @@ function mapStateToProps(state: RootState): StateProps {
             votes: state.computationState.votes,
             metrics: state.computationState.metrics,
             parameters: state.computationState.parameters,
+            partyMap: state.requestedDataState.partyMap,
         },
         settingsPayload: {
             electionYears: state.settingsState.electionYears,
@@ -141,7 +139,6 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
     updateCalculation: (computationPayload: ComputationPayload, autoCompute: boolean, forceCompute: boolean) => {
         if (autoCompute || forceCompute) {
             const payload: ComputationPayload = {
-                election: computationPayload.election,
                 algorithm: computationPayload.algorithm,
                 firstDivisor: computationPayload.firstDivisor,
                 electionThreshold: computationPayload.electionThreshold,
@@ -152,6 +149,7 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => ({
                 votes: computationPayload.votes,
                 metrics: computationPayload.metrics,
                 parameters: computationPayload.parameters,
+                partyMap: computationPayload.partyMap,
             };
             const updateCalculationAction = updateComputation(payload);
             dispatch(updateCalculationAction);

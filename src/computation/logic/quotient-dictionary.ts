@@ -1,5 +1,4 @@
 import { SortedReverseDict, KeyValuePair } from "./sorted-reverse-dict";
-import { Dictionary } from "../../utilities/dictionary";
 import { breakTies } from "./utils";
 
 export class QuotientDictionary extends SortedReverseDict {
@@ -19,7 +18,7 @@ export class QuotientDictionary extends SortedReverseDict {
      */
     insertParty(partyCode: string, votes: number, timesWon: number) {
         const quotient = votes / this.denominatorFunction(timesWon);
-        this.insert({ key: partyCode, value: quotient });
+        this.insert(partyCode, quotient);
     }
 
     /**
@@ -28,7 +27,7 @@ export class QuotientDictionary extends SortedReverseDict {
      *
      * @param partyVotes Number of votes received by each party
      */
-    getWinner(partyVotes: Dictionary<number>): KeyValuePair {
+    getWinner(partyVotes: _.Dictionary<number>): KeyValuePair {
         const winners = this.popTop();
         let winner: KeyValuePair;
 
@@ -40,7 +39,7 @@ export class QuotientDictionary extends SortedReverseDict {
             // Return the losers back into the distribution
             winners.forEach((entry) => {
                 if (entry.key !== winner.key) {
-                    this.insert(entry);
+                    this.insert(entry.key, entry.value);
                 }
             });
         } else {
@@ -56,7 +55,7 @@ export class QuotientDictionary extends SortedReverseDict {
      * @param distribution Number of seats won by each party
      * @param partyVotes Number of votes received by each party
      */
-    populateQuotients(distribution: Dictionary<number>, partyVotes: Dictionary<number>) {
+    populateQuotients(distribution: _.Dictionary<number>, partyVotes: _.Dictionary<number>) {
         for (const entry in distribution) {
             if (distribution.hasOwnProperty(entry)) {
                 this.insertParty(entry, partyVotes[entry], distribution[entry]);

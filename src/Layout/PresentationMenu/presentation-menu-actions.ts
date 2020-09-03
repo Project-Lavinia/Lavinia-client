@@ -1,4 +1,5 @@
 ﻿import { PresentationType, DisproportionalityIndex } from "../Presentation/presentation-models";
+import { ClearState } from "../../reducers/global-actions";
 
 /**
  * Enum containing all possible PresentationMenuAction types.
@@ -9,6 +10,7 @@ export enum PresentationMenuActionType {
     CHANGE_DECIMALS = "CHANGE_DECIMALS",
     SHOW_PARTIES_NO_SEATS = "SHOW_PARTIES_NO_SEATS",
     SELECT_DISTRICT = "SELECT_DISTRICT",
+    SELECT_PARTY = "SELECT_PARTY",
     CHANGE_DISPROPORTIONALITY_INDEX = "CHANGE_DISPROPORTIONALITY_INDEX",
     TOGGLE_SHOW_COMPARISON = "TOGGLE_SHOW_COMPARISON",
     TOGGLE_SHOW_FILTERS = "TOGGLE_SHOW_FILTERS",
@@ -25,11 +27,13 @@ export type PresentationMenuAction =
     | ChangeDecimals
     | ChangeShowPartiesNoSeats
     | SelectDistrict
+    | SelectParty
     | ChangeDisproportionalityIndex
     | ToggleShowComparison
     | ToggleShowFilters
     | ToggleMergeDistricts
-    | ToggleUse2021Distribution;
+    | ToggleUse2021Distribution
+    | ClearState;
 
 /**
  * Action for initializing the presentation.
@@ -131,6 +135,14 @@ export interface SelectDistrict {
 }
 
 /**
+ * Action for selecting which party should be displayed.
+ */
+export interface SelectParty {
+    type: PresentationMenuActionType.SELECT_PARTY;
+    partySelected: string;
+}
+
+/**
  * Action creator for selecting which district should be displayed.
  *
  * @param name - name of district to be displayed.
@@ -139,6 +151,19 @@ export function selectDistrict(name: string): SelectDistrict {
     const action: SelectDistrict = {
         type: PresentationMenuActionType.SELECT_DISTRICT,
         districtSelected: name,
+    };
+    return action;
+}
+
+/**
+ * Action creator for selecting which party should be displayed.
+ *
+ * @param partyCode - party code of party to be displayed.
+ */
+export function selectParty(partyCode: string): SelectParty {
+    const action: SelectParty = {
+        type: PresentationMenuActionType.SELECT_PARTY,
+        partySelected: partyCode,
     };
     return action;
 }

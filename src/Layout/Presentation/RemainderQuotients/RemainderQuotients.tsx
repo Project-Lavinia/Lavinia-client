@@ -3,6 +3,7 @@ import ReactTable, { Column } from "react-table";
 import { LevelingSeat, DistrictResult, DistrictQuotients, AlgorithmType } from "../../../computation";
 import { norwegian } from "../../../utilities/rt";
 import { isQuotientAlgorithm } from "../../../computation/logic";
+import { numberFormat } from "../../../utilities/customNumberFormat";
 
 export interface RemainderQuotientsProps {
     districtResults: DistrictResult[];
@@ -12,6 +13,7 @@ export interface RemainderQuotientsProps {
     decimals: number;
     showPartiesWithoutSeats: boolean;
     algorithm: AlgorithmType;
+    partyMap: _.Dictionary<string>;
 }
 
 /**
@@ -53,15 +55,17 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
     }
 
     getColumns(): Column[] {
+        const partyMap = this.props.partyMap;
         const data = this.makeData();
         const columns: Column[] = [];
-
         for (let i = 0; i < data[0].levellingSeatRounds.length; i++) {
             const element = data[0].levellingSeatRounds[i];
             columns.push({
-                Header: element.partyCode,
+                Header: () => {
+                    return <abbr title={partyMap[element.partyCode]}>{element.partyCode}</abbr>;
+                },
                 accessor: `levellingSeatRounds[${i}]`,
-                minWidth: 50,
+                minWidth: 80,
                 Cell: (row) => {
                     if (row.value !== undefined) {
                         let quotient = row.value.quotient;
@@ -74,15 +78,8 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                         return (
                             <div
                                 className={row.value.wonLevellingSeat ? "has-background-dark has-text-white" : ""}
-                                style={
-                                    {
-                                        /* textAlign: "center",
-                                    color: row.value.wonLevellingSeat ? "white" : "black",
-                                    backgroundColor: row.value.wonLevellingSeat ? "#ff6e00" : "white", */
-                                    }
-                                }
                             >
-                                {Number(quotient).toFixed(this.props.decimals)}
+                                {numberFormat(Number(quotient), this.props.decimals)}
                             </div>
                         );
                     } else {
@@ -108,8 +105,11 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
             }
         });
         columns.unshift({
-            Header: "Fylker",
+            Header: <span className="is-pulled-left"> {"Fylker"}</span> ,
             accessor: "district",
+            Cell: (row) => {
+                return <span className="is-pulled-left">{row.value}</span>;
+            },
         });
 
         return columns;
@@ -142,7 +142,7 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
                 </div>
 
                 <ReactTable
-                    className="has-text-centered"
+                    className="-highlight -striped has-text-centered"
                     data={data}
                     columns={this.getColumns()}
                     defaultPageSize={10}

@@ -37,3 +37,14 @@ export function mapAddFromArray<T>(map: Map<string, T[]>, getKey: (value: T) => 
 
     return newMap;
 }
+
+export function createMapFromObject<T>(object: { [key: string]: T }): Map<string, T> {
+    const newMap = new Map<string, T>();
+    for (const key in object) {
+        if (Object.prototype.hasOwnProperty.call(object, key)) {
+            newMap.set(key, object[key]);
+        }
+    }
+
+    return newMap;
+}

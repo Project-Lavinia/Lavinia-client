@@ -1,6 +1,6 @@
 {
     "name": "lavinia",
-    "version": "2.8.0",
+    "version": "2.9.0",
     "private": true,
     "description": "A seat distribution application for modern democracies",
     "main": "index.js",
@@ -8,13 +8,14 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "webpack-dev-server --mode development --hot --progress --color --port 3000 --open",
         "start:debug": "webpack-dev-server --mode development --env.DEBUG true --hot --progress --color --port 3000 --open",
+        "start:production": "webpack-dev-server --mode production --hot --progress --color --port 3000 --open",
         "build": "webpack --env.NODE_ENV \"production\" -p --progress --colors",
         "build:dev": "webpack --env.NODE_ENV \"development\"",
         "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
         "precommit": "pretty-quick --staged && tslint -p .",
         "cy:verify": "cypress verify",
-        "cy:run": "cypress run",
-        "cy:test": "start-server-and-test start 3000 cy:run",
+        "cy:run": "cypress run --reporter junit --reporter-options \"mochaFile=results/cypress-[hash].xml,toConsole=true\"",
+        "cy:test": "start-server-and-test start:production 3000 cy:run",
         "cy:ci:run": "cypress run --record --key $CYPRESS_RECORD_KEY --parallel --ci-build-id $BUILD_BUILDNUMBER",
         "cy:ci:test": "start-server-and-test start 3000 cy:ci:run"
     },
@@ -32,6 +33,7 @@
         "babel-loader": "^8.1.0",
         "bulma": "^0.8.2",
         "bulma-pageloader": "^0.3.0",
+        "bulma-switch": "^2.0.0",
         "bulma-tooltip": "^3.0.2",
         "clean-webpack-plugin": "^3.0.0",
         "css-loader": "^3.5.3",
@@ -48,6 +50,7 @@
         "pretty-quick": "^2.0.1",
         "react-hot-loader": "^4.12.21",
         "sass-loader": "^8.0.2",
+        "start-server-and-test": "^1.11.0",
         "style-loader": "^1.2.1",
         "ts-loader": "^7.0.4",
         "tslint": "^6.1.2",
@@ -60,14 +63,13 @@
         "webpack-dev-server": "^3.11.0"
     },
     "dependencies": {
-        "axios": "^0.19.2",
-        "lodash": "^4.17.15",
+        "bulma-toast": "^2.0.3",
+        "lodash": "^4.17.19",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-redux": "^7.2.0",
         "react-table": "6.10.0",
         "redux": "^4.0.5",
-        "redux-thunk": "^2.3.0",
-        "start-server-and-test": "^1.11.0"
+        "redux-thunk": "^2.3.0"
     }
 }

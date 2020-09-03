@@ -10,6 +10,7 @@ export interface ComputationMenuState {
     districtThreshold: string;
     districtSeats: string;
     levelingSeats: string;
+    settingsChanged: boolean;
     autoCompute: boolean;
     areaFactor: string;
     comparison: ComputationMenuComparison;
@@ -25,6 +26,7 @@ export const unloadedState: ComputationMenuState = {
     districtSeats: "",
     levelingSeats: "",
     autoCompute: true,
+    settingsChanged: false,
     areaFactor: "",
     comparison: {
         algorithm: AlgorithmType.UNDEFINED,

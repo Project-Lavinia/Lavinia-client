@@ -12,9 +12,12 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
     generateColumns(): Column[] {
         const columns: Column[] = [
             {
-                Header: "Fylke",
+                Header: <span className="is-pulled-left"> {"Fylker"}</span> ,
                 accessor: "name",
                 width: this.props.districtWidth * 10,
+                Cell: (row) => {
+                    return <span className="is-pulled-left" >{row.value}</span>;
+                },            
             },
         ];
 
@@ -26,7 +29,7 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
             for (let partyIndex = 0; partyIndex < this.props.districtResults[0].partyResults.length; partyIndex++) {
                 const element = this.props.districtResults[0].partyResults[partyIndex];
                 columns.push({
-                    Header: element.partyCode,
+                    Header:  <abbr title={element.partyName}>{element.partyCode}</abbr>,
                     accessor: `partyResults[${partyIndex}].totalSeats`,
                     minWidth: 50,
                 });

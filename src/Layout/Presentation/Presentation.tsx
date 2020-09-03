@@ -18,10 +18,12 @@ import { LagueDhontResult, PartyResult, DistrictResult, AlgorithmType } from "..
 import { PresentationType, DisproportionalityIndex } from "./presentation-models";
 import { ElectionComparison } from "./ElectionOverview/ElectionComparison";
 import { checkExhaustively } from "../../utilities";
+import { SingleParty } from "./SingleParty";
 
 export interface PresentationProps {
     currentPresentation: PresentationType;
     districtSelected: string;
+    partySelected: string;
     decimals: number;
     showPartiesWithoutSeats: boolean;
     results: LagueDhontResult;
@@ -29,10 +31,16 @@ export interface PresentationProps {
     comparisonPartyResults: PartyResult[];
     showComparison: boolean;
     threshold: number;
+    districtThreshold: number;
+    districtSeats: number;
     year: number;
     algorithm: AlgorithmType;
     showFilters: boolean;
+    firstDivisor: number;
     selectDistrict: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    selectParty: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    partyMap: _.Dictionary<string>;
+    settingsChanged: boolean;
 }
 
 export class Presentation extends React.Component<PresentationProps, {}> {
@@ -75,7 +83,9 @@ export class Presentation extends React.Component<PresentationProps, {}> {
     getPartyCodes(): string[] {
         const partyCodes: string[] = [];
         this.props.results.partyResults.forEach((party) => {
-            partyCodes.push(party.partyCode);
+            if (this.props.showPartiesWithoutSeats || party.totalSeats > 0 ) {
+                partyCodes.push(party.partyCode);
+            }
         });
         return partyCodes;
     }
@@ -128,6 +138,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         disproportionalityIndex={this.props.disproportionalityIndex}
                         threshold={this.props.threshold}
                         showFilters={this.props.showFilters}
+                        showDiff={this.props.settingsChanged}
                     />
                 );
             case PresentationType.DistrictTable:
@@ -137,6 +148,8 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         districtWidth={this.getWidestStringWidth(this.getDistricts())}
                         decimals={this.props.decimals}
                         algorithm={this.props.algorithm}
+                        districtThreshold={this.props.districtThreshold}
+                        partyMap={this.props.partyMap}
                     />
                 );
             case PresentationType.SeatDistribution:
@@ -155,6 +168,24 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         disproportionalityIndex={this.props.disproportionalityIndex}
                         selectDistrict={this.props.selectDistrict}
                         algorithm={this.props.algorithm}
+                        districtThreshold={this.props.districtThreshold}
+                        partyMap={this.props.partyMap}
+                    />
+                );
+            case PresentationType.SingleParty:
+                return (
+                    <SingleParty
+                        partySelected={this.props.partySelected}
+                        districtResults={this.getSingleDistrictData()}
+                        partyCodeList={this.getPartyCodes()}
+                        decimals={this.props.decimals}
+                        disproportionalityIndex={this.props.disproportionalityIndex}
+                        selectParty={this.props.selectParty}
+                        algorithm={this.props.algorithm}
+                        firstDivisor={this.props.firstDivisor}
+                        districtThreshold={this.props.districtThreshold}
+                        districtSeats={this.props.districtSeats}
+                        partyMap={this.props.partyMap}
                     />
                 );
             case PresentationType.RemainderQuotients:
@@ -167,10 +198,11 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                         decimals={this.props.decimals}
                         showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
                         algorithm={this.props.algorithm}
+                        partyMap={this.props.partyMap}
                     />
                 );
             case PresentationType.LevellingSeats:
-                return <LevellingSeatOverview levellingSeatQuotients={this.props.results.levelingSeatDistribution} />;
+                return <LevellingSeatOverview levellingSeatQuotients={this.props.results.levelingSeatDistribution} partyMap={this.props.partyMap} />;
             default:
                 checkExhaustively(this.props.currentPresentation);
                 return;

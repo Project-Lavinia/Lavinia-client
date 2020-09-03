@@ -6,15 +6,19 @@ import { getMostVulnerableSeatByQuotient } from "../../../utilities/district";
 import { norwegian } from "../../../utilities/rt";
 import { isQuotientAlgorithm } from "../../../computation/logic";
 import { VulnerableDistrictSeatText } from "./VulnerableDistrictSeatText";
+import { numberFormat } from "../../../utilities/customNumberFormat";
 
 export interface DistrictOverviewProps {
     districtResults: DistrictResult[];
     districtWidth: number;
     decimals: number;
     algorithm: AlgorithmType;
+    districtThreshold: number;
+    partyMap: _.Dictionary<string>;
 }
 
 export class DistrictOverview extends React.Component<DistrictOverviewProps, {}> {
+
     render() {
         const data = this.props.districtResults;
         const decimals = this.props.decimals;
@@ -26,7 +30,9 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
         const mostWeightedDistrict = data.find((entry) => entry.votesPerSeat === highestVotingPower)!.name;
         const leastWeightedDistrict = data.find((entry) => entry.votesPerSeat === lowestVotingPower)!.name;
         const calculateVulnerable = isQuotientAlgorithm(this.props.algorithm);
-        const mostVulnerable = calculateVulnerable ? getMostVulnerableSeatByQuotient(data) : undefined;
+        const mostVulnerable = calculateVulnerable
+            ? getMostVulnerableSeatByQuotient(data, this.props.districtThreshold)
+            : undefined;
         return (
             <React.Fragment>
                 <div className="card has-background-primary has-text-light is-size-5">
@@ -34,18 +40,18 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                         {"En stemme i "}
                         {mostWeightedDistrict}
                         {" hadde mest vekt, og telte "}
-                        {highestVsAverageInPercentage.toFixed(decimals) + "%"}
+                        {numberFormat(highestVsAverageInPercentage, decimals) + "%"}
                         {" av en gjennomsnittlig stemme"}
                         {", mens en stemme i "}
                         {leastWeightedDistrict}
                         {" hadde minst vekt, og bare telte "}
-                        {lowestVsAverageInPercentage.toFixed(decimals) + "%."}
-                        <VulnerableDistrictSeatText mostVulnerable={mostVulnerable} />
+                        {numberFormat(lowestVsAverageInPercentage, decimals) + "%."}
+                        <VulnerableDistrictSeatText mostVulnerable={mostVulnerable} partyMap={this.props.partyMap} />
                     </p>
                 </div>
 
                 <ReactTable
-                    className="-highlight -striped has-text-centered"
+                    className="-highlight -striped has-text-right"
                     defaultPageSize={this.props.districtResults.length}
                     pageSize={this.props.districtResults.length}
                     showPaginationBottom={false}
@@ -53,26 +59,32 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                     {...norwegian}
                     columns={[
                         {
-                            Header: "Fylke",
+                            Header: <span className="is-pulled-left">Fylke</span> ,
                             accessor: "name",
-                            minWidth: this.props.districtWidth * 10,
+                            width: this.props.districtWidth * 10,
+                            Cell: (row) => {
+                                return <span className="is-pulled-left" >{row.value}</span>;
+                            },
                             Footer: (
                                 <span>
-                                    <strong>Alle fylker</strong>
+                                    <strong className="is-pulled-left">Alle fylker</strong>
                                 </span>
                             ),
                         },
                         {
-                            Header: "Stemmer",
+                            Header: <span className="is-pulled-right">Stemmer</span> ,
                             accessor: "votes",
                             Footer: (
                                 <span>
-                                    <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>
+                                    <strong>{numberFormat(data.map((value) => value.votes).reduce(toSum, 0))}</strong>
                                 </span>
                             ),
+                            Cell: (row) => {
+                                return numberFormat(row.value);
+                            },
                         },
                         {
-                            Header: "Distrikt",
+                            Header: <span className="is-pulled-right"> Distrikt</span>,
                             accessor: "districtSeats",
                             Footer: (
                                 <span>
@@ -81,7 +93,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             ),
                         },
                         {
-                            Header: "Utjevning",
+                            Header: <span className="is-pulled-right"> Utjevning</span>,
                             accessor: "levelingSeats",
                             Footer: (
                                 <span>
@@ -90,7 +102,7 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             ),
                         },
                         {
-                            Header: "Sum",
+                            Header: <span className="is-pulled-right">Sum</span>,
                             accessor: "totalSeats",
                             Footer: (
                                 <span>
@@ -100,11 +112,14 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
                             ),
                         },
                         {
-                            Header: "Stemmer/mandat",
+                            Header: <span className="is-pulled-right wrap">Stemmer / mandat</span>,
                             accessor: "votesPerSeat",
+                            Cell: (row) => {
+                                return numberFormat(row.value, decimals);
+                            },
                             Footer: (
                                 <span>
-                                    <strong>{averageVotingPower.toFixed(decimals)}</strong>
+                                    <strong>{numberFormat(averageVotingPower, decimals)}</strong>
                                 </span>
                             ),
                         },

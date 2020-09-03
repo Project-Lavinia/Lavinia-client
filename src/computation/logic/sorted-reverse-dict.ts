@@ -1,7 +1,11 @@
 export class SortedReverseDict {
     reverseDict: KeyValuePair[] = [];
 
-    insert(pair: KeyValuePair): void {
+    insert(key: string, value: number): void {
+        const pair: KeyValuePair = {
+            key,
+            value,
+        };
         this.reverseDict.push(pair);
         let index = this.reverseDict.length - 1;
         const item = this.reverseDict[index];

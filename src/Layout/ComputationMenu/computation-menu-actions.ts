@@ -1,6 +1,8 @@
-﻿import { ElectionType, Parameters } from "../../requested-data/requested-data-models";
-import { ComputationMenuPayload } from "./computation-menu-models";
+﻿import { Parameters, FirstDivisor } from "../../requested-data/requested-data-models";
+import { ComputationMenuPayload, ComputationMenuComparison } from "./computation-menu-models";
 import { AlgorithmType } from "../../computation";
+import { ClearState } from "../../reducers/global-actions";
+import { settingsChanged } from "../../utilities/conditionals";
 
 /**
  * Enum containing all possible ComputationMenuAction types.
@@ -21,7 +23,8 @@ export type ComputationMenuAction =
     | UpdateComputationMenu
     | ToggleAutoCompute
     | SaveSettings
-    | ResetSavedSettings;
+    | ResetSavedSettings
+    | ClearState;
 
 /**
  * Action for initializing the computation menu.
@@ -45,18 +48,13 @@ export interface InitializeComputationMenu {
  *
  * @param electionType - election data fetched from the API.
  */
-export function initializeComputationMenu(electionType: ElectionType, parameters: Parameters) {
-    const electionYears: string[] = [];
-    for (const currentElection of electionType.elections) {
-        electionYears.push(currentElection.year.toString());
-    }
-
+export function initializeComputationMenu(electionYears: string[], parameters: Parameters) {
     const action: InitializeComputationMenu = {
         type: ComputationMenuActionType.INITIALIZE_COMPUTATION_MENU,
         electionYears,
         year: parameters.electionYear.toString(),
         algorithm: parameters.algorithm.algorithm,
-        firstDivisor: parameters.algorithm.parameters["First Divisor"].toString(),
+        firstDivisor: parameters.algorithm.parameters[FirstDivisor].toString(),
         electionThreshold: parameters.threshold.toString(),
         districtThreshold: "0",
         districtSeats: parameters.districtSeats.toString(),
@@ -80,6 +78,7 @@ export interface UpdateComputationMenu {
     districtSeats: string;
     levelingSeats: string;
     areaFactor: string;
+    settingsChanged: boolean;
 }
 
 /**
@@ -87,7 +86,7 @@ export interface UpdateComputationMenu {
  *
  * @param settingsPayload - the displayed parameters
  */
-export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
+export function updateComputationMenu(settingsPayload: ComputationMenuPayload, comparison: ComputationMenuComparison) {
     const action: UpdateComputationMenu = {
         type: ComputationMenuActionType.UPDATE_COMPUTATION_MENU,
         year: settingsPayload.year,
@@ -98,6 +97,7 @@ export function updateComputationMenu(settingsPayload: ComputationMenuPayload) {
         districtSeats: settingsPayload.districtSeats,
         levelingSeats: settingsPayload.levelingSeats,
         areaFactor: settingsPayload.areaFactor,
+        settingsChanged: settingsChanged(settingsPayload, comparison)
     };
     return action;
 }

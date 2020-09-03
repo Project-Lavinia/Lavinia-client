@@ -1,22 +1,18 @@
 ﻿import * as React from "react";
 import { LagueDhontResult, ComputationPayload } from "../../../computation";
-import { SmartNumericInput, TooltipInfo } from "../../../common";
+import { SmartNumericInput, TooltipInfo, TooltipDirection } from "../../../common";
 import { PresentationType, DisproportionalityIndex } from "../../Presentation/presentation-models";
 import { DisproportionalitySelect } from "./DisproportionalitySelect";
 import { NoSeatsCheckbox } from "./NoSeatsCheckbox";
 import { ComparisonCheckbox } from "./ComparisonCheckbox";
 import { FiltersCheckbox } from "./FiltersCheckbox";
 import { MergeDistrictsCheckbox } from "./MergeDistrictsCheckbox";
-import { ElectionType, Votes, Metrics, Parameters } from "../../../requested-data/requested-data-models";
-import {
-    mergeElectionDistricts,
-    districtMap,
-    mergeVoteDistricts,
-    mergeMetricDistricts,
-} from "../../../computation/logic/district-merging";
+import { Votes, Metrics, Parameters } from "../../../requested-data/requested-data-models";
+import { districtMap, mergeVoteDistricts, mergeMetricDistricts } from "../../../computation/logic/district-merging";
 import { ComputationMenuPayload } from "../../ComputationMenu/computation-menu-models";
 import { Use2021DistributionCheckbox } from "./Use2021DistributionCheckbox";
-import { shouldDistributeDistrictSeats } from "../../../utilities/conditionals";
+import { getVotesForYear, getMetricsForYear, getMetricsYear } from "../../../utilities/data-filters";
+import { reform2005Applies } from "../../../utilities/conditionals";
 
 export interface PresentationSettingsProps {
     currentPresentation: PresentationType;
@@ -39,7 +35,6 @@ export interface PresentationSettingsProps {
     toggleMergeDistricts: (checked: boolean) => void;
     use2021Distribution: boolean;
     toggleUse2021Distribution: (checked: boolean) => void;
-    electionType: ElectionType;
     votes: Votes[];
     metrics: Metrics[];
     parameters: Parameters;
@@ -72,7 +67,8 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
     showDisproportionalitySelect(): boolean {
         return (
             this.props.currentPresentation === PresentationType.SingleDistrict ||
-            this.props.currentPresentation === PresentationType.ElectionTable
+            this.props.currentPresentation === PresentationType.ElectionTable ||
+            this.props.currentPresentation === PresentationType.SingleParty
         );
     }
 
@@ -123,15 +119,13 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         this.props.toggleMergeDistricts(event.target.checked);
 
         const year = this.props.year;
-        let election = this.props.electionType.elections.find((election) => election.year === year);
-        let votes = this.props.votes.filter((vote) => vote.electionYear === year);
-        const distributionYear = this.props.use2021Distribution && year >= 2005 ? 2021 : year;
-        let metrics = this.props.metrics.filter((metric) => metric.electionYear === distributionYear);
+        let votes = getVotesForYear(this.props.votes, year);
+        const metricsYear = getMetricsYear(this.props.use2021Distribution, year);
+        let metrics = getMetricsForYear(this.props.metrics, metricsYear);
         const parameters = this.props.parameters;
 
-        if (election !== undefined) {
-            if (shouldDistributeDistrictSeats(year) && event.target.checked) {
-                election = mergeElectionDistricts(election, districtMap);
+        if (votes.length > 0) {
+            if (reform2005Applies(year) && event.target.checked) {
                 votes = mergeVoteDistricts(votes, districtMap);
                 metrics = mergeMetricDistricts(metrics, districtMap);
             }
@@ -139,7 +133,6 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
             this.props.updateCalculation(
                 {
                     ...this.props.computationPayload,
-                    election,
                     metrics,
                     votes,
                     parameters,
@@ -150,25 +143,24 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         }
     };
 
-    showUse2021Distribution(): boolean {
-        return this.props.year >= 2005;
-    }
-
     onToggleUse2021Distribution = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.props.toggleUse2021Distribution(event.target.checked);
 
         const year = this.props.year;
-        const election = this.props.electionType.elections.find((election) => election.year === year);
-        const votes = this.props.votes.filter((vote) => vote.electionYear === year);
-        const metricsYear = event.target.checked && year >= 2005 ? 2021 : year;
-        const metrics = this.props.metrics.filter((metric) => metric.electionYear === metricsYear);
+        let votes = getVotesForYear(this.props.votes, year);
+        const metricsYear = getMetricsYear(event.target.checked, year);
+        let metrics = getMetricsForYear(this.props.metrics, metricsYear);
         const parameters = this.props.parameters;
 
-        if (election !== undefined) {
+        if (votes.length > 0) {
+            if (reform2005Applies(year) && this.props.mergeDistricts) {
+                votes = mergeVoteDistricts(votes, districtMap);
+                metrics = mergeMetricDistricts(metrics, districtMap);
+            }
+
             this.props.updateCalculation(
                 {
                     ...this.props.computationPayload,
-                    election,
                     metrics,
                     votes,
                     parameters,
@@ -183,7 +175,7 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
         return (
             <div className="columns">
                 <div className="columns">
-                    <div className="column">
+                    <div className="column min-column-width">
                         <NoSeatsCheckbox
                             hidden={!this.showNoSeatsCheckbox()}
                             showPartiesWithoutSeats={this.props.showPartiesWithoutSeats}
@@ -202,12 +194,12 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                     </div>
                     <div className="column">
                         <MergeDistrictsCheckbox
-                            hidden={!shouldDistributeDistrictSeats(this.props.year)}
+                            hidden={!reform2005Applies(this.props.year)}
                             mergeDistricts={this.props.mergeDistricts}
                             toggleMergeDistricts={this.onToggleMergeDistricts}
                         />
                         <Use2021DistributionCheckbox
-                            hidden={!this.showUse2021Distribution()}
+                            hidden={!reform2005Applies(this.props.year)}
                             use2021Distribution={this.props.use2021Distribution}
                             toggleUse2021Distribution={this.onToggleUse2021Distribution}
                         />
@@ -236,8 +228,9 @@ export class PresentationSettingsMenu extends React.Component<PresentationSettin
                                 disproportionalityIndex={this.props.disproportionalityIndex}
                                 tooltip={
                                     <TooltipInfo
-                                        text={"Her kan du velge mellom Loosemore-Hanbys (L-H) og Gallaghers (LSq)."}
-                                        url={"https://project-lavinia.github.io/#Disproporsjonalitetsindeks"}
+                                        text={"Her kan du velge mellom Gallaghers (LSq) og Loosemore-Hanbys (L-H)."}
+                                        url={process.env.WIKI + "#Disproporsjonalitetsindeks"}
+                                        direction={TooltipDirection.BOTTOM}
                                     />
                                 }
                             />

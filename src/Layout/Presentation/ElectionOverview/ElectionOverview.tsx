@@ -4,7 +4,7 @@ import { PartyResult } from "../../../computation";
 import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
-import { roundNumber } from "../../../utilities/number";
+import { numberFormat } from "../../../utilities/customNumberFormat";
 import {
     selectFilterWithOptions,
     thresholdFilterMethod,
@@ -24,6 +24,7 @@ export interface ElectionOverviewProps {
     disproportionalityIndex: DisproportionalityIndex;
     showPartiesWithoutSeats: boolean;
     showFilters: boolean;
+    showDiff: boolean;
 }
 
 interface ElectionOverviewDatum extends PartyResult {
@@ -56,17 +57,6 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
         return data;
     };
 
-    /**
-     * Utility for checking whether the difference column should be displayed,
-     * ie -- are there any differences?
-     *
-     * @param data the data, required to figure out if there is a difference.
-     * @returns true if there is a difference, else false.
-     */
-    shouldShowDifference = (data: ElectionOverviewDatum[]) => {
-        return data.some((datum) => datum.totalSeatDifference !== 0);
-    };
-
     render() {
         const data = this.makeData();
         const proportionalities = this.props.showPartiesWithoutSeats
@@ -96,7 +86,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
         }
         const allTrueFalseOptions = [
             { value: "all", title: "Alle" },
-            { value: "true", title: "> 0" },
+            { value: "true", title: "≠ 0" },
             { value: "false", title: "= 0" },
         ];
 
@@ -115,7 +105,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
         return (
             <React.Fragment>
                 <ReactTable
-                    className="-highlight -striped has-text-centered"
+                    className="-highlight -striped has-text-right"
                     multiSort={false}
                     data={data}
                     filterable={this.props.showFilters}
@@ -125,33 +115,35 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                     {...norwegian}
                     columns={[
                         {
-                            Header: "Parti",
+                            Header: <span className="is-pulled-left">Parti</span> ,
                             accessor: "partyCode",
                             filterMethod: caseInsensitiveFilterMethod,
-                            Footer: <strong>Utvalg</strong>,
+                            Footer: <strong className="is-pulled-left">Utvalg</strong>,
                             Cell: (row) => {
-                                return row.original.partyName ? (
-                                    <abbr title={row.original.partyName}>{row.value}</abbr>
-                                ) : (
-                                    row.value
-                                );
+                                return <span className="is-pulled-left">{row.original.partyName}</span>;
                             },
                         },
                         {
-                            Header: "Stemmer",
+                            Header: <span className="is-pulled-right">Stemmer</span> ,
                             accessor: "votes",
                             filterable: false,
-                            Footer: <strong>{data.map((value) => value.votes).reduce(toSum, 0)}</strong>,
+                            Cell: (row) => {
+                                return numberFormat(row.value);
+                            },
+                            Footer: <strong>{numberFormat(data.map((value) => value.votes).reduce(toSum, 0))}</strong>,
                         },
                         {
-                            Header: "%",
+                            Header: <span className="is-pulled-right wrap">Oppslutning %</span> ,
                             id: "%",
                             Filter: selectFilterWithOptions(thresholdOptions),
                             filterMethod: thresholdFilterMethod(this.props.threshold),
-                            accessor: (d: ElectionOverviewDatum) => roundNumber(d.percentVotes, decimals),
+                            accessor: (d: ElectionOverviewDatum) => d.percentVotes,
+                            Cell: (row) => {
+                                return numberFormat(row.value,decimals);
+                            },
                         },
                         {
-                            Header: "Distrikt",
+                            Header: <span className="is-pulled-right">Distrikt</span> ,
                             accessor: "districtSeats",
                             Filter: selectFilterWithOptions(allTrueFalseOptions),
                             filterMethod: allGreaterThanEqualsMethod,
@@ -159,34 +151,36 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                         },
 
                         {
-                            Header: "Utjevning",
+                            Header: <span className="is-pulled-right">Utjevning</span> ,
                             accessor: "levelingSeats",
                             Filter: selectFilterWithOptions(allTrueFalseOptions),
                             filterMethod: allGreaterThanEqualsMethod,
                             Footer: <strong>{data.map((value) => value.levelingSeats).reduce(toSum, 0)}</strong>,
                         },
                         {
-                            Header: "Sum",
+                            Header: <span className="is-pulled-right">Sum</span> ,
                             accessor: "totalSeats",
                             filterable: false,
                             Footer: <strong>{data.map((value) => value.totalSeats).reduce(toSum, 0)}</strong>,
                         },
                         {
-                            Header: "Differanse",
+                            Header: <span className="is-pulled-right">Differanse</span> ,
                             accessor: "totalSeatDifference",
                             Filter: selectFilterWithOptions(allTrueFalseOptions),
                             filterMethod: zeroNotZeroFilterMethod,
-                            show: this.shouldShowDifference(data),
+                            show: this.props.showDiff,
                         },
                         {
-                            Header: "Prop. %",
-                            id: "proportionality",
-                            accessor: (d: ElectionOverviewDatum) => roundNumber(d.proportionality, decimals),
+                            Header: <span className="is-pulled-right wrap">Prop. %</span>, 
+                            accessor: "proportionality",
                             Filter: selectFilterWithOptions(thresholdIsZeroOptions),
                             filterMethod: positiveOrNegativeFilterMethod(),
+                            Cell: (row) => {
+                                return numberFormat(row.value,decimals);
+                            },
                             Footer: (
                                 <strong>
-                                    {label}: {index.toFixed(this.props.decimals)}
+                                    {label}: {numberFormat(index,decimals)}
                                 </strong>
                             ),
                         },
