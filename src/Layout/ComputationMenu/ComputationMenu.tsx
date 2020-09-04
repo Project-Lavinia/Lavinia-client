@@ -384,13 +384,13 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du forandre sperregrensen for å få tildelt utjevningsmandat."}
-                                url={WIKIURL + "#Sperregrense%20for%20utjevningsmandater"}
+                                url={WIKIURL + "/#Sperregrense%20for%20utjevningsmandat"}
                             />
                         }
                     />
                     <SmartNumericInputWithLabel
                         name="districtThreshold"
-                        title="Sperregrense for distriktsmandater"
+                        title="Sperregrense for distriktmandater"
                         value={this.props.settingsPayload.districtThreshold}
                         onChange={this.onDistrictThresholdChange}
                         min={0}
@@ -403,7 +403,7 @@ export class ComputationMenu extends React.Component<ComputationMenuProps, {}> {
                         tooltip={
                             <TooltipInfo
                                 text={"Her kan du sette inn en sperregrense også for distriktsmandatene."}
-                                url={WIKIURL + "#Sperregrense%20for%20distriktsmandater"}
+                                url={WIKIURL + "#Sperregrense%20for%20distriktmandat"}
                             />
                         }
                     />
