@@ -63,8 +63,14 @@ export class PresentationSelection extends React.Component<PresentationSelection
             }
             case PresentationType.SingleDistrict: {
                 return {
-                    text: "Her kan du velge fylke og se partienes valgresultat for valgt fylke.",
+                    text: "Her kan du velge fylke og se partienes valgresultat i valgt fylke.",
                     url: "#Enkeltfylke"
+                };
+            }
+            case PresentationType.SingleParty: {
+                return {
+                    text: "Her kan du velge parti og se partiets valgresultat i hvert fylke.",
+                    url: "#Enkeltparti"
                 };
             }
             default: {
@@ -79,7 +85,7 @@ export class PresentationSelection extends React.Component<PresentationSelection
             <div className="field">
                 <label className="label">
                     <TooltipInfo
-                        text={"Trykk på dette ikonet for å lese om oversikten."}
+                        text={tooltipContent.text}
                         url={WIKIURL + tooltipContent.url}
                         direction={TooltipDirection.RIGHT}
                     />
