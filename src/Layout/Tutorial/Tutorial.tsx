@@ -21,7 +21,7 @@ export class Tutorial extends React.Component<TutorialProps, {}> {
                         <b>Lavinia</b>
                         <p>
                             Lavinia er et verktøy for å vise hvordan den norske valgordningen gjør om stemmer
-                            til mandater ved stortingsvalg. Ved å justere på instillingene for valgordningen kan du
+                            til mandater ved stortingsvalg. Ved å justere på innstillingene for valgordningen kan du
                             se hvordan det påvirker resultatene og hvilke partier som vinner eller taper på forandringene.
                         </p>
                         <br />
