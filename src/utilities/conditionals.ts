@@ -25,3 +25,9 @@ export function settingsChanged(settingsPayload: ComputationMenuPayload, compari
        comparison.areaFactor !== settingsPayload.areaFactor
    );
 }
+
+export function boolify(input: any): boolean {
+    const inverted = !input;
+    const reverted = !inverted;
+    return reverted;
+}

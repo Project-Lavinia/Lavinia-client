@@ -1,8 +1,8 @@
 ﻿import * as React from "react";
 import { PresentationType } from "../../Presentation/presentation-models";
 import { selectionLookup } from "./presentation-selection-utilities";
-import { TooltipInfoRight } from "../../../common";
 import { checkExhaustively } from "../../../utilities";
+import { TooltipInfo, TooltipDirection } from "../../../common";
 
 const WIKIURL = process.env.WIKI;
 
@@ -78,9 +78,10 @@ export class PresentationSelection extends React.Component<PresentationSelection
         return (
             <div className="field">
                 <label className="label">
-                    <TooltipInfoRight
-                        text={tooltipContent.text}
-                        url={WIKIURL?.concat(tooltipContent.url)}
+                    <TooltipInfo
+                        text={"Trykk på dette ikonet for å lese om oversikten."}
+                        url={WIKIURL + tooltipContent.url}
+                        direction={TooltipDirection.RIGHT}
                     />
                 </label>
                 <div className="control">

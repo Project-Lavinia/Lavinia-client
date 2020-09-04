@@ -1,6 +1,6 @@
 {
     "name": "lavinia",
-    "version": "2.8.0",
+    "version": "2.9.1",
     "private": true,
     "description": "A seat distribution application for modern democracies",
     "main": "index.js",
@@ -8,13 +8,14 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "webpack-dev-server --mode development --hot --progress --color --port 3000 --open",
         "start:debug": "webpack-dev-server --mode development --env.DEBUG true --hot --progress --color --port 3000 --open",
+        "start:production": "webpack-dev-server --mode production --hot --progress --color --port 3000 --open",
         "build": "webpack --env.NODE_ENV \"production\" -p --progress --colors",
         "build:dev": "webpack --env.NODE_ENV \"development\"",
         "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
         "precommit": "pretty-quick --staged && tslint -p .",
         "cy:verify": "cypress verify",
         "cy:run": "cypress run --reporter junit --reporter-options \"mochaFile=results/cypress-[hash].xml,toConsole=true\"",
-        "cy:test": "start-server-and-test start 3000 cy:run",
+        "cy:test": "start-server-and-test start:production 3000 cy:run",
         "cy:ci:run": "cypress run --record --key $CYPRESS_RECORD_KEY --parallel --ci-build-id $BUILD_BUILDNUMBER",
         "cy:ci:test": "start-server-and-test start 3000 cy:ci:run"
     },

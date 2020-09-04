@@ -3,6 +3,7 @@ export enum PresentationType {
     ElectionTable = "TABLE_ELECTION_OVERVIEW",
     SeatDistribution = "SEAT_DISTRIBUTION",
     SingleDistrict = "TABLE_SINGLE_COUNTY",
+    SingleParty = "TABLE_SINGLE_PARTY",
     RemainderQuotients = "TABLE_REMAINDER_QUOTIENTS",
     LevellingSeats = "TABLE_LEVELLING_SEATS_OVERVIEW",
 }
