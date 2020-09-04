@@ -32,6 +32,7 @@ pipeline {
       steps {
         script {
           try {
+            sh 'ls -R'
             sh 'yarn cy:test'
           } catch (ex) {
             unstable('Some tests failed')
@@ -50,6 +51,7 @@ pipeline {
         }
       }
       steps {
+        sh 'ls -R'
         ansiblePlaybook(
           playbook: '/storage/web_deploy.yaml',
           credentialsId: 'ansible_key',
@@ -71,6 +73,7 @@ pipeline {
         REPOSITORY = "Project-Lavinia/Lavinia-client"
       }
       steps {
+        sh 'ls -R'
         publishArtifact()
       }
     }
