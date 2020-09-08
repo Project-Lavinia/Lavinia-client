@@ -10,7 +10,7 @@ function filterPartiesWithoutSeats(partyResults: PartyResult[], nationalResults?
             if (!nationalParty) {
                 return false;
             } else {
-                return nationalParty.totalSeats > 0
+                return nationalParty.totalSeats > 0;
             }
         });
     } else {
