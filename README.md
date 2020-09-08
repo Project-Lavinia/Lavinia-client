@@ -11,7 +11,7 @@ This guide in other languages:
 An application that simulates seat distribution in elections. Current features include:
 
 -   All the Norwegian Parliamentary Elections since 1945
--   Sainte-Lagüe (modified), d'Hondt and largest fraction (Hare, Droop, Hagenbach-Bischoff) distribution methods
+-   Sainte-Laguë (modified), d'Hondt and largest fraction (Hare, Droop, Hagenbach-Bischoff) distribution methods
 -   Detailed tables describing the simulation results
 -   Parameters for adjusting how the seats are distributed
 -   Merging of counties to simulate the effect of the new Norwegian regions of 2020
