@@ -81,7 +81,7 @@ pipeline {
 }
 
 void publishArtifact() {
-    def current_tag = sh(returnStdout: true, script: "git tag --sort version:refname | tail -1").trim()
+    def current_tag = sh(returnStdout: true, script: "git tag --sort version:refname | sed '/v/d' | tail -1").trim()
     def release_data = sh(returnStdout: true, script: "curl https://api.github.com/repos/${REPOSITORY}/releases/tags/${current_tag}").trim()
     def release_json = readJSON text: release_data
     def release_id = release_json.id
