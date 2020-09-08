@@ -55,8 +55,8 @@ export class Presentation extends React.Component<PresentationProps, {}> {
     getSeatDistributionData(): DistrictResult[] {
         return getSeatDistributionData(
             this.props.results.districtResults,
+            this.props.showPartiesWithoutSeats,
             this.props.results.partyResults,
-            this.props.showPartiesWithoutSeats
         );
     }
 
@@ -70,6 +70,18 @@ export class Presentation extends React.Component<PresentationProps, {}> {
 
     getSingleDistrictData(): DistrictResult[] {
         const data = getDistrictTableData(this.getLocalSeatDistribution(), this.props.decimals);
+        const roundedData: DistrictResult[] = [];
+        data.forEach((result) => {
+            roundedData.push({
+                ...result,
+                partyResults: roundPartyResults(result.partyResults, this.props.decimals),
+            });
+        });
+        return roundedData;
+    }
+
+    getSinglePartyData(): DistrictResult[] {
+        const data = getDistrictTableData(this.getSeatDistributionData(), this.props.decimals);
         const roundedData: DistrictResult[] = [];
         data.forEach((result) => {
             roundedData.push({
@@ -176,7 +188,7 @@ export class Presentation extends React.Component<PresentationProps, {}> {
                 return (
                     <SingleParty
                         partySelected={this.props.partySelected}
-                        districtResults={this.getSingleDistrictData()}
+                        districtResults={this.getSinglePartyData()}
                         partyCodeList={this.getPartyCodes()}
                         decimals={this.props.decimals}
                         disproportionalityIndex={this.props.disproportionalityIndex}
