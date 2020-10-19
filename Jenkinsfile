@@ -19,6 +19,7 @@ pipeline {
         script {
           try {
             sh 'ls -1'
+            sh 'yarn'
             sh 'yarn cy:test'
           } catch (ex) {
             unstable('Some tests failed')
@@ -38,7 +39,6 @@ pipeline {
       steps {
         sh 'ls -1'
         sh 'ls -1 dist'
-        sh 'yarn'
         sh 'yarn build'
         sh "cd dist; zip -r ../${ARTIFACT} *; cd .."
         archiveArtifacts artifacts: ARTIFACT
