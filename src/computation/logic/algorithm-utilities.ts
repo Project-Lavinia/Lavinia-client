@@ -550,7 +550,7 @@ export function getAlgorithmType(type: number) {
 export function getAlgorithmName(type: number) {
     switch (type) {
         case 1:
-            return "Sainte-Lagüe";
+            return "Sainte-Laguë";
         case 2:
             return "d'Hondt";
         case 3:
@@ -572,7 +572,7 @@ export function getAlgorithmName(type: number) {
 export function getAlgorithmNameFromType(type: AlgorithmType) {
     switch (type) {
         case AlgorithmType.SAINTE_LAGUE:
-            return "Sainte-Lagüe";
+            return "Sainte-Laguë";
         case AlgorithmType.D_HONDT:
             return "d'Hondt";
         case AlgorithmType.LARGEST_FRACTION_HARE:

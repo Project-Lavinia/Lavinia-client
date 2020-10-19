@@ -11,7 +11,7 @@ Denne guiden på andre språk:
 En applikasjon som simulerer mandatdistribusjon i valg. Nåværende funksjonalitet inkluderer:
 
 -   Alle stortingsvalg siden 1945
--   Fordelingsmetodene Sainte-Lagüe (modifisert), d'Hondt, største brøks metode (Hare, Droop & Hagenbach-Bischoff)
+-   Fordelingsmetodene Sainte-Laguë (modifisert), d'Hondt, største brøks metode (Hare, Droop & Hagenbach-Bischoff)
 -   Detaljerte tabeller som beskriver simulasjonsresultatene
 -   Parametere for å justere hvordan mandatene fordeles
 -   Sammenslåing av fylker for å simulere effekten av de nye regionene i 2020
