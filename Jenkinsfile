@@ -19,7 +19,6 @@ pipeline {
         script {
           try {
             sh 'ls -1'
-            sh 'ls -1 dist'
             sh 'yarn cy:test'
           } catch (ex) {
             unstable('Some tests failed')
