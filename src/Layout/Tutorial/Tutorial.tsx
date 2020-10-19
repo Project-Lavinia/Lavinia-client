@@ -34,7 +34,7 @@ export class Tutorial extends React.Component<TutorialProps, {}> {
                         <br />
                         <b>Wiki</b>
                         <p>
-                            For å lese mer som Lavinia og det norske valgsystemet, kan du ta en titt på wikien vår:
+                            For å lese mer om Lavinia og det norske valgsystemet, kan du ta en titt på wikien vår:
                             <a target="_blank" rel="noopener noreferrer" href={process.env.WIKI}>
                                 {" "}
                                 {process.env.WIKI}
