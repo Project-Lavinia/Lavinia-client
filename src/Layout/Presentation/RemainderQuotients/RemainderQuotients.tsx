@@ -22,7 +22,7 @@ export interface RemainderQuotientsProps {
  *
  * @param districtResults results of a computation having been run on an
  * election
- * @returns an array of data representing the last remainder from a Sainte-Lagüe,
+ * @returns an array of data representing the last remainder from a Sainte-Laguë,
  * D'Hondt, Largest fraction (Hare) or Largest fraction (Droop) calculation in a given district for a given party,
  * and whether or not they won a levelling seat in that district-party
  */
