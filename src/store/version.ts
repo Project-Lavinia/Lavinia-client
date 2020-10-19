@@ -47,7 +47,7 @@ function clearAndSave() {
 export const currentVersion: Version = {
     major: 2,
     minor: 9,
-    patch: 4,
+    patch: 6,
 };
 
 export interface Version {
