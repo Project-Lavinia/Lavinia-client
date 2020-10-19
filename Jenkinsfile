@@ -6,20 +6,6 @@ pipeline {
     ARTIFACT = "artifact.zip"
   }
   stages {
-    stage('Build') {
-      environment {
-        API_V3 = 'https://api.lavinia.no/api/v3.0.0/'
-        SWAGGERUI = 'https://api.lavinia.no/'
-        WIKI = 'https://wiki.lavinia.no/'
-      }
-      steps {
-        sh 'yarn'
-        sh 'yarn build'
-        sh "cd dist; zip -r ../${ARTIFACT} *; cd .."
-        archiveArtifacts artifacts: ARTIFACT
-      }
-    }
-
     stage('Test') {
       environment {
         API_V3 = 'https://api.lavinia.no/api/v3.0.0/'
@@ -32,7 +18,8 @@ pipeline {
       steps {
         script {
           try {
-            sh 'ls -R'
+            sh 'ls -1'
+            sh 'ls -1 dist'
             sh 'yarn cy:test'
           } catch (ex) {
             unstable('Some tests failed')
@@ -40,6 +27,22 @@ pipeline {
           }
         }
         junit 'results/*.xml'
+      }
+    }
+
+    stage('Build') {
+      environment {
+        API_V3 = 'https://api.lavinia.no/api/v3.0.0/'
+        SWAGGERUI = 'https://api.lavinia.no/'
+        WIKI = 'https://wiki.lavinia.no/'
+      }
+      steps {
+        sh 'ls -1'
+        sh 'ls -1 dist'
+        sh 'yarn'
+        sh 'yarn build'
+        sh "cd dist; zip -r ../${ARTIFACT} *; cd .."
+        archiveArtifacts artifacts: ARTIFACT
       }
     }
 
@@ -51,7 +54,8 @@ pipeline {
         }
       }
       steps {
-        sh 'ls -R'
+        sh 'ls -1'
+        sh 'ls -1 dist'
         ansiblePlaybook(
           playbook: '/storage/web_deploy.yaml',
           credentialsId: 'ansible_key',
@@ -73,7 +77,8 @@ pipeline {
         REPOSITORY = "Project-Lavinia/Lavinia-client"
       }
       steps {
-        sh 'ls -R'
+        sh 'ls -1'
+        sh 'ls -1 dist'
         publishArtifact()
       }
     }
