@@ -1,22 +1,21 @@
 import { PartyResult, DistrictResult, LevelingSeat, PartyRestQuotients } from "../../computation";
 import { roundNumber } from "../../utilities/number";
 
-function filterPartiesWithoutSeats(partyResults: PartyResult[], nationalResults?: PartyResult[]) {
+function filterPartiesWithoutLocalSeats(partyResults: PartyResult[]) {
     let filteredResults = [...partyResults];
+    filteredResults = filteredResults.filter((party) => party.totalSeats > 0);
+    return filteredResults;
+}
 
-    if (nationalResults) {
-        filteredResults = filteredResults.filter((party) => {
-            const nationalParty = nationalResults.find((nationalParty) => nationalParty.partyCode === party.partyCode);
-            if (!nationalParty) {
-                return false;
-            } else {
-                return nationalParty.totalSeats > 0;
-            }
-        });
-    } else {
-        filteredResults = filteredResults.filter((party) => party.totalSeats > 0);
-    }
-
+function filterPartiesWithoutNationalSeats(partyResults: PartyResult[], nationalResults: PartyResult[]) {
+    let filteredResults = [...partyResults];
+    filteredResults = filteredResults.filter((party) => {
+        const nationalParty = nationalResults.find((currentParty) => currentParty.partyCode === party.partyCode);
+        if (!nationalParty) {
+            return false;
+        }
+        return nationalParty.totalSeats > 0;
+    });
     return filteredResults;
 }
 
@@ -24,12 +23,11 @@ export function getPartyTableData(
     partyResults: PartyResult[],
     showPartiesWithoutSeats: boolean,
     numberOfDecimals: number,
-    nationalResults?: PartyResult[],
 ): PartyResult[] {
     let filteredResults = [...partyResults];
 
     if (!showPartiesWithoutSeats) {
-        filteredResults = filterPartiesWithoutSeats(filteredResults);
+        filteredResults = filterPartiesWithoutLocalSeats(filteredResults);
     }
 
     const roundedResults: PartyResult[] = [];
@@ -73,7 +71,7 @@ export function getDistrictTableData(districtResults: DistrictResult[], numberOf
 export function getSeatDistributionData(
     districtResults: DistrictResult[],
     showPartiesWithoutSeats: boolean,
-    nationalResults?: PartyResult[],
+    nationalResults: PartyResult[],
 ) {
     if (showPartiesWithoutSeats) {
         return districtResults;
@@ -90,7 +88,7 @@ export function getSeatDistributionData(
                 totalSeats: district.totalSeats,
                 votesPerSeat: district.votesPerSeat,
                 districtSeatResult: district.districtSeatResult,
-                partyResults: filterPartiesWithoutSeats(district.partyResults, nationalResults),
+                partyResults: filterPartiesWithoutNationalSeats(district.partyResults, nationalResults),
             });
         }
 
