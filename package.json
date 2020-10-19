@@ -1,6 +1,6 @@
 {
     "name": "lavinia",
-    "version": "2.9.2",
+    "version": "2.9.3",
     "private": true,
     "description": "A seat distribution application for modern democracies",
     "main": "index.js",
