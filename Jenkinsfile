@@ -38,7 +38,6 @@ pipeline {
       }
       steps {
         sh 'ls -1'
-        sh 'ls -1 dist'
         sh 'yarn build'
         sh "cd dist; zip -r ../${ARTIFACT} *; cd .."
         archiveArtifacts artifacts: ARTIFACT
