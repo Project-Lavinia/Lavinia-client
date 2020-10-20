@@ -20,9 +20,13 @@ pipeline {
           try {
             sh 'ls -1'
 <<<<<<< HEAD
+<<<<<<< HEAD
             sh 'ls -1 dist'
 =======
 >>>>>>> hotfix/remove-ls
+=======
+            sh 'yarn'
+>>>>>>> hotfix/restore-packages
             sh 'yarn cy:test'
           } catch (ex) {
             unstable('Some tests failed')
@@ -42,7 +46,6 @@ pipeline {
       steps {
         sh 'ls -1'
         sh 'ls -1 dist'
-        sh 'yarn'
         sh 'yarn build'
         sh "cd dist; zip -r ../${ARTIFACT} *; cd .."
         archiveArtifacts artifacts: ARTIFACT
