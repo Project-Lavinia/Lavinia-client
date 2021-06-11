@@ -18,19 +18,7 @@ pipeline {
       steps {
         script {
           try {
-            sh 'ls -1'
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-            sh 'ls -1 dist'
-=======
->>>>>>> hotfix/remove-ls
-=======
             sh 'yarn'
->>>>>>> hotfix/restore-packages
-=======
-            sh 'yarn'
->>>>>>> hotfix/remove-build-dist-list
             sh 'yarn cy:test'
           } catch (ex) {
             unstable('Some tests failed')
@@ -48,11 +36,6 @@ pipeline {
         WIKI = 'https://wiki.lavinia.no/'
       }
       steps {
-        sh 'ls -1'
-<<<<<<< HEAD
-        sh 'ls -1 dist'
-=======
->>>>>>> hotfix/remove-build-dist-list
         sh 'yarn build'
         sh "cd dist; zip -r ../${ARTIFACT} *; cd .."
         archiveArtifacts artifacts: ARTIFACT
