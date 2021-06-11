@@ -18,7 +18,6 @@ pipeline {
       steps {
         script {
           try {
-            sh 'ls -1'
             sh 'yarn'
             sh 'yarn cy:test'
           } catch (ex) {
@@ -37,7 +36,6 @@ pipeline {
         WIKI = 'https://wiki.lavinia.no/'
       }
       steps {
-        sh 'ls -1'
         sh 'yarn build'
         sh "cd dist; zip -r ../${ARTIFACT} *; cd .."
         archiveArtifacts artifacts: ARTIFACT

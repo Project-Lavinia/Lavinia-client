@@ -1,6 +1,6 @@
 {
     "name": "lavinia",
-    "version": "2.9.7",
+    "version": "2.9.8",
     "private": true,
     "description": "A seat distribution application for modern democracies",
     "main": "index.js",
@@ -64,7 +64,7 @@
     },
     "dependencies": {
         "bulma-toast": "^2.0.3",
-        "lodash": "^4.17.19",
+        "lodash": "^4.17.21",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-redux": "^7.2.0",
