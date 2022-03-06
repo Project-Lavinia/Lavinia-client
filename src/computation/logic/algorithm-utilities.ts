@@ -81,21 +81,25 @@ function addMissingParties(
     partyMap: _.Dictionary<string>)
 {
     for (const districtName in districtPartyResults) {
-        if (districtPartyResults.hasOwnProperty(districtName)) {
-            for (const partyCode of Array.from(partyCodes)) {
-                if (!districtPartyResults[districtName].hasOwnProperty(partyCode)) {
-                    districtPartyResults[districtName][partyCode] = {
-                        partyCode,
-                        partyName: partyMap[partyCode],
-                        votes: 0,
-                        percentVotes: 0,
-                        districtSeats: 0,
-                        levelingSeats: 0,
-                        totalSeats: 0,
-                        proportionality: 0,
-                    };
-                }
+        if (!districtPartyResults.hasOwnProperty(districtName)) {
+            continue;
+        }
+
+        for (const partyCode of Array.from(partyCodes)) {
+            if (districtPartyResults[districtName].hasOwnProperty(partyCode)) {
+                continue;
             }
+
+            districtPartyResults[districtName][partyCode] = {
+                partyCode,
+                partyName: partyMap[partyCode],
+                votes: 0,
+                percentVotes: 0,
+                districtSeats: 0,
+                levelingSeats: 0,
+                totalSeats: 0,
+                proportionality: 0,
+            };
         }
     }
 
