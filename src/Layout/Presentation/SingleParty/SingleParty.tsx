@@ -150,8 +150,8 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
                 <ReactTable
                     className="-highlight -striped has-text-right"
                     data={data}
-                    pageSize={this.props.districtResults.length}
-                    showPaginationBottom={false}
+                    pageSize={20}
+                    showPaginationBottom={this.props.districtResults.length > 20}
                     columns={[
                         {
                             Header: <span className="is-pulled-left">Fylke</span>,

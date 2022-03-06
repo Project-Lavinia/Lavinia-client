@@ -52,9 +52,9 @@ export class DistrictOverview extends React.Component<DistrictOverviewProps, {}>
 
                 <ReactTable
                     className="-highlight -striped has-text-right"
-                    defaultPageSize={this.props.districtResults.length}
-                    pageSize={this.props.districtResults.length}
-                    showPaginationBottom={false}
+                    defaultPageSize={20}
+                    pageSize={20}
+                    showPaginationBottom={this.props.districtResults.length > 20}
                     data={data}
                     {...norwegian}
                     columns={[
