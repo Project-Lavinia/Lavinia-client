@@ -81,8 +81,11 @@ export function constructDistrictPartyResults(
     partyMap: _.Dictionary<string>
 ): _.Dictionary<_.Dictionary<PartyResult>> {
     const districtPartyResults: _.Dictionary<_.Dictionary<PartyResult>> = {};
+    const partyCodes: Set<string> = new Set();
 
     for (const vote of votes) {
+        partyCodes.add(vote.party);
+
         if (!districtPartyResults[vote.district]) {
             districtPartyResults[vote.district] = {};
         }
@@ -97,6 +100,24 @@ export function constructDistrictPartyResults(
             proportionality: 0,
         };
     }
+
+    for (const districtName in districtPartyResults) {
+        for (const partyCode of Array.from(partyCodes)) {
+            if (!districtPartyResults[districtName].hasOwnProperty(partyCode)) {
+                districtPartyResults[districtName][partyCode] = {
+                    partyCode: partyCode,
+                    partyName: partyMap[partyCode],
+                    votes: 0,
+                    percentVotes: 0,
+                    districtSeats: 0,
+                    levelingSeats: 0,
+                    totalSeats: 0,
+                    proportionality: 0,
+                }
+            }
+        }
+    }
+
     return districtPartyResults;
 }
 

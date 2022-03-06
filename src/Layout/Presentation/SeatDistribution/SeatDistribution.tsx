@@ -44,8 +44,8 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
             <React.Fragment>
                 <ReactTable
                     className="-highlight -striped has-text-centered"
-                    defaultPageSize={19}
-                    showPaginationBottom={false}
+                    defaultPageSize={20}
+                    showPaginationBottom={this.props.districtResults.length > 20}
                     data={this.props.districtResults}
                     columns={this.generateColumns()}
                     {...norwegian}
