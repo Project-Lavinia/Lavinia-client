@@ -101,11 +101,19 @@ export function constructDistrictPartyResults(
         };
     }
 
+    return addMissingParties(districtPartyResults, partyCodes, partyMap);
+}
+
+function addMissingParties(
+    districtPartyResults: _.Dictionary<_.Dictionary<PartyResult>>,
+    partyCodes: Set<string>,
+    partyMap: _.Dictionary<string>)
+{
     for (const districtName in districtPartyResults) {
         for (const partyCode of Array.from(partyCodes)) {
             if (!districtPartyResults[districtName].hasOwnProperty(partyCode)) {
                 districtPartyResults[districtName][partyCode] = {
-                    partyCode: partyCode,
+                    partyCode,
                     partyName: partyMap[partyCode],
                     votes: 0,
                     percentVotes: 0,
@@ -113,7 +121,7 @@ export function constructDistrictPartyResults(
                     levelingSeats: 0,
                     totalSeats: 0,
                     proportionality: 0,
-                }
+                };
             }
         }
     }
