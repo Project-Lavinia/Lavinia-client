@@ -12,7 +12,7 @@ jobs:
 - job: Cypress
   timeoutInMinutes: 0
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-latest'
   strategy:
     parallel: 3
   steps:
