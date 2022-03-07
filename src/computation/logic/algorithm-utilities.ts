@@ -75,14 +75,48 @@ export function constructPartyResults(
     return partyResults;
 }
 
+function addMissingParties(
+    districtPartyResults: _.Dictionary<_.Dictionary<PartyResult>>,
+    partyCodes: Set<string>,
+    partyMap: _.Dictionary<string>)
+{
+    for (const districtName in districtPartyResults) {
+        if (!districtPartyResults.hasOwnProperty(districtName)) {
+            continue;
+        }
+
+        for (const partyCode of Array.from(partyCodes)) {
+            if (districtPartyResults[districtName].hasOwnProperty(partyCode)) {
+                continue;
+            }
+
+            districtPartyResults[districtName][partyCode] = {
+                partyCode,
+                partyName: partyMap[partyCode],
+                votes: 0,
+                percentVotes: 0,
+                districtSeats: 0,
+                levelingSeats: 0,
+                totalSeats: 0,
+                proportionality: 0,
+            };
+        }
+    }
+
+    return districtPartyResults;
+}
+
 export function constructDistrictPartyResults(
     votes: Votes[],
     districtVotes: _.Dictionary<number>,
     partyMap: _.Dictionary<string>
 ): _.Dictionary<_.Dictionary<PartyResult>> {
     const districtPartyResults: _.Dictionary<_.Dictionary<PartyResult>> = {};
+    const partyCodes: Set<string> = new Set();
 
     for (const vote of votes) {
+        partyCodes.add(vote.party);
+
         if (!districtPartyResults[vote.district]) {
             districtPartyResults[vote.district] = {};
         }
@@ -97,7 +131,8 @@ export function constructDistrictPartyResults(
             proportionality: 0,
         };
     }
-    return districtPartyResults;
+
+    return addMissingParties(districtPartyResults, partyCodes, partyMap);
 }
 
 export function getVotesPerDistrict(votes: Votes[]): _.Dictionary<number> {

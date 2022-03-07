@@ -36,6 +36,7 @@ pipeline {
         WIKI = 'https://wiki.lavinia.no/'
       }
       steps {
+        sh 'yarn'
         sh 'yarn build'
         sh "cd dist; zip -r ../${ARTIFACT} *; cd .."
         archiveArtifacts artifacts: ARTIFACT
