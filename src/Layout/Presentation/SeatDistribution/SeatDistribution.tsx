@@ -15,7 +15,7 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
             Header: <span className="is-pulled-left">{"Fylker"}</span>,
             accessor: "name",
             width: this.props.districtWidth * 10,
-            Cell: row => <span className="is-pulled-left">{row.value}</span>,
+            Cell: (row) => <span className="is-pulled-left">{row.value}</span>,
         };
 
         // Collect the union of all parties across districts
@@ -43,7 +43,7 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
             id: code,
             accessor: (d: DistrictResult) => {
                 const pr = d.partyResults
-                    && d.partyResults.find(p => p.partyCode === code);
+                    && d.partyResults.find((p) => p.partyCode === code);
                 return pr ? pr.totalSeats : 0;
             },
             minWidth: 50,
