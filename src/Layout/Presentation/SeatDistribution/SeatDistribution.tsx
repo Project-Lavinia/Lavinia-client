@@ -10,30 +10,48 @@ export interface SeatDistributionProps {
 
 export class SeatDistribution extends React.Component<SeatDistributionProps, {}> {
     generateColumns(): Column[] {
-        const columns: Column[] = [
-            {
-                Header: <span className="is-pulled-left"> {"Fylker"}</span> ,
-                accessor: "name",
-                width: this.props.districtWidth * 10,
-                Cell: (row) => {
-                    return <span className="is-pulled-left" >{row.value}</span>;
-                },            
-            },
-        ];
+        // Base column for district name
+        const baseColumn: Column = {
+            Header: <span className="is-pulled-left">{"Fylker"}</span>,
+            accessor: "name",
+            width: this.props.districtWidth * 10,
+            Cell: row => <span className="is-pulled-left">{row.value}</span>,
+        };
 
-        for (const districtResult of this.props.districtResults) {
-            districtResult.partyResults.sort((v, t) => v.partyCode.localeCompare(t.partyCode));
+        // Collect the union of all parties across districts
+        const partyNameByCode = new Map<string, string>();
+        const partyCodes = new Set<string>();
+
+        for (const dr of this.props.districtResults || []) {
+            if (!dr || !dr.partyResults) { continue; }
+            for (const pr of dr.partyResults) {
+                if (!pr) { continue; }
+                partyCodes.add(pr.partyCode);
+                // prefer the first encountered name for the code
+                if (!partyNameByCode.has(pr.partyCode)) {
+                    partyNameByCode.set(pr.partyCode, pr.partyName);
+                }
+            }
         }
 
-        if (this.props.districtResults.length > 0) {
-            for (let partyIndex = 0; partyIndex < this.props.districtResults[0].partyResults.length; partyIndex++) {
-                const element = this.props.districtResults[0].partyResults[partyIndex];
-                columns.push({
-                    Header:  <abbr title={element.partyName}>{element.partyCode}</abbr>,
-                    accessor: `partyResults[${partyIndex}].totalSeats`,
-                    minWidth: 50,
-                });
-            }
+        const sortedPartyCodes = Array.from(partyCodes).sort((a, b) => a.localeCompare(b));
+
+        const columns: Column[] = [baseColumn];
+
+        const createPartyColumn = (code: string): Column => ({
+            Header: <abbr title={partyNameByCode.get(code) || code}>{code}</abbr>,
+            id: code,
+            accessor: (d: DistrictResult) => {
+                const pr = d.partyResults
+                    && d.partyResults.find(p => p.partyCode === code);
+                return pr ? pr.totalSeats : 0;
+            },
+            minWidth: 50,
+        });
+
+        for (const code of sortedPartyCodes) {
+            var partyColumn = createPartyColumn(code);
+            columns.push(partyColumn);
         }
 
         return columns;
