@@ -50,7 +50,7 @@ export class SeatDistribution extends React.Component<SeatDistributionProps, {}>
         });
 
         for (const code of sortedPartyCodes) {
-            var partyColumn = createPartyColumn(code);
+            const partyColumn = createPartyColumn(code);
             columns.push(partyColumn);
         }
 
