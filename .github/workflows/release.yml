@@ -1,0 +1,106 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test-and-build:
+    name: Test & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      BUILD_BUILDNUMBER: ${{ github.run_id }}-${{ github.run_attempt }}
+      API_V3: https://api.lavinia.no/api/v3.0.0/
+      SWAGGERUI: https://api.lavinia.no/
+      WIKI: https://wiki.lavinia.no/
+    strategy:
+      matrix:
+        container: [1, 2, 3]
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v4
+        with:
+          node-version: 12
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Cypress verify
+        run: yarn cy:verify
+
+      - name: Run Cypress tests (parallel)
+        run: |
+          if [ -n "$CYPRESS_RECORD_KEY" ]; then
+            CYPRESS_PARALLEL_ARGS="--record --key $CYPRESS_RECORD_KEY --parallel --ci-build-id $BUILD_BUILDNUMBER";
+          else
+            CYPRESS_PARALLEL_ARGS="";
+          fi
+          npx start-server-and-test start:production 3000 "cypress run --reporter junit --reporter-options mochaFile=results/cypress-[hash].xml,toConsole=true $CYPRESS_PARALLEL_ARGS"
+
+      - name: Upload junit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-junit-${{ matrix.container }}
+          path: results
+          if-no-files-found: ignore
+
+  package:
+    name: Package & Release
+    runs-on: ubuntu-latest
+    needs: test-and-build
+    if: needs.test-and-build.result == 'success'
+    env:
+      API_V3: https://api.lavinia.no/api/v3.0.0/
+      SWAGGERUI: https://api.lavinia.no/
+      WIKI: https://wiki.lavinia.no/
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v4
+        with:
+          node-version: 12
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Build
+        run: yarn build
+
+      - name: Zip dist
+        run: |
+          cd dist
+          zip -r ../artifact.zip .
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-dist
+          path: artifact.zip
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifact.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
