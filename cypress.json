@@ -1,6 +1,6 @@
 {
     "baseUrl": "http://localhost:3000",
-    "projectId": "brqtr2",
+    "projectId": "x5ydnt",
     "video": false,
     "supportFile": "cypress/support/index.ts"
 }
