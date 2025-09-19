@@ -3,7 +3,7 @@ name: PR Validation
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    branches: [ master ]
+    branches: [ master, development ]
 
 concurrency:
   group: pr-${{ github.event.pull_request.number || github.ref }}
