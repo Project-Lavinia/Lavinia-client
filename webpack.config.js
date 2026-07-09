@@ -9,7 +9,6 @@ var outPath = path.join(__dirname, "./dist");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var { CleanWebpackPlugin } = require("clean-webpack-plugin");
-var HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 var DotenvWebpackPlugin = require("dotenv-webpack");
 
 module.exports = (env) => {
@@ -65,7 +64,6 @@ module.exports = (env) => {
                     ],
                 },
                 // static assets
-                { test: /\.html$/, use: "html-loader" },
                 { test: /\.(png|svg)$/, use: "url-loader?limit=10000" },
                 { test: /\.(jpg|gif)$/, use: "file-loader" },
             ],
@@ -97,16 +95,15 @@ module.exports = (env) => {
                 template: "assets/index.html",
                 favicon: "assets/favicon.ico",
             }),
-            new HardSourceWebpackPlugin(),
         ],
         devServer: {
-            contentBase: sourcePath,
+            static: {
+                directory: sourcePath,
+            },
             hot: true,
-            inline: true,
             historyApiFallback: {
                 disableDotRule: true,
             },
-            stats: "minimal",
         },
     };
 };
