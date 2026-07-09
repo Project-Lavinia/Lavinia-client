@@ -1,23 +1,54 @@
-import { loadVersion, saveVersion, loadState } from "./local-storage";
+import { loadVersion, saveVersion, loadState, loadDataVersion, saveDataVersion } from "./local-storage";
 
 /**
  * Simple version validator.
  *
- * @param localVersion - version stored in localStorage.
- * @param appVersion - version from the application.
+ * @param appVersion - expected app version from build metadata.
+ * @param dataVersion - expected data version from build metadata.
  */
-export function stateIsInvalid() {
+export function stateIsInvalid(appVersion?: string, dataVersion?: string) {
+    const expectedVersion = resolveExpectedVersion(appVersion);
+    const expectedDataVersion = resolveExpectedDataVersion(dataVersion);
+    const localDataVersion = loadDataVersion();
     const localVersion = loadVersion();
+
+    if (localDataVersion !== expectedDataVersion) {
+        clearAndSave(expectedVersion, expectedDataVersion);
+        return true;
+    }
+
     if (localVersion) {
-        if (isIncompatibleVersion(localVersion) || !loadState()) {
-            clearAndSave();
+        if (isIncompatibleVersion(localVersion, expectedVersion) || !loadState()) {
+            clearAndSave(expectedVersion, expectedDataVersion);
             return true;
         }
     } else {
-        clearAndSave();
+        clearAndSave(expectedVersion, expectedDataVersion);
         return true;
     }
     return false;
+}
+
+function resolveExpectedVersion(rawVersion?: string): Version {
+    if (rawVersion == null || rawVersion.trim().length === 0) {
+        throw new TypeError("APP_VERSION is missing. Build configuration must inject APP_VERSION from package.json metadata.");
+    }
+
+    const [major, minor, patch] = rawVersion.split(".").map(Number);
+
+    if (!Number.isFinite(major) || !Number.isFinite(minor) || !Number.isFinite(patch)) {
+        throw new TypeError(`APP_VERSION is malformed: '${rawVersion}'. Expected semantic version format like '2.9.9'.`);
+    }
+
+    return { major, minor, patch };
+}
+
+function resolveExpectedDataVersion(dataVersion?: string): string {
+    if (dataVersion == null || dataVersion.trim().length === 0) {
+        throw new TypeError("DATA_VERSION is missing. Build configuration must inject DATA_VERSION from package.json metadata.");
+    }
+
+    return dataVersion;
 }
 
 /**
@@ -25,30 +56,18 @@ export function stateIsInvalid() {
  *
  * @param version version to check against current version
  */
-function isIncompatibleVersion(version: Version) {
-    return version.major !== currentVersion.major || version.minor !== currentVersion.minor;
+function isIncompatibleVersion(version: Version, expectedVersion: Version) {
+    return version.major !== expectedVersion.major || version.minor !== expectedVersion.minor;
 }
 
 /**
  * Clears the localStorage, saves the current version, then returns false.
  */
-function clearAndSave() {
+function clearAndSave(version: Version, dataVersion: string) {
     localStorage.clear();
-    saveVersion(currentVersion);
+    saveVersion(version);
+    saveDataVersion(dataVersion);
 }
-
-/**
- * The current version of the application.
- *
- * NB: This MUST be updated with any breaking state change!
- *
- * TODO: Configure this to be grabbed from package.json
- */
-export const currentVersion: Version = {
-    major: 2,
-    minor: 9,
-    patch: 9,
-};
 
 export interface Version {
     /**

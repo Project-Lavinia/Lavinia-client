@@ -23,9 +23,9 @@ jobs:
     env:
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
       BUILD_BUILDNUMBER: ${{ github.run_id }}-${{ github.run_attempt }}
-      API_V3: https://api.lavinia.no/api/v3.0.0/
       SWAGGERUI: https://api.lavinia.no/
       WIKI: https://wiki.lavinia.no/
+      API_DATA_REPOSITORY: Project-Lavinia/Lavinia-api
     strategy:
       matrix:
         container: [1, 2, 3]
@@ -39,6 +39,69 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'yarn'
+
+      - name: Resolve app/data versions from package.json
+        run: |
+          APP_VERSION=$(node -p "require('./package.json').version")
+          API_DATA_VERSION=$(node -p "require('./package.json').dataVersion")
+
+          if [ -z "$APP_VERSION" ]; then
+            echo "Missing package.json field: version."
+            exit 1
+          fi
+
+          if [ -z "$API_DATA_VERSION" ]; then
+            echo "Missing package.json field: dataVersion."
+            exit 1
+          fi
+
+          if [ "$APP_VERSION" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag/version mismatch: package.json version '$APP_VERSION' does not match release tag '$GITHUB_REF_NAME'."
+            exit 1
+          fi
+
+          echo "Using package.json app version: $APP_VERSION"
+          echo "Using package.json data version: $API_DATA_VERSION"
+          echo "API_DATA_VERSION=$API_DATA_VERSION" >> "$GITHUB_ENV"
+          echo "DATA_VERSION=$API_DATA_VERSION" >> "$GITHUB_ENV"
+          echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
+
+      - name: Download static election data bundle
+        run: |
+          RELEASE_METADATA_URL="https://api.github.com/repos/$API_DATA_REPOSITORY/releases/tags/$API_DATA_VERSION"
+          if ! curl -fsSL -H "Accept: application/vnd.github+json" "$RELEASE_METADATA_URL" -o /tmp/api-release.json; then
+            echo "API release '$API_DATA_VERSION' was not found in $API_DATA_REPOSITORY."
+            exit 1
+          fi
+
+          DATA_ASSET=$(jq 'first(.assets[] | select(.name == "election-data.zip"))' /tmp/api-release.json)
+          if [ -z "$DATA_ASSET" ] || [ "$DATA_ASSET" = "null" ]; then
+            echo "Release '$API_DATA_VERSION' exists, but election-data.zip asset is missing."
+            exit 1
+          fi
+
+          DATA_ASSET_URL=$(echo "$DATA_ASSET" | jq -r '.browser_download_url')
+          EXPECTED_SHA=$(echo "$DATA_ASSET" | jq -r '.digest' | sed 's/^sha256://')
+          if [ -z "$EXPECTED_SHA" ] || [ "$EXPECTED_SHA" = "null" ]; then
+            echo "No SHA-256 digest on election-data.zip asset in release '$API_DATA_VERSION'."
+            exit 1
+          fi
+
+          curl -fsSL -o /tmp/election-data.zip "$DATA_ASSET_URL"
+          echo "$EXPECTED_SHA  /tmp/election-data.zip" | sha256sum -c -
+
+          rm -rf src/assets/election-data
+          mkdir -p src/assets/election-data
+          unzip -o /tmp/election-data.zip -d src/assets/election-data
+          test -f src/assets/election-data/manifest.json
+          jq -e --arg expectedVersion "$API_DATA_VERSION" '.dataVersion == $expectedVersion' src/assets/election-data/manifest.json
+
+      - name: Upload election data artifact
+        if: matrix.container == 1
+        uses: actions/upload-artifact@v4
+        with:
+          name: election-data
+          path: src/assets/election-data/
 
       - name: Install dependencies
         run: yarn --frozen-lockfile
@@ -72,7 +135,6 @@ jobs:
     needs: test-and-build
     if: needs.test-and-build.result == 'success'
     env:
-      API_V3: https://api.lavinia.no/api/v3.0.0/
       SWAGGERUI: https://api.lavinia.no/
       WIKI: https://wiki.lavinia.no/
     steps:
@@ -84,6 +146,37 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'yarn'
+
+      - name: Resolve app/data versions from package.json
+        run: |
+          APP_VERSION=$(node -p "require('./package.json').version")
+          API_DATA_VERSION=$(node -p "require('./package.json').dataVersion")
+
+          if [ -z "$APP_VERSION" ]; then
+            echo "Missing package.json field: version."
+            exit 1
+          fi
+
+          if [ -z "$API_DATA_VERSION" ]; then
+            echo "Missing package.json field: dataVersion."
+            exit 1
+          fi
+
+          if [ "$APP_VERSION" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag/version mismatch: package.json version '$APP_VERSION' does not match release tag '$GITHUB_REF_NAME'."
+            exit 1
+          fi
+
+          echo "Using package.json app version: $APP_VERSION"
+          echo "Using package.json data version: $API_DATA_VERSION"
+          echo "DATA_VERSION=$API_DATA_VERSION" >> "$GITHUB_ENV"
+          echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
+
+      - name: Download election data artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: election-data
+          path: src/assets/election-data/
 
       - name: Install dependencies
         run: yarn --frozen-lockfile

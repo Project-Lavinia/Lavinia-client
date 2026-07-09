@@ -1,14 +1,27 @@
 var path = require("path");
+var webpack = require("webpack");
+var packageJson = require("./package.json");
 
 // variables
 var sourcePath = path.join(__dirname, "./src");
 var outPath = path.join(__dirname, "./dist");
+var appVersion = packageJson.version;
+var dataVersion = packageJson.dataVersion;
+
+if (!appVersion) {
+    throw new TypeError("Missing package.json field: version");
+}
+
+if (!dataVersion) {
+    throw new TypeError("Missing package.json field: dataVersion");
+}
 
 // plugins
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var { CleanWebpackPlugin } = require("clean-webpack-plugin");
 var DotenvWebpackPlugin = require("dotenv-webpack");
+var CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = (env, argv) => {
     const isProduction = argv.mode === "production";
@@ -85,6 +98,10 @@ module.exports = (env, argv) => {
                 defaults: !isProduction,
                 systemvars: isProduction,
             }),
+            new webpack.DefinePlugin({
+                "process.env.APP_VERSION": JSON.stringify(appVersion),
+                "process.env.DATA_VERSION": JSON.stringify(dataVersion),
+            }),
             new CleanWebpackPlugin({
                 verbose: true,
             }),
@@ -94,6 +111,15 @@ module.exports = (env, argv) => {
             new HtmlWebpackPlugin({
                 template: "assets/index.html",
                 favicon: "assets/favicon.ico",
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(sourcePath, "assets/election-data"),
+                        to: path.join(outPath, "assets/election-data"),
+                        noErrorOnMissing: true,
+                    },
+                ],
             }),
         ],
         devServer: {
