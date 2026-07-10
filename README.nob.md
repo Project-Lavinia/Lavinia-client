@@ -22,9 +22,7 @@ Les mer om Lavinia og det norske valgsystemet i vår [wiki](https://project-lavi
 
 ## Forutsetninger
 
-Installer de siste versjonene av:
-
--   [Node.js](https://nodejs.org)
+-   [Node.js](https://nodejs.org) 20 LTS eller nyere
 -   [Yarn](https://yarnpkg.com)
 
 ## For å kjøre utviklingsbygget
