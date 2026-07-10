@@ -47,10 +47,11 @@ const mapDispatchToProps = (
                 partyMap = await request<_.Dictionary<string>>(partyMapUri);
                 numberYears = await request<Array<number>>(yearsUri);
             } catch (error) {
+                const errorMessage = error instanceof Error ? error.message : String(error);
                 toast({
                     dismissible: true,
                     duration: 5000,
-                    message: `Klarte ikke å laste ned valgdata fra APIet, prøv igjen senere. Feilmeldingen var: ${error.message}`,
+                    message: `Klarte ikke å laste ned valgdata fra APIet, prøv igjen senere. Feilmeldingen var: ${errorMessage}`,
                     position: "top-left",
                     type: "is-danger"
                 });

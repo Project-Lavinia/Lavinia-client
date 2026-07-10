@@ -1,7 +1,6 @@
 var path = require("path");
 
 // variables
-var isProduction = process.argv.indexOf("-p") >= 0 || process.env.NODE_ENV === "production";
 var sourcePath = path.join(__dirname, "./src");
 var outPath = path.join(__dirname, "./dist");
 
@@ -9,17 +8,18 @@ var outPath = path.join(__dirname, "./dist");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var { CleanWebpackPlugin } = require("clean-webpack-plugin");
-var HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 var DotenvWebpackPlugin = require("dotenv-webpack");
 
-module.exports = (env) => {
+module.exports = (env, argv) => {
+    const isProduction = argv.mode === "production";
+
     return {
         context: sourcePath,
         devtool: "inline-source-map",
         entry: {
             app: "./main.tsx",
         },
-        mode: "production",
+        mode: argv.mode || "production",
         output: {
             path: outPath,
             filename: "js/[name].[hash].bundle.js",
@@ -65,7 +65,6 @@ module.exports = (env) => {
                     ],
                 },
                 // static assets
-                { test: /\.html$/, use: "html-loader" },
                 { test: /\.(png|svg)$/, use: "url-loader?limit=10000" },
                 { test: /\.(jpg|gif)$/, use: "file-loader" },
             ],
@@ -79,13 +78,12 @@ module.exports = (env) => {
                         chunks: "all",
                     },
                 },
-
             },
         },
         plugins: [
             new DotenvWebpackPlugin({
                 defaults: !isProduction,
-                systemvars: isProduction
+                systemvars: isProduction,
             }),
             new CleanWebpackPlugin({
                 verbose: true,
@@ -97,16 +95,15 @@ module.exports = (env) => {
                 template: "assets/index.html",
                 favicon: "assets/favicon.ico",
             }),
-            new HardSourceWebpackPlugin(),
         ],
         devServer: {
-            contentBase: sourcePath,
+            static: {
+                directory: sourcePath,
+            },
             hot: true,
-            inline: true,
             historyApiFallback: {
                 disableDotRule: true,
             },
-            stats: "minimal",
         },
     };
 };

@@ -22,9 +22,7 @@ Read more about Lavinia and the Norwegian election system in our [wiki](https://
 
 ## Prerequisites
 
-Install the latest:
-
--   [Node.js](https://nodejs.org)
+-   [Node.js](https://nodejs.org) 20 LTS or later
 -   [Yarn](https://yarnpkg.com)
 
 ## Running the development build

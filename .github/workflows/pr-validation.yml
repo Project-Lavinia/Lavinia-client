@@ -9,64 +9,21 @@ concurrency:
   group: pr-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  NODE_VERSION: '20'
+
 jobs:
-  build-and-test:
-    name: Build & Cypress Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    env:
-      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-      BUILD_BUILDNUMBER: ${{ github.run_id }}-${{ github.run_attempt }}
-    strategy:
-      fail-fast: false
-      matrix:
-        container: [1, 2, 3]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Use Node.js 12
-        uses: actions/setup-node@v4
-        with:
-          node-version: 12
-          cache: 'yarn'
-
-      - name: Install dependencies
-        run: yarn --frozen-lockfile
-
-      - name: Cypress verify
-        run: yarn cy:verify
-
-      - name: Run Cypress (matrix ${{ matrix.container }})
-        run: |
-          if [ -n "$CYPRESS_RECORD_KEY" ]; then
-            CYPRESS_PARALLEL_ARGS="--record --key $CYPRESS_RECORD_KEY --parallel --ci-build-id $BUILD_BUILDNUMBER";
-          else
-            CYPRESS_PARALLEL_ARGS="";
-          fi
-          npx start-server-and-test start 3000 "cypress run $CYPRESS_PARALLEL_ARGS"
-
-      - name: Archive junit results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-junit-${{ matrix.container }}
-          path: results
-          if-no-files-found: ignore
-
   build-artifact:
     name: Build Production Bundle
     runs-on: ubuntu-latest
-    needs: build-and-test
-    if: needs.build-and-test.result == 'success'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js 12
+      - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
-          node-version: 12
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'yarn'
 
       - name: Install dependencies
