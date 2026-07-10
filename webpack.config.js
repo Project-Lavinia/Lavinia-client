@@ -1,7 +1,6 @@
 var path = require("path");
 
 // variables
-var isProduction = process.argv.indexOf("-p") >= 0 || process.env.NODE_ENV === "production";
 var sourcePath = path.join(__dirname, "./src");
 var outPath = path.join(__dirname, "./dist");
 
@@ -11,14 +10,16 @@ var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var { CleanWebpackPlugin } = require("clean-webpack-plugin");
 var DotenvWebpackPlugin = require("dotenv-webpack");
 
-module.exports = (env) => {
+module.exports = (env, argv) => {
+    const isProduction = argv.mode === "production";
+
     return {
         context: sourcePath,
         devtool: "inline-source-map",
         entry: {
             app: "./main.tsx",
         },
-        mode: "production",
+        mode: argv.mode || "production",
         output: {
             path: outPath,
             filename: "js/[name].[hash].bundle.js",
@@ -77,13 +78,12 @@ module.exports = (env) => {
                         chunks: "all",
                     },
                 },
-
             },
         },
         plugins: [
             new DotenvWebpackPlugin({
                 defaults: !isProduction,
-                systemvars: isProduction
+                systemvars: isProduction,
             }),
             new CleanWebpackPlugin({
                 verbose: true,
