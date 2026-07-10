@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
+/* eslint-disable complexity */
 // Downloads the pinned election-data bundle from the Lavinia-api GitHub release
 // and extracts it to src/assets/election-data/.
 //
@@ -16,20 +18,22 @@ const API_REPO = "Project-Lavinia/Lavinia-api";
 const OUT_DIR = path.join(__dirname, "../src/assets/election-data");
 const TMP_ZIP = "/tmp/lavinia-election-data.zip";
 
-function computeSha256(filePath) {
+function computeSha256() {
     return new Promise((resolve, reject) => {
         const hash = crypto.createHash("sha256");
-        const stream = fs.createReadStream(filePath);
+        const stream = fs.createReadStream(TMP_ZIP);
         stream.on("data", (chunk) => hash.update(chunk));
         stream.on("end", () => resolve(hash.digest("hex")));
         stream.on("error", reject);
     });
 }
 
-async function download(url, dest) {
+async function download(url) {
     const res = await fetch(url, { headers: { "User-Agent": "lavinia-client" } });
-    if (!res.ok) throw new Error(`Failed to download ${url}: HTTP ${res.status}`);
-    await pipeline(Readable.fromWeb(res.body), fs.createWriteStream(dest));
+    if (!res.ok) {
+        throw new Error(`Failed to download ${url}: HTTP ${res.status}`);
+    }
+    await pipeline(Readable.fromWeb(res.body), fs.createWriteStream(TMP_ZIP));
 }
 
 async function main() {
@@ -64,10 +68,10 @@ async function main() {
     const expectedSha = digest.slice("sha256:".length);
 
     console.log(`Downloading ${asset.browser_download_url}...`);
-    await download(asset.browser_download_url, TMP_ZIP);
+    await download(asset.browser_download_url);
 
     console.log("Verifying checksum...");
-    const actualSha = await computeSha256(TMP_ZIP);
+    const actualSha = await computeSha256();
     if (actualSha !== expectedSha) {
         console.error(`Checksum mismatch: expected ${expectedSha}, got ${actualSha}`);
         process.exit(1);
