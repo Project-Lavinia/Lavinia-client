@@ -1,6 +1,5 @@
 #!/usr/bin/env node
-/* eslint-disable no-console */
-/* eslint-disable complexity */
+/* eslint-disable no-console, complexity, security/detect-non-literal-fs-filename */
 // Downloads the pinned election-data bundle from the Lavinia-api GitHub release
 // and extracts it to src/assets/election-data/.
 //
@@ -11,12 +10,13 @@ const fs = require("fs");
 const path = require("path");
 const { pipeline } = require("stream/promises");
 const { Readable } = require("stream");
-const { execSync } = require("child_process");
+const { execFileSync } = require("child_process");
+const os = require("os");
 
 const { dataVersion } = require("../package.json");
 const API_REPO = "Project-Lavinia/Lavinia-api";
 const OUT_DIR = path.join(__dirname, "../src/assets/election-data");
-const TMP_ZIP = "/tmp/lavinia-election-data.zip";
+const TMP_ZIP = path.join(os.tmpdir(), "lavinia-election-data.zip");
 
 function computeSha256() {
     return new Promise((resolve, reject) => {
@@ -80,7 +80,7 @@ async function main() {
 
     fs.rmSync(OUT_DIR, { recursive: true, force: true });
     fs.mkdirSync(OUT_DIR, { recursive: true });
-    execSync(`unzip -o ${TMP_ZIP} -d ${OUT_DIR}`, { stdio: "inherit" });
+    execFileSync("unzip", ["-o", TMP_ZIP, "-d", OUT_DIR], { stdio: "inherit" });
     fs.rmSync(TMP_ZIP, { force: true });
 
     const manifest = JSON.parse(fs.readFileSync(path.join(OUT_DIR, "manifest.json"), "utf8"));

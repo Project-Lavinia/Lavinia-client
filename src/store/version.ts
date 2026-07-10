@@ -19,8 +19,8 @@ export interface Version {
     patch: number;
 }
 
-function isValidSemver(major: number, minor: number, patch: number): boolean {
-    return Number.isFinite(major) && Number.isFinite(minor) && Number.isFinite(patch);
+function isValidSemver(major: number, minor: number, patch: number, partCount: number): boolean {
+    return partCount === 3 && Number.isFinite(major) && Number.isFinite(minor) && Number.isFinite(patch);
 }
 
 function resolveExpectedVersion(rawVersion?: string): Version {
@@ -28,9 +28,10 @@ function resolveExpectedVersion(rawVersion?: string): Version {
         throw new TypeError("APP_VERSION is missing. Build configuration must inject APP_VERSION from package.json metadata.");
     }
 
-    const [major, minor, patch] = rawVersion.split(".").map(Number);
+    const parts = rawVersion.split(".");
+    const [major, minor, patch] = parts.map(Number);
 
-    if (!isValidSemver(major, minor, patch)) {
+    if (!isValidSemver(major, minor, patch, parts.length)) {
         throw new TypeError(`APP_VERSION is malformed: '${rawVersion}'. Expected semantic version format like '2.9.9'.`);
     }
 
@@ -50,7 +51,11 @@ function isIncompatibleVersion(version: Version, expectedVersion: Version) {
 }
 
 function clearAndSave(version: Version, dataVersion: string) {
-    localStorage.clear();
+    try {
+        localStorage.clear();
+    } catch (err) {
+        console.error(err);
+    }
     saveVersion(version);
     saveDataVersion(dataVersion);
 }

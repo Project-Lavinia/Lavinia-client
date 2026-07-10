@@ -71,11 +71,16 @@ export function saveVersion(version: Version) {
  * @returns data version if present, else undefined.
  */
 export function loadDataVersion() {
-    const dataVersion = localStorage.getItem("dataVersion");
-    if (dataVersion == null) {
+    try {
+        const dataVersion = localStorage.getItem("dataVersion");
+        if (dataVersion == null) {
+            return undefined;
+        }
+        return dataVersion;
+    } catch (err) {
+        console.error(err);
         return undefined;
     }
-    return dataVersion;
 }
 
 /**

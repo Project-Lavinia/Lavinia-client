@@ -117,7 +117,7 @@ module.exports = (env, argv) => {
                     {
                         from: path.join(sourcePath, "assets/election-data"),
                         to: path.join(outPath, "assets/election-data"),
-                        noErrorOnMissing: true,
+                        noErrorOnMissing: false,
                     },
                 ],
             }),
