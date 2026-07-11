@@ -44,9 +44,11 @@ async function main() {
 
     console.log(`Fetching release metadata for ${API_REPO}@${dataVersion}...`);
     const metaUrl = `https://api.github.com/repos/${API_REPO}/releases/tags/${dataVersion}`;
-    const metaRes = await fetch(metaUrl, {
-        headers: { "User-Agent": "lavinia-client", Accept: "application/vnd.github+json" },
-    });
+    const metaHeaders = { "User-Agent": "lavinia-client", Accept: "application/vnd.github+json" };
+    if (process.env.GITHUB_TOKEN) {
+        metaHeaders["Authorization"] = `Bearer ${process.env.GITHUB_TOKEN}`;
+    }
+    const metaRes = await fetch(metaUrl, { headers: metaHeaders });
 
     if (!metaRes.ok) {
         console.error(`Release ${dataVersion} not found in ${API_REPO} (HTTP ${metaRes.status})`);
