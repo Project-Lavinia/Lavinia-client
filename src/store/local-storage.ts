@@ -64,3 +64,34 @@ export function saveVersion(version: Version) {
         console.error(err);
     }
 }
+
+/**
+ * Loads the persisted data version from localStorage.
+ *
+ * @returns data version if present, else undefined.
+ */
+export function loadDataVersion() {
+    try {
+        const dataVersion = localStorage.getItem("dataVersion");
+        if (dataVersion == null) {
+            return undefined;
+        }
+        return dataVersion;
+    } catch (err) {
+        console.error(err);
+        return undefined;
+    }
+}
+
+/**
+ * Saves the data version to localStorage.
+ *
+ * @param dataVersion data version to save
+ */
+export function saveDataVersion(dataVersion: string) {
+    try {
+        localStorage.setItem("dataVersion", dataVersion);
+    } catch (err) {
+        console.error(err);
+    }
+}

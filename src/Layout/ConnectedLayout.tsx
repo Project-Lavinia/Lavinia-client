@@ -27,13 +27,13 @@ const mapDispatchToProps = (
     dispatch: any
 ): Pick<LayoutProps, "initializeState" | "toggleHamburger" | "clearState"> => ({
     initializeState: async () => {
-        const votesUri = process.env.API_V3 + "votes?partyCode=ALL&district=ALL";
-        const metricsUri = process.env.API_V3 + "metrics?district=ALL";
-        const parametersUri = process.env.API_V3 + "parameters";
-        const yearsUri = process.env.API_V3 + "years";
-        const partyMapUri = process.env.API_V3 + "parties";
+        const votesUri = "/assets/election-data/votes.json";
+        const metricsUri = "/assets/election-data/metrics.json";
+        const parametersUri = "/assets/election-data/parameters.json";
+        const yearsUri = "/assets/election-data/years.json";
+        const partyMapUri = "/assets/election-data/parties.json";
 
-        if (stateIsInvalid()) {
+        if (stateIsInvalid(process.env.APP_VERSION, process.env.DATA_VERSION)) {
             let votes: Votes[] = [];
             let metrics: Metrics[] = [];
             let rawParameters: RawParameters[] = [];

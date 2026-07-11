@@ -30,6 +30,7 @@ Read more about Lavinia and the Norwegian election system in our [wiki](https://
 1. Clone the repository to your preferred folder
 2. Open your favourite terminal and navigate to aforementioned folder
 3. Type `yarn` <kbd>Enter</kbd> and wait patiently for the packages to be installed
-4. Type `yarn start` <kbd>Enter</kbd>
+4. Type `yarn download-data` <kbd>Enter</kbd> and wait patiently for the election data to be downloaded
+5. Type `yarn start` <kbd>Enter</kbd>
 
-After step 4. your default browser should have opened up, running a development server locally on your machine. In most terminals, hit <kbd>Ctrl</kbd>+<kbd>c</kbd> with your terminal focused to close the application.
+After step 5. your default browser should have opened up, running a development server locally on your machine. In most terminals, hit <kbd>Ctrl</kbd>+<kbd>c</kbd> with your terminal focused to close the application.

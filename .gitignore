@@ -5,6 +5,7 @@ node_modules
 *.log*
 build
 dist
+src/assets/election-data
 app.yaml
 .gcloudignore
 cypress/videos

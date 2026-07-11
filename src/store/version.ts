@@ -1,54 +1,4 @@
-import { loadVersion, saveVersion, loadState } from "./local-storage";
-
-/**
- * Simple version validator.
- *
- * @param localVersion - version stored in localStorage.
- * @param appVersion - version from the application.
- */
-export function stateIsInvalid() {
-    const localVersion = loadVersion();
-    if (localVersion) {
-        if (isIncompatibleVersion(localVersion) || !loadState()) {
-            clearAndSave();
-            return true;
-        }
-    } else {
-        clearAndSave();
-        return true;
-    }
-    return false;
-}
-
-/**
- * Checks whether the version passed in is compatible with the current version.
- *
- * @param version version to check against current version
- */
-function isIncompatibleVersion(version: Version) {
-    return version.major !== currentVersion.major || version.minor !== currentVersion.minor;
-}
-
-/**
- * Clears the localStorage, saves the current version, then returns false.
- */
-function clearAndSave() {
-    localStorage.clear();
-    saveVersion(currentVersion);
-}
-
-/**
- * The current version of the application.
- *
- * NB: This MUST be updated with any breaking state change!
- *
- * TODO: Configure this to be grabbed from package.json
- */
-export const currentVersion: Version = {
-    major: 2,
-    minor: 9,
-    patch: 9,
-};
+import { loadVersion, saveVersion, loadState, loadDataVersion, saveDataVersion } from "./local-storage";
 
 export interface Version {
     /**
@@ -67,4 +17,70 @@ export interface Version {
      * this field is only used for debugging, as breaking
      */
     patch: number;
+}
+
+function isValidSemver(major: number, minor: number, patch: number, partCount: number): boolean {
+    return partCount === 3 && Number.isFinite(major) && Number.isFinite(minor) && Number.isFinite(patch);
+}
+
+function resolveExpectedVersion(rawVersion?: string): Version {
+    if (rawVersion == null || rawVersion.trim().length === 0) {
+        throw new TypeError("APP_VERSION is missing. Build configuration must inject APP_VERSION from package.json metadata.");
+    }
+
+    const parts = rawVersion.split(".");
+    const [major, minor, patch] = parts.map(Number);
+
+    if (!isValidSemver(major, minor, patch, parts.length)) {
+        throw new TypeError(`APP_VERSION is malformed: '${rawVersion}'. Expected semantic version format like '2.9.9'.`);
+    }
+
+    return { major, minor, patch };
+}
+
+function resolveExpectedDataVersion(dataVersion?: string): string {
+    if (dataVersion == null || dataVersion.trim().length === 0) {
+        throw new TypeError("DATA_VERSION is missing. Build configuration must inject DATA_VERSION from package.json metadata.");
+    }
+
+    return dataVersion;
+}
+
+function isIncompatibleVersion(version: Version, expectedVersion: Version) {
+    return version.major !== expectedVersion.major || version.minor !== expectedVersion.minor;
+}
+
+function clearAndSave(version: Version, dataVersion: string) {
+    try {
+        localStorage.clear();
+    } catch (err) {
+        console.error(err);
+    }
+    saveVersion(version);
+    saveDataVersion(dataVersion);
+}
+
+function localStateMatchesExpected(expectedVersion: Version, expectedDataVersion: string): boolean {
+    const localVersion = loadVersion();
+    return loadDataVersion() === expectedDataVersion
+        && !!localVersion
+        && !isIncompatibleVersion(localVersion, expectedVersion)
+        && !!loadState();
+}
+
+/**
+ * Simple version validator.
+ *
+ * @param appVersion - expected app version from build metadata.
+ * @param dataVersion - expected data version from build metadata.
+ */
+export function stateIsInvalid(appVersion?: string, dataVersion?: string) {
+    const expectedVersion = resolveExpectedVersion(appVersion);
+    const expectedDataVersion = resolveExpectedDataVersion(dataVersion);
+
+    if (localStateMatchesExpected(expectedVersion, expectedDataVersion)) {
+        return false;
+    }
+    clearAndSave(expectedVersion, expectedDataVersion);
+    return true;
 }
