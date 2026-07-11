@@ -12,7 +12,7 @@ export class Navigation extends React.Component<NavigationProps> {
     };
     public render() {
         const wikiUrl = process.env.WIKI;
-        const swaggerUiUrl = process.env.SWAGGERUI;
+        const dataReleaseUrl = `https://github.com/Project-Lavinia/Lavinia-api/releases/tag/${process.env.DATA_VERSION}`;
         const style = {
             menuButton: "navbar-burger burger",
             menu: "navbar-menu",
@@ -59,11 +59,11 @@ export class Navigation extends React.Component<NavigationProps> {
                             <div className="navbar-dropdown">
                                 <a
                                     target="_blank"
-                                    href={swaggerUiUrl}
+                                    href={dataReleaseUrl}
                                     rel="noopener noreferrer"
                                     className="navbar-item"
                                 >
-                                    API
+                                    Valgdata
                                 </a>
                                 <a
                                     className="navbar-item"

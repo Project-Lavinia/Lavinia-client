@@ -23,7 +23,6 @@ jobs:
     env:
       CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
       BUILD_BUILDNUMBER: ${{ github.run_id }}-${{ github.run_attempt }}
-      SWAGGERUI: https://api.lavinia.no/
       WIKI: https://wiki.lavinia.no/
     strategy:
       matrix:
@@ -104,7 +103,6 @@ jobs:
     needs: test-and-build
     if: needs.test-and-build.result == 'success'
     env:
-      SWAGGERUI: https://api.lavinia.no/
       WIKI: https://wiki.lavinia.no/
     steps:
       - name: Checkout
