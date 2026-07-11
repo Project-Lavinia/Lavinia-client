@@ -28,7 +28,7 @@ module.exports = (env, argv) => {
 
     return {
         context: sourcePath,
-        devtool: "inline-source-map",
+        devtool: isProduction ? "source-map" : "inline-source-map",
         entry: {
             app: "./main.tsx",
         },
@@ -53,13 +53,7 @@ module.exports = (env, argv) => {
                 // .ts, .tsx
                 {
                     test: /\.tsx?$/,
-                    use: [
-                        isProduction && {
-                            loader: "babel-loader",
-                            options: { plugins: ["react-hot-loader/babel"] },
-                        },
-                        "ts-loader",
-                    ].filter(Boolean),
+                    use: ["ts-loader"],
                 },
                 // css
                 {
@@ -83,12 +77,26 @@ module.exports = (env, argv) => {
             ],
         },
         optimization: {
+            runtimeChunk: "single",
             splitChunks: {
+                chunks: "all",
                 cacheGroups: {
-                    vendors: {
-                        test: /[\\/]node_modules[\\/]/,
-                        name: "vendors",
+                    reactVendor: {
+                        test: /[\\/]node_modules[\\/](react|react-dom|react-redux|redux|redux-thunk)[\\/]/,
+                        name: "react-vendors",
                         chunks: "all",
+                        priority: 20,
+                    },
+                    uiVendor: {
+                        test: /[\\/]node_modules[\\/](bulma|bulma-toast|react-table|lodash)[\\/]/,
+                        name: "ui-vendors",
+                        chunks: "all",
+                        priority: 10,
+                    },
+                    common: {
+                        minChunks: 2,
+                        chunks: "all",
+                        enforce: true,
                     },
                 },
             },

@@ -23,7 +23,6 @@
     },
     "license": "MIT",
     "devDependencies": {
-        "@babel/core": "^7.9.6",
         "@types/lodash": "^4.14.151",
         "@types/node": "^20.17.0",
         "@types/react": "16.9.35",
@@ -32,7 +31,6 @@
         "@types/react-table": "^6.8.1",
         "@types/webpack": "^5.28.5",
         "@types/webpack-env": "^1.18.5",
-        "babel-loader": "^8.1.0",
         "bulma": "^0.8.2",
         "bulma-pageloader": "^0.3.0",
         "bulma-switch": "^2.0.0",
@@ -48,7 +46,6 @@
         "mini-css-extract-plugin": "^2.9.0",
         "prettier": "^2.0.5",
         "pretty-quick": "^2.0.1",
-        "react-hot-loader": "^4.12.21",
         "sass": "^1.83.0",
         "sass-loader": "^8.0.2",
         "start-server-and-test": "^1.11.0",
