@@ -18,6 +18,7 @@ import {
 import { isQuotientAlgorithm } from "../../../computation/logic";
 import { numberFormat } from "../../../utilities/customNumberFormat";
 import { InfoBox } from "./InfoBox";
+import { TrophyIcon } from "../../../common";
 
 export interface SinglePartyProps {
     districtResults: DistrictResult[];
@@ -217,16 +218,12 @@ export class SingleParty extends React.Component<SinglePartyProps, {}> {
                             Header: <span className="is-pulled-right wrap" >Margin i stemmer</span>,
                             accessor: "marginInVotes",
                             Cell: (row) => {
-                                const value = numberFormat(row.value);  
+                                const value = numberFormat(row.value);
                                 if ( row.original.closestVotes ) {
                                     return <div className="has-background-dark has-text-white">{value}</div>;
                                 }
                                 if ( row.original.seatWinner ) {
-                                    return (
-                                        <span className="icon">
-                                            <i className="fas fa-trophy" />
-                                        </span>
-                                    );
+                                    return <TrophyIcon />;
                                 }
                                 return value;
                             },

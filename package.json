@@ -61,6 +61,7 @@
         "webpack-dev-server": "^4.15.2"
     },
     "dependencies": {
+        "@heroicons/react": "2.2.0",
         "bulma-toast": "^2.0.3",
         "lodash": "^4.17.21",
         "react": "^16.13.1",

@@ -3,3 +3,4 @@ export * from "./SmartNumericInput";
 export * from "./SmartNumericInputWithLabel";
 export * from "./TooltipInfo";
 export * from "./LaviniaSVGLogo";
+export * from "./TrophyIcon/TrophyIcon";

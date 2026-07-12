@@ -1,6 +1,7 @@
 import * as React from "react";
 import { checkExhaustively } from "../../utilities";
 import { toast } from "bulma-toast";
+import { InformationCircleIcon } from "@heroicons/react/24/solid";
 
 export enum TooltipDirection {
     TOP = "TOP",
@@ -44,9 +45,13 @@ export class TooltipInfo extends React.Component<TooltipInfoProps, {}> {
     render() {
         const finalDirection = this.props.direction || TooltipDirection.TOP;
         return (
-            <span className={getClassName(finalDirection)} data-tooltip={this.props.text}>
+            <span
+                className={getClassName(finalDirection)}
+                data-tooltip={this.props.text}
+                style={{ verticalAlign: "middle" }}
+            >
                 <a href={this.props.url} target="_blank" rel="noreferrer noopener">
-                <i className="fas fa-info-circle has-text-primary" />
+                    <InformationCircleIcon className="icon has-text-primary" />
                 </a>
             </span>
         );
