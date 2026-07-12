@@ -1,7 +1,5 @@
 # Lavinia-client
 
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/Project-Lavinia/Lavinia-client.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Project-Lavinia/Lavinia-client/context:javascript) [![Total alerts](https://img.shields.io/lgtm/alerts/g/Project-Lavinia/Lavinia-client.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Project-Lavinia/Lavinia-client/alerts/)
-
 Denne guiden på andre språk:
 
 -   [English](README.md)
