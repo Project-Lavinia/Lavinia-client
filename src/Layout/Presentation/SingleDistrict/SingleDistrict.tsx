@@ -16,6 +16,7 @@ import {
     createPartyResultMap,
 } from "../../../utilities/district";
 import { isQuotientAlgorithm } from "../../../computation/logic";
+import { TrophyIcon } from "../../../common";
 
 export interface SingleDistrictProps {
     districtResults: DistrictResult[];
@@ -156,16 +157,12 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                                     ? vulnerableMap.get(d.partyCode)
                                     : null,
                             Cell: (row) => {
-                                const value = numberFormat(row.value);  
+                                const value = numberFormat(row.value);
                                 if (vulnerableVotes && row.original.partyCode === vulnerableVotes.partyCode) {
                                     return <div className="has-background-dark has-text-white">{value}</div>;
                                 }
                                 if (vulnerableVotes && row.original.partyCode === vulnerableVotes.winner.partyCode) {
-                                    return (
-                                        <span className="icon">
-                                            <i className="fas fa-trophy" />
-                                        </span>
-                                    );
+                                    return <TrophyIcon />;
                                 }
                                 return value;
                             },
