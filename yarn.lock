@@ -1551,7 +1551,7 @@ dotenv-defaults@^5.0.2:
   dependencies:
     dotenv "^14.0.0"
 
-dotenv-webpack@^9.0.0:
+dotenv-webpack@9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/dotenv-webpack/-/dotenv-webpack-9.0.0.tgz#076f09a75788d167d1202a8176c3e5f56e08213b"
   integrity sha512-uUtvrfEt+wXXadiZ/VvBYmLmd7KffMhsdaJLZmTTGaixFBZqD2emBwLsWKP4mdJ7bj11gxEcmH6EBFAoWwHrqA==
