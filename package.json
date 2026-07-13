@@ -33,7 +33,7 @@
         "@types/webpack-env": "^1.18.5",
         "bulma": "^0.8.2",
         "bulma-pageloader": "^0.3.0",
-        "bulma-switch": "^2.0.4",
+        "bulma-switch": "2.0.4",
         "bulma-tooltip": "^3.0.2",
         "clean-webpack-plugin": "^4.0.0",
         "copy-webpack-plugin": "14.0.0",
