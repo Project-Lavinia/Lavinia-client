@@ -1,0 +1,41 @@
+name: Staging
+
+# Deploys every merge to master as a preview deployment on the production
+# Cloudflare Pages project, reachable at staging.lavinia.pages.dev.
+# Reuses the same build/test logic as the release pipeline (build.yml).
+
+on:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: staging
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build & Test
+    uses: ./.github/workflows/build.yml
+    with:
+      run_cypress: true
+    secrets: inherit
+
+  deploy:
+    name: Deploy to staging
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Deploy to Cloudflare Pages (staging preview)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # --branch != the project's production branch (master) => preview deploy
+          command: pages deploy dist --project-name=lavinia --branch=staging
