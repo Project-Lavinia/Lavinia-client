@@ -318,9 +318,9 @@ export function breakTies(winners: KeyValuePair[], baseValue: _.Dictionary<numbe
     const maxNumerator = Math.max(...numerators);
 
     // Filter out all winners that did not have the highest numerator
-    winnersCopy.filter((item) => baseValue[item.key] === maxNumerator);
+    const narrowed = winnersCopy.filter((item) => baseValue[item.key] === maxNumerator);
 
     // We will always do the coin flip, because if there is only 1 item there is 100% chance of it being selected.
     // And the coinflip should be performed if there are more than 1 item remaining at this stage
-    return winnersCopy[Math.floor(Math.random() * winnersCopy.length)];
+    return narrowed[Math.floor(Math.random() * narrowed.length)];
 }
