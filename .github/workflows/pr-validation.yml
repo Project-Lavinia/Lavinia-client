@@ -9,41 +9,17 @@ concurrency:
   group: pr-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-env:
-  NODE_VERSION: '20'
+permissions:
+  contents: read
 
 jobs:
-  build-artifact:
-    name: Build Production Bundle
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
-
-      - name: Download static election data bundle
-        run: yarn download-data
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install dependencies
-        run: yarn --frozen-lockfile
-
-      - name: Build
-        run: yarn build
-
-      - name: Zip dist
-        run: |
-          cd dist
-          zip -r ../artifact.zip .
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifact-dist
-          path: artifact.zip
+  # Reuse the shared build pipeline so PRs are built exactly like staging and
+  # release (same WIKI/env, same steps). Cypress is skipped to keep PRs fast —
+  # the full E2E suite runs post-merge in staging.yml. Set run_cypress to true
+  # to gate PRs on the E2E suite as well.
+  build:
+    name: Build & Test
+    uses: ./.github/workflows/build.yml
+    with:
+      run_cypress: false
+    secrets: inherit

@@ -32,3 +32,7 @@ Read more about Lavinia and the Norwegian election system in our [wiki](https://
 5. Type `yarn start` <kbd>Enter</kbd>
 
 After step 5. your default browser should have opened up, running a development server locally on your machine. In most terminals, hit <kbd>Ctrl</kbd>+<kbd>c</kbd> with your terminal focused to close the application.
+
+## Deployment & CI
+
+The app is hosted on [Cloudflare Pages](https://developers.cloudflare.com/pages/): merges to `master` deploy to staging, and tagged releases deploy to production. See [`.github/workflows/README.md`](.github/workflows/README.md) for the full pipeline, one-time setup, and how to re-deploy or roll back to an older release.

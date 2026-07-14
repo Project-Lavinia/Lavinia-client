@@ -1,0 +1,112 @@
+name: Build & Test
+
+# Reusable build pipeline shared by the release and staging workflows.
+# Produces a deployable `dist` artifact (election data is bundled into it by
+# the CopyWebpackPlugin step) and, optionally, runs the Cypress E2E suite.
+
+on:
+  workflow_call:
+    inputs:
+      run_cypress:
+        description: 'Run the Cypress E2E suite'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '20'
+  # Injected into the production bundle at build time (webpack systemvars).
+  # Keep in sync with any other workflow that builds the client.
+  WIKI: https://wiki.lavinia.no/
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+
+      - name: Download static election data bundle
+        run: yarn download-data
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload election data artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: election-data
+          path: src/assets/election-data/
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Build
+        run: yarn build
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  test:
+    name: Cypress
+    if: ${{ inputs.run_cypress }}
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      BUILD_BUILDNUMBER: ${{ github.run_id }}-${{ github.run_attempt }}
+    strategy:
+      matrix:
+        container: [1, 2, 3]
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+
+      - name: Download election data artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: election-data
+          path: src/assets/election-data/
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Cypress verify
+        run: yarn cy:verify
+
+      - name: Run Cypress tests (parallel)
+        run: |
+          if [ -n "$CYPRESS_RECORD_KEY" ]; then
+            CYPRESS_PARALLEL_ARGS="--record --key $CYPRESS_RECORD_KEY --parallel --ci-build-id $BUILD_BUILDNUMBER";
+          else
+            CYPRESS_PARALLEL_ARGS="";
+          fi
+          npx start-server-and-test start:production 3000 "cypress run --reporter junit --reporter-options mochaFile=results/cypress-[hash].xml,toConsole=true $CYPRESS_PARALLEL_ARGS"
+
+      - name: Upload junit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-junit-${{ matrix.container }}
+          path: results
+          if-no-files-found: ignore

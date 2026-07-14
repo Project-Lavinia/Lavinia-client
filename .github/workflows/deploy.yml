@@ -1,0 +1,63 @@
+name: Deploy
+
+# Production deploy pipeline. Deploys the immutable `artifact.zip` attached to a
+# GitHub Release to the production Cloudflare Pages project.
+#
+#   - Called by `release.yml` (workflow_call) right after a release is published.
+#   - Can be run manually (workflow_dispatch) to re-deploy any older tag — it
+#     redeploys the exact bytes that originally shipped, no rebuild.
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Release tag to deploy'
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to (re)deploy, e.g. 2.9.9'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify tag is a published release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ inputs.tag }}
+          REPO: ${{ github.repository }}
+        run: |
+          if ! gh release view "$TAG" --repo "$REPO" --json isDraft > release.json 2>/dev/null; then
+            echo "::error::No GitHub Release found for '$TAG'. Enter an existing release tag — a branch name or arbitrary ref is not valid."
+            exit 1
+          fi
+          if [ "$(jq -r '.isDraft' release.json)" = "true" ]; then
+            echo "::error::Release '$TAG' is a draft; only published releases can be deployed."
+            exit 1
+          fi
+          echo "Deploying release '$TAG'."
+
+      - name: Download release artifact
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ inputs.tag }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh release download "$TAG" --repo "$REPO" --pattern artifact.zip --dir .
+          mkdir -p dist
+          unzip -o artifact.zip -d dist
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=lavinia --branch=master

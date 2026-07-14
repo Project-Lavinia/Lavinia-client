@@ -12,33 +12,15 @@ concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 
-env:
-  NODE_VERSION: '20'
-
 jobs:
-  test-and-build:
-    name: Test & Build
+  guard:
+    name: Verify version
     runs-on: ubuntu-latest
-    timeout-minutes: 60
-    env:
-      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-      BUILD_BUILDNUMBER: ${{ github.run_id }}-${{ github.run_attempt }}
-      WIKI: https://wiki.lavinia.no/
-    strategy:
-      matrix:
-        container: [1, 2, 3]
-      fail-fast: false
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
-
-      - name: Resolve app/data versions from package.json
+      - name: Verify tag matches package.json version
         run: |
           APP_VERSION=$(node -p "require('./package.json').version")
           API_DATA_VERSION=$(node -p "require('./package.json').dataVersion")
@@ -61,106 +43,29 @@ jobs:
           echo "Using package.json app version: $APP_VERSION"
           echo "Using package.json data version: $API_DATA_VERSION"
 
-      - name: Download static election data bundle
-        run: yarn download-data
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload election data artifact
-        if: matrix.container == 1
-        uses: actions/upload-artifact@v4
-        with:
-          name: election-data
-          path: src/assets/election-data/
-
-      - name: Install dependencies
-        run: yarn --frozen-lockfile
-
-      - name: Build
-        run: yarn build
-
-      - name: Cypress verify
-        run: yarn cy:verify
-
-      - name: Run Cypress tests (parallel)
-        run: |
-          if [ -n "$CYPRESS_RECORD_KEY" ]; then
-            CYPRESS_PARALLEL_ARGS="--record --key $CYPRESS_RECORD_KEY --parallel --ci-build-id $BUILD_BUILDNUMBER";
-          else
-            CYPRESS_PARALLEL_ARGS="";
-          fi
-          npx start-server-and-test start:production 3000 "cypress run --reporter junit --reporter-options mochaFile=results/cypress-[hash].xml,toConsole=true $CYPRESS_PARALLEL_ARGS"
-
-      - name: Upload junit results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-junit-${{ matrix.container }}
-          path: results
-          if-no-files-found: ignore
+  build:
+    name: Build & Test
+    needs: guard
+    uses: ./.github/workflows/build.yml
+    with:
+      run_cypress: true
+    secrets: inherit
 
   package:
     name: Package & Release
+    needs: build
     runs-on: ubuntu-latest
-    needs: test-and-build
-    if: needs.test-and-build.result == 'success'
-    env:
-      WIKI: https://wiki.lavinia.no/
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'yarn'
-
-      - name: Resolve app/data versions from package.json
-        run: |
-          APP_VERSION=$(node -p "require('./package.json').version")
-          API_DATA_VERSION=$(node -p "require('./package.json').dataVersion")
-
-          if [ -z "$APP_VERSION" ]; then
-            echo "Missing package.json field: version."
-            exit 1
-          fi
-
-          if [ -z "$API_DATA_VERSION" ]; then
-            echo "Missing package.json field: dataVersion."
-            exit 1
-          fi
-
-          if [ "$APP_VERSION" != "$GITHUB_REF_NAME" ]; then
-            echo "Tag/version mismatch: package.json version '$APP_VERSION' does not match release tag '$GITHUB_REF_NAME'."
-            exit 1
-          fi
-
-          echo "Using package.json app version: $APP_VERSION"
-          echo "Using package.json data version: $API_DATA_VERSION"
-
-      - name: Download election data artifact
+      - name: Download dist artifact
         uses: actions/download-artifact@v4
         with:
-          name: election-data
-          path: src/assets/election-data/
-
-      - name: Install dependencies
-        run: yarn --frozen-lockfile
-
-      - name: Build
-        run: yarn build
+          name: dist
+          path: dist/
 
       - name: Zip dist
         run: |
           cd dist
           zip -r ../artifact.zip .
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifact-dist
-          path: artifact.zip
 
       - name: Create GitHub Release
         id: create_release
@@ -170,3 +75,11 @@ jobs:
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    name: Deploy to production
+    needs: package
+    uses: ./.github/workflows/deploy.yml
+    with:
+      tag: ${{ github.ref_name }}
+    secrets: inherit
