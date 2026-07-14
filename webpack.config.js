@@ -138,6 +138,12 @@ module.exports = (env, argv) => {
             historyApiFallback: {
                 disableDotRule: true,
             },
+            client: {
+                overlay: {
+                    errors: true,
+                    warnings: false,
+                },
+            },
         },
     };
 };
