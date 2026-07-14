@@ -1,6 +1,6 @@
 {
     "name": "lavinia",
-    "version": "2.9.9",
+    "version": "2.10.0",
     "dataVersion": "3.5.0",
     "private": true,
     "description": "A seat distribution application for modern democracies",
