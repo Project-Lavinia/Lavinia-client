@@ -12,6 +12,9 @@ on:
         type: boolean
         default: true
 
+permissions:
+  contents: read
+
 env:
   NODE_VERSION: '20'
   # Injected into the production bundle at build time (webpack systemvars).

@@ -9,6 +9,9 @@ concurrency:
   group: pr-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   # Reuse the shared build pipeline so PRs are built exactly like staging and
   # release (same WIKI/env, same steps). Cypress is skipped to keep PRs fast —
