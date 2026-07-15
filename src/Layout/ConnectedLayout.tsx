@@ -41,11 +41,19 @@ const mapDispatchToProps = (
             let numberYears: number[] = [];
 
             try {
-                votes = await request<Array<Votes>>(votesUri);
-                metrics = await request<Array<Metrics>>(metricsUri);
-                rawParameters = await request<Array<RawParameters>>(parametersUri);
-                partyMap = await request<_.Dictionary<string>>(partyMapUri);
-                numberYears = await request<Array<number>>(yearsUri);
+                await Promise.all([
+                    request<Array<Votes>>(votesUri), // 0
+                    request<Array<Metrics>>(metricsUri), // 1
+                    request<Array<RawParameters>>(parametersUri), // 2
+                    request<_.Dictionary<string>>(partyMapUri), // 3
+                    request<Array<number>>(yearsUri), // 4
+                ]).then((values) => {
+                    votes = values[0];
+                    metrics = values[1];
+                    rawParameters = values[2];
+                    partyMap = values[3];
+                    numberYears = values[4];
+                });
             } catch (error) {
                 const errorMessage = error instanceof Error ? error.message : String(error);
                 toast({
@@ -93,7 +101,7 @@ const mapDispatchToProps = (
         const clearStateAction = clearState();
         dispatch(clearStateAction);
     },
-    
+
     toggleHamburger: (hamburgerExpanded: boolean) => {
         dispatch(toggleHamburger(hamburgerExpanded));
     },
