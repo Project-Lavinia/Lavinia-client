@@ -140,8 +140,8 @@ module.exports = (env, argv) => {
             },
             client: {
                 overlay: {
-                    errors: true,
-                    warnings: false,
+                    errors: !isProduction,
+                    warnings: !isProduction,
                 },
             },
         },
