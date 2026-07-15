@@ -73,7 +73,7 @@ export function lagueDhont(payload: ComputationPayload): LagueDhontResult {
         reform2005Applies(payload.parameters.electionYear) && isQuotientAlgorithm(payload.algorithm);
     const finalQuotients = calculateFinalQuotients(
         payload.algorithm,
-        payload.firstDivisor,
+        useAdjustedQuotients ? 1 : payload.firstDivisor,
         useAdjustedQuotients,
         districtResults
     );
