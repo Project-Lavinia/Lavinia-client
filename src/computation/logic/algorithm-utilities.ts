@@ -435,7 +435,7 @@ export function calculateFinalQuotients(
 }
 
 /**
- * Sorts a list of leveling seats as described here: https://lovdata.no/NL/lov/2002-06-28-57/§11-6
+ * Sorts a list of leveling seats as described in §11-8: https://lovdata.no/lov/2023-06-16-62/§11-8
  * @param levelingSeats The list of leveling seats to be sorted
  * @param partyResults A _.Dictionary used to look up how many votes the parties got
  */
