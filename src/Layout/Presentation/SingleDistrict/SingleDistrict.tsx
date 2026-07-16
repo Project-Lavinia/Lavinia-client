@@ -5,7 +5,16 @@ import { toSum } from "../../../utilities/reduce";
 import { DisproportionalityIndex } from "../presentation-models";
 import { checkExhaustively } from "../../../utilities";
 import { DistrictSelect } from "./DistrictSelect";
-import { norwegian } from "../../../utilities/rt";
+import {
+    norwegian,
+    caseInsensitiveFilterMethod,
+    selectFilterWithOptions,
+    thresholdOptions,
+    thresholdFilterMethod,
+    eqOrNeqZeroOptions,
+    allGreaterThanEqualsMethod,
+    positiveOrNegativeFilterMethod,
+} from "../../../utilities/rt";
 import { numberFormat } from "../../../utilities/customNumberFormat";
 import { InfoBox } from "./InfoBox";
 import {
@@ -25,8 +34,10 @@ export interface SingleDistrictProps {
     decimals: number;
     disproportionalityIndex: DisproportionalityIndex;
     algorithm: AlgorithmType;
+    threshold: number;
     districtThreshold: number;
     partyMap: _.Dictionary<string>;
+    showFilters: boolean;
 }
 
 export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
@@ -87,12 +98,14 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                 <ReactTable
                     className="-highlight -striped has-text-right"
                     data={data}
+                    filterable={this.props.showFilters}
                     pageSize={data.length <= 10 ? data.length : 10}
                     showPagination={data.length > 10}
                     columns={[
                         {
                             Header: <span className="is-pulled-left">Parti</span>,
-                            accessor: "partyCode",
+                            accessor: "partyName",
+                            filterMethod: caseInsensitiveFilterMethod,
                             Footer: (
                                 <span>
                                     <strong className="is-pulled-left">Utvalg</strong>
@@ -105,6 +118,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: <span className="is-pulled-right">Stemmer</span>,
                             accessor: "votes",
+                            filterable: false,
                             Footer: (
                                 <span>
                                     <strong>{numberFormat(data.map((value) => value.votes).reduce(toSum))}</strong>
@@ -117,6 +131,8 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: <span className="is-pulled-right wrap" >Oppslutning %</span>,
                             id: "%",
+                            Filter: selectFilterWithOptions(thresholdOptions(this.props.threshold)),
+                            filterMethod: thresholdFilterMethod(this.props.threshold),
                             accessor: "percentVotes",
                             Cell: (row) => {
                                 return numberFormat(row.value, decimals);
@@ -125,6 +141,8 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: <span className="is-pulled-right" >Distrikt</span>,
                             accessor: "districtSeats",
+                            Filter: selectFilterWithOptions(eqOrNeqZeroOptions),
+                            filterMethod: allGreaterThanEqualsMethod,
                             Footer: (
                                 <span>
                                     <strong>{data.map((value) => value.districtSeats).reduce(toSum)}</strong>
@@ -134,6 +152,8 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: <span className="is-pulled-right" >Utjevning</span>,
                             accessor: "levelingSeats",
+                            Filter: selectFilterWithOptions(eqOrNeqZeroOptions),
+                            filterMethod: allGreaterThanEqualsMethod,
                             Footer: (
                                 <span>
                                     <strong>{data.map((value) => value.levelingSeats).reduce(toSum)}</strong>
@@ -143,6 +163,8 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: <span className="is-pulled-right wrap" >Sum Mandater</span>,
                             accessor: "totalSeats",
+                            Filter: selectFilterWithOptions(eqOrNeqZeroOptions),
+                            filterMethod: allGreaterThanEqualsMethod,
                             Footer: (
                                 <span>
                                     <strong>{data.map((value) => value.totalSeats).reduce(toSum)}</strong>
@@ -152,6 +174,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             id: "marginInVotes",
                             Header: <span className="is-pulled-right wrap" >Margin i stemmer</span>,
+                            filterable: false,
                             accessor: (d: PartyResult) =>
                                 partyResultMap[d.partyCode].percentVotes > this.props.districtThreshold && vulnerableMap
                                     ? vulnerableMap.get(d.partyCode)
@@ -171,6 +194,7 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             id: "lastSeatQuotient",
                             Header: <span className="is-pulled-right wrap" >Siste kvotient</span>,
+                            filterable: false,
                             accessor: (d: PartyResult) =>
                                 partyResultMap[d.partyCode].percentVotes > this.props.districtThreshold && quotientMap
                                 ? quotientMap.get(d.partyCode)
@@ -187,6 +211,8 @@ export class SingleDistrict extends React.Component<SingleDistrictProps, {}> {
                         {
                             Header: <span className="is-pulled-right wrap" >Prop. %</span>,
                             accessor: "proportionality",
+                            Filter: selectFilterWithOptions(thresholdOptions(0)),
+                            filterMethod: positiveOrNegativeFilterMethod(),
                             Cell: (row) => {
                                return numberFormat(row.value, decimals);
                             },
