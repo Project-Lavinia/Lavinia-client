@@ -7,7 +7,9 @@ import { isLargestFractionAlgorithm, isQuotientAlgorithm } from "./algorithm-uti
 import { reform2005Applies } from "../../utilities/conditionals";
 
 /**
- * Distributes the leveling seats on the parties and on each district.
+ * Distributes the leveling seats on the parties (§11-7) and on each district (§11-8):
+ * https://lovdata.no/lov/2023-06-16-62/§11-7
+ * https://lovdata.no/lov/2023-06-16-62/§11-8
  *
  * @param payload The computation payload
  * @param partyResults The party results for each party
@@ -71,7 +73,8 @@ export function distributeLevelingSeats(
 }
 
 /**
- * Filters out parties that do not receive more seats in the national distribution than the district distribution.
+ * Filters out parties that do not receive more seats in the national distribution than the district distribution,
+ * as per §11-7: https://lovdata.no/lov/2023-06-16-62/§11-7
  * It returns the remaining party codes and the final national distribution of seats.
  *
  * @param levelingPartyCodes The party codes to filter
@@ -156,7 +159,8 @@ function finalLevelingSeatDistribution(
 }
 
 /**
- * Distributes leveling seats on each party using one of the quotient algorithms.
+ * Distributes leveling seats on each party using one of the quotient algorithms,
+ * as per §11-7: https://lovdata.no/lov/2023-06-16-62/§11-7
  *
  * @param levelingPartyCodes The party codes for the parties that may win a leveling seat
  * @param partyResults The party results for each party

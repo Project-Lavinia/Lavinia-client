@@ -108,7 +108,7 @@ export function calculatePercentages(
 
 /**
  * Distributes the district seats over the districts as per:
- * https://lovdata.no/lov/2002-06-28-57/§11-3
+ * https://lovdata.no/lov/2023-06-16-62/§11-3
  *
  * @param areaFactor The area factor the area should be multiplied with when calculating the numerator for the quotient
  * @param numDistrictSeats The number of district seats that should be distributed
