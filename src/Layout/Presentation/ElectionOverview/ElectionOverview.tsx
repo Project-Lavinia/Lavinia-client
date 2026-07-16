@@ -116,7 +116,7 @@ export class ElectionOverview extends React.Component<ElectionOverviewProps, {}>
                     columns={[
                         {
                             Header: <span className="is-pulled-left">Parti</span> ,
-                            accessor: "partyCode",
+                            accessor: "partyName",
                             filterMethod: caseInsensitiveFilterMethod,
                             Footer: <strong className="is-pulled-left">Utvalg</strong>,
                             Cell: (row) => {
