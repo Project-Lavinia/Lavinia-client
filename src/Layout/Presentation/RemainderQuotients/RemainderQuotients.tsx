@@ -1,6 +1,6 @@
 import * as React from "react";
 import ReactTable, { Column } from "react-table";
-import { LevelingSeat, DistrictResult, DistrictQuotients, AlgorithmType } from "../../../computation";
+import { LevelingSeat, DistrictResult, DistrictQuotients, PartyQuotient, AlgorithmType } from "../../../computation";
 import { norwegian } from "../../../utilities/rt";
 import { isQuotientAlgorithm } from "../../../computation/logic";
 import { numberFormat } from "../../../utilities/customNumberFormat";
@@ -51,7 +51,29 @@ export class RemainderQuotients extends React.Component<RemainderQuotientsProps>
             modifiedQuotients = this.props.finalQuotients;
         }
 
-        return modifiedQuotients;
+        // Build a canonical party order from the union of all districts so that
+        // local parties (e.g. PASF in Finnmark only) are not silently dropped when
+        // district 0 (Akershus) doesn't include them.
+        const seenCodes = new Set<string>();
+        const canonicalOrder: string[] = [];
+        for (const district of modifiedQuotients) {
+            for (const pq of district.levellingSeatRounds) {
+                if (!seenCodes.has(pq.partyCode)) {
+                    seenCodes.add(pq.partyCode);
+                    canonicalOrder.push(pq.partyCode);
+                }
+            }
+        }
+
+        return modifiedQuotients.map((district) => {
+            const byCode = new Map<string, PartyQuotient>(
+                district.levellingSeatRounds.map((pq) => [pq.partyCode, pq])
+            );
+            const padded: PartyQuotient[] = canonicalOrder.map(
+                (code) => byCode.get(code) ?? { partyCode: code, quotient: 0, wonLevellingSeat: false }
+            );
+            return { district: district.district, levellingSeatRounds: padded };
+        });
     }
 
     getColumns(): Column[] {
