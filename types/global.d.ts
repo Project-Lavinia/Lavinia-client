@@ -6,6 +6,11 @@ declare module "*.css" {
     export = styles;
 }
 
+declare module "*.scss" {
+    const styles: any
+    export = styles;
+}
+
 // Omit type https://github.com/Microsoft/TypeScript/issues/12215
 type Diff<T extends string, U extends string> = ({ [P in T]: P } & { [P in U]: never } & { [x: string]: never })[T];
 // @ts-ignore
