@@ -11,13 +11,6 @@ export function configureStore(history: History, initialState?: RootState): Stor
 
     const store = createStore(rootReducer, initialState, middleware);
 
-    if (module.hot) {
-        module.hot.accept("../reducers", () => {
-            const nextReducer = require("../reducers");
-            store.replaceReducer(nextReducer);
-        });
-    }
-
     return store;
 }
 
