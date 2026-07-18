@@ -47,7 +47,7 @@
         "prettier": "3.9.5",
         "pretty-quick": "^2.0.1",
         "sass": "^1.83.0",
-        "sass-loader": "^8.0.2",
+        "sass-loader": "^17.0.0",
         "start-server-and-test": "^1.11.0",
         "style-loader": "^1.2.1",
         "ts-loader": "^9.5.1",
