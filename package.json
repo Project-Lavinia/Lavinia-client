@@ -23,7 +23,7 @@
     },
     "license": "MIT",
     "devDependencies": {
-        "@types/lodash": "^4.14.151",
+        "@types/lodash": "^4.17.24",
         "@types/node": "^20.17.0",
         "@types/react": "16.9.35",
         "@types/react-dom": "^16.9.8",
