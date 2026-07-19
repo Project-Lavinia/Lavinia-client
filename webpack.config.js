@@ -35,7 +35,7 @@ module.exports = (env, argv) => {
         mode: argv.mode || "production",
         output: {
             path: outPath,
-            filename: "js/[name].[hash].bundle.js",
+            filename: "js/[name].[contenthash].bundle.js",
             publicPath: "/",
         },
         target: "web",
